@@ -1,0 +1,63 @@
+---
+description: Convenciones del sitio Woodax Design y CNC by Woodax Design
+alwaysApply: true
+---
+
+# Proyecto
+
+Sitio de Woodax Design y CNC by Woodax Design. Es una sola marca con dos líneas de negocio que atienden mercados distintos.
+
+# Stack
+
+- Next.js (App Router, última versión estable)
+- TypeScript en modo strict
+- TailwindCSS v4
+- GSAP (+ `@gsap/react`)
+- Motion (paquete `motion`, importar desde `motion/react`)
+- lucide-react
+- Resend + React Email
+- Supabase (`@supabase/ssr`)
+- Deploy en Vercel
+
+Package manager: pnpm.
+
+# Componentes
+
+Server Components por default. `"use client"` solo cuando haya interactividad o animación.
+
+# Animación
+
+- GSAP se usa para animaciones de scroll y timelines.
+- Motion se usa para microinteracciones y transiciones de UI.
+- Nunca uses las dos librerías en el mismo componente.
+
+```tsx
+// Scroll / timeline → GSAP
+"use client";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+
+// Microinteracción / transición de UI → Motion
+"use client";
+import { motion } from "motion/react";
+```
+
+# Entorno
+
+Las variables de entorno se validan con zod en `src/lib/env.ts`. Nunca uses `process.env` directo fuera de ese archivo.
+
+```ts
+import { env } from "@/lib/env";
+```
+
+# Commits
+
+Commits en formato Conventional Commits, en inglés.
+
+```
+feat: add CNC services section
+```
+
+# Contenido
+
+El contenido del sitio va en español (es-MX).
