@@ -5,59 +5,23 @@ alwaysApply: true
 
 # Proyecto
 
-Sitio de Woodax Design y CNC by Woodax Design. Es una sola marca con dos líneas de negocio que atienden mercados distintos.
+- Sitio de Woodax Design y CNC by Woodax Design: dos marcas hermanas en un solo repo y un solo deploy.
+- woodax.design → Woodax Design (multipágina en la versión final)
+- cnc.woodax.design → CNC (one-page)
+- Fase actual: páginas temporales "coming soon" con formulario de contacto. Serán reemplazadas por los sitios completos.
+- Ambos sitios son bilingües: es (default, sin prefijo) y en (prefijo /en).
 
 # Stack
 
-- Next.js (App Router, última versión estable)
-- TypeScript en modo strict
-- TailwindCSS v4
-- GSAP (+ `@gsap/react`)
-- Motion (paquete `motion`, importar desde `motion/react`)
-- lucide-react
-- Resend + React Email
-- Supabase (`@supabase/ssr`)
-- Deploy en Vercel
+- Next.js (App Router), TypeScript strict, TailwindCSS v4, next-intl, lucide-react, Resend + React Email, zod. Deploy en Vercel. pnpm.
+- Fases posteriores (NO instalar todavía): GSAP + @gsap/react, motion.
+- Supabase queda fuera del alcance actual.
 
-Package manager: pnpm.
+# Convenciones
 
-# Componentes
-
-Server Components por default. `"use client"` solo cuando haya interactividad o animación.
-
-# Animación
-
-- GSAP se usa para animaciones de scroll y timelines.
-- Motion se usa para microinteracciones y transiciones de UI.
-- Nunca uses las dos librerías en el mismo componente.
-
-```tsx
-// Scroll / timeline → GSAP
-"use client";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-
-// Microinteracción / transición de UI → Motion
-"use client";
-import { motion } from "motion/react";
-```
-
-# Entorno
-
-Las variables de entorno se validan con zod en `src/lib/env.ts`. Nunca uses `process.env` directo fuera de ese archivo.
-
-```ts
-import { env } from "@/lib/env";
-```
-
-# Commits
-
-Commits en formato Conventional Commits, en inglés.
-
-```
-feat: add CNC services section
-```
-
-# Contenido
-
-El contenido del sitio va en español (es-MX).
+- Server Components por default. "use client" solo si hay interactividad.
+- Cero strings hardcodeados en la UI: todo texto visible sale de messages/es.json y messages/en.json.
+- Variables de entorno solo a través de src/lib/env.ts (validadas con zod).
+- Utilidad cn() para las clases de Tailwind.
+- Commits en Conventional Commits, en inglés.
+- No instalar dependencias fuera de las definidas sin preguntar primero.
