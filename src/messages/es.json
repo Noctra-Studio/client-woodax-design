@@ -1,0 +1,29 @@
+{
+  "common": {
+    "language": "Español",
+    "notFoundTitle": "Página no encontrada",
+    "notFoundDescription": "La página que buscas no existe.",
+    "backHome": "Volver al inicio"
+  },
+  "design": {
+    "title": "Woodax Design",
+    "headline": "El inicio de una pieza a medida"
+  },
+  "cnc": {
+    "title": "CNC by Woodax Design",
+    "headline": "Tu proyecto ya empezó"
+  },
+  "contact": {
+    "title": "Contacto"
+  },
+  "metadata": {
+    "design": {
+      "title": "Woodax Design",
+      "description": "Muebles y espacios a medida. Pronto, el nuevo sitio de Woodax Design."
+    },
+    "cnc": {
+      "title": "CNC by Woodax Design",
+      "description": "Producción CNC de precisión. Pronto, el nuevo sitio de CNC by Woodax Design."
+    }
+  }
+}
