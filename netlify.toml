@@ -1,0 +1,18 @@
+# Secrets (RESEND_API_KEY, contact emails, public URLs) live in the Netlify UI.
+[build]
+  command = "pnpm build"
+
+[build.environment]
+  NODE_VERSION = "24.21.0"
+
+[context.production.environment]
+  NEXT_PUBLIC_APP_ENV = "production"
+
+[context.staging.environment]
+  NEXT_PUBLIC_APP_ENV = "staging"
+
+[context.deploy-preview.environment]
+  NEXT_PUBLIC_APP_ENV = "staging"
+
+[context.branch-deploy.environment]
+  NEXT_PUBLIC_APP_ENV = "staging"

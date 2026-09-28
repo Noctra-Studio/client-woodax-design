@@ -2,12 +2,17 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { clientEnv } from "@/lib/env";
 import { localizedMetadata } from "@/lib/seo";
-import { getSite } from "@/lib/site";
+import {
+  hostFromHeaders,
+  PREVIEW_SITE_COOKIE,
+  PREVIEW_SITE_HEADER,
+  resolveSite,
+} from "@/lib/site";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -34,9 +39,12 @@ export async function generateMetadata({
     ? requested
     : routing.defaultLocale;
   const headerStore = await headers();
-  const host =
-    headerStore.get("x-forwarded-host") ?? headerStore.get("host") ?? "";
-  const site = getSite(host);
+  const cookieStore = await cookies();
+  const host = hostFromHeaders(headerStore);
+  const previewSite =
+    headerStore.get(PREVIEW_SITE_HEADER) ??
+    cookieStore.get(PREVIEW_SITE_COOKIE)?.value;
+  const site = resolveSite(host, previewSite);
   const t = await getTranslations({ locale, namespace: "metadata" });
   const title = site === "cnc" ? t("cnc.title") : t("design.title");
   const description =
