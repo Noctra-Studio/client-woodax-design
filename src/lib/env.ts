@@ -81,14 +81,16 @@ const clientSchema = defineClientSchema({
     emptyAsUndefined,
     z.url({ error: required("Must be a valid URL") }),
   ),
+  // Optional until the client confirms the number; WhatsApp CTAs stay hidden without it.
   NEXT_PUBLIC_WHATSAPP_NUMBER: z.preprocess(
     emptyAsUndefined,
     z
-      .string({ error: "Required" })
+      .string()
       .regex(
         /^\d{8,15}$/,
         "International format without + or spaces, for example 5214421234567",
-      ),
+      )
+      .optional(),
   ),
 });
 
