@@ -3,15 +3,15 @@ name: woodax-brand
 description: Brand, visual, motion and copy rules for the Woodax Design and CNC by Woodax Design coming-soon sites. Use for ANY UI, styling, animation, copy or asset work in this repo. These rules override generic design skills when they conflict.
 ---
 
-## Precedence
+# Woodax Design + CNC by Woodax Design — Brand rules
 
+## Precedence
 - woodax-brand wins on brand: colors, typography, copy, motion tokens (easings, durations, intro limits), component library (shadcn/ui) and forbidden patterns.
 - emil-design-eng / animate / review-animations guide HOW to animate (properties, origins, interruptibility, what not to animate) within the woodax-brand tokens. If one suggests an easing or duration outside our tokens, use the closest woodax-brand token.
 - mobile-native guides touch, viewport, safe-area and hover fixes; it complements section 6 of this file.
+- frontend-design, web-design-guidelines and vercel-react-best-practices apply where this file is silent.
 - break-ui is for QA only (Phase 4 and before showing the client), not for adding features.
-- pick-ui-library is not installed: the UI library decision (shadcn/ui) is final.
-
-# Woodax Design + CNC by Woodax Design — Brand rules
+- The UI library decision (shadcn/ui) is final.
 
 Two sibling brands, one repo, one deploy.
 - Woodax Design → woodax.design. Bespoke carpentry for homes AND businesses. Strong Instagram presence. Light, natural, warm.
@@ -87,7 +87,7 @@ Layout language:
 
 ## 5. Motion system
 
-Library: `motion` (motion.dev) for the mobile bottom sheet, layout transitions and gestures. Everything else in CSS. No GSAP.
+Library: `motion` (motion.dev) for step transitions, layout/height animation and the intro. The mobile bottom sheet is the shadcn Drawer (vaul). Everything else in CSS. No GSAP.
 
 Tokens:
 - --ease-out: cubic-bezier(0.22, 1, 0.36, 1)
@@ -115,7 +115,7 @@ Micro-interactions:
 - -webkit-tap-highlight-color: transparent; touch-action: manipulation; tap targets ≥ 44px.
 - Instant feedback on touch (:active) — no hover-dependent UI.
 - Sticky bottom CTA bar on mobile ("Cuéntanos tu proyecto" / "Cotizar mi proyecto") that hides when the form is in view.
-- On mobile the form opens as a bottom sheet (motion), drag-to-dismiss, focus trapped, body scroll locked, keyboard-safe (inputs scroll into view above the keyboard). Desktop: inline section.
+- On mobile the form opens in the shadcn Drawer (bottom sheet), drag-to-dismiss, focus trapped, body scroll locked, keyboard-safe (inputs scroll into view above the keyboard). Desktop: inline section.
 - Inputs: correct inputmode/autocomplete (name, email, tel), font-size ≥ 16px (no iOS zoom).
 - overscroll-behavior: none on the sheet; smooth scroll for anchor links, disabled under reduced motion.
 
@@ -133,7 +133,37 @@ Woodax (aspirational + craft): warm, confident, concrete. Speaks to homeowners a
 CNC (precision + B2B collaboration): direct, technical, efficient. Speaks to workshops, companies and sign makers. Lead with capability and process, not adjectives.
 Both: Spanish (neutral LATAM) is the default; English is adapted, not literal. No hype words ("revolucionario", "el mejor", "líderes"). No exclamation marks.
 
-## 9. Assets & config
+## 9. Components: shadcn/ui (required)
+
+- All interactive primitives come from shadcn/ui, installed with the CLI into src/components/ui/ (we own and edit that code): button, input, label, textarea, radio-group, checkbox, drawer, card, separator.
+- Never hand-roll a primitive that shadcn provides, and never install another UI kit (MUI, Chakra, Mantine, daisyUI, etc.).
+- Branding happens in two places only:
+  1. shadcn CSS variables, set per brand under [data-site="design"] and [data-site="cnc"] in globals.css (mapping below).
+  2. Brand variants added with cva inside src/components/ui/*.tsx (e.g. Button variant "design" | "cnc"). Don't override shadcn styles with ad-hoc classNames scattered across pages.
+- Option cards for the form = shadcn RadioGroup items restyled as cards (still a real radio group, keyboard accessible).
+- Icons: lucide-react only (shadcn default), stroke 1.5.
+
+Variable mapping:
+| shadcn var | design | cnc |
+|---|---|---|
+| --background | woodax-cream | cnc-bg |
+| --foreground | woodax-charcoal | cnc-text |
+| --card / --popover | woodax-sand | cnc-surface |
+| --card-foreground | woodax-charcoal | cnc-text |
+| --primary | woodax-charcoal | cnc-white |
+| --primary-foreground | woodax-cream | cnc-bg |
+| --secondary | woodax-sand | cnc-surface |
+| --secondary-foreground | woodax-charcoal | cnc-text |
+| --muted | woodax-sand | cnc-surface |
+| --muted-foreground | woodax-charcoal at 75% (check AA) | cnc-muted |
+| --accent | woodax-green-soft | cnc-surface |
+| --accent-foreground | woodax-charcoal | cnc-text |
+| --border / --input | woodax-sand darkened ~8% | cnc-line |
+| --ring | woodax-charcoal | cnc-white |
+| --destructive | #B42318 | #F97066 |
+| --radius | 14px | 4px |
+
+## 10. Assets & config
 
 - public/brand/woodax-logo.svg, public/brand/cnc-logo.svg (white).
 - public/images/design/*, public/images/cnc/* — only real client photos.
