@@ -27,13 +27,13 @@ export function hostFromHeaders(headerStore: HeaderSource): string {
 }
 
 /**
- * Netlify preview URLs share one host, so `?site=` can force Design or CNC.
- * Production ignores the override, including on a `*.netlify.app` hostname.
+ * Vercel preview URLs share one host, so `?site=` can force Design or CNC.
+ * Production ignores the override, including on a `*.vercel.app` hostname.
  */
 export function allowsPreviewSiteOverride(host: string): boolean {
   return (
     clientEnv.NEXT_PUBLIC_APP_ENV !== "production" &&
-    hostnameFromHost(host).endsWith(".netlify.app")
+    hostnameFromHost(host).endsWith(".vercel.app")
   );
 }
 

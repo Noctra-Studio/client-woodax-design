@@ -16,8 +16,10 @@ Los dos sitios se publican en español e inglés. El español es el idioma por d
 
 Esta fase solo captura el contacto del coming soon y lo envía por correo. Resend cubre ese envío. No hay base de datos: Supabase queda fuera de alcance hasta que haga falta guardar los leads.
 
-## Netlify en lugar de Vercel
+## Hosting en Vercel
 
-El plan gratuito de Vercel prohíbe el uso comercial, así que el sitio se despliega en Netlify. `NEXT_PUBLIC_APP_ENV` se fija por contexto de deploy en `netlify.toml`. Los secretos (`RESEND_API_KEY` y el resto) se configuran en el panel de Netlify y no entran al repositorio.
+`NEXT_PUBLIC_APP_ENV` se define por entorno en el panel de Vercel (`production` / `staging`). Los secretos (`RESEND_API_KEY` y el resto) se configuran en el panel y no entran al repositorio.
 
-En producción el sitio sigue el host. En un preview de Netlify la URL es única y termina en `.netlify.app`, así que `?site=cnc` o `?site=design` fuerza la marca y la elección queda en la cookie `preview-site`. En production esa vía se ignora.
+En producción el sitio sigue el host. En un preview de Vercel la URL es única y termina en `.vercel.app`, así que `?site=cnc` o `?site=design` fuerza la marca y la elección queda en la cookie `preview-site`. En production esa vía se ignora.
+
+El DNS del dominio se administra en Vercel.

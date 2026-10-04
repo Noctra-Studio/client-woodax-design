@@ -13,8 +13,8 @@ alwaysApply: true
 
 # Stack
 
-- Next.js (App Router), TypeScript strict, TailwindCSS v4, next-intl, lucide-react, Resend + React Email, zod. Deploy en Netlify. pnpm.
-- Fases posteriores (NO instalar todavía): GSAP + @gsap/react, motion.
+- Next.js (App Router), TypeScript strict, TailwindCSS v4, next-intl, lucide-react, motion, Resend + React Email, zod. Deploy en Vercel. pnpm.
+- Fases posteriores (NO instalar todavía): GSAP + @gsap/react.
 - Supabase queda fuera del alcance actual.
 
 # Convenciones
