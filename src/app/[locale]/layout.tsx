@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { JetBrains_Mono, Outfit } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { cookies, headers } from "next/headers";
@@ -12,18 +12,34 @@ import {
   PREVIEW_SITE_COOKIE,
   PREVIEW_SITE_HEADER,
   resolveSite,
+  type Site,
 } from "@/lib/site";
 import "../globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const outfit = Outfit({
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-outfit",
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
 });
+
+async function requestSite(): Promise<Site> {
+  const headerStore = await headers();
+  const cookieStore = await cookies();
+  const host = hostFromHeaders(headerStore);
+  const previewSite =
+    headerStore.get(PREVIEW_SITE_HEADER) ??
+    cookieStore.get(PREVIEW_SITE_COOKIE)?.value;
+
+  return resolveSite(host, previewSite);
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -38,13 +54,7 @@ export async function generateMetadata({
   const locale = hasLocale(routing.locales, requested)
     ? requested
     : routing.defaultLocale;
-  const headerStore = await headers();
-  const cookieStore = await cookies();
-  const host = hostFromHeaders(headerStore);
-  const previewSite =
-    headerStore.get(PREVIEW_SITE_HEADER) ??
-    cookieStore.get(PREVIEW_SITE_COOKIE)?.value;
-  const site = resolveSite(host, previewSite);
+  const site = await requestSite();
   const t = await getTranslations({ locale, namespace: "metadata" });
   const title = site === "cnc" ? t("cnc.title") : t("design.title");
   const description =
@@ -73,12 +83,17 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
 
+  const site = await requestSite();
+
   return (
     <html
       lang={locale}
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${outfit.variable} ${jetbrainsMono.variable} h-full antialiased [-webkit-tap-highlight-color:transparent]`}
     >
-      <body className="flex min-h-full flex-col">
+      <body
+        data-site={site}
+        className="flex min-h-svh touch-manipulation flex-col pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] font-sans"
+      >
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>

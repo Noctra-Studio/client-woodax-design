@@ -1,26 +1,48 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+  --color-woodax-green: #83af6e;
+  --color-woodax-green-soft: #a2c392;
+  --color-woodax-charcoal: #3f3738;
+  --color-woodax-cream: #f4f1ec;
+  --color-woodax-sand: #e7e0d5;
+
+  --color-cnc-bg: #16171a;
+  --color-cnc-surface: #1f2125;
+  --color-cnc-line: #2e3136;
+  --color-cnc-muted: #9a9fa6;
+  --color-cnc-text: #ecedee;
+  --color-cnc-white: #ffffff;
+
+  --radius-card: 24px;
+  --radius-media: 28px;
+  --radius-control: 14px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --duration-press: 120ms;
+  --duration-ui: 240ms;
+  --duration-reveal: 700ms;
+  --duration-intro: 1800ms;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+[data-site="cnc"] {
+  --radius-card: 6px;
+  --radius-control: 4px;
+}
+
+body[data-site="design"] {
+  background-color: var(--color-woodax-cream);
+  color: var(--color-woodax-charcoal);
+}
+
+body[data-site="cnc"] {
+  background-color: var(--color-cnc-bg);
+  color: var(--color-cnc-text);
 }
