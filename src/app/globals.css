@@ -46,3 +46,44 @@ body[data-site="cnc"] {
   background-color: var(--color-cnc-bg);
   color: var(--color-cnc-text);
 }
+
+@keyframes lead-draw-check {
+  from {
+    stroke-dashoffset: 24;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes lead-card-settle {
+  from {
+    transform: scale(0.98);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.lead-check-draw {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 0;
+  animation: lead-draw-check var(--duration-ui) var(--ease-out) forwards;
+}
+
+.lead-card-settle {
+  animation: lead-card-settle var(--duration-ui) var(--ease-out);
+}
+
+@media (min-width: 768px) {
+  .lead-sheet {
+    transform: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lead-check-draw,
+  .lead-card-settle {
+    animation: none;
+  }
+}

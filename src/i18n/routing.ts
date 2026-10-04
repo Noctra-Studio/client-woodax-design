@@ -6,6 +6,13 @@ export const routing = defineRouting({
   localePrefix: "as-needed",
   localeDetection: false,
   alternateLinks: false,
+  pathnames: {
+    "/": "/",
+    "/privacy": {
+      es: "/privacidad",
+      en: "/privacy",
+    },
+  },
 });
 
 export type Locale = (typeof routing.locales)[number];

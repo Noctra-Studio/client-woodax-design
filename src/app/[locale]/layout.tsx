@@ -2,18 +2,11 @@ import type { Metadata } from "next";
 import { JetBrains_Mono, Outfit } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { clientEnv } from "@/lib/env";
+import { requestSite } from "@/lib/request-site";
 import { localizedMetadata } from "@/lib/seo";
-import {
-  hostFromHeaders,
-  PREVIEW_SITE_COOKIE,
-  PREVIEW_SITE_HEADER,
-  resolveSite,
-  type Site,
-} from "@/lib/site";
 import "../globals.css";
 
 const outfit = Outfit({
@@ -29,17 +22,6 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   display: "swap",
 });
-
-async function requestSite(): Promise<Site> {
-  const headerStore = await headers();
-  const cookieStore = await cookies();
-  const host = hostFromHeaders(headerStore);
-  const previewSite =
-    headerStore.get(PREVIEW_SITE_HEADER) ??
-    cookieStore.get(PREVIEW_SITE_COOKIE)?.value;
-
-  return resolveSite(host, previewSite);
-}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

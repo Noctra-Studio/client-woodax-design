@@ -7,14 +7,137 @@
   },
   "design": {
     "title": "Woodax Design",
-    "headline": "El inicio de una pieza a medida"
+    "headline": "El inicio de una pieza a medida",
+    "form": {
+      "title": "Empecemos por tu espacio",
+      "step1": {
+        "question": "¿Qué te gustaría transformar?"
+      },
+      "options": {
+        "kitchen": "Cocina",
+        "closet": "Clóset",
+        "custom-piece": "Pieza a medida",
+        "commercial-space": "Espacio comercial"
+      },
+      "step2": {
+        "name": "Tu nombre",
+        "contact": "WhatsApp o email",
+        "city": "Ciudad (opcional)"
+      },
+      "consentBefore": "Acepto que Woodax use estos datos para responder mi solicitud.",
+      "consentLink": "Ver aviso de privacidad.",
+      "next": "Continuar",
+      "back": "Atrás",
+      "submit": "Enviar mi proyecto",
+      "success": {
+        "title": "Recibimos tu proyecto",
+        "body": "Te contactaremos pronto para platicar los detalles. Si quieres adelantar, cuéntanos un poco más:",
+        "stageQuestion": "¿En qué etapa estás?",
+        "stage": {
+          "idea": "Idea",
+          "measurements": "Ya tengo medidas",
+          "ready-to-quote": "Listo para cotizar"
+        },
+        "timelineQuestion": "¿Cuándo te gustaría empezar?",
+        "timeline": {
+          "now": "Ya",
+          "1-3-months": "En 1–3 meses",
+          "later": "Más adelante"
+        },
+        "whatsapp": "Continuar por WhatsApp",
+        "detailsSubmit": "Enviar detalles"
+      },
+      "error": {
+        "generic": "No pudimos enviar tu mensaje. Inténtalo de nuevo en un momento."
+      },
+      "errors": {
+        "name": "Escribe tu nombre, con al menos 2 caracteres.",
+        "contact": "Escribe un email válido o un WhatsApp de 10 a 15 dígitos.",
+        "consent": "Acepta el aviso para que podamos responderte.",
+        "projectType": "Elige qué te gustaría transformar.",
+        "city": "La ciudad debe tener entre 2 y 60 caracteres.",
+        "details": "Elige al menos un detalle."
+      },
+      "close": "Cerrar",
+      "mobileBar": "Cuéntanos tu proyecto"
+    },
+    "footer": {
+      "cncLink": "¿Necesitas corte CNC? Conoce CNC by Woodax Design",
+      "location": "Querétaro, México",
+      "privacy": "Aviso de privacidad"
+    }
   },
   "cnc": {
     "title": "CNC by Woodax Design",
-    "headline": "Tu proyecto ya empezó"
+    "headline": "Tu proyecto ya empezó",
+    "form": {
+      "title": "Cuéntanos qué necesitas producir",
+      "step1": {
+        "question": "¿En qué material?"
+      },
+      "materialOptions": {
+        "wood": "Madera",
+        "acrylic": "Acrílico",
+        "aluminum": "Aluminio",
+        "other": "Otro"
+      },
+      "step1b": {
+        "question": "¿En qué punto está tu proyecto?"
+      },
+      "stateOptions": {
+        "file-ready": "Tengo el archivo listo",
+        "needs-help": "Necesito ayuda con el archivo",
+        "idea": "Solo tengo la idea"
+      },
+      "step2": {
+        "name": "Nombre o empresa",
+        "contact": "WhatsApp o email"
+      },
+      "consentBefore": "Acepto que CNC by Woodax Design use estos datos para responder mi solicitud.",
+      "consentLink": "Ver aviso de privacidad.",
+      "next": "Continuar",
+      "back": "Atrás",
+      "submit": "Solicitar cotización",
+      "success": {
+        "title": "Solicitud recibida",
+        "body": "Revisaremos tu proyecto y te contactaremos con los siguientes pasos. ¿Cuántas piezas necesitas?",
+        "quantity": {
+          "1-10": "1–10",
+          "11-100": "11–100",
+          "100+": "Más de 100"
+        },
+        "whatsapp": "Continuar por WhatsApp",
+        "detailsSubmit": "Enviar detalles"
+      },
+      "error": {
+        "generic": "No pudimos enviar tu solicitud. Inténtalo de nuevo en un momento."
+      },
+      "errors": {
+        "name": "Escribe tu nombre o el de tu empresa, con al menos 2 caracteres.",
+        "contact": "Escribe un email válido o un WhatsApp de 10 a 15 dígitos.",
+        "consent": "Acepta el aviso para que podamos responderte.",
+        "material": "Elige un material.",
+        "projectState": "Elige en qué punto está tu proyecto.",
+        "details": "Elige una cantidad."
+      },
+      "close": "Cerrar",
+      "mobileBar": "Cotizar mi proyecto"
+    },
+    "footer": {
+      "designLink": "Muebles y espacios a medida → Woodax Design",
+      "location": "Querétaro, México",
+      "privacy": "Aviso de privacidad"
+    }
   },
   "contact": {
     "title": "Contacto"
+  },
+  "privacy": {
+    "title": "Aviso de privacidad",
+    "intro": "Cuando envías el formulario, Woodax Design y CNC by Woodax Design reciben tu nombre, tu WhatsApp o email, y los datos del proyecto que nos compartes.",
+    "purpose": "Usamos esa información únicamente para responder tu solicitud y dar seguimiento al proyecto.",
+    "sale": "No vendemos estos datos ni los compartimos con terceros para publicidad.",
+    "contact": "Si quieres preguntar por tu información, escribe a hello@woodax.design."
   },
   "metadata": {
     "design": {

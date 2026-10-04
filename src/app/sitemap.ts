@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { headers } from "next/headers";
 import { clientEnv } from "@/lib/env";
-import { languageAlternates } from "@/lib/seo";
+import { absoluteLocalizedUrl, languageAlternates } from "@/lib/seo";
 import { getSite } from "@/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -15,10 +15,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const site = getSite(host);
   const languages = languageAlternates(site);
 
+  const privacyLanguages = {
+    "es-MX": absoluteLocalizedUrl(site, "es", "/privacidad"),
+    en: absoluteLocalizedUrl(site, "en", "/privacy"),
+    "x-default": absoluteLocalizedUrl(site, "es", "/privacidad"),
+  };
+
   return [
     {
       url: languages["x-default"],
       alternates: { languages },
+    },
+    {
+      url: privacyLanguages["x-default"],
+      alternates: { languages: privacyLanguages },
     },
   ];
 }
