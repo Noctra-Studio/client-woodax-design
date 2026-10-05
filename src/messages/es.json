@@ -127,7 +127,7 @@
   },
   "cnc": {
     "title": "CNC by Woodax Design",
-    "skipToContent": "TODO(copy)",
+    "skipToContent": "Saltar al contenido",
     "meta": {
       "title": "CNC by Woodax Design · Corte CNC y renta de router en Querétaro",
       "description": "Corte CNC de precisión en madera, acrílico y aluminio para talleres y empresas. Renta tiempo de máquina o encarga producción en volumen."
@@ -173,7 +173,7 @@
       "formats": "Formatos: DXF, DWG, SVG, AI, PDF. Puedes enviarlo después."
     },
     "work": {
-      "title": "TODO(copy)"
+      "title": "Piezas recientes"
     },
     "form": {
       "title": "Cuéntanos qué necesitas producir",

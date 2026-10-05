@@ -7,7 +7,7 @@ import { RegistrationMarks } from "@/components/cnc/registration-marks";
 import { HeroMedia } from "@/components/design/hero-media";
 import { useIntro } from "@/components/cnc/intro-provider";
 import { Button } from "@/components/ui/button";
-import { cncGallery } from "@/content/cnc-gallery";
+import { siteConfig, type CncHero } from "@/content/site-config";
 import { useLeadUi } from "@/features/leads/components/lead-ui";
 import { cn } from "@/lib/utils";
 
@@ -35,7 +35,7 @@ export function HeroSection() {
   const locale = useLocale();
   const leadUi = useLeadUi();
   const { status, skip } = useIntro();
-  const poster = cncGallery[0];
+  const media = heroMedia(siteConfig.cncHero, locale === "en" ? "en" : "es");
   const copyControls = useAnimationControls();
 
   useEffect(() => {
@@ -53,23 +53,28 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-[100svh]" aria-labelledby="hero-title">
-      {poster ? (
+      {media ? (
         <div className="absolute inset-0">
           <HeroMedia
-            poster={poster.src}
-            alt={poster.alt[locale === "en" ? "en" : "es"]}
+            poster={media.poster}
+            alt={media.alt}
+            videoSrc={media.videoSrc}
           />
-          <div aria-hidden="true" className="bg-cnc-bg/40 absolute inset-0" />
+          <div aria-hidden="true" className="bg-cnc-bg/80 absolute inset-0" />
         </div>
       ) : null}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="cnc-hero-grid absolute inset-0" />
+        <div
+          className="cnc-hero-grid absolute inset-0"
+          data-over-media={media ? "true" : undefined}
+        />
         <RegistrationMarks className="top-20 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] md:bottom-6" />
         {corners.map((corner) => (
           <p
             key={corner.place}
             className={cn(
-              "text-cnc-muted absolute font-mono text-sm tracking-[0.08em] uppercase tabular-nums",
+              "absolute font-mono text-sm tracking-[0.08em] uppercase tabular-nums",
+              media ? "text-cnc-text" : "text-cnc-muted",
               corner.place,
             )}
           >
@@ -83,7 +88,7 @@ export function HeroSection() {
       <div className="relative z-10 flex min-h-[100svh] flex-col justify-end">
         <motion.div
           animate={copyControls}
-          className={cn("w-full", poster && "bg-cnc-bg")}
+          className="w-full"
         >
           <div className="mx-auto w-full max-w-[1200px] px-5 pt-28 pb-[calc(10.5rem+env(safe-area-inset-bottom))] md:px-8 md:pt-32 md:pb-28">
             <p className="text-cnc-text text-[13px] font-medium tracking-[0.18em] uppercase">
@@ -131,6 +136,22 @@ export function HeroSection() {
       ) : null}
     </section>
   );
+}
+
+function heroMedia(hero: CncHero, locale: "es" | "en") {
+  if (hero.type === "image") {
+    return { poster: hero.src, alt: hero.alt[locale], videoSrc: undefined };
+  }
+
+  if (hero.type === "video") {
+    const videoSrc =
+      hero.src.webm || hero.src.mp4
+        ? { webm: hero.src.webm, mp4: hero.src.mp4 }
+        : undefined;
+    return { poster: hero.poster, alt: hero.alt[locale], videoSrc };
+  }
+
+  return null;
 }
 
 function CoordinateReadout() {

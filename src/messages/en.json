@@ -127,7 +127,7 @@
   },
   "cnc": {
     "title": "CNC by Woodax Design",
-    "skipToContent": "TODO(copy)",
+    "skipToContent": "Skip to content",
     "meta": {
       "title": "CNC by Woodax Design · CNC cutting and router rental in Querétaro",
       "description": "Precision CNC cutting in wood, acrylic and aluminum for workshops and companies. Rent machine time or order volume production."
@@ -173,7 +173,7 @@
       "formats": "Formats: DXF, DWG, SVG, AI, PDF. You can send it later."
     },
     "work": {
-      "title": "TODO(copy)"
+      "title": "Recent parts"
     },
     "form": {
       "title": "Tell us what you need to produce",

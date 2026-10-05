@@ -167,6 +167,10 @@ body[data-site="cnc"] {
   mask-image: radial-gradient(ellipse at center, #000 32%, transparent 78%);
 }
 
+.cnc-hero-grid[data-over-media="true"] {
+  opacity: 0.6;
+}
+
 @keyframes cnc-grid-draw {
   from {
     clip-path: inset(0 100% 100% 0);
