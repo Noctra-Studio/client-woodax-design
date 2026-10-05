@@ -174,3 +174,23 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - footer.whatsapp — ES: WhatsApp | EN: WhatsApp
 - footer.backToTop — ES: Volver arriba | EN: Back to top
 - footer.credit — ES: Desarrollado por Noctra Studio | EN: Developed by Noctra Studio
+
+---
+
+## Footer minimalista y legales (reemplaza "Footer de cierre")
+- footer.copyright.design — ES: © {year} Woodax Design | EN: © {year} Woodax Design
+- footer.copyright.cnc — ES: © {year} CNC by Woodax Design | EN: © {year} CNC by Woodax Design
+- footer.privacy — ES: Aviso de privacidad | EN: Privacy notice
+- footer.terms — ES: Términos y condiciones | EN: Terms and conditions
+- footer.cookies — ES: Preferencias de cookies | EN: Cookie preferences
+- footer.facebook — ES: Woodax en Facebook | EN: Woodax on Facebook
+- footer.instagram — ES: Woodax en Instagram | EN: Woodax on Instagram
+- footer.mail — ES: Escríbenos por correo | EN: Email us
+- footer.credit — ES: Desarrollado por Noctra Studio | EN: Developed by Noctra Studio
+- Rutas: /privacidad · /terminos (es) — /en/privacy · /en/terms (en)
+
+## Cookies
+- Textos: portar los del banner de noctra.studio y adaptarlos a Woodax (marca y correo). ⚠︎ Revisión de Adrián.
+
+## Términos y condiciones ⚠︎
+- Contenido legal pendiente: requiere razón social, domicilio y RFC de Woodax. Mientras tanto la página muestra solo título + "TODO(legal)" en staging; no se publica en producción sin el texto final.

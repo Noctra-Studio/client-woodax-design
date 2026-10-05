@@ -205,11 +205,36 @@ No italics anywhere (Outfit has no true italic; never fake it). Emphasis = weigh
 - Statement paragraph: large text (h2 scale, weight 300) max 24ch per line on desktop; 2–3 emphasized phrases in weight 500 + full foreground color, the rest in muted tone. Emphasis is marked in messages with <b>…</b> and rendered via next-intl rich text. Left column on desktop may hold one small rounded photo (radius-card) — only a real photo, otherwise nothing.
 - Icon chip in headings: the brand mark inside a rounded square chip, inline with h1/h2 text, height 0.9em, vertically centered. Design: charcoal chip + cream mark. CNC: cnc-surface chip with cnc-line border + white mark. Max one chip per heading, aria-hidden, never in body text. Requires the mark SVG; if missing, render nothing.
 - Project cards: tall cards (aspect 3/4), radius-card, real photo full-bleed, tag pill top-left (eyebrow style, sand bg on design / cnc-surface on cnc), title bottom-left over a subtle bottom gradient (charcoal 0→45% / cnc-bg 0→60%). Mobile: horizontal scroll-snap with 16px peek of the next card. Desktop: 3–4 per row.
-- Footer (closing block): full-width inset card like the hero (same inset and radius), dark background (design: charcoal #3F3738 / cnc: #0F1012). Content centered: short line + large contact links (email at h2 scale; WhatsApp only if NEXT_PUBLIC_WHATSAPP_NUMBER exists), small icon square after each link, "Volver arriba" pill. Bottom: giant wordmark cropped by the card edge, at 6–8% opacity, aria-hidden, from public/brand/woodax-wordmark.svg or cnc-wordmark.svg (derived from the official logo). If that file doesn't exist, omit the giant wordmark — never typeset the brand name in a font to imitate it. Under the card: privacy link, location, sibling-brand link, "Developed by Noctra Studio" credit.
+- Footer: see section 13 (ultra-minimal). The dark closing block with giant wordmark is NOT used.
 
-## 12. Assets & config
+## 13. Footer — ultra-minimal (both brands)
+
+- One row on desktop (≥ 768px), stacked and centered on mobile. Top border 1px (design sand / cnc-line). Padding 32px vertical. Page background (no dark block, no giant wordmark).
+- Left: © {year} Woodax Design (cnc: © {year} CNC by Woodax Design) · small sibling-brand link.
+- Center: legal links in 14px muted tone: Aviso de privacidad · Términos y condiciones · Preferencias de cookies (opens the consent preferences dialog).
+- Right: three 20px icon links, 44×44 hit area, aria-labels: Facebook, Instagram, Mail (mailto: hello@woodax.design / cnc@woodax.design). Brand icons as inline SVG components from Simple Icons (CC0) in src/components/icons/ — lucide's brand icons are deprecated; Mail uses lucide. Facebook/Instagram render only if their URL exists in site-config.
+- Last line, 12px muted: "Desarrollado por Noctra Studio" (link to https://noctra.studio). Contractual — do not remove.
+- No newsletter, no address, no phone in the footer.
+
+## 14. Cookie consent
+
+- Port the existing consent component from the Noctra Studio site repo (same UX and copy structure); adapt styles to these tokens and shadcn components, and texts to messages (es/en). Do not invent a different UX.
+- Categories: Necessary (always on: locale, consent, preview-site cookies) · Analytics · Marketing. Non-necessary scripts load ONLY after explicit opt-in for their category. Today there are no analytics or marketing scripts; the categories exist so they can be added gated later.
+- Storage: first-party cookie `woodax_consent` = JSON {v:1, necessary:true, analytics:boolean, marketing:boolean, ts}, path=/, SameSite=Lax, Secure, max-age 400 days (browser maximum; Chrome caps cookie lifetime at 400 days). Shared across woodax.design and cnc.woodax.design via domain=.woodax.design in production (host-only on previews/localhost). Mirror to localStorage as fallback (try/catch). Banner never shows again while the cookie exists; bump `v` to re-ask when categories change.
+- The banner must not cause layout shift, must not block the page (no modal on load), must be keyboard accessible, and must sit above the MobileCtaBar on mobile without covering the form submit button.
+- Footer "Preferencias de cookies" reopens the preferences dialog.
+
+## 15. Language switch (no reload, no scroll jump)
+
+- Switching ES/EN must be a client-side transition: next-intl navigation `router.replace(pathname, { locale, scroll: false })` from src/i18n/navigation.ts. Never window.location, never a plain <a href> to the other locale, never router.refresh().
+- Preserve: scroll position (scroll: false; if Next still resets it, store window.scrollY before and restore it in a layout effect after the locale changes), URL hash, query params (utm_*, ?site=), form values (already in sessionStorage), open/closed Sheet state closes gracefully.
+- The intro animation must NOT replay on a locale switch (session flag), and HeroMedia/video must not remount if avoidable.
+- Update <html lang> and document.title without a full reload. Works on both hosts (woodax.design and cnc.woodax.design with the proxy rewrite) and on Vercel previews with ?site=cnc.
+- Acceptance test: scroll to the middle of the page, switch language → text changes in place, no white flash, no network document request (only RSC fetch), scrollY unchanged ±1px.
+
+## 16. Assets & config
 
 - public/brand/woodax-logo.svg, public/brand/cnc-logo.svg (white), woodax-mark.svg, cnc-mark.svg, woodax-wordmark.svg, cnc-wordmark.svg (optional, for the footer).
 - public/images/design/*, public/images/cnc/* — only real client photos.
-- src/content/site-config.ts holds: instagramUrl, instagramHandle, cnc specs (all optional). Missing values = hidden UI.
+- src/content/site-config.ts holds: instagramUrl, instagramHandle, facebookUrl, cnc specs (all optional). Missing values = hidden UI.
 - All visible strings come from src/messages/{es,en}.json, populated from docs/brand/copy-deck.md.

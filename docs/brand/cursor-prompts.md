@@ -214,9 +214,15 @@ CNC, orden final: Hero → Statement → Dos formas de trabajar → Materiales �
 - Proyectos/Trabajos con el patrón project cards (scroll-snap con peek en móvil).
 - Así trabajamos / Del archivo a la pieza con el patrón numbered row.
 
-Paso 4 — Footer de cierre
-- Reemplaza el footer actual por el bloque oscuro insertado de la skill sección 11, en ambas marcas. WhatsApp solo si NEXT_PUBLIC_WHATSAPP_NUMBER existe. Wordmark gigante solo si existe public/brand/{woodax,cnc}-wordmark.svg; si no, omítelo y avísame.
-- Debajo de la tarjeta: privacidad, ubicación, link a la marca hermana y el crédito "Desarrollado por Noctra Studio".
+Paso 4 — Footer ultra minimalista
+- Reemplaza el footer actual por el de la skill sección 13 en ambas marcas (sin bloque oscuro ni wordmark gigante). Iconos de Facebook/Instagram como SVG inline (Simple Icons), Mail con lucide. Agrega facebookUrl a site-config.
+- Crea /terminos (es) y /en/terms (en) con el mismo layout que privacidad; contenido TODO(legal) y noindex hasta tener el texto final.
+
+Paso 5 — Consentimiento de cookies
+- Pídeme la ruta del componente de cookies del repo de Noctra Studio (yo te paso los archivos). Pórtalo según la skill sección 14: mismas categorías y UX, tokens y shadcn de este proyecto, textos en messages, cookie woodax_consent de 400 días compartida entre woodax.design y cnc.woodax.design.
+
+Paso 6 — Cambio de idioma sin recarga
+- Encuentra por qué el cambio de idioma hoy hace recarga completa (anchor, window.location, refresh o el proxy) y corrígelo según la skill sección 15. Verifica la prueba de aceptación en ambas marcas y en un preview con ?site=cnc.
 
 Reglas
 - Todos los textos desde messages (copia los nuevos del copy deck tal cual). Nada inventado.
