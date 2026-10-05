@@ -70,7 +70,7 @@ Lee AGENTS.md, la skill woodax-brand completa y la guía relevante de node_modul
 
 4. Tokens y tipografía (src/app/globals.css, bloque @theme de Tailwind v4)
    - Implementa EXACTAMENTE los tokens de color, radios, easings y duraciones de la skill woodax-brand (secciones 2, 3 y 5). Nombres: --color-woodax-*, --color-cnc-*, --radius-*, --ease-*, --duration-*.
-   - Fuentes con next/font/google: Outfit (300/400/500/600) como --font-sans; JetBrains Mono (400/500) como --font-mono. Elimina Geist.
+   - Fuentes con next/font/google: Playfair Display (400/700) como --font-serif, Quicksand (400/500/600) como --font-sans y JetBrains Mono (400/500) como --font-mono. Elimina Geist. (Ver sección 4 de la skill.)
    - Utilidades base de "native feel" (skill sección 6) en el layout: tap-highlight transparente, touch-action manipulation, svh, safe-area.
    - El layout aplica data-site="design" | "cnc" en <body> (ya resuelto por el host) para que cada marca tenga su fondo y color de texto.
 
@@ -148,7 +148,7 @@ Estructura (una página, sin menú):
 2. Hero como card redondeada insertada debajo del nav (skill sección 10): HeroMedia con poster = la mejor foto de public/images/design/ (videoSrc vacío por ahora). Overlay charcoal según la skill. Eyebrow, headline (dos líneas, una por oración), subhead, ctaPrimary (abre el sheet en móvil / scroll al form en desktop) y ctaSecondary (scroll a Proyectos). Intro "Woodax" de la skill sección 5, con botón "Saltar".
 3. Para quién: bloque full-bleed woodax-green, texto charcoal, dos columnas (Tu hogar / Tu negocio) con icono lucide de 1.5px de trazo, motivo de arcos del logo en cream al .35.
 4. Proyectos: sobre cream, 4–6 fotos desde src/content/design-gallery.ts (src, alt ES/EN, tag). Grid editorial: en móvil scroll horizontal con snap (sensación nativa), en desktop mosaico asimétrico. Debajo, link "Más proyectos en Instagram" con instagramUrl de site-config; si no existe, no se renderiza.
-5. Así trabajamos: tres pasos, número grande en Outfit 300, título y una línea.
+5. Así trabajamos: tres pasos, número grande en Playfair 400, título y una línea.
 6. Formulario: bloque full-bleed woodax-green con el LeadForm variant="design" sobre una card cream (radius-card). En móvil la sección muestra solo el título + botón que abre el sheet.
 7. Footer: logo pequeño, ubicación, Instagram, link a NEXT_PUBLIC_CNC_URL con el texto cncLink, privacidad.
 8. MobileCtaBar con mobileBar.
@@ -229,6 +229,37 @@ Reglas
 - Solo componentes de src/components/ui (shadcn) y los tokens de la skill.
 - Revisa con review-animations, mobile-native y web-design-guidelines al final y corrige lo que marquen.
 - pnpm typecheck, lint y build sin errores. Un commit por paso (Conventional Commits en inglés). Push a staging y pásame el link del preview.
+```
+
+---
+
+## Actualización de marca — guideline oficial (Playfair + Quicksand, colores oficiales, franjas)
+
+```
+Llegó el brand guideline oficial de Woodax y cambia tipografía, colores y motivo. Lee completas las secciones 2, 3, 4, 5, 9 y 10 actualizadas de .agents/skills/woodax-brand/SKILL.md antes de tocar código. No cambies estructura ni textos: es un cambio de tokens y estilos.
+
+Paso 0 — Inventario (sin cambios)
+Lista dónde se usan hoy Outfit, los HEX viejos de Woodax (#83AF6E, #A2C392, #3F3738, #F4F1EC, #E7E0D5) y el motivo de arcos. Espera mi OK.
+
+Paso 1 — Tipografía
+- Quita Outfit. Agrega con next/font/google: Playfair Display (400, 700) como --font-serif y Quicksand (400, 500, 600) como --font-sans. JetBrains Mono se queda como --font-mono.
+- Woodax: titulares, statement y números de la fila numerada en Playfair; texto, navbar, botones, formularios y eyebrows en Quicksand (body en 500). Escala exacta de la sección 4.
+- CNC: todo en Quicksand + JetBrains Mono para datos. Nada de Playfair en CNC. Verifica que visualmente CNC se vea igual que antes salvo la fuente.
+- Sin cursivas en ningún lado.
+
+Paso 2 — Colores oficiales de Woodax
+- Reemplaza los tokens por los de la sección 2 (green #8BAF64, lime #A7CB5F, charcoal #483D3C, cream #E5E1D1, paper #F3F1EA, stripe #7A7576) y actualiza el mapeo de variables de shadcn (sección 9) y los valores glass de la navbar (sección 10).
+- Regla nueva: sobre bloques verdes solo texto grande (≥ 24px regular / ≥ 19px bold). Cualquier texto corrido que hoy esté directo sobre verde va dentro de una card cream. Revisa la sección "Para tu hogar y tu negocio" y el bloque del formulario.
+- Los tokens de CNC NO cambian.
+
+Paso 3 — Motivo de franjas onduladas
+- Elimina el motivo de arcos. Crea src/components/brand/wave-stripes.tsx (SVG inline, aria-hidden) según la sección 2: 2–3 curvas en S paralelas, trazo grueso con extremos redondeados, que se salen del borde de la sección. Variantes: "on-paper" (stripe 18–25%) y "on-green" (cream 30%).
+- Úsalo máximo 2 veces en Woodax: una saliendo del borde del hero/statement y otra en el bloque verde. Nunca detrás de texto corrido. Animación de entrada de la sección 5 (estática con reduced motion).
+
+Paso 4 — QA
+- Contraste AA en todo el texto (usa la tabla de la sección 2). Revisa con web-design-guidelines y review-animations.
+- Capturas de antes y después de Woodax (desktop y móvil) y de CNC para confirmar que CNC no cambió de carácter.
+Un commit por paso (Conventional Commits en inglés), push a staging y link del preview.
 ```
 
 ---

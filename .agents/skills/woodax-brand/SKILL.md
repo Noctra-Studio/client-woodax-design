@@ -37,23 +37,26 @@ Machine specs, prices and delivery times render only if the value exists in conf
 
 Feeling: a fresh, natural, modern studio. Confident, airy, warm. Premium through restraint, not ornament.
 
-Color tokens (exact):
-| Token | Hex | Use |
-|---|---|---|
-| woodax-green | #83AF6E | Full-bleed section blocks, large shapes, logo motif, selected states. NEVER as text color, NEVER as button fill with light text. |
-| woodax-green-soft | #A2C392 | Hover/tint on green blocks, dividers on green. |
-| woodax-charcoal | #3F3738 | All body text, headings, primary buttons (cream text), icons. |
-| woodax-cream | #F4F1EC | Page background, text on charcoal. |
-| woodax-sand | #E7E0D5 | Cards and inputs on cream, secondary surfaces. |
+Color tokens — official, from the Woodax brand guideline (woodax_arculat.pdf). Note: the PDF swaps the labels of the dark and cream swatches; the correct values are below.
+| Token | Hex | Source | Use |
+|---|---|---|---|
+| woodax-green | #8BAF64 | official | Full-bleed blocks, large shapes, selected states. NEVER as text on light backgrounds, NEVER as a button fill with light text. |
+| woodax-lime | #A7CB5F | official | Small accents: active indicator, focus ring on charcoal, hover tint on green blocks. Not a block color. |
+| woodax-charcoal | #483D3C | official | Body text, headings, primary buttons (cream text), icons, dark surfaces. |
+| woodax-cream | #E5E1D1 | official | Cards, inputs, secondary surfaces, text on charcoal. |
+| woodax-paper | #F3F1EA | derived (tint of cream) | Page background, so cream cards still read as surfaces. |
+| woodax-stripe | #7A7576 | from guideline cover | Wave-stripe motif only. |
 
-Contrast facts (do not break): charcoal on green 4.59:1 (OK, use ≥16px); white on green 2.52:1 (FORBIDDEN); green on cream 2.24:1 (FORBIDDEN for text); charcoal on cream 10.27:1.
-
-Text on green blocks is ALWAYS charcoal.
+Contrast facts (official colors — do not break):
+- charcoal on paper 9.28 · charcoal on cream 7.98 → any size.
+- charcoal on green 4.19 → ONLY large text (≥ 24px regular or ≥ 19px bold). Body copy on a green block goes inside a cream card.
+- cream on charcoal 7.98 · lime on charcoal 5.65 · green on charcoal 4.19 (large text only).
+- white on green 2.50 and green on cream 1.90 → FORBIDDEN for text.
 
 Layout language:
-- Alternate cream sections and full-bleed green blocks. Max 2 green blocks per page.
+- Alternate paper sections and full-bleed green blocks. Max 2 green blocks per page.
 - Radius echoes the logo's rounded square: --radius-card 24px, --radius-media 28px, --radius-control 14px, buttons fully rounded (9999px).
-- Decorative motif: the crossing arcs of the logo mark, drawn as 1.5px cream lines on green blocks (inline SVG, opacity .35). Use at most twice.
+- Decorative motif (official): the thick flowing wave stripes from the guideline cover — 2–3 parallel S-curves, stroke ~ 2.5% of the viewport width, rounded caps, woodax-stripe at 18–25% opacity on paper or cream at 30% on green. Bleed off the section edges, never behind body text, max 2 appearances per page, aria-hidden inline SVG. They replace the logo-arc motif (removed).
 - Generous whitespace: section padding 96–160px desktop, 64–96px mobile. Content max-width 1200px; text max 62ch.
 - Photos: full-bleed or large rounded media, never small thumbnails in a dense grid.
 
@@ -78,12 +81,21 @@ Layout language:
 - Specs shown as tables/rows, not marketing cards.
 - Logo: always the white SVG at public/brand/cnc-logo.svg. Never recreate it in code.
 
-## 4. Typography (both brands)
+## 4. Typography (from the brand guideline)
 
-- Outfit (next/font/google) 300/400/500/600 — everything. Closest match to the logotype.
-- JetBrains Mono 400/500 — CNC data only. Never on Woodax.
-- Scale (clamp, mobile→desktop): display 40→80px / weight 400 / tracking -0.02em / leading 1.02; h2 30→48px / 400; h3 20→24px / 500; body 17→18px / 300–400 / leading 1.6; small 14px.
-- Eyebrows: 12–13px, uppercase, tracking .18em, weight 500 (mirrors the "DESIGN" lockup).
+Woodax Design
+- Headings (display, h1, h2, h3, statement paragraph): Playfair Display 400 and 700 (official brand font), next/font/google, variable `--font-serif`. Real italics exist but are NOT used (decision: no italics).
+- Body, UI, nav, buttons, forms, eyebrows, numbers: Quicksand 400/500/600 (official logo font), variable `--font-sans`. Body uses 500 (Quicksand 400 is too light at small sizes); never below 15px.
+- Scale (clamp, mobile→desktop): display 40→76px Playfair 400 / tracking -0.01em / leading 1.05; h2 30→48px Playfair 400; h3 20→24px Playfair 700; statement 26→40px Playfair 400 with <b> in 700; body 17→18px Quicksand 500 / leading 1.65; small 14px Quicksand 500.
+- Eyebrows: Quicksand 600, 12–13px, uppercase, tracking .18em (mirrors the "DESIGN" lockup).
+- Numbered row numbers: Playfair 400 at h3 size in muted charcoal.
+
+CNC by Woodax Design
+- Quicksand 400/500/600 for everything (headings 500–600, body 500). NO Playfair on CNC: a classic serif fights the technical drawing language, and the approved CNC look stays.
+- JetBrains Mono 400/500 for data only (labels, coordinates, specs, step numbers). Never on Woodax.
+- Same size scale as Woodax, with Quicksand headings at weight 500 and tracking -0.01em.
+
+Logo lettering is Quicksand: any derived brand asset (e.g. "CNC" in cnc-logo.svg) must use Quicksand converted to outlines — never typeset the brand name live in the UI to imitate the logo.
 
 ## 5. Motion system
 
@@ -106,7 +118,7 @@ Micro-interactions:
 - Inputs: label floats, focus ring 2px (Woodax charcoal / CNC white) with 2px offset.
 - Submit: button morphs to spinner, then success check draws; success panel slides up.
 - Section reveals: fade + 16px rise on first enter (IntersectionObserver, once). No reveal on elements above the fold after the intro.
-- Woodax only: logo-arc motif lines draw slowly (1.2s) when their block enters.
+- Woodax only: wave-stripe motif draws in slowly (stroke-dashoffset, 1.2s, --ease-out) the first time its section enters; static under reduced motion.
 - CNC only: spec rows reveal left→right like a plotter pass.
 
 ## 6. Native feel on mobile (required)
@@ -146,19 +158,19 @@ Both: Spanish (neutral LATAM) is the default; English is adapted, not literal. N
 Variable mapping:
 | shadcn var | design | cnc |
 |---|---|---|
-| --background | woodax-cream | cnc-bg |
+| --background | woodax-paper | cnc-bg |
 | --foreground | woodax-charcoal | cnc-text |
-| --card / --popover | woodax-sand | cnc-surface |
+| --card / --popover | woodax-cream | cnc-surface |
 | --card-foreground | woodax-charcoal | cnc-text |
 | --primary | woodax-charcoal | cnc-white |
 | --primary-foreground | woodax-cream | cnc-bg |
-| --secondary | woodax-sand | cnc-surface |
+| --secondary | woodax-cream | cnc-surface |
 | --secondary-foreground | woodax-charcoal | cnc-text |
-| --muted | woodax-sand | cnc-surface |
+| --muted | woodax-cream | cnc-surface |
 | --muted-foreground | woodax-charcoal at 75% (check AA) | cnc-muted |
-| --accent | woodax-green-soft | cnc-surface |
+| --accent | woodax-lime | cnc-surface |
 | --accent-foreground | woodax-charcoal | cnc-text |
-| --border / --input | woodax-sand darkened ~8% | cnc-line |
+| --border / --input | woodax-cream darkened ~10% (#D6D1BE) | cnc-line |
 | --ring | woodax-charcoal | cnc-white |
 | --destructive | #B42318 | #F97066 |
 | --radius | 14px | 4px |
@@ -171,9 +183,9 @@ States
 3. Back to Top state when scrolling up past 24px (hysteresis 64↓ / 24↑ to avoid flicker at the threshold).
 
 Glass (the ONLY place glass is allowed in this project)
-- design: background rgb(244 241 236 / 0.72); backdrop-filter: blur(16px) saturate(140%); border 1px rgb(231 224 213 / 0.9); box-shadow 0 8px 24px -12px rgb(63 55 56 / 0.18).
+- design: background rgb(243 241 234 / 0.72); backdrop-filter: blur(16px) saturate(140%); border 1px rgb(214 209 190 / 0.9); box-shadow 0 8px 24px -12px rgb(72 61 60 / 0.18).
 - cnc: background rgb(22 23 26 / 0.62); backdrop-filter: blur(16px) saturate(120%); border 1px rgb(46 49 54 / 0.9); box-shadow 0 8px 24px -12px rgb(0 0 0 / 0.5).
-- Fallbacks: @supports not (backdrop-filter: blur(1px)) and prefers-reduced-transparency → solid woodax-cream / cnc-surface. Text inside must keep AA over the worst-case content behind (test over the CNC hero video and the green blocks).
+- Fallbacks: @supports not (backdrop-filter: blur(1px)) and prefers-reduced-transparency → solid woodax-paper / cnc-surface. Text inside must keep AA over the worst-case content behind (test over the CNC hero video and the green blocks).
 
 Animation recipe (no distortion — this is mandatory)
 - Do NOT use motion `layout` / transform-scale on the container or on anything containing text. That is what stretches the labels and turns the pill into an ellipse.
@@ -198,18 +210,18 @@ Accessibility: <nav aria-label>, real anchors to section ids, aria-current on th
 
 ## 11. Layout patterns (from the approved reference; adapted, not copied)
 
-No italics anywhere (Outfit has no true italic; never fake it). Emphasis = weight and tone only.
+No italics anywhere (decision). Emphasis = weight and tone only.
 
 - Section label: small rounded dot (6px, currentColor) + eyebrow text (section 4 eyebrow style), top-left of each section.
-- Numbered row: 3 columns on desktop / stacked on mobile. Number in Outfit 300 at h3 size in muted tone ("01." "02." "03."), title below in body 500, one line of body 300. Used for "Así trabajamos" (design) and "Del archivo a la pieza" (cnc).
+- Numbered row: 3 columns on desktop / stacked on mobile. Number in Playfair 400 (design) / JetBrains Mono (cnc) at h3 size in muted tone ("01." "02." "03."), title below in body 500, one line of body 300. Used for "Así trabajamos" (design) and "Del archivo a la pieza" (cnc).
 - Statement paragraph: large text (h2 scale, weight 300) max 24ch per line on desktop; 2–3 emphasized phrases in weight 500 + full foreground color, the rest in muted tone. Emphasis is marked in messages with <b>…</b> and rendered via next-intl rich text. Left column on desktop may hold one small rounded photo (radius-card) — only a real photo, otherwise nothing.
 - Icon chip in headings: the brand mark inside a rounded square chip, inline with h1/h2 text, height 0.9em, vertically centered. Design: charcoal chip + cream mark. CNC: cnc-surface chip with cnc-line border + white mark. Max one chip per heading, aria-hidden, never in body text. Requires the mark SVG; if missing, render nothing.
-- Project cards: tall cards (aspect 3/4), radius-card, real photo full-bleed, tag pill top-left (eyebrow style, sand bg on design / cnc-surface on cnc), title bottom-left over a subtle bottom gradient (charcoal 0→45% / cnc-bg 0→60%). Mobile: horizontal scroll-snap with 16px peek of the next card. Desktop: 3–4 per row.
+- Project cards: tall cards (aspect 3/4), radius-card, real photo full-bleed, tag pill top-left (eyebrow style, cream bg on design / cnc-surface on cnc), title bottom-left over a subtle bottom gradient (charcoal 0→45% / cnc-bg 0→60%). Mobile: horizontal scroll-snap with 16px peek of the next card. Desktop: 3–4 per row.
 - Footer: see section 13 (ultra-minimal). The dark closing block with giant wordmark is NOT used.
 
 ## 13. Footer — ultra-minimal (both brands)
 
-- One row on desktop (≥ 768px), stacked and centered on mobile. Top border 1px (design sand / cnc-line). Padding 32px vertical. Page background (no dark block, no giant wordmark).
+- One row on desktop (≥ 768px), stacked and centered on mobile. Top border 1px (design #D6D1BE / cnc-line). Padding 32px vertical. Page background (no dark block, no giant wordmark).
 - Left: © {year} Woodax Design (cnc: © {year} CNC by Woodax Design) · small sibling-brand link.
 - Center: legal links in 14px muted tone: Aviso de privacidad · Términos y condiciones · Preferencias de cookies (opens the consent preferences dialog).
 - Right: three 20px icon links, 44×44 hit area, aria-labels: Facebook, Instagram, Mail (mailto: hello@woodax.design / cnc@woodax.design). Brand icons as inline SVG components from Simple Icons (CC0) in src/components/icons/ — lucide's brand icons are deprecated; Mail uses lucide. Facebook/Instagram render only if their URL exists in site-config.
