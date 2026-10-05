@@ -79,7 +79,7 @@ Layout language:
 - Radius: small and precise. --radius-card 6px, --radius-control 4px, buttons 4px.
 - Data in JetBrains Mono uppercase with letter-spacing .08em: labels, coordinates, spec values, step numbers ("01 / 03").
 - Specs shown as tables/rows, not marketing cards.
-- Logo: always the white SVG at public/brand/cnc-logo.svg. Never recreate it in code.
+- Logo: always the white SVG at public/brand/cnc-woodax-logo.svg. Never recreate it in code.
 
 ## 4. Typography (from the brand guideline)
 
@@ -95,7 +95,7 @@ CNC by Woodax Design
 - JetBrains Mono 400/500 for data only (labels, coordinates, specs, step numbers). Never on Woodax.
 - Same size scale as Woodax, with Quicksand headings at weight 500 and tracking -0.01em.
 
-Logo lettering is Quicksand: any derived brand asset (e.g. "CNC" in cnc-logo.svg) must use Quicksand converted to outlines — never typeset the brand name live in the UI to imitate the logo.
+Logo lettering is Quicksand: any derived brand asset (e.g. "CNC" in cnc-woodax-logo.svg) must use Quicksand converted to outlines — never typeset the brand name live in the UI to imitate the logo.
 
 ## 5. Motion system
 
@@ -178,8 +178,8 @@ Variable mapping:
 ## 10. Navigation bar — transparent → glass pill on scroll (both brands)
 
 States
-1. Top (scrollY < 24px): NO background, NO border, NO shadow. Full content width (max 1200px, side padding 24px), height 72px, top offset 12px. Logo (full) left · anchors center · ES/EN + CTA pill right. Sits directly over the page/hero.
-2. Scrolled (after crossing 64px going down): becomes a floating glass pill, centered, fit-content width, height 56px, top offset 12px, fully rounded. Content: mark (or full logo at 22px if the mark SVG is missing) · anchors · CTA as a 40px circle with arrow-up-right (aria-label = full CTA text, tooltip on hover/focus). ES/EN hidden in this state.
+1. Top (scrollY < 24px): NO background, NO border, NO shadow. Full content width (max 1200px, side padding 24px), height 80px, top offset 12px. Logo (full) left · anchors center · ES/EN + CTA pill right. Sits directly over the page/hero.
+2. Scrolled (after crossing 64px going down): becomes a floating glass pill, centered, fit-content width, height 56px, top offset 12px, fully rounded. Content: mark (28px; logo folds into it, see recipe) · anchors · CTA as a 40px circle with arrow-up-right (aria-label = full CTA text, tooltip on hover/focus). ES/EN hidden in this state.
 3. Back to Top state when scrolling up past 24px (hysteresis 64↓ / 24↑ to avoid flicker at the threshold).
 
 Glass (the ONLY place glass is allowed in this project)
@@ -192,7 +192,8 @@ Animation recipe (no distortion — this is mandatory)
 - Container: animate real `width` (motion `animate={{ width }}` with values measured by ResizeObserver for both states) + padding + height. 320ms, --ease-out. overflow: hidden, border-radius constant 9999px.
 - Background, border and blur: CSS transition 200ms on background-color, border-color, box-shadow, backdrop-filter. They start at the same time as the width.
 - Text never scales. Labels that leave (ES/EN, CTA text) fade out in 120ms BEFORE the width shrinks; labels that enter fade in 160ms AFTER the width grows. The CTA label collapses with the grid-template-columns 0fr↔1fr technique inside the button; the button height goes 40px both states, so the circle is just the label at 0fr.
-- Logo ↔ mark: cross-fade (two stacked images, opacity), never scale the SVG.
+- Logo ↔ mark: the mark NEVER moves or scales. The logo is rendered as two SVGs side by side: {brand}-icon.svg + {brand}-wordmark.svg (brand = woodax-design | cnc-woodax) (the text part of the lockup). On collapse the wordmark retracts: its wrapper goes grid-template-columns 1fr → 0fr with opacity 1 → 0 (120ms, before the container width shrinks); on expand it reverses after the width grows. The mark stays pinned left, so it reads as "the logo folds into its symbol". If the split files don't exist, fall back to a cross-fade between the full logo and the mark.
+- Logo size: expanded state lockup height 44px desktop (the two-line lockup's sub-line must stay legible — never below 40px), collapsed mark 28px. Top-state nav height 80px to fit it. Mobile always mark only (28px).
 - Active-section pill behind anchors: the only element that may use motion layoutId, and it contains no text (it is a background shape).
 - Scroll handling: motion useScroll + useMotionValueEvent (rAF-batched); no setState on every scroll event beyond the state flip.
 - Interruptible: reversing direction mid-animation retargets smoothly from the current values.
@@ -256,7 +257,7 @@ No italics anywhere (decision). Emphasis = weight and tone only.
 
 ## 16. Assets & config
 
-- public/brand/woodax-logo.svg, public/brand/cnc-logo.svg (white), woodax-mark.svg, cnc-mark.svg, woodax-wordmark.svg, cnc-wordmark.svg (optional, for the footer).
+- public/brand/woodax-design-logo.svg (full lockup, official colors), woodax-design-icon.svg (mark only), cnc-woodax-logo.svg (full lockup, white), cnc-woodax-icon.svg (mark only, white). Optional: woodax-design-wordmark.svg, cnc-woodax-wordmark.svg (text block only, same artboard height as the logo).
 - public/images/design/*, public/images/cnc/* — only real client photos.
 - src/content/site-config.ts holds: instagramUrl, instagramHandle, facebookUrl, cnc specs (all optional). Missing values = hidden UI.
 - All visible strings come from src/messages/{es,en}.json, populated from docs/brand/copy-deck.md.

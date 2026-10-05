@@ -14,7 +14,7 @@ npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-gu
 npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-react-best-practices
 ```
 1. Copia `.agents/skills/woodax-brand/` junto a las skills que instaló `npx skills`. Copia `docs/brand/copy-deck.md` y este archivo a `docs/brand/`.
-2. Logos en `public/brand/woodax-logo.svg` y `public/brand/cnc-logo.svg`. Fotos reales en `public/images/design/` y `public/images/cnc/`.
+2. Logos en `public/brand/`: `woodax-design-logo.svg`, `woodax-design-icon.svg`, `cnc-woodax-logo.svg`, `cnc-woodax-icon.svg`. Fotos reales en `public/images/design/` y `public/images/cnc/`.
 3. En Vercel: `CONTACT_TO_EMAIL_CNC=cnc@woodax.design` (Production + Preview).
 4. Commit: `chore: add design skills and brand kit`.
 
