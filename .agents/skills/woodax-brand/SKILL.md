@@ -29,7 +29,7 @@ NEVER invent or add:
 - Copy not present in docs/brand/copy-deck.md. If a string is missing, add a `TODO(copy)` key and tell me; don't write your own.
 - Colors, fonts, radii, shadows or easings outside the tokens below.
 
-NEVER use: glassmorphism, neon/glow, gradients as decoration (only the subtle overlay on hero media), auto-advancing carousels, parallax on mobile, scroll-jacking, cursor followers, confetti, pop-ups/modals on load, cookie-style banners, fake loading bars.
+NEVER use: glassmorphism (single exception: the scrolled navbar, section 10), neon/glow, gradients as decoration (only the subtle overlay on hero media), auto-advancing carousels, parallax on mobile, scroll-jacking, cursor followers, confetti, pop-ups/modals on load, banners other than the cookie consent (section 14), fake loading bars.
 
 Machine specs, prices and delivery times render only if the value exists in config; otherwise the row/section is hidden. Never show "TBD" in the UI.
 
@@ -163,38 +163,38 @@ Variable mapping:
 | --destructive | #B42318 | #F97066 |
 | --radius | 14px | 4px |
 
-## 10. Navigation bar — floating collapsing pill (both brands)
+## 10. Navigation bar — transparent → glass pill on scroll (both brands)
 
-Structure: a floating pill bar inset from the page edges, sitting ABOVE an inset rounded hero card (never overlaying the hero text). It collapses into a compact pill on scroll.
+States
+1. Top (scrollY < 24px): NO background, NO border, NO shadow. Full content width (max 1200px, side padding 24px), height 72px, top offset 12px. Logo (full) left · anchors center · ES/EN + CTA pill right. Sits directly over the page/hero.
+2. Scrolled (after crossing 64px going down): becomes a floating glass pill, centered, fit-content width, height 56px, top offset 12px, fully rounded. Content: mark (or full logo at 22px if the mark SVG is missing) · anchors · CTA as a 40px circle with arrow-up-right (aria-label = full CTA text, tooltip on hover/focus). ES/EN hidden in this state.
+3. Back to Top state when scrolling up past 24px (hysteresis 64↓ / 24↑ to avoid flicker at the threshold).
 
-Expanded state (top of page, desktop ≥ 768px):
-- Container: max-width 1200px, centered, top offset 16px, height 64px, padding 8px 8px 8px 20px, fully rounded (9999px).
-  - design: background woodax-cream (on sand page) or white-ish #FBFAF7, 1px border woodax-sand.
-  - cnc: background cnc-surface, 1px border cnc-line.
-- Left: full horizontal logo (woodax-logo.svg / cnc-logo.svg), height 28px, links to "/".
-- Center: 3 anchor links max (design: Proyectos · Proceso · Contacto / cnc: Servicio · Materiales · Contacto), Outfit 400 15px. Active-section indicator = a soft pill behind the current link (design: sand / cnc: cnc-line) that slides between links (motion layoutId, 240ms --ease-out), driven by IntersectionObserver scrollspy.
-- Right: primary CTA pill (shadcn Button brand variant): design "Cuéntanos tu proyecto" (charcoal/cream), cnc "Cotizar" (white/cnc-bg). NEVER "Login".
-- Language switch ES/EN: small text toggle just left of the CTA.
+Glass (the ONLY place glass is allowed in this project)
+- design: background rgb(244 241 236 / 0.72); backdrop-filter: blur(16px) saturate(140%); border 1px rgb(231 224 213 / 0.9); box-shadow 0 8px 24px -12px rgb(63 55 56 / 0.18).
+- cnc: background rgb(22 23 26 / 0.62); backdrop-filter: blur(16px) saturate(120%); border 1px rgb(46 49 54 / 0.9); box-shadow 0 8px 24px -12px rgb(0 0 0 / 0.5).
+- Fallbacks: @supports not (backdrop-filter: blur(1px)) and prefers-reduced-transparency → solid woodax-cream / cnc-surface. Text inside must keep AA over the worst-case content behind (test over the CNC hero video and the green blocks).
 
-Collapsed state (after 80px of scroll, desktop) — matches the approved reference video:
-- The pill shrinks horizontally toward the center to fit-content width. Contents stay in the same order: logo (full logo cross-fades to the mark, 24px) · the 3 anchor links (still visible, active indicator keeps working) · CTA.
-- The CTA morphs from the text pill into a 40px circular icon button (arrow-up-right) in the same brand color; the label fades out before the shape shrinks. It keeps aria-label with the full CTA text and shows it as a tooltip on hover/focus.
-- The language switch fades out in the collapsed state (it remains in the expanded state and in the mobile Sheet).
-- Width/position animate with motion layout animation, 280ms --ease-out; reverses when scrolling back above 80px. Must be interruptible (direction change mid-animation reverses smoothly). Height goes 64 → 52px. Text never scales (no squashed glyphs): only the container resizes, inner elements cross-fade.
-- Solid background in both states. No backdrop blur, no glass, no drop shadow beyond a 1px border.
-- Under prefers-reduced-motion: no width animation; swap states with a 120ms opacity crossfade.
+Animation recipe (no distortion — this is mandatory)
+- Do NOT use motion `layout` / transform-scale on the container or on anything containing text. That is what stretches the labels and turns the pill into an ellipse.
+- Container: animate real `width` (motion `animate={{ width }}` with values measured by ResizeObserver for both states) + padding + height. 320ms, --ease-out. overflow: hidden, border-radius constant 9999px.
+- Background, border and blur: CSS transition 200ms on background-color, border-color, box-shadow, backdrop-filter. They start at the same time as the width.
+- Text never scales. Labels that leave (ES/EN, CTA text) fade out in 120ms BEFORE the width shrinks; labels that enter fade in 160ms AFTER the width grows. The CTA label collapses with the grid-template-columns 0fr↔1fr technique inside the button; the button height goes 40px both states, so the circle is just the label at 0fr.
+- Logo ↔ mark: cross-fade (two stacked images, opacity), never scale the SVG.
+- Active-section pill behind anchors: the only element that may use motion layoutId, and it contains no text (it is a background shape).
+- Scroll handling: motion useScroll + useMotionValueEvent (rAF-batched); no setState on every scroll event beyond the state flip.
+- Interruptible: reversing direction mid-animation retargets smoothly from the current values.
+- prefers-reduced-motion: no width animation; the two states swap with a 120ms opacity crossfade.
 
-Mobile (< 768px):
-- Pill always compact: mark (24px) left, hamburger icon button (44×44) right; height 52px, top offset 12px, side inset 12px. No collapse animation.
-- Hamburger opens a shadcn Sheet (full height, from the right) with the 3 anchors, sibling-brand link, Instagram and ES/EN.
-- The CTA lives in the MobileCtaBar (section 6), not in the pill.
+Mobile (< 768px)
+- Top state: transparent, mark + hamburger (44×44). Scrolled: same content in the glass pill (full width minus 12px insets, height 52px). No width animation, only the glass fade.
+- Hamburger opens a shadcn Sheet with anchors, sibling-brand link, Instagram, Facebook and ES/EN. CTA lives in the MobileCtaBar.
 
-Hero card under the nav:
-- Inset from page edges: 16px mobile, 24px desktop. The floating pill sits inside the top padding of the page; the hero card starts 88px from the top (desktop) / 76px (mobile).
-- Radius: design 28px (radius-media) · cnc 6px with a 1px cnc-line border.
-- Height: calc(100svh - 112px), min 560px. Headline centered, max 18ch; subhead max 56ch; single CTA below.
+Language switch: ES · EN as a two-option segmented control; the active one in foreground weight 500, the other muted. aria-current on the active locale.
 
-Accessibility: <nav aria-label>, links are real anchors to section ids, aria-current on the active link, visible focus ring (section 5), collapse never removes the CTA from the tab order.
+Hero under the nav: the nav overlays the top of the hero in the top state, so the hero/card top padding must reserve 96px for it; text in the hero must not sit under the nav.
+
+Accessibility: <nav aria-label>, real anchors to section ids, aria-current on the active link, visible focus ring, the CTA stays in the tab order in both states.
 
 ## 11. Layout patterns (from the approved reference; adapted, not copied)
 
@@ -231,6 +231,16 @@ No italics anywhere (Outfit has no true italic; never fake it). Emphasis = weigh
 - The intro animation must NOT replay on a locale switch (session flag), and HeroMedia/video must not remount if avoidable.
 - Update <html lang> and document.title without a full reload. Works on both hosts (woodax.design and cnc.woodax.design with the proxy rewrite) and on Vercel previews with ?site=cnc.
 - Acceptance test: scroll to the middle of the page, switch language → text changes in place, no white flash, no network document request (only RSC fetch), scrollY unchanged ±1px.
+
+## 17. CNC full site (one page, production — replaces the CNC coming soon)
+
+- CNC is no longer "coming soon". It stays a single page on cnc.woodax.design. Woodax Design remains coming soon until its own launch.
+- Hero layering (bottom → top): media (video or image, object-cover) → flat overlay cnc-bg at 55% → technical grid (1px cnc-line at 24px, ALWAYS visible on top of the media, opacity .6, masked to fade at the edges) → registration marks + coordinates → content. Text must keep AA contrast over the brightest frame of the media; increase overlay, never lower text contrast.
+- Hero media comes from site-config.cncHero = { type: "video" | "image" | "none", src?, poster?, alt? }. "none" = grid only (current state). Video follows section 7 (muted, loop, playsinline, poster, WebM+MP4, reduced-motion/Save-Data → poster).
+- Any section whose data is missing renders nothing (specs, gallery, FAQ answers, lead times, pricing model). Never show placeholders or "TBD" in production.
+- No "coming soon" / "nuevo sitio" wording anywhere on CNC. Remove noindex for the CNC host in production only.
+- FAQ: shadcn Accordion, only items with an approved answer; FAQPage JSON-LD only for those same items.
+- Quote form keeps the 2-step quick capture; the success state offers optional details (dimensions, quantity, deadline, file link). No file upload in this version: a URL field for Drive/WeTransfer/Dropbox links.
 
 ## 16. Assets & config
 

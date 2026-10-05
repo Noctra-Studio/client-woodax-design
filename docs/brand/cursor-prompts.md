@@ -233,6 +233,48 @@ Reglas
 
 ---
 
+## Fase CNC — Sitio completo (one-page, producción) sobre lo que ya existe
+
+```
+Contexto: Adrián aprobó la página de CNC. Pasa de "coming soon" a sitio completo, sigue siendo una sola página en cnc.woodax.design y se construye SOBRE lo que ya existe: no reconstruyas componentes que ya funcionan. Woodax Design se queda como coming soon. Antes de tocar código lee completas las secciones 1, 3, 7, 10, 11, 13, 14, 15 y 17 de .agents/skills/woodax-brand/SKILL.md y la sección "CNC — sitio completo" de docs/brand/copy-deck.md.
+
+Paso 0 — Inventario (sin cambios)
+Lista los componentes actuales de la página de CNC y, para cada uno: se queda igual / se ajusta / es nuevo. Marca todo texto o meta que diga "coming soon", "abriendo", "nuevo sitio" o similar. Espera mi OK.
+
+Paso 1 — Hero con media + grid encima
+- Agrega a src/content/site-config.ts: cncHero = { type: "none", src: undefined, poster: undefined, alt: undefined } con su tipo.
+- HeroMedia soporta video e imagen según la skill sección 7 y el orden de capas de la sección 17: media → overlay cnc-bg 55% → grid siempre visible → marcas/coordenadas → contenido.
+- Con type "none" debe verse exactamente como hoy. Prueba los tres modos con un video y una imagen temporales locales (no los subas al repo) y verifica contraste AA sobre el cuadro más brillante.
+
+Paso 2 — Quitar el modo coming soon de CNC
+- Actualiza meta (title/description del copy deck), Open Graph y JSON-LD. Quita cualquier texto de coming soon.
+- noindex fuera solo para el host de CNC en producción (staging y previews siguen con noindex). Revisa robots.ts y sitemap.ts por host.
+
+Paso 3 — Secciones nuevas
+- Capacidades: tabla técnica (filas tipo plotter de la skill sección 3) desde site-config.cncSpecs. Extiende el tipo con workArea?, maxThickness? (por material), tolerance?, leadTime?, minimumOrder?. Cada fila se renderiza solo si su dato existe; si no hay ninguno, la sección no existe y su ancla tampoco.
+- Trabajos: el patrón project cards con src/content/cnc-gallery.ts (sigue oculta si está vacía).
+- FAQ: shadcn Accordion (agrégalo con el CLI). Las preguntas viven en messages; las respuestas en src/content/cnc-faq.ts por id y idioma. Solo se renderizan las que tengan respuesta. Si ninguna tiene, la sección no existe.
+- Orden final: Hero → Statement → Dos formas de trabajar → Capacidades → Materiales → Hecho para → Del archivo a la pieza → Trabajos → FAQ → Formulario → Footer.
+- Anclas de la pill: Servicio · Capacidades (o Materiales si Capacidades no existe) · Contacto.
+
+Paso 4 — Formulario v2 (detalles opcionales)
+- El alta rápida de 2 pasos no cambia. En el estado de éxito, un formulario corto opcional: medidas (texto), cantidad (radio 1–10 / 11–100 / 100+), fecha límite (date input nativo), link de archivo (URL validada con zod). Envía con submitLeadDetails (ya existe) y un correo "[CNC] … · detalles".
+- Sin carga de archivos en esta versión.
+
+Paso 5 — SEO/GEO de producción
+- JSON-LD: LocalBusiness (ya existe) + un Service por modalidad (renta de tiempo de máquina, producción en volumen) con areaServed Querétaro. FAQPage solo con las preguntas publicadas.
+- Imagen Open Graph generada con next/og (src/app/[locale]/cnc/opengraph-image.tsx): fondo cnc-bg, retícula, logo blanco y el titular. Una por idioma.
+- Revisa que el h1, los headings y los landmarks sigan en orden con las secciones nuevas.
+
+Paso 6 — QA
+- Corre break-ui sobre la página de CNC (textos largos en EN, sin specs, sin fotos, sin FAQ, con todo lleno) y review-animations / mobile-native / web-design-guidelines. Corrige lo que marquen.
+- Lighthouse móvil ≥ 90 / 100 / 100 en el preview con ?site=cnc.
+
+Reglas: textos solo desde messages (copia los nuevos del copy deck tal cual), nada inventado, solo shadcn + tokens de la skill, un commit por paso (Conventional Commits en inglés), push a staging y link del preview al final de cada paso.
+```
+
+---
+
 ## Fase 4 — QA antes de mostrarle a Adrián
 
 ```

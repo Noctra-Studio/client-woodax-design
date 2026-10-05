@@ -194,3 +194,40 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 
 ## Términos y condiciones ⚠︎
 - Contenido legal pendiente: requiere razón social, domicilio y RFC de Woodax. Mientras tanto la página muestra solo título + "TODO(legal)" en staging; no se publica en producción sin el texto final.
+
+---
+
+## CNC — sitio completo (nuevas claves)
+
+### Meta (reemplaza la de coming soon)
+- title — ES: Corte CNC en Querétaro · Madera, acrílico y aluminio | CNC by Woodax Design | EN: CNC Cutting in Querétaro · Wood, acrylic and aluminum | CNC by Woodax Design
+- description — ES: Renta de tiempo de router CNC y producción en volumen para talleres, empresas y rotulistas en Querétaro. Envía tu archivo o tu idea y recibe una cotización. | EN: CNC router time rental and volume production for workshops, companies and sign makers in Querétaro. Send your file or idea and get a quote.
+
+### Capacidades (tabla técnica; cada fila solo si el dato existe en site-config.cncSpecs)
+- label — ES: Capacidades | EN: Capabilities
+- title — ES: Lo que puede hacer la máquina | EN: What the machine can do
+- rows — ES: Área de trabajo · Espesor máximo por material · Tolerancia · Tiempo de entrega típico · Pedido mínimo | EN: Work area · Max thickness per material · Tolerance · Typical lead time · Minimum order
+- note — ES: ¿Tu proyecto no encaja? Escríbenos y lo revisamos. | EN: Project doesn't fit? Write to us and we'll take a look.
+
+### Trabajos
+- label — ES: Trabajos | EN: Work
+- title — ES: Piezas recientes | EN: Recent parts
+
+### Preguntas frecuentes (solo se publican las que tengan respuesta aprobada por Adrián)
+- label — ES: Preguntas | EN: FAQ
+- title — ES: Preguntas frecuentes | EN: Frequently asked questions
+- q1 — ES: ¿Qué archivos aceptan? | EN: Which file formats do you accept? — a1: TODO(adrian)
+- q2 — ES: ¿Puedo traer mi propio material? | EN: Can I bring my own material? — a2: TODO(adrian)
+- q3 — ES: ¿Cómo se cobra: por hora, por pieza o por proyecto? | EN: How is it priced: per hour, per part or per project? — a3: TODO(adrian)
+- q4 — ES: ¿Cuánto tarda un pedido? | EN: How long does an order take? — a4: TODO(adrian)
+- q5 — ES: ¿Me ayudan a preparar el archivo? | EN: Can you help me prepare the file? — a5: TODO(adrian)
+- q6 — ES: ¿Hacen entregas o se recoge en taller? | EN: Do you deliver or is it pick-up only? — a6: TODO(adrian)
+
+### Formulario — detalles opcionales (estado de éxito)
+- details.title — ES: ¿Quieres adelantar la cotización? | EN: Want to speed up your quote?
+- details.dimensions — ES: Medidas aproximadas (largo × ancho × espesor) | EN: Approximate size (length × width × thickness)
+- details.quantity — ES: Cantidad de piezas | EN: Number of parts
+- details.deadline — ES: ¿Para cuándo lo necesitas? | EN: When do you need it?
+- details.fileLink — ES: Link a tu archivo (Drive, WeTransfer, Dropbox) | EN: Link to your file (Drive, WeTransfer, Dropbox)
+- details.submit — ES: Enviar detalles | EN: Send details
+- details.sent — ES: Listo, ya tenemos los detalles. | EN: Done, we've got the details.
