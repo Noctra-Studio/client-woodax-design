@@ -18,6 +18,36 @@ npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-react-
 3. En Vercel: `CONTACT_TO_EMAIL_CNC=cnc@woodax.design` (Production + Preview).
 4. Commit: `chore: add design skills and brand kit`.
 
+
+### Prompt — Skills de Emil Kowalski (motion y mobile)
+
+```
+Instala solo estas skills de https://github.com/emilkowalski/skills, una por una:
+
+npx skills@latest add emilkowalski/skills --skill emil-design-eng
+npx skills@latest add emilkowalski/skills --skill animate
+npx skills@latest add emilkowalski/skills --skill review-animations
+npx skills@latest add emilkowalski/skills --skill mobile-native
+npx skills@latest add emilkowalski/skills --skill break-ui
+
+No instales las demás del repo (animate-expo, write-swift, ask-sonner, prototype, pick-ui-library, apple-design, improve-animations, find-animation-opportunities, animation-vocabulary): no aplican a este proyecto o empujan decisiones que ya están tomadas.
+
+Después:
+1. Verifica que las 5 quedaron en .agents/skills/ junto a woodax-brand, frontend-design, web-design-guidelines y vercel-react-best-practices. Lee el SKILL.md de cada una antes de seguir.
+2. Si `--skill` no funciona con este repo, instala el paquete completo y luego elimina de .agents/skills/ las carpetas de las skills que no están en la lista.
+3. Agrega al inicio de .agents/skills/woodax-brand/SKILL.md (justo después del frontmatter) esta sección:
+
+   ## Precedence
+   - woodax-brand wins on brand: colors, typography, copy, motion tokens (easings, durations, intro limits), component library (shadcn/ui) and forbidden patterns.
+   - emil-design-eng / animate / review-animations guide HOW to animate (properties, origins, interruptibility, what not to animate) within the woodax-brand tokens. If one suggests an easing or duration outside our tokens, use the closest woodax-brand token.
+   - mobile-native guides touch, viewport, safe-area and hover fixes; it complements section 6 of this file.
+   - break-ui is for QA only (Phase 4 and before showing the client), not for adding features.
+   - pick-ui-library is not installed: the UI library decision (shadcn/ui) is final.
+
+4. Lee el código que ya existe y reporta, sin cambiar nada, cualquier conflicto entre estas skills y woodax-brand (por ejemplo, la intro de página o el uso de motion). Yo decido.
+5. Commit: "chore: add motion and mobile skills from emilkowalski/skills".
+```
+
 ---
 
 ## Fase 0 — Limpieza post-migración y base de marca
@@ -47,12 +77,13 @@ Lee AGENTS.md, la skill woodax-brand completa y la guía relevante de node_modul
 5. shadcn/ui y dependencias (haz esto ANTES del punto 4 para que shadcn no pise los tokens)
    - Lee https://ui.shadcn.com/docs/installation/next y https://ui.shadcn.com/docs/tailwind-v4 antes de correr nada.
    - `pnpm dlx shadcn@latest init` → style new-york, base color neutral, CSS variables sí, alias @/components y @/lib/utils (reutiliza el cn() existente de src/lib/utils.ts, no lo dupliques), iconLibrary lucide.
-   - `pnpm dlx shadcn@latest add button input label textarea radio-group checkbox drawer card separator`
+   - `pnpm dlx shadcn@latest add button input label textarea radio-group checkbox drawer sheet card separator`
    - Instala `motion` (motion.dev). Ninguna otra dependencia aparte de las que traiga shadcn.
    - Verifica que components.json quede versionado y que los componentes vivan en src/components/ui/.
 
 6. Base de componentes
    - src/components/brand/woodax-logo.tsx y cnc-logo.tsx: Server Components que renderizan los SVG de public/brand con next/image (props className, priority), alt desde messages. No recrees los logos en código.
+   - src/components/site/site-nav.tsx: componente compartido (variant "design" | "cnc") según la skill sección 10, usando Sheet y Button de shadcn. Los textos del menú salen de messages (claves nav.*; si faltan en el copy deck, usa TODO(copy) y avísame).
    - src/content/site-config.ts: objeto tipado con instagramUrl?, instagramHandle?, cncSpecs?: { maxThicknessByMaterial?: Partial<Record<"wood"|"acrylic"|"aluminum", string>>, cuttingArea?: string }. Todo opcional y vacío por ahora.
    - Tematiza shadcn según la tabla "Variable mapping" de la skill (sección 9): variables bajo [data-site="design"] y [data-site="cnc"] en globals.css.
    - Edita src/components/ui/button.tsx (no crees otro Button): agrega con cva las variantes de marca design | design-outline | cnc | cnc-outline y las microinteracciones de la skill (press .97, arrow nudge solo con pointer fine). Mantén las variantes originales de shadcn.
@@ -113,8 +144,8 @@ Prueba local enviando a tu correo con un RESEND_API_KEY real antes del push.
 Lee la skill woodax-brand completa (sobre todo secciones 1, 2, 5, 6 y 7) y la sección "Woodax Design" de docs/brand/copy-deck.md. Construye src/app/[locale]/(design)/page.tsx. Copia los textos del copy deck a messages tal cual; si falta alguno, crea la clave con TODO(copy) y avísame.
 
 Estructura (una página, sin menú):
-1. Header: WoodaxLogo + selector ES/EN discreto (conserva ruta y formulario). Transparente sobre el hero; al hacer scroll pasa a fondo cream con borde inferior sand.
-2. Hero (min-h-[100svh]): HeroMedia con poster = la mejor foto de public/images/design/ (videoSrc vacío por ahora). Overlay charcoal según la skill. Eyebrow, headline (dos líneas, una por oración), subhead, ctaPrimary (abre el sheet en móvil / scroll al form en desktop) y ctaSecondary (scroll a Proyectos). Intro "Woodax" de la skill sección 5, con botón "Saltar".
+1. Header: SiteNav compartido exactamente como la skill woodax-brand sección 10 (Menu + Sheet a la izquierda, logo al centro, CTA pill a la derecha; en móvil isotipo + hamburguesa). El selector ES/EN vive dentro del Sheet.
+2. Hero como card redondeada insertada debajo del nav (skill sección 10): HeroMedia con poster = la mejor foto de public/images/design/ (videoSrc vacío por ahora). Overlay charcoal según la skill. Eyebrow, headline (dos líneas, una por oración), subhead, ctaPrimary (abre el sheet en móvil / scroll al form en desktop) y ctaSecondary (scroll a Proyectos). Intro "Woodax" de la skill sección 5, con botón "Saltar".
 3. Para quién: bloque full-bleed woodax-green, texto charcoal, dos columnas (Tu hogar / Tu negocio) con icono lucide de 1.5px de trazo, motivo de arcos del logo en cream al .35.
 4. Proyectos: sobre cream, 4–6 fotos desde src/content/design-gallery.ts (src, alt ES/EN, tag). Grid editorial: en móvil scroll horizontal con snap (sensación nativa), en desktop mosaico asimétrico. Debajo, link "Más proyectos en Instagram" con instagramUrl de site-config; si no existe, no se renderiza.
 5. Así trabajamos: tres pasos, número grande en Outfit 300, título y una línea.
@@ -138,8 +169,8 @@ Calidad: Lighthouse móvil ≥ 90 Performance, 100 Accessibility/SEO, CLS < 0.05
 Lee la skill woodax-brand completa (sobre todo secciones 1, 3, 5, 6 y 7) y la sección "CNC by Woodax Design" del copy deck. Construye src/app/[locale]/cnc/page.tsx (en producción es cnc.woodax.design/). Textos del copy deck tal cual.
 
 Estructura:
-1. Header: CncLogo + selector ES/EN. Fondo cnc-bg con borde inferior cnc-line al hacer scroll.
-2. Hero (min-h-[100svh]): retícula técnica de fondo con marcas de registro en esquinas, coordenadas en mono (cnc-muted). HeroMedia con poster de public/images/cnc/ si existe; si no hay foto, solo la retícula (no inventes imagen). Eyebrow, headline, subhead, ctaPrimary (botón blanco), ctaSecondary (outline). Intro "CNC" de la skill sección 5 con "Saltar".
+1. Header: el mismo SiteNav con variant="cnc" (skill sección 10).
+2. Hero como card insertada con borde cnc-line y radio 6px (skill sección 10): retícula técnica de fondo con marcas de registro en esquinas, coordenadas en mono (cnc-muted). HeroMedia con poster de public/images/cnc/ si existe; si no hay foto, solo la retícula (no inventes imagen). Eyebrow, headline, subhead, ctaPrimary (botón blanco), ctaSecondary (outline). Intro "CNC" de la skill sección 5 con "Saltar".
 3. Dos formas de trabajar: dos paneles cnc-surface lado a lado (apilados en móvil), label "01"/"02" en mono, título y cuerpo.
 4. Materiales: filas tipo tabla técnica (Madera / Acrílico / Aluminio delgado). Columnas de especificación (espesor máx., área de corte) solo si existen en site-config.cncSpecs; si no, la fila muestra solo el material y su descripción. Revelado tipo plotter de izquierda a derecha.
 5. Hecho para: tres bloques (Talleres / Empresas e industria / Rotulistas) con icono lucide de trazo fino.
@@ -152,6 +183,46 @@ Estructura:
 SEO/GEO: igual que Woodax con meta de CNC, canonical NEXT_PUBLIC_CNC_URL y JSON-LD LocalBusiness con parentOrganization → Woodax Design, knowsAbout ["CNC router cutting","CNC router rental","acrylic cutting","aluminum cutting","MDF cutting","signage"].
 
 Calidad: mismos objetivos. Contraste AA en todo el texto sobre cnc-bg (cnc-muted solo para texto ≥ 14px). Revisa con web-design-guidelines.
+```
+
+---
+
+## Fase 2B — Ajustes de layout en ambas páginas (las Fases 2 y 3 ya están hechas)
+
+```
+Contexto: las páginas de Woodax Design y CNC ya existen (Fases 2 y 3). NO las reconstruyas desde cero: modifica lo que hay. Antes de tocar código, vuelve a leer completas las secciones 6, 9, 10 y 11 de .agents/skills/woodax-brand/SKILL.md y las secciones "Navegación" y "Secciones nuevas" de docs/brand/copy-deck.md.
+
+Paso 0 — Inventario (no cambies nada aún)
+Lista los componentes actuales de cada página (header, hero, secciones, footer) y cómo vas a mapearlos a la nueva estructura. Espera mi OK antes del paso 1.
+
+Paso 1 — Navbar compartida
+- Crea o reemplaza src/components/site/site-nav.tsx (variant "design" | "cnc"): pill flotante que colapsa al hacer scroll, exactamente según la skill sección 10 (estado expandido, estado colapsado, móvil, accesibilidad). Usa Button y Sheet de shadcn (agrega `sheet` con el CLI si no está) y motion para la animación de ancho y el indicador de sección activa.
+- Scrollspy con IntersectionObserver sobre los ids de sección; el indicador se mueve con layoutId.
+- Reemplaza el header actual de ambas páginas por SiteNav. Elimina el header viejo y el código que quede sin uso.
+- El selector ES/EN va en la pill (desktop) y en el Sheet (móvil); conserva ruta y valores del formulario como ya funciona.
+- Verifica la animación con review-animations: interrumpible, sin layout shift del contenido, reduced motion respetado.
+
+Paso 2 — Hero como tarjeta insertada
+- Convierte el hero de ambas páginas en la tarjeta insertada bajo la navbar (skill sección 10). Conserva HeroMedia, la intro y los textos actuales.
+- Agrega el icon chip (skill sección 11) en el h1 solo si existe el SVG del isotipo correspondiente.
+
+Paso 3 — Secciones
+Woodax, orden final: Hero → Statement → Para tu hogar y tu negocio → Proyectos (project cards) → Así trabajamos (numbered row) → Formulario → Footer de cierre.
+CNC, orden final: Hero → Statement → Dos formas de trabajar → Materiales → Hecho para → Del archivo a la pieza (numbered row) → Trabajos (solo si hay fotos) → Formulario → Footer de cierre.
+- Statement paragraph con rich text de next-intl (<b> → peso 500 + color foreground). Sin cursivas en ningún lado.
+- Cada sección lleva el section label (punto + eyebrow) con las claves del copy deck.
+- Proyectos/Trabajos con el patrón project cards (scroll-snap con peek en móvil).
+- Así trabajamos / Del archivo a la pieza con el patrón numbered row.
+
+Paso 4 — Footer de cierre
+- Reemplaza el footer actual por el bloque oscuro insertado de la skill sección 11, en ambas marcas. WhatsApp solo si NEXT_PUBLIC_WHATSAPP_NUMBER existe. Wordmark gigante solo si existe public/brand/{woodax,cnc}-wordmark.svg; si no, omítelo y avísame.
+- Debajo de la tarjeta: privacidad, ubicación, link a la marca hermana y el crédito "Desarrollado por Noctra Studio".
+
+Reglas
+- Todos los textos desde messages (copia los nuevos del copy deck tal cual). Nada inventado.
+- Solo componentes de src/components/ui (shadcn) y los tokens de la skill.
+- Revisa con review-animations, mobile-native y web-design-guidelines al final y corrige lo que marquen.
+- pnpm typecheck, lint y build sin errores. Un commit por paso (Conventional Commits en inglés). Push a staging y pásame el link del preview.
 ```
 
 ---

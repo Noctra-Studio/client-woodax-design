@@ -163,9 +163,53 @@ Variable mapping:
 | --destructive | #B42318 | #F97066 |
 | --radius | 14px | 4px |
 
-## 10. Assets & config
+## 10. Navigation bar — floating collapsing pill (both brands)
 
-- public/brand/woodax-logo.svg, public/brand/cnc-logo.svg (white).
+Structure: a floating pill bar inset from the page edges, sitting ABOVE an inset rounded hero card (never overlaying the hero text). It collapses into a compact pill on scroll.
+
+Expanded state (top of page, desktop ≥ 768px):
+- Container: max-width 1200px, centered, top offset 16px, height 64px, padding 8px 8px 8px 20px, fully rounded (9999px).
+  - design: background woodax-cream (on sand page) or white-ish #FBFAF7, 1px border woodax-sand.
+  - cnc: background cnc-surface, 1px border cnc-line.
+- Left: full horizontal logo (woodax-logo.svg / cnc-logo.svg), height 28px, links to "/".
+- Center: 3 anchor links max (design: Proyectos · Proceso · Contacto / cnc: Servicio · Materiales · Contacto), Outfit 400 15px. Active-section indicator = a soft pill behind the current link (design: sand / cnc: cnc-line) that slides between links (motion layoutId, 240ms --ease-out), driven by IntersectionObserver scrollspy.
+- Right: primary CTA pill (shadcn Button brand variant): design "Cuéntanos tu proyecto" (charcoal/cream), cnc "Cotizar" (white/cnc-bg). NEVER "Login".
+- Language switch ES/EN: small text toggle just left of the CTA.
+
+Collapsed state (after 80px of scroll, desktop) — matches the approved reference video:
+- The pill shrinks horizontally toward the center to fit-content width. Contents stay in the same order: logo (full logo cross-fades to the mark, 24px) · the 3 anchor links (still visible, active indicator keeps working) · CTA.
+- The CTA morphs from the text pill into a 40px circular icon button (arrow-up-right) in the same brand color; the label fades out before the shape shrinks. It keeps aria-label with the full CTA text and shows it as a tooltip on hover/focus.
+- The language switch fades out in the collapsed state (it remains in the expanded state and in the mobile Sheet).
+- Width/position animate with motion layout animation, 280ms --ease-out; reverses when scrolling back above 80px. Must be interruptible (direction change mid-animation reverses smoothly). Height goes 64 → 52px. Text never scales (no squashed glyphs): only the container resizes, inner elements cross-fade.
+- Solid background in both states. No backdrop blur, no glass, no drop shadow beyond a 1px border.
+- Under prefers-reduced-motion: no width animation; swap states with a 120ms opacity crossfade.
+
+Mobile (< 768px):
+- Pill always compact: mark (24px) left, hamburger icon button (44×44) right; height 52px, top offset 12px, side inset 12px. No collapse animation.
+- Hamburger opens a shadcn Sheet (full height, from the right) with the 3 anchors, sibling-brand link, Instagram and ES/EN.
+- The CTA lives in the MobileCtaBar (section 6), not in the pill.
+
+Hero card under the nav:
+- Inset from page edges: 16px mobile, 24px desktop. The floating pill sits inside the top padding of the page; the hero card starts 88px from the top (desktop) / 76px (mobile).
+- Radius: design 28px (radius-media) · cnc 6px with a 1px cnc-line border.
+- Height: calc(100svh - 112px), min 560px. Headline centered, max 18ch; subhead max 56ch; single CTA below.
+
+Accessibility: <nav aria-label>, links are real anchors to section ids, aria-current on the active link, visible focus ring (section 5), collapse never removes the CTA from the tab order.
+
+## 11. Layout patterns (from the approved reference; adapted, not copied)
+
+No italics anywhere (Outfit has no true italic; never fake it). Emphasis = weight and tone only.
+
+- Section label: small rounded dot (6px, currentColor) + eyebrow text (section 4 eyebrow style), top-left of each section.
+- Numbered row: 3 columns on desktop / stacked on mobile. Number in Outfit 300 at h3 size in muted tone ("01." "02." "03."), title below in body 500, one line of body 300. Used for "Así trabajamos" (design) and "Del archivo a la pieza" (cnc).
+- Statement paragraph: large text (h2 scale, weight 300) max 24ch per line on desktop; 2–3 emphasized phrases in weight 500 + full foreground color, the rest in muted tone. Emphasis is marked in messages with <b>…</b> and rendered via next-intl rich text. Left column on desktop may hold one small rounded photo (radius-card) — only a real photo, otherwise nothing.
+- Icon chip in headings: the brand mark inside a rounded square chip, inline with h1/h2 text, height 0.9em, vertically centered. Design: charcoal chip + cream mark. CNC: cnc-surface chip with cnc-line border + white mark. Max one chip per heading, aria-hidden, never in body text. Requires the mark SVG; if missing, render nothing.
+- Project cards: tall cards (aspect 3/4), radius-card, real photo full-bleed, tag pill top-left (eyebrow style, sand bg on design / cnc-surface on cnc), title bottom-left over a subtle bottom gradient (charcoal 0→45% / cnc-bg 0→60%). Mobile: horizontal scroll-snap with 16px peek of the next card. Desktop: 3–4 per row.
+- Footer (closing block): full-width inset card like the hero (same inset and radius), dark background (design: charcoal #3F3738 / cnc: #0F1012). Content centered: short line + large contact links (email at h2 scale; WhatsApp only if NEXT_PUBLIC_WHATSAPP_NUMBER exists), small icon square after each link, "Volver arriba" pill. Bottom: giant wordmark cropped by the card edge, at 6–8% opacity, aria-hidden, from public/brand/woodax-wordmark.svg or cnc-wordmark.svg (derived from the official logo). If that file doesn't exist, omit the giant wordmark — never typeset the brand name in a font to imitate it. Under the card: privacy link, location, sibling-brand link, "Developed by Noctra Studio" credit.
+
+## 12. Assets & config
+
+- public/brand/woodax-logo.svg, public/brand/cnc-logo.svg (white), woodax-mark.svg, cnc-mark.svg, woodax-wordmark.svg, cnc-wordmark.svg (optional, for the footer).
 - public/images/design/*, public/images/cnc/* — only real client photos.
 - src/content/site-config.ts holds: instagramUrl, instagramHandle, cnc specs (all optional). Missing values = hidden UI.
 - All visible strings come from src/messages/{es,en}.json, populated from docs/brand/copy-deck.md.

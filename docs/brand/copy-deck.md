@@ -127,3 +127,50 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - designLink — ES: Muebles y espacios a medida → Woodax Design | EN: Bespoke furniture and spaces → Woodax Design
 - location — ES: Querétaro, México | EN: Querétaro, Mexico
 - privacy — ES: Aviso de privacidad | EN: Privacy notice
+
+---
+
+## Navegación (ambas marcas)
+- nav.menu — ES: Menú | EN: Menu
+- nav.close — ES: Cerrar | EN: Close
+- nav.design.projects — ES: Proyectos | EN: Projects
+- nav.design.process — ES: Proceso | EN: Process
+- nav.design.contact — ES: Contacto | EN: Contact
+- nav.design.cta — ES: Cuéntanos tu proyecto | EN: Tell us about your project
+- nav.cnc.how — ES: Servicio | EN: Service
+- nav.cnc.materials — ES: Materiales | EN: Materials
+- nav.cnc.contact — ES: Contacto | EN: Contact
+- nav.cnc.cta — ES: Cotizar | EN: Get a quote
+- nav.sibling.toCnc — ES: CNC by Woodax Design | EN: CNC by Woodax Design
+- nav.sibling.toDesign — ES: Woodax Design | EN: Woodax Design
+- nav.instagram — ES: Instagram | EN: Instagram
+- nav.language — ES: Idioma | EN: Language
+
+---
+
+## Secciones nuevas (layout de referencia)
+
+### Woodax — Statement (va después del hero, antes de "Para quién")
+- label — ES: Nosotros | EN: About us
+- statement — ES: Cada pieza empieza con una conversación: <b>cómo usas tu espacio</b>, qué necesitas guardar y <b>qué quieres sentir al entrar</b>. Desde ahí la diseñamos y la <b>fabricamos a la medida</b>. | EN: Every piece starts with a conversation: <b>how you use your space</b>, what you need to store and <b>how you want it to feel</b>. From there, we design it and <b>build it to measure</b>.
+
+### CNC — Statement (después del hero)
+- label — ES: El servicio | EN: The service
+- statement — ES: Tú pones <b>el diseño o la idea</b>. Nosotros ponemos la máquina, la operación y la precisión, para que <b>produzcas más sin invertir en equipo</b>. | EN: You bring <b>the design or the idea</b>. We bring the machine, the operation and the precision, so you can <b>produce more without investing in equipment</b>.
+
+### Labels de sección (punto + eyebrow)
+- design.label.projects — ES: Proyectos | EN: Projects
+- design.label.process — ES: Proceso | EN: Process
+- design.label.contact — ES: Contacto | EN: Contact
+- cnc.label.modes — ES: Modalidades | EN: Services
+- cnc.label.materials — ES: Materiales | EN: Materials
+- cnc.label.process — ES: Proceso | EN: Process
+
+### Footer de cierre (ambas marcas)
+- footer.design.line — ES: ¿Tienes un espacio en mente? | EN: Have a space in mind?
+- footer.cnc.line — ES: ¿Tienes algo que producir? | EN: Got something to produce?
+- footer.email.design — hello@woodax.design
+- footer.email.cnc — cnc@woodax.design
+- footer.whatsapp — ES: WhatsApp | EN: WhatsApp
+- footer.backToTop — ES: Volver arriba | EN: Back to top
+- footer.credit — ES: Desarrollado por Noctra Studio | EN: Developed by Noctra Studio
