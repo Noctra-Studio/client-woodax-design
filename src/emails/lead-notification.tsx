@@ -241,7 +241,7 @@ export function LeadNotificationEmail({
 }
 
 const body = {
-  backgroundColor: "#F4F1EC",
+  backgroundColor: "#F3F1EA",
   fontFamily: "Helvetica, Arial, sans-serif",
   margin: "0",
   padding: "32px 16px",
@@ -256,7 +256,7 @@ const container = {
 };
 
 const eyebrowStyle = {
-  color: "#3F3738",
+  color: "#483D3C",
   fontSize: "12px",
   fontWeight: "500",
   letterSpacing: "0.18em",
@@ -265,7 +265,7 @@ const eyebrowStyle = {
 };
 
 const heading = {
-  color: "#3F3738",
+  color: "#483D3C",
   fontSize: "28px",
   fontWeight: "400",
   lineHeight: "1.15",
@@ -273,7 +273,7 @@ const heading = {
 };
 
 const rule = {
-  borderColor: "#E7E0D5",
+  borderColor: "#D6D1BE",
   margin: "0 0 8px",
 };
 
@@ -289,16 +289,16 @@ const labelStyle = {
 };
 
 const valueStyle = {
-  color: "#3F3738",
+  color: "#483D3C",
   fontSize: "16px",
   lineHeight: "1.45",
   margin: "2px 0 0",
 };
 
 const whatsappButton = {
-  backgroundColor: "#3F3738",
+  backgroundColor: "#483D3C",
   borderRadius: "9999px",
-  color: "#F4F1EC",
+  color: "#E5E1D1",
   display: "inline-block",
   fontSize: "15px",
   marginTop: "28px",

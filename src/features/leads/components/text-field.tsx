@@ -51,7 +51,7 @@ export function TextField({
             "duration-ui transition-[border-color] ease-out",
             "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
             isDesign
-              ? "border-woodax-sand bg-woodax-sand text-woodax-charcoal focus-visible:outline-woodax-charcoal"
+              ? "border-woodax-line bg-woodax-paper text-woodax-charcoal focus-visible:outline-woodax-charcoal"
               : "border-cnc-line bg-cnc-bg text-cnc-text focus-visible:outline-cnc-white",
           )}
         />

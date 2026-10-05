@@ -21,8 +21,8 @@ import { localizedMetadata, siteOrigin } from "@/lib/seo";
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F4F1EC" },
-    { media: "(prefers-color-scheme: dark)", color: "#F4F1EC" },
+    { media: "(prefers-color-scheme: light)", color: "#F3F1EA" },
+    { media: "(prefers-color-scheme: dark)", color: "#F3F1EA" },
   ],
 };
 

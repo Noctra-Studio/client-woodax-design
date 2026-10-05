@@ -10,7 +10,7 @@ const variants = {
   "design-primary":
     "rounded-full bg-woodax-charcoal text-woodax-cream pointer-fine:hover:bg-woodax-charcoal/90 focus-visible:outline-woodax-cream",
   "design-secondary":
-    "rounded-full border border-woodax-charcoal text-woodax-charcoal pointer-fine:hover:bg-woodax-sand focus-visible:outline-woodax-charcoal",
+    "rounded-full border border-woodax-charcoal text-woodax-charcoal pointer-fine:hover:bg-woodax-cream focus-visible:outline-woodax-charcoal",
   "cnc-primary":
     "rounded-[4px] bg-cnc-white text-cnc-bg pointer-fine:hover:bg-cnc-text focus-visible:outline-cnc-white",
   "cnc-secondary":

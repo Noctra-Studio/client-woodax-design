@@ -130,7 +130,7 @@ export function HeroSection() {
                 variant={onPhoto ? "design-primary" : "design-secondary"}
                 className={
                   onPhoto
-                    ? "bg-woodax-cream text-woodax-charcoal pointer-fine:hover:bg-woodax-sand focus-visible:outline-woodax-charcoal"
+                    ? "bg-woodax-cream text-woodax-charcoal pointer-fine:hover:bg-woodax-cream focus-visible:outline-woodax-charcoal"
                     : undefined
                 }
               >
@@ -144,7 +144,7 @@ export function HeroSection() {
         <button
           type="button"
           onClick={skip}
-          className="text-woodax-charcoal focus-visible:outline-woodax-charcoal pointer-fine:hover:bg-woodax-sand bg-woodax-cream absolute right-4 bottom-[calc(4.75rem+env(safe-area-inset-bottom))] z-20 inline-flex min-h-11 items-center rounded-full px-4 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:right-8 md:bottom-8"
+          className="text-woodax-charcoal focus-visible:outline-woodax-charcoal pointer-fine:hover:bg-woodax-cream bg-woodax-cream absolute right-4 bottom-[calc(4.75rem+env(safe-area-inset-bottom))] z-20 inline-flex min-h-11 items-center rounded-full px-4 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:right-8 md:bottom-8"
         >
           {t("skipIntro")}
         </button>

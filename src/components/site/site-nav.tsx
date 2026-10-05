@@ -157,7 +157,7 @@ export function SiteNav({
           className={cn(
             "pointer-events-auto hidden items-center rounded-full border md:flex",
             variant === "design"
-              ? "border-woodax-sand bg-[#FBFAF7]"
+              ? "border-woodax-line bg-woodax-paper"
               : "border-cnc-line bg-cnc-surface",
             scrolled
               ? "h-[52px] w-max gap-1 py-1.5 pr-1.5 pl-3"
@@ -218,7 +218,7 @@ export function SiteNav({
           className={cn(
             "pointer-events-auto flex h-[52px] w-full items-center justify-between rounded-full border pr-1.5 pl-3 md:hidden",
             variant === "design"
-              ? "border-woodax-sand bg-[#FBFAF7]"
+              ? "border-woodax-line bg-woodax-paper"
               : "border-cnc-line bg-cnc-surface",
           )}
         >
@@ -276,7 +276,7 @@ export function SiteNav({
                       "inline-flex min-h-11 w-full items-center rounded-full px-3 text-[17px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
                       focusRing,
                       active &&
-                        (variant === "design" ? "bg-woodax-sand" : "bg-cnc-line"),
+                        (variant === "design" ? "bg-woodax-cream" : "bg-cnc-line"),
                     )}
                   >
                     {link.label}
@@ -422,7 +422,7 @@ function NavLinks({
                   layoutId="site-nav-indicator"
                   className={cn(
                     "absolute inset-0 rounded-full",
-                    variant === "design" ? "bg-woodax-sand" : "bg-cnc-line",
+                    variant === "design" ? "bg-woodax-cream" : "bg-cnc-line",
                   )}
                   transition={{ duration: reduce ? 0 : 0.24, ease: easeOut }}
                 />
@@ -581,7 +581,7 @@ function LocaleSwitch({
               "inline-flex min-h-11 min-w-11 items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
               focusRing,
               variant === "design"
-                ? "pointer-fine:hover:bg-woodax-sand rounded-full"
+                ? "pointer-fine:hover:bg-woodax-cream rounded-full"
                 : "pointer-fine:hover:bg-cnc-surface rounded-[4px]",
             )}
           >

@@ -25,7 +25,7 @@ export function MobileCtaBar({
         "duration-ui transition-transform ease-out motion-reduce:transition-none",
         hidden && "translate-y-full",
         isDesign
-          ? "border-woodax-sand bg-woodax-cream"
+          ? "border-woodax-line bg-woodax-cream"
           : "border-cnc-line bg-cnc-bg",
       )}
     >

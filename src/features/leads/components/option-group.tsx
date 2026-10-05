@@ -79,14 +79,14 @@ export function OptionGroup({
                 "has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2",
                 selected && "lead-card-settle",
                 isDesign
-                  ? "bg-woodax-sand text-woodax-charcoal has-[:focus-visible]:outline-woodax-charcoal rounded-[var(--radius-control)]"
+                  ? "bg-woodax-paper text-woodax-charcoal has-[:focus-visible]:outline-woodax-charcoal rounded-[var(--radius-control)]"
                   : "bg-cnc-bg text-cnc-text has-[:focus-visible]:outline-cnc-white rounded-[var(--radius-control)]",
                 selected
                   ? isDesign
                     ? "border-woodax-green"
                     : "border-cnc-white"
                   : isDesign
-                    ? "border-transparent"
+                    ? "border-woodax-line"
                     : "border-cnc-muted",
               )}
             >

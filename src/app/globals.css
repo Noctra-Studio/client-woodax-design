@@ -10,11 +10,12 @@
 }
 
 @theme {
-  --color-woodax-green: #83af6e;
-  --color-woodax-green-soft: #a2c392;
-  --color-woodax-charcoal: #3f3738;
-  --color-woodax-cream: #f4f1ec;
-  --color-woodax-sand: #e7e0d5;
+  --color-woodax-green: #8baf64;
+  --color-woodax-lime: #a7cb5f;
+  --color-woodax-charcoal: #483d3c;
+  --color-woodax-cream: #e5e1d1;
+  --color-woodax-paper: #f3f1ea;
+  --color-woodax-line: #d6d1be;
 
   --color-cnc-bg: #16171a;
   --color-cnc-surface: #1f2125;
@@ -57,13 +58,13 @@ body {
 }
 
 body[data-site="design"] {
-  background-color: var(--color-woodax-cream);
+  background-color: var(--color-woodax-paper);
   color: var(--color-woodax-charcoal);
   color-scheme: light;
-  --nav-sheet-bg: #fbfaf7;
+  --nav-sheet-bg: var(--color-woodax-paper);
   --nav-sheet-fg: var(--color-woodax-charcoal);
-  --nav-sheet-border: var(--color-woodax-sand);
-  --nav-sheet-overlay: rgb(63 55 56 / 0.45);
+  --nav-sheet-border: var(--color-woodax-line);
+  --nav-sheet-overlay: rgb(72 61 60 / 0.45);
 }
 
 body[data-site="cnc"] {

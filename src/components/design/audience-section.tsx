@@ -26,7 +26,7 @@ export async function AudienceSection() {
               <h3 className="mt-4 font-serif text-[clamp(1.25rem,2vw,1.5rem)] font-bold text-balance">
                 {t("homeTitle")}
               </h3>
-              <p className="mt-3 text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.65] font-medium text-pretty">
+              <p className="bg-woodax-cream mt-5 rounded-[var(--radius-card)] px-6 py-5 text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.65] font-medium text-pretty">
                 {t("homeBody")}
               </p>
             </article>
@@ -39,7 +39,7 @@ export async function AudienceSection() {
               <h3 className="mt-4 font-serif text-[clamp(1.25rem,2vw,1.5rem)] font-bold text-balance">
                 {t("businessTitle")}
               </h3>
-              <p className="mt-3 text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.65] font-medium text-pretty">
+              <p className="bg-woodax-cream mt-5 rounded-[var(--radius-card)] px-6 py-5 text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.65] font-medium text-pretty">
                 {t("businessBody")}
               </p>
             </article>

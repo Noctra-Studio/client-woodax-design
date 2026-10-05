@@ -43,7 +43,8 @@ export function LeadCapture({ copy }: { copy: LeadCopy }) {
   const section = (
     <section
       id="contacto"
-      aria-labelledby={`${copy.variant}-form-title`}
+      aria-labelledby={isDesign ? undefined : `${copy.variant}-form-title`}
+      aria-label={isDesign ? copy.title : undefined}
       className={cn(
         "relative scroll-mt-24 px-5 py-16 md:px-8 md:py-24 lg:py-40",
         isDesign && "bg-woodax-green text-woodax-charcoal",
@@ -58,15 +59,14 @@ export function LeadCapture({ copy }: { copy: LeadCopy }) {
         </div>
       ) : null}
       <div className="relative mx-auto flex w-full max-w-[1200px] flex-col gap-8">
-        <h2
-          id={`${copy.variant}-form-title`}
-          className={cn(
-            "max-w-[18ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal text-balance",
-            isDesign ? "font-serif tracking-[-0.01em]" : "tracking-[-0.02em]",
-          )}
-        >
-          {copy.title}
-        </h2>
+        {isDesign ? null : (
+          <h2
+            id={`${copy.variant}-form-title`}
+            className="max-w-[18ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.02em] text-balance"
+          >
+            {copy.title}
+          </h2>
+        )}
         <div className="md:hidden">
           <Button
             type="button"
@@ -86,6 +86,11 @@ export function LeadCapture({ copy }: { copy: LeadCopy }) {
             variant={copy.variant}
             active={isMobile}
           >
+            {isDesign ? (
+              <h2 className="mb-8 max-w-[18ch] font-serif text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.01em] text-balance max-md:hidden">
+                {copy.title}
+              </h2>
+            ) : null}
             <LeadForm copy={copy} />
           </LeadSheet>
         </div>
