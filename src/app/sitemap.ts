@@ -15,25 +15,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   if (site === "design") {
     return designPageKeys
       .filter((key) => designPages[key].enabled)
-      .map((key) => sitemapEntry(site, designPages[key].href))
-      .concat(sitemapEntry(site, "/privacy"));
+      .flatMap((key) => sitemapEntries(site, designPages[key].href))
+      .concat(sitemapEntries(site, "/privacy"));
   }
 
   if (!indexable) {
     return [];
   }
 
-  return [sitemapEntry(site, "/"), sitemapEntry(site, "/privacy")];
+  return [...sitemapEntries(site, "/"), ...sitemapEntries(site, "/privacy")];
 }
 
-function sitemapEntry(
+function sitemapEntries(
   site: "design" | "cnc",
   href: Pathname,
-): MetadataRoute.Sitemap[number] {
+): MetadataRoute.Sitemap {
   const languages = languageAlternates(site, href);
 
-  return {
-    url: languages["x-default"],
+  return [languages["es-MX"], languages.en].map((url) => ({
+    url,
     alternates: { languages },
-  };
+  }));
 }

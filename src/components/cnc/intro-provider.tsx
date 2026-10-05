@@ -12,6 +12,7 @@ import {
 } from "react";
 
 const INTRO_KEY = "woodax-cnc-intro";
+let introPlaying = false;
 const INTRO_ATTR = "data-cnc-intro";
 
 export type IntroStatus = "play" | "done";
@@ -37,6 +38,7 @@ function subscribe(onStoreChange: () => void) {
 }
 
 function introAlreadySeen() {
+  if (introPlaying) return false;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     return true;
   }
@@ -60,25 +62,6 @@ export function IntroProvider({ children }: { children: ReactNode }) {
   const [dismissed, setDismissed] = useState(false);
   const status: IntroStatus = seen || dismissed ? "done" : "play";
 
-  useEffect(() => {
-    if (status !== "play") {
-      clearIntroAttribute();
-      return;
-    }
-
-    const id = window.setTimeout(() => {
-      try {
-        sessionStorage.setItem(INTRO_KEY, "1");
-      } catch {
-        // Private browsing can reject storage.
-      }
-      clearIntroAttribute();
-      setDismissed(true);
-    }, 1800);
-
-    return () => window.clearTimeout(id);
-  }, [status]);
-
   const skip = useCallback(() => {
     try {
       sessionStorage.setItem(INTRO_KEY, "1");
@@ -88,6 +71,32 @@ export function IntroProvider({ children }: { children: ReactNode }) {
     clearIntroAttribute();
     setDismissed(true);
   }, []);
+
+  useEffect(() => {
+    if (status !== "play") {
+      clearIntroAttribute();
+      return;
+    }
+
+    introPlaying = true;
+    try {
+      sessionStorage.setItem(INTRO_KEY, "1");
+    } catch {
+      // Private browsing can reject storage.
+    }
+
+    const id = window.setTimeout(() => {
+      clearIntroAttribute();
+      setDismissed(true);
+    }, 1800);
+
+    window.addEventListener("click", skip);
+    return () => {
+      introPlaying = false;
+      window.clearTimeout(id);
+      window.removeEventListener("click", skip);
+    };
+  }, [skip, status]);
 
   const value = useMemo(() => ({ status, skip }), [status, skip]);
 

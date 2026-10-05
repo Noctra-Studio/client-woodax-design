@@ -43,6 +43,7 @@ type StoredDraft = {
   contact?: string;
   city?: string;
   consent?: boolean;
+  step?: number;
   startedAt?: number;
   utmSource?: string;
   utmMedium?: string;
@@ -141,7 +142,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
     submitLead,
     initialLeadState,
   );
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState<number | null>(null);
   const [direction, setDirection] = useState(1);
   const [fields, setFields] = useState<LeadFields | null>(null);
   const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
@@ -160,6 +161,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
   const contact = fields?.contact ?? stored?.contact ?? "";
   const city = fields?.city ?? stored?.city ?? "";
   const consent = fields?.consent ?? Boolean(stored?.consent);
+  const currentStep = step ?? (stored?.step === 1 ? 1 : 0);
   const startedAt = snapshot.startedAt;
   const params = new URLSearchParams(snapshot.search);
   const utmSource = params.get("utm_source") ?? stored?.utmSource ?? "";
@@ -173,7 +175,9 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
       ? JSON.stringify(state.fieldErrors)
       : "";
   const visibleStep =
-    optionErrorStamp && optionErrorStamp !== dismissedOptionError ? 0 : step;
+    optionErrorStamp && optionErrorStamp !== dismissedOptionError
+      ? 0
+      : currentStep;
 
   const serverErrors =
     state.status === "error" ? (state.fieldErrors ?? {}) : {};
@@ -193,6 +197,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
         contact,
         city,
         consent,
+        step: currentStep,
         startedAt: Number(startedAt) || Date.now(),
         utmSource,
         utmMedium,
@@ -213,6 +218,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
     contact,
     city,
     consent,
+    currentStep,
     startedAt,
     utmSource,
     utmMedium,

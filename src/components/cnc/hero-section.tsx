@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { animate, motion, useAnimationControls } from "motion/react";
+import { animate } from "motion/react";
 import { useLocale, useTranslations } from "next-intl";
 import { RegistrationMarks } from "@/components/cnc/registration-marks";
 import { HeroMedia } from "@/components/design/hero-media";
@@ -36,20 +36,6 @@ export function HeroSection() {
   const leadUi = useLeadUi();
   const { status, skip } = useIntro();
   const media = heroMedia(siteConfig.cncHero, locale === "en" ? "en" : "es");
-  const copyControls = useAnimationControls();
-
-  useEffect(() => {
-    if (status !== "play") {
-      void copyControls.set({ opacity: 1 });
-      return;
-    }
-
-    void copyControls.set({ opacity: 0 });
-    void copyControls.start({
-      opacity: 1,
-      transition: { duration: 0.5, delay: 0.7, ease: easeOut },
-    });
-  }, [copyControls, status]);
 
   return (
     <section className="relative min-h-[100svh]" aria-labelledby="hero-title">
@@ -85,11 +71,8 @@ export function HeroSection() {
         ))}
       </div>
 
-      <div className="relative z-10 flex min-h-[100svh] flex-col justify-end">
-        <motion.div
-          animate={copyControls}
-          className="w-full"
-        >
+      <div className="relative z-10 flex min-h-[100svh] flex-col pt-24">
+        <div className="mt-auto w-full">
           <div className="mx-auto w-full max-w-[1200px] px-5 pt-28 pb-[calc(10.5rem+env(safe-area-inset-bottom))] md:px-8 md:pt-32 md:pb-28">
             <p className="text-cnc-text text-[13px] font-medium tracking-[0.18em] uppercase">
               {t("eyebrow")}
@@ -97,7 +80,7 @@ export function HeroSection() {
             <h1
               id="hero-title"
               tabIndex={-1}
-              className="text-cnc-text mt-4 max-w-[16ch] scroll-mt-24 text-[clamp(2.5rem,6vw,5rem)] leading-[1.02] font-normal tracking-[-0.02em] text-balance focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cnc-white"
+              className="text-cnc-text focus-visible:outline-cnc-white mt-4 max-w-[16ch] scroll-mt-24 text-[clamp(2.5rem,6vw,5rem)] leading-[1.02] font-normal tracking-[-0.02em] text-balance focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
             >
               {t("headline")}
             </h1>
@@ -122,7 +105,7 @@ export function HeroSection() {
               </Button>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
       {status === "play" ? <CoordinateReadout /> : null}
       {status === "play" ? (

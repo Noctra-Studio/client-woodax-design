@@ -76,6 +76,11 @@ export function LeadSheet({
         onDragEnd={(_event, info) => {
           if (shouldDismiss(info)) onClose();
         }}
+        style={
+          inset > 0
+            ? { bottom: inset, maxHeight: `calc(100dvh - ${inset}px)` }
+            : undefined
+        }
         className={cn(
           "lead-sheet z-50 flex max-h-[90dvh] flex-col outline-none",
           "max-md:fixed max-md:inset-x-0 max-md:bottom-0 max-md:rounded-t-[var(--radius-card)]",
@@ -121,7 +126,6 @@ export function LeadSheet({
         </div>
         <div
           className="overflow-y-auto overscroll-none px-5 pt-2 pb-[max(1.25rem,env(safe-area-inset-bottom))] md:px-8 md:py-8 lg:px-10 lg:py-10"
-          style={inset > 0 ? { paddingBottom: inset + 20 } : undefined}
         >
           {children}
         </div>

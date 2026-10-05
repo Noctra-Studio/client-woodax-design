@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Playfair_Display, Quicksand } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -32,6 +32,11 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+export const viewport: Viewport = {
+  viewportFit: "cover",
+  interactiveWidget: "resizes-content",
+};
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
@@ -51,11 +56,12 @@ export async function generateMetadata({
   const description =
     site === "cnc" ? t("cnc.description") : t("design.description");
 
+  const indexable =
+    clientEnv.NEXT_PUBLIC_APP_ENV === "production" && site === "cnc";
+
   return {
     ...localizedMetadata({ site, locale, title, description }),
-    ...(clientEnv.NEXT_PUBLIC_APP_ENV !== "production"
-      ? { robots: { index: false, follow: false } }
-      : {}),
+    ...(indexable ? {} : { robots: { index: false, follow: false } }),
   };
 }
 

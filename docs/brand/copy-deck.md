@@ -258,8 +258,12 @@ Al lanzar el multipágina se elimina `hero.eyebrow` ("Nuevo sitio en camino"): q
 - home.servicesTeaser.title — ES: Lo que hacemos | EN: What we do
 - home.servicesTeaser.cta — ES: Ver servicios | EN: See services
 - home.aboutTeaser.cta — ES: Conócenos | EN: About us
+- homeCta.title — ES: ¿Tienes un proyecto en mente? | EN: Got a project in mind?
+- homeCta.body — ES: Cuéntanos qué necesitas y te respondemos con los siguientes pasos. | EN: Tell us what you need and we'll get back to you with next steps.
 
 ### Servicios ⚠︎ (descripciones pendientes de aprobación de Adrián)
+
+Bloqueo de lanzamiento: kitchens, closets, custom y commercial se ven en staging. No se publican en producción hasta que Adrián las apruebe.
 - meta.title — ES: Servicios · Woodax Design | EN: Services · Woodax Design
 - meta.description — ES: Cocinas, clósets y vestidores, piezas a medida y mobiliario para negocios en Querétaro, del diseño a la instalación. | EN: Kitchens, closets and walk-ins, custom pieces and furniture for businesses in Querétaro, from design to installation.
 - title (h1) — ES: Lo que diseñamos y fabricamos | EN: What we design and build
