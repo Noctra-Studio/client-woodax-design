@@ -49,16 +49,29 @@ html {
   }
 }
 
+body {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
 body[data-site="design"] {
   background-color: var(--color-woodax-cream);
   color: var(--color-woodax-charcoal);
   color-scheme: light;
+  --nav-sheet-bg: #fbfaf7;
+  --nav-sheet-fg: var(--color-woodax-charcoal);
+  --nav-sheet-border: var(--color-woodax-sand);
+  --nav-sheet-overlay: rgb(63 55 56 / 0.45);
 }
 
 body[data-site="cnc"] {
   background-color: var(--color-cnc-bg);
   color: var(--color-cnc-text);
   color-scheme: dark;
+  --nav-sheet-bg: var(--color-cnc-surface);
+  --nav-sheet-fg: var(--color-cnc-text);
+  --nav-sheet-border: var(--color-cnc-line);
+  --nav-sheet-overlay: rgb(0 0 0 / 0.62);
 }
 
 @keyframes lead-draw-check {
@@ -260,5 +273,79 @@ html[data-cnc-intro="play"] .cnc-logo-stroke {
     transform: none;
     opacity: 1;
     transition: none;
+  }
+}
+
+.nav-sheet-overlay {
+  background-color: var(--nav-sheet-overlay);
+  animation: sheet-fade-in 240ms var(--ease-out);
+}
+
+.nav-sheet-overlay[data-state="closed"] {
+  animation: sheet-fade-out 200ms var(--ease-out);
+}
+
+.nav-sheet-panel {
+  background-color: var(--nav-sheet-bg);
+  color: var(--nav-sheet-fg);
+  border-color: var(--nav-sheet-border);
+}
+
+.nav-sheet-panel[data-state="open"] {
+  animation: sheet-in-right 240ms var(--ease-out);
+}
+
+.nav-sheet-panel[data-state="closed"] {
+  animation: sheet-out-right 200ms var(--ease-out);
+}
+
+@keyframes sheet-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sheet-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes sheet-in-right {
+  from {
+    transform: translate3d(100%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes sheet-out-right {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-sheet-panel[data-state="open"],
+  .nav-sheet-panel[data-state="closed"],
+  .nav-sheet-overlay[data-state="open"],
+  .nav-sheet-overlay[data-state="closed"] {
+    animation-name: sheet-fade-in;
+    animation-duration: 120ms;
+  }
+
+  .nav-sheet-panel[data-state="closed"],
+  .nav-sheet-overlay[data-state="closed"] {
+    animation-name: sheet-fade-out;
   }
 }

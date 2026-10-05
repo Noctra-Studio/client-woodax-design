@@ -16,7 +16,7 @@ export function HeroSection() {
   const t = useTranslations("design.hero");
   const locale = useLocale();
   const leadUi = useLeadUi();
-  const { status } = useIntro();
+  const { status, skip } = useIntro();
   const poster = designGallery[0];
   const onPhoto = Boolean(poster);
   const mediaControls = useAnimationControls();
@@ -124,20 +124,31 @@ export function HeroSection() {
             >
               {t("ctaPrimary")}
             </Button>
-            <Button
-              href="#proyectos"
-              variant={onPhoto ? "design-primary" : "design-secondary"}
-              className={
-                onPhoto
-                  ? "bg-woodax-cream text-woodax-charcoal pointer-fine:hover:bg-woodax-sand focus-visible:outline-woodax-charcoal"
-                  : undefined
-              }
-            >
-              {t("ctaSecondary")}
-            </Button>
+            {designGallery.length > 0 ? (
+              <Button
+                href="#proyectos"
+                variant={onPhoto ? "design-primary" : "design-secondary"}
+                className={
+                  onPhoto
+                    ? "bg-woodax-cream text-woodax-charcoal pointer-fine:hover:bg-woodax-sand focus-visible:outline-woodax-charcoal"
+                    : undefined
+                }
+              >
+                {t("ctaSecondary")}
+              </Button>
+            ) : null}
           </div>
         </motion.div>
       </div>
+      {status === "play" ? (
+        <button
+          type="button"
+          onClick={skip}
+          className="text-woodax-charcoal focus-visible:outline-woodax-charcoal pointer-fine:hover:bg-woodax-sand bg-woodax-cream absolute right-4 bottom-[calc(4.75rem+env(safe-area-inset-bottom))] z-20 inline-flex min-h-11 items-center rounded-full px-4 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:right-8 md:bottom-8"
+        >
+          {t("skipIntro")}
+        </button>
+      ) : null}
     </section>
   );
 }

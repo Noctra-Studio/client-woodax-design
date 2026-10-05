@@ -21,6 +21,8 @@ export async function ProjectsSection({
 }: {
   instagramUrl?: string;
 }) {
+  if (designGallery.length === 0) return null;
+
   const t = await getTranslations("design.projects");
   const requested = await getLocale();
   const locale = hasLocale(routing.locales, requested) ? requested : "es";

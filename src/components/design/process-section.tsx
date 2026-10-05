@@ -9,6 +9,7 @@ export async function ProcessSection() {
   return (
     <Reveal>
       <section
+        id="proceso"
         aria-labelledby="process-title"
         className="scroll-mt-24 px-5 py-16 md:px-8 md:py-24 lg:py-40"
       >

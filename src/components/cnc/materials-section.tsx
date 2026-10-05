@@ -65,6 +65,7 @@ export function MaterialsSection() {
 
   return (
     <section
+      id="materiales"
       aria-labelledby="materials-title"
       className="relative scroll-mt-24 px-5 py-16 md:px-8 md:py-24 lg:py-32"
     >

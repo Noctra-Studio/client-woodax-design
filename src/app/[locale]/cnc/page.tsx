@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Image from "next/image";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { CncLogo } from "@/components/brand/cnc-logo";
@@ -8,7 +9,8 @@ import { IntroProvider } from "@/components/cnc/intro-provider";
 import { MaterialsSection } from "@/components/cnc/materials-section";
 import { ProcessSection } from "@/components/cnc/process-section";
 import { SiteFooter } from "@/components/cnc/site-footer";
-import { SiteHeader } from "@/components/cnc/site-header";
+import { SiteNav } from "@/components/site/site-nav";
+import { brandAssets } from "@/lib/brand-assets";
 import { WaysSection } from "@/components/cnc/ways-section";
 import { WorkSection } from "@/components/cnc/work-section";
 import { cncGallery } from "@/content/cnc-gallery";
@@ -76,6 +78,7 @@ export default async function CncPage({
   }
 
   const t = await getTranslations("cnc");
+  const nav = await getTranslations("nav");
   const design = await getTranslations("design");
   const copy = await getLeadCopy("cnc");
   const jsonLd = cncJsonLd(t("title"), design("title"));
@@ -95,14 +98,41 @@ export default async function CncPage({
       </a>
       <LeadUiProvider>
         <IntroProvider>
-          <SiteHeader
+          <SiteNav
+            variant="cnc"
+            homeLabel={t("title")}
+            links={[
+              { id: "servicio", label: nav("cnc.how") },
+              { id: "materiales", label: nav("cnc.materials") },
+              { id: "contacto", label: nav("cnc.contact") },
+            ]}
+            ctaLabel={nav("cnc.cta")}
+            menuLabel={nav("menu")}
+            closeLabel={nav("close")}
+            languageLabel={nav("language")}
+            siblingHref={clientEnv.NEXT_PUBLIC_DESIGN_URL}
+            siblingLabel={nav("sibling.toDesign")}
+            instagramUrl={siteConfig.instagramUrl}
+            instagramLabel={nav("instagram")}
             logo={
               <CncLogo
                 priority={cncGallery.length === 0}
-                className="h-9 w-auto"
+                className="h-7 w-auto"
               />
             }
-            skipLabel={t("hero.skipIntro")}
+            logoCompact={
+              brandAssets.cncMark ? (
+                <Image
+                  src="/brand/cnc-mark.svg"
+                  alt=""
+                  width={24}
+                  height={24}
+                  className="size-6"
+                />
+              ) : (
+                <CncLogo className="h-[22px] w-auto" />
+              )
+            }
           />
           <main className="flex flex-1 flex-col overflow-x-clip pb-28 md:pb-0">
             <HeroSection />

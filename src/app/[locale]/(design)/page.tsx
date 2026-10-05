@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Image from "next/image";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { WoodaxLogo } from "@/components/brand/woodax-logo";
@@ -8,7 +9,8 @@ import { IntroProvider } from "@/components/design/intro-provider";
 import { ProcessSection } from "@/components/design/process-section";
 import { ProjectsSection } from "@/components/design/projects-section";
 import { SiteFooter } from "@/components/design/site-footer";
-import { SiteHeader } from "@/components/design/site-header";
+import { SiteNav } from "@/components/site/site-nav";
+import { brandAssets } from "@/lib/brand-assets";
 import { designGallery } from "@/content/design-gallery";
 import { siteConfig } from "@/content/site-config";
 import { LeadCapture } from "@/features/leads/components/lead-capture";
@@ -72,6 +74,7 @@ export default async function DesignPage({
   }
 
   const t = await getTranslations("design");
+  const nav = await getTranslations("nav");
   const copy = await getLeadCopy("design");
   const jsonLd = designJsonLd(t("title"));
 
@@ -89,14 +92,43 @@ export default async function DesignPage({
       </a>
       <LeadUiProvider>
         <IntroProvider>
-          <SiteHeader
+          <SiteNav
+            variant="design"
+            homeLabel={t("title")}
+            links={[
+              ...(designGallery.length > 0
+                ? [{ id: "proyectos", label: nav("design.projects") }]
+                : []),
+              { id: "proceso", label: nav("design.process") },
+              { id: "contacto", label: nav("design.contact") },
+            ]}
+            ctaLabel={nav("design.cta")}
+            menuLabel={nav("menu")}
+            closeLabel={nav("close")}
+            languageLabel={nav("language")}
+            siblingHref={clientEnv.NEXT_PUBLIC_CNC_URL}
+            siblingLabel={nav("sibling.toCnc")}
+            instagramUrl={siteConfig.instagramUrl}
+            instagramLabel={nav("instagram")}
             logo={
               <WoodaxLogo
                 priority={designGallery.length === 0}
-                className="h-9 w-auto"
+                className="h-7 w-auto"
               />
             }
-            skipLabel={t("hero.skipIntro")}
+            logoCompact={
+              brandAssets.woodaxMark ? (
+                <Image
+                  src="/brand/woodax-mark.svg"
+                  alt=""
+                  width={24}
+                  height={24}
+                  className="size-6"
+                />
+              ) : (
+                <WoodaxLogo className="h-[22px] w-auto" />
+              )
+            }
           />
           <main className="flex flex-1 flex-col pb-28 md:pb-0">
             <HeroSection />

@@ -5,6 +5,28 @@
     "notFoundDescription": "The page you are looking for does not exist.",
     "backHome": "Back to home"
   },
+  "nav": {
+    "menu": "Menu",
+    "close": "Close",
+    "design": {
+      "projects": "Projects",
+      "process": "Process",
+      "contact": "Contact",
+      "cta": "Tell us about your project"
+    },
+    "cnc": {
+      "how": "Service",
+      "materials": "Materials",
+      "contact": "Contact",
+      "cta": "Get a quote"
+    },
+    "sibling": {
+      "toCnc": "CNC by Woodax Design",
+      "toDesign": "Woodax Design"
+    },
+    "instagram": "Instagram",
+    "language": "Language"
+  },
   "design": {
     "title": "Woodax Design",
     "meta": {

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
-import { motion, useAnimationControls } from "motion/react";
+import { useEffect, useState } from "react";
+import { animate, motion, useAnimationControls } from "motion/react";
 import { useLocale, useTranslations } from "next-intl";
 import { RegistrationMarks } from "@/components/cnc/registration-marks";
 import { HeroMedia } from "@/components/design/hero-media";
@@ -24,7 +24,7 @@ const corners = [
   },
   {
     place:
-      "right-8 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] text-right md:right-12 md:bottom-10",
+      "right-8 bottom-[calc(8.75rem+env(safe-area-inset-bottom))] text-right md:right-12 md:bottom-24",
     x: "1.000",
     y: "1.000",
   },
@@ -34,7 +34,7 @@ export function HeroSection() {
   const t = useTranslations("cnc.hero");
   const locale = useLocale();
   const leadUi = useLeadUi();
-  const { status } = useIntro();
+  const { status, skip } = useIntro();
   const poster = cncGallery[0];
   const copyControls = useAnimationControls();
 
@@ -119,6 +119,43 @@ export function HeroSection() {
           </div>
         </motion.div>
       </div>
+      {status === "play" ? <CoordinateReadout /> : null}
+      {status === "play" ? (
+        <button
+          type="button"
+          onClick={skip}
+          className="border-cnc-muted text-cnc-text focus-visible:outline-cnc-white pointer-fine:hover:border-cnc-text pointer-fine:hover:bg-cnc-surface bg-cnc-bg absolute right-4 bottom-[calc(4.75rem+env(safe-area-inset-bottom))] z-20 inline-flex min-h-11 items-center rounded-[4px] border px-4 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:right-8 md:bottom-8"
+        >
+          {t("skipIntro")}
+        </button>
+      ) : null}
     </section>
+  );
+}
+
+function CoordinateReadout() {
+  const t = useTranslations("cnc.hero");
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const controls = animate(0, 1, {
+      duration: 0.9,
+      ease: easeOut,
+      onUpdate: (value) => setProgress(value),
+    });
+    return () => controls.stop();
+  }, []);
+
+  const value = progress.toFixed(3);
+
+  return (
+    <p
+      aria-hidden="true"
+      className="text-cnc-muted absolute top-24 left-1/2 z-10 -translate-x-1/2 font-mono text-sm tracking-[0.08em] uppercase tabular-nums"
+    >
+      {t("axisX")} {value}
+      <span className="px-2">{t("axisY")}</span>
+      {value}
+    </p>
   );
 }
