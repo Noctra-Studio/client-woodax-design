@@ -1,34 +1,39 @@
 import type { MetadataRoute } from "next";
 import { headers } from "next/headers";
+import { designPageKeys, designPages } from "@/content/design-pages";
+import type { Pathname } from "@/i18n/routing";
 import { clientEnv } from "@/lib/env";
-import { absoluteLocalizedUrl, languageAlternates } from "@/lib/seo";
-import { getSite } from "@/lib/site";
+import { languageAlternates } from "@/lib/seo";
+import { getSite, hostFromHeaders } from "@/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  if (clientEnv.NEXT_PUBLIC_APP_ENV !== "production") {
+  const headerStore = await headers();
+  const site = getSite(hostFromHeaders(headerStore));
+  const indexable =
+    clientEnv.NEXT_PUBLIC_APP_ENV === "production" && site === "cnc";
+
+  if (site === "design") {
+    return designPageKeys
+      .filter((key) => designPages[key].enabled)
+      .map((key) => sitemapEntry(site, designPages[key].href))
+      .concat(sitemapEntry(site, "/privacy"));
+  }
+
+  if (!indexable) {
     return [];
   }
 
-  const headerStore = await headers();
-  const host =
-    headerStore.get("x-forwarded-host") ?? headerStore.get("host") ?? "";
-  const site = getSite(host);
-  const languages = languageAlternates(site);
+  return [sitemapEntry(site, "/"), sitemapEntry(site, "/privacy")];
+}
 
-  const privacyLanguages = {
-    "es-MX": absoluteLocalizedUrl(site, "es", "/privacidad"),
-    en: absoluteLocalizedUrl(site, "en", "/privacy"),
-    "x-default": absoluteLocalizedUrl(site, "es", "/privacidad"),
+function sitemapEntry(
+  site: "design" | "cnc",
+  href: Pathname,
+): MetadataRoute.Sitemap[number] {
+  const languages = languageAlternates(site, href);
+
+  return {
+    url: languages["x-default"],
+    alternates: { languages },
   };
-
-  return [
-    {
-      url: languages["x-default"],
-      alternates: { languages },
-    },
-    {
-      url: privacyLanguages["x-default"],
-      alternates: { languages: privacyLanguages },
-    },
-  ];
 }

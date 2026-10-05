@@ -33,6 +33,7 @@ export type CncHero =
 export type SiteConfig = {
   instagramUrl?: string;
   instagramHandle?: string;
+  facebookUrl?: string;
   cncHero: CncHero;
   cncSpecs?: {
     maxThicknessByMaterial?: Partial<Record<CncMaterial, string>>;

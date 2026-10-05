@@ -24,6 +24,8 @@ import { localizedMetadata, siteOrigin } from "@/lib/seo";
 const introBoot = `(function(){try{if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;if(sessionStorage.getItem("woodax-cnc-intro")==="1")return;document.documentElement.setAttribute("data-cnc-intro","play");}catch(e){}})();`;
 
 export const viewport: Viewport = {
+  viewportFit: "cover",
+  interactiveWidget: "resizes-content",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#16171A" },
     { media: "(prefers-color-scheme: dark)", color: "#16171A" },
@@ -101,9 +103,9 @@ export default async function CncPage({
             variant="cnc"
             homeLabel={t("title")}
             links={[
-              { id: "servicio", label: nav("cnc.how") },
-              { id: "materiales", label: nav("cnc.materials") },
-              { id: "contacto", label: nav("cnc.contact") },
+              { type: "anchor", id: "servicio", label: nav("cnc.how") },
+              { type: "anchor", id: "materiales", label: nav("cnc.materials") },
+              { type: "anchor", id: "contacto", label: nav("cnc.contact") },
             ]}
             ctaLabel={nav("cnc.cta")}
             menuLabel={nav("menu")}
@@ -113,6 +115,8 @@ export default async function CncPage({
             siblingLabel={nav("sibling.toDesign")}
             instagramUrl={siteConfig.instagramUrl}
             instagramLabel={nav("instagram")}
+            facebookUrl={siteConfig.facebookUrl}
+            facebookLabel={nav("facebook")}
             logo={
               <CncLogo
                 priority={cncGallery.length === 0}
@@ -127,7 +131,7 @@ export default async function CncPage({
               />
             }
           />
-          <main className="flex flex-1 flex-col overflow-x-clip pb-28 md:pb-0">
+          <main className="flex min-w-0 flex-1 flex-col overflow-x-clip pb-28 md:pb-0">
             <HeroSection />
             <WaysSection />
             <MaterialsSection />

@@ -9,6 +9,11 @@
     "menu": "Menú",
     "close": "Cerrar",
     "design": {
+      "home": "Inicio",
+      "homeAria": "Woodax Design, ir al inicio",
+      "about": "Nosotros",
+      "services": "Servicios",
+      "clients": "Clientes",
       "projects": "Proyectos",
       "process": "Proceso",
       "contact": "Contacto",
@@ -25,6 +30,7 @@
       "toDesign": "Woodax Design"
     },
     "instagram": "Instagram",
+    "facebook": "Woodax en Facebook",
     "language": "Idioma"
   },
   "design": {
@@ -123,6 +129,37 @@
       "cncLink": "¿Necesitas corte CNC? Conoce CNC by Woodax Design",
       "location": "Querétaro, México",
       "privacy": "Aviso de privacidad"
+    },
+    "homeCta": {
+      "title": "TODO(copy)",
+      "body": "TODO(copy)"
+    },
+    "services": {
+      "meta": {
+        "title": "Servicios · Woodax Design",
+        "description": "Cocinas, clósets y vestidores, piezas a medida y mobiliario para negocios en Querétaro, del diseño a la instalación."
+      },
+      "title": "Lo que diseñamos y fabricamos",
+      "intro": "Cada proyecto se diseña contigo y se fabrica a la medida de tu espacio.",
+      "kitchens": "Cocinas — Pensadas para cómo cocinas y convives, con el espacio de guardado justo donde lo necesitas.",
+      "closets": "Clósets y vestidores — Orden a la medida de lo que guardas, aprovechando cada centímetro.",
+      "custom": "Piezas a medida — Muebles únicos para un rincón, una pared o una idea que no encuentras en tienda.",
+      "commercial": "Espacios comerciales — Mobiliario para oficinas, despachos, cafeterías y coworkings que refleja tu marca.",
+      "cta": "Cuéntanos tu proyecto"
+    },
+    "contact": {
+      "meta": {
+        "title": "Contacto · Woodax Design",
+        "description": "Cuéntanos tu proyecto de carpintería a medida en Querétaro y te contactamos para platicar los detalles."
+      },
+      "title": "Hablemos de tu espacio",
+      "intro": "Cuéntanos qué tienes en mente y te contactamos para platicar los detalles.",
+      "channels": {
+        "title": "Otras formas de contactarnos",
+        "email": "Correo",
+        "whatsapp": "WhatsApp",
+        "social": "Síguenos"
+      }
     }
   },
   "cnc": {

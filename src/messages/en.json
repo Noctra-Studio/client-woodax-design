@@ -9,6 +9,11 @@
     "menu": "Menu",
     "close": "Close",
     "design": {
+      "home": "Home",
+      "homeAria": "Woodax Design, go to home",
+      "about": "About",
+      "services": "Services",
+      "clients": "Clients",
       "projects": "Projects",
       "process": "Process",
       "contact": "Contact",
@@ -25,6 +30,7 @@
       "toDesign": "Woodax Design"
     },
     "instagram": "Instagram",
+    "facebook": "Woodax on Facebook",
     "language": "Language"
   },
   "design": {
@@ -123,6 +129,37 @@
       "cncLink": "Need CNC cutting? Meet CNC by Woodax Design",
       "location": "Querétaro, Mexico",
       "privacy": "Privacy notice"
+    },
+    "homeCta": {
+      "title": "TODO(copy)",
+      "body": "TODO(copy)"
+    },
+    "services": {
+      "meta": {
+        "title": "Services · Woodax Design",
+        "description": "Kitchens, closets and walk-ins, custom pieces and furniture for businesses in Querétaro, from design to installation."
+      },
+      "title": "What we design and build",
+      "intro": "Every project is designed with you and built to fit your space.",
+      "kitchens": "Kitchens — Designed around how you cook and gather, with storage exactly where you need it.",
+      "closets": "Closets and walk-ins — Storage built around what you keep, making the most of every inch.",
+      "custom": "Custom pieces — One-of-a-kind furniture for a corner, a wall or an idea you can't find in stores.",
+      "commercial": "Commercial spaces — Furniture for offices, firms, cafés and coworking spaces that reflects your brand.",
+      "cta": "Tell us about your project"
+    },
+    "contact": {
+      "meta": {
+        "title": "Contact · Woodax Design",
+        "description": "Tell us about your bespoke carpentry project in Querétaro and we'll reach out to talk through the details."
+      },
+      "title": "Let's talk about your space",
+      "intro": "Tell us what you have in mind and we'll reach out to talk through the details.",
+      "channels": {
+        "title": "Other ways to reach us",
+        "email": "Email",
+        "whatsapp": "WhatsApp",
+        "social": "Follow us"
+      }
     }
   },
   "cnc": {

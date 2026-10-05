@@ -6,7 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { requestSite } from "@/lib/request-site";
-import { absoluteLocalizedUrl } from "@/lib/seo";
+import { localizedMetadata } from "@/lib/seo";
 
 const contactEmail = "hello@woodax.design";
 
@@ -21,20 +21,13 @@ export async function generatePrivacyMetadata({
     : routing.defaultLocale;
   const site = await requestSite();
   const t = await getTranslations({ locale, namespace: "privacy" });
-  const pathname = locale === "en" ? "/privacy" : "/privacidad";
-
-  return {
+  return localizedMetadata({
+    site,
+    locale,
     title: t("title"),
     description: t("intro"),
-    alternates: {
-      canonical: absoluteLocalizedUrl(site, locale, pathname),
-      languages: {
-        "es-MX": absoluteLocalizedUrl(site, "es", "/privacidad"),
-        en: absoluteLocalizedUrl(site, "en", "/privacy"),
-        "x-default": absoluteLocalizedUrl(site, "es", "/privacidad"),
-      },
-    },
-  };
+    href: "/privacy",
+  });
 }
 
 export async function PrivacyNotice({

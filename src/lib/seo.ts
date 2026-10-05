@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { getPathname } from "@/i18n/navigation";
+import { routing, type Locale, type Pathname } from "@/i18n/routing";
 import { clientEnv } from "@/lib/env";
 import type { Site } from "@/lib/site";
-import { routing, type Locale } from "@/i18n/routing";
 
 const hreflang = {
   es: "es-MX",
@@ -32,21 +33,27 @@ export function localizedPath(locale: Locale, pathname = "/"): string {
   return `/${locale}${suffix}`;
 }
 
+export function absoluteUrl(site: Site, pathname: string): string {
+  const origin = siteOrigin(site);
+  return pathname === "/" ? origin : `${origin}${pathname}`;
+}
+
 export function absoluteLocalizedUrl(
   site: Site,
   locale: Locale,
   pathname = "/",
 ): string {
-  const path = localizedPath(locale, pathname);
-  const origin = siteOrigin(site);
-  return path === "/" ? origin : `${origin}${path}`;
+  return absoluteUrl(site, localizedPath(locale, pathname));
 }
 
-export function languageAlternates(site: Site, pathname = "/") {
+export function languageAlternates(site: Site, href: Pathname = "/") {
+  const esPath = getPathname({ href, locale: "es" });
+  const enPath = getPathname({ href, locale: "en" });
+
   return {
-    [hreflang.es]: absoluteLocalizedUrl(site, "es", pathname),
-    [hreflang.en]: absoluteLocalizedUrl(site, "en", pathname),
-    "x-default": absoluteLocalizedUrl(site, routing.defaultLocale, pathname),
+    [hreflang.es]: absoluteUrl(site, esPath),
+    [hreflang.en]: absoluteUrl(site, enPath),
+    "x-default": absoluteUrl(site, esPath),
   };
 }
 
@@ -55,13 +62,15 @@ export function localizedMetadata({
   locale,
   title,
   description,
+  href = "/",
 }: {
   site: Site;
   locale: Locale;
   title: string;
   description: string;
+  href?: Pathname;
 }): Metadata {
-  const canonical = absoluteLocalizedUrl(site, locale);
+  const canonical = absoluteUrl(site, getPathname({ href, locale }));
   const currentOgLocale = ogLocale[locale];
   const alternateOgLocale = locale === "es" ? ogLocale.en : ogLocale.es;
 
@@ -71,7 +80,7 @@ export function localizedMetadata({
     description,
     alternates: {
       canonical,
-      languages: languageAlternates(site),
+      languages: languageAlternates(site, href),
     },
     openGraph: {
       title,

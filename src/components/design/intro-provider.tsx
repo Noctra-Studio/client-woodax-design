@@ -10,8 +10,10 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react";
+import { usePathname } from "@/i18n/navigation";
 
 const INTRO_KEY = "woodax-design-intro";
+let introPlaying = false;
 
 export type IntroStatus = "play" | "done";
 
@@ -36,6 +38,7 @@ function subscribe(onStoreChange: () => void) {
 }
 
 function introAlreadySeen() {
+  if (introPlaying) return false;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
     return true;
   try {
@@ -50,22 +53,12 @@ function useIntroSeen() {
 }
 
 export function IntroProvider({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  const onHome = pathname === "/";
   const seen = useIntroSeen();
   const [dismissed, setDismissed] = useState(false);
-  const status: IntroStatus = seen || dismissed ? "done" : "play";
-
-  useEffect(() => {
-    if (status !== "play") return;
-    const id = window.setTimeout(() => {
-      try {
-        sessionStorage.setItem(INTRO_KEY, "1");
-      } catch {
-        // Private browsing can reject storage.
-      }
-      setDismissed(true);
-    }, 1800);
-    return () => window.clearTimeout(id);
-  }, [status]);
+  const status: IntroStatus =
+    !onHome || seen || dismissed ? "done" : "play";
 
   const skip = useCallback(() => {
     try {
@@ -75,6 +68,27 @@ export function IntroProvider({ children }: { children: ReactNode }) {
     }
     setDismissed(true);
   }, []);
+
+  useEffect(() => {
+    if (status !== "play") return;
+    introPlaying = true;
+    try {
+      sessionStorage.setItem(INTRO_KEY, "1");
+    } catch {
+      // Private browsing can reject storage.
+    }
+
+    const id = window.setTimeout(() => {
+      setDismissed(true);
+    }, 1800);
+
+    window.addEventListener("click", skip);
+    return () => {
+      introPlaying = false;
+      window.clearTimeout(id);
+      window.removeEventListener("click", skip);
+    };
+  }, [skip, status]);
 
   const value = useMemo(() => ({ status, skip }), [status, skip]);
 

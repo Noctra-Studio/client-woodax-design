@@ -4,6 +4,8 @@ import type {
   ButtonHTMLAttributes,
   ReactNode,
 } from "react";
+import { Link } from "@/i18n/navigation";
+import type { Pathname } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 
 const variants = {
@@ -60,6 +62,15 @@ export function Button({
   );
 
   if ("href" in props && typeof props.href === "string") {
+    if (isPathname(props.href)) {
+      const { href, ...linkProps } = props;
+      return (
+        <Link href={href} className={classes} {...linkProps}>
+          {content}
+        </Link>
+      );
+    }
+
     return (
       <a className={classes} {...props}>
         {content}
@@ -71,5 +82,16 @@ export function Button({
     <button type={props.type ?? "button"} className={classes} {...props}>
       {content}
     </button>
+  );
+}
+
+function isPathname(href: string): href is Pathname {
+  return (
+    href === "/" ||
+    href === "/about" ||
+    href === "/services" ||
+    href === "/clients" ||
+    href === "/contact" ||
+    href === "/privacy"
   );
 }
