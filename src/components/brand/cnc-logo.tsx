@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
+import { brandAssets } from "@/lib/brand-assets";
 
 type LogoProps = {
   className?: string;
@@ -11,10 +12,10 @@ export async function CncLogo({ className, priority = false }: LogoProps) {
 
   return (
     <Image
-      src="/brand/cnc-logo.svg"
+      src={brandAssets.cnc.logo}
       alt={t("title")}
-      width={160}
-      height={40}
+      width={1787}
+      height={733}
       preload={priority}
       className={className}
     />

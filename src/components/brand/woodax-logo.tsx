@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
+import { brandAssets } from "@/lib/brand-assets";
 
 type LogoProps = {
   className?: string;
@@ -11,10 +12,10 @@ export async function WoodaxLogo({ className, priority = false }: LogoProps) {
 
   return (
     <Image
-      src="/brand/woodax-logo.svg"
+      src={brandAssets.design.logo}
       alt={t("title")}
-      width={206}
-      height={80}
+      width={3000}
+      height={1500}
       preload={priority}
       className={className}
     />

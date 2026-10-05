@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import Image from "next/image";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { BrandIcon } from "@/components/brand/brand-icon";
 import { WoodaxLogo } from "@/components/brand/woodax-logo";
 import { AudienceSection } from "@/components/design/audience-section";
 import { HeroSection } from "@/components/design/hero-section";
@@ -10,7 +10,6 @@ import { ProcessSection } from "@/components/design/process-section";
 import { ProjectsSection } from "@/components/design/projects-section";
 import { SiteFooter } from "@/components/design/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
-import { brandAssets } from "@/lib/brand-assets";
 import { designGallery } from "@/content/design-gallery";
 import { siteConfig } from "@/content/site-config";
 import { LeadCapture } from "@/features/leads/components/lead-capture";
@@ -117,17 +116,11 @@ export default async function DesignPage({
               />
             }
             logoCompact={
-              brandAssets.woodaxMark ? (
-                <Image
-                  src="/brand/woodax-mark.svg"
-                  alt=""
-                  width={24}
-                  height={24}
-                  className="size-6"
-                />
-              ) : (
-                <WoodaxLogo className="h-[22px] w-auto" />
-              )
+              <BrandIcon
+                variant="design"
+                priority={designGallery.length === 0}
+                className="h-7 w-auto"
+              />
             }
           />
           <main className="flex flex-1 flex-col pb-28 md:pb-0">

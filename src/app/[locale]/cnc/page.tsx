@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import Image from "next/image";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { BrandIcon } from "@/components/brand/brand-icon";
 import { CncLogo } from "@/components/brand/cnc-logo";
 import { AudienceSection } from "@/components/cnc/audience-section";
 import { HeroSection } from "@/components/cnc/hero-section";
@@ -10,7 +10,6 @@ import { MaterialsSection } from "@/components/cnc/materials-section";
 import { ProcessSection } from "@/components/cnc/process-section";
 import { SiteFooter } from "@/components/cnc/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
-import { brandAssets } from "@/lib/brand-assets";
 import { WaysSection } from "@/components/cnc/ways-section";
 import { WorkSection } from "@/components/cnc/work-section";
 import { cncGallery } from "@/content/cnc-gallery";
@@ -121,17 +120,11 @@ export default async function CncPage({
               />
             }
             logoCompact={
-              brandAssets.cncMark ? (
-                <Image
-                  src="/brand/cnc-mark.svg"
-                  alt=""
-                  width={24}
-                  height={24}
-                  className="size-6"
-                />
-              ) : (
-                <CncLogo className="h-[22px] w-auto" />
-              )
+              <BrandIcon
+                variant="cnc"
+                priority={cncGallery.length === 0}
+                className="h-7 w-auto"
+              />
             }
           />
           <main className="flex flex-1 flex-col overflow-x-clip pb-28 md:pb-0">

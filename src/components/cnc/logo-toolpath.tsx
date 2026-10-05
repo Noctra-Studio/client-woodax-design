@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { brandAssets } from "@/lib/brand-assets";
 
 type LogoPaths = {
   viewBox: string;
@@ -13,7 +14,7 @@ export function LogoToolpath() {
   useEffect(() => {
     const controller = new AbortController();
 
-    fetch("/brand/cnc-logo.svg", { signal: controller.signal })
+    fetch(brandAssets.cnc.logo, { signal: controller.signal })
       .then((response) => (response.ok ? response.text() : null))
       .then((svg) => {
         if (!svg) return;
