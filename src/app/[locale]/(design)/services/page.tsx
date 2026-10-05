@@ -4,7 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ProcessSection } from "@/components/design/process-section";
 import { Button } from "@/components/ui/button";
 import { routing, type Locale } from "@/i18n/routing";
-import { clientEnv } from "@/lib/env";
+import { requestCncHomeUrl } from "@/lib/request-site";
 import { localizedMetadata } from "@/lib/seo";
 
 const serviceKeys = ["kitchens", "closets", "custom", "commercial"] as const;
@@ -37,14 +37,18 @@ export default async function ServicesPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+  const { locale: requested } = await params;
+  const locale: Locale = hasLocale(routing.locales, requested)
+    ? requested
+    : routing.defaultLocale;
 
-  if (hasLocale(routing.locales, locale)) {
-    setRequestLocale(locale);
+  if (hasLocale(routing.locales, requested)) {
+    setRequestLocale(requested);
   }
 
   const t = await getTranslations("design.services");
   const footer = await getTranslations("design.footer");
+  const cncUrl = await requestCncHomeUrl(locale);
 
   return (
     <main className="flex flex-1 flex-col">
@@ -93,7 +97,7 @@ export default async function ServicesPage({
       <section className="px-5 pb-16 md:px-8 md:pb-24">
         <div className="mx-auto flex w-full max-w-[1200px] flex-col items-start gap-6">
           <a
-            href={clientEnv.NEXT_PUBLIC_CNC_URL}
+            href={cncUrl}
             className="focus-visible:outline-woodax-charcoal inline-flex min-h-11 max-w-[62ch] items-center underline decoration-current/40 underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 pointer-fine:hover:decoration-current"
           >
             {footer("cncLink")}

@@ -1,13 +1,14 @@
 import createMiddleware from "next-intl/middleware";
 import { NextResponse, type NextRequest } from "next/server";
 import { routing, type Locale } from "@/i18n/routing";
-import { clientEnv } from "@/lib/env";
 import {
   allowsPreviewSiteOverride,
+  cncRedirectUrl,
   hostFromHeaders,
   parseSite,
   PREVIEW_SITE_COOKIE,
   PREVIEW_SITE_HEADER,
+  publicOrigin,
   resolveSite,
   type Site,
 } from "@/lib/site";
@@ -60,9 +61,12 @@ function redirectDesignCncPath(request: NextRequest) {
   const destinationPath = cncPublicPath(request.nextUrl.pathname);
   if (!destinationPath) return null;
 
-  const destination = new URL(destinationPath, clientEnv.NEXT_PUBLIC_CNC_URL);
-  destination.search = request.nextUrl.search;
-  return NextResponse.redirect(destination, 301);
+  const host = hostFromHeaders(request.headers);
+  const origin = publicOrigin(request.headers) || request.nextUrl.origin;
+  return NextResponse.redirect(
+    cncRedirectUrl(host, origin, destinationPath, request.nextUrl.search),
+    301,
+  );
 }
 
 function cncPublicPath(pathname: string): string | null {

@@ -21,6 +21,7 @@
     },
     "cnc": {
       "how": "Service",
+      "capabilities": "Capabilities",
       "materials": "Materials",
       "contact": "Contact",
       "cta": "Get a quote"
@@ -32,6 +33,13 @@
     "instagram": "Instagram",
     "facebook": "Woodax on Facebook",
     "language": "Language"
+  },
+  "siteFooter": {
+    "navAria": "Navigation",
+    "developedBy": "Developed by",
+    "developedByAria": "Developed by Noctra Studio",
+    "instagramAria": "Woodax on Instagram",
+    "facebookAria": "Woodax on Facebook"
   },
   "design": {
     "title": "Woodax Design",
@@ -128,7 +136,11 @@
     "footer": {
       "cncLink": "Need CNC cutting? Meet CNC by Woodax Design",
       "location": "Querétaro, Mexico",
-      "privacy": "Privacy notice"
+      "privacy": "Privacy notice",
+      "description": "Custom carpentry for spaces and one-of-a-kind pieces, in Querétaro.",
+      "sibling": "CNC cutting and router rental",
+      "email": "hello@woodax.design",
+      "copyright": "© {year} Woodax Design"
     },
     "homeCta": {
       "title": "Got a project in mind?",
@@ -268,7 +280,28 @@
     "footer": {
       "designLink": "Bespoke furniture and spaces → Woodax Design",
       "location": "Querétaro, Mexico",
-      "privacy": "Privacy notice"
+      "privacy": "Privacy notice",
+      "description": "CNC cutting and router rental for workshops, sign makers and industry.",
+      "sibling": "Custom furniture and spaces",
+      "email": "cnc@woodax.design",
+      "copyright": "© {year} CNC by Woodax Design"
+    },
+    "capabilities": {
+      "title": "What the machine can do",
+      "area": "Work area",
+      "areaValue": "{width} × {length} mm",
+      "thicknessValue": "{min}–{max} mm",
+      "note": "Project doesn't fit? Write to us and we'll take a look.",
+      "materials": {
+        "wood": "Wood",
+        "mdf": "MDF",
+        "melamine": "melamine",
+        "plywood": "plywood",
+        "acrylic": "acrylic",
+        "plastic": "plastic",
+        "corian": "Corian",
+        "aluminum": "Aluminum"
+      }
     }
   },
   "contact": {

@@ -14,8 +14,8 @@ export async function WoodaxLogo({ className, priority = false }: LogoProps) {
     <Image
       src={brandAssets.design.logo}
       alt={t("title")}
-      width={3000}
-      height={1500}
+      width={1636}
+      height={514}
       preload={priority}
       className={className}
     />

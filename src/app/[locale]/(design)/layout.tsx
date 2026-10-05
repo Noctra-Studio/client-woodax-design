@@ -5,13 +5,13 @@ import { BrandIcon } from "@/components/brand/brand-icon";
 import { WoodaxLogo } from "@/components/brand/woodax-logo";
 import { DesignFrame } from "@/components/design/design-frame";
 import { IntroProvider } from "@/components/design/intro-provider";
-import { SiteFooter } from "@/components/design/site-footer";
+import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav, type SiteNavLink } from "@/components/site/site-nav";
 import { designGallery } from "@/content/design-gallery";
 import { designNavKeys, designPages } from "@/content/design-pages";
-import { siteConfig } from "@/content/site-config";
-import { routing } from "@/i18n/routing";
-import { clientEnv } from "@/lib/env";
+import { publishedSocialUrl, siteConfig } from "@/content/site-config";
+import { routing, type Locale } from "@/i18n/routing";
+import { requestCncHomeUrl } from "@/lib/request-site";
 
 export const viewport: Viewport = {
   viewportFit: "cover",
@@ -35,8 +35,12 @@ export default async function DesignLayout({
     setRequestLocale(locale);
   }
 
+  const activeLocale: Locale = hasLocale(routing.locales, locale)
+    ? locale
+    : routing.defaultLocale;
   const t = await getTranslations("design");
   const nav = await getTranslations("nav");
+  const cncUrl = await requestCncHomeUrl(activeLocale);
   const links: SiteNavLink[] = designNavKeys
     .filter((key) => designPages[key].enabled)
     .map((key) => ({
@@ -62,16 +66,16 @@ export default async function DesignLayout({
         menuLabel={nav("menu")}
         closeLabel={nav("close")}
         languageLabel={nav("language")}
-        siblingHref={clientEnv.NEXT_PUBLIC_CNC_URL}
+        siblingHref={cncUrl}
         siblingLabel={nav("sibling.toCnc")}
-        instagramUrl={siteConfig.instagramUrl}
+        instagramUrl={publishedSocialUrl(siteConfig.instagramUrl)}
         instagramLabel={nav("instagram")}
-        facebookUrl={siteConfig.facebookUrl}
+        facebookUrl={publishedSocialUrl(siteConfig.facebookUrl)}
         facebookLabel={nav("facebook")}
         logo={
           <WoodaxLogo
             priority={designGallery.length === 0}
-            className="h-7 w-auto"
+            className="h-11 w-auto"
           />
         }
         logoCompact={
@@ -82,15 +86,8 @@ export default async function DesignLayout({
           />
         }
       />
-      <DesignFrame mobileCtaLabel={nav("design.cta")}>
-        {children}
-      </DesignFrame>
-      <SiteFooter
-        logo={<WoodaxLogo className="h-8 w-auto" />}
-        cncUrl={clientEnv.NEXT_PUBLIC_CNC_URL}
-        instagramUrl={siteConfig.instagramUrl}
-        instagramHandle={siteConfig.instagramHandle}
-      />
+      <DesignFrame mobileCtaLabel={nav("design.cta")}>{children}</DesignFrame>
+      <SiteFooter variant="design" />
     </IntroProvider>
   );
 }

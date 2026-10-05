@@ -1,8 +1,12 @@
 import { cookies, headers } from "next/headers";
+import type { Locale } from "@/i18n/routing";
 import {
+  cncHomeUrl,
+  designHomeUrl,
   hostFromHeaders,
   PREVIEW_SITE_COOKIE,
   PREVIEW_SITE_HEADER,
+  publicOrigin,
   resolveSite,
   type Site,
 } from "@/lib/site";
@@ -16,4 +20,22 @@ export async function requestSite(): Promise<Site> {
     cookieStore.get(PREVIEW_SITE_COOKIE)?.value;
 
   return resolveSite(host, previewSite);
+}
+
+export async function requestCncHomeUrl(locale: Locale): Promise<string> {
+  const headerStore = await headers();
+  return cncHomeUrl(
+    hostFromHeaders(headerStore),
+    publicOrigin(headerStore),
+    locale,
+  );
+}
+
+export async function requestDesignHomeUrl(locale: Locale): Promise<string> {
+  const headerStore = await headers();
+  return designHomeUrl(
+    hostFromHeaders(headerStore),
+    publicOrigin(headerStore),
+    locale,
+  );
 }

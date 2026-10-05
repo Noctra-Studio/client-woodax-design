@@ -21,6 +21,7 @@
     },
     "cnc": {
       "how": "Servicio",
+      "capabilities": "Capacidades",
       "materials": "Materiales",
       "contact": "Contacto",
       "cta": "Cotizar"
@@ -32,6 +33,13 @@
     "instagram": "Instagram",
     "facebook": "Woodax en Facebook",
     "language": "Idioma"
+  },
+  "siteFooter": {
+    "navAria": "Navegación",
+    "developedBy": "Desarrollado por",
+    "developedByAria": "Desarrollado por Noctra Studio",
+    "instagramAria": "Instagram de Woodax",
+    "facebookAria": "Facebook de Woodax"
   },
   "design": {
     "title": "Woodax Design",
@@ -128,7 +136,11 @@
     "footer": {
       "cncLink": "¿Necesitas corte CNC? Conoce CNC by Woodax Design",
       "location": "Querétaro, México",
-      "privacy": "Aviso de privacidad"
+      "privacy": "Aviso de privacidad",
+      "description": "Carpintería a medida para espacios y piezas únicas, en Querétaro.",
+      "sibling": "Corte CNC y renta de router",
+      "email": "hello@woodax.design",
+      "copyright": "© {year} Woodax Design"
     },
     "homeCta": {
       "title": "¿Tienes un proyecto en mente?",
@@ -268,7 +280,28 @@
     "footer": {
       "designLink": "Muebles y espacios a medida → Woodax Design",
       "location": "Querétaro, México",
-      "privacy": "Aviso de privacidad"
+      "privacy": "Aviso de privacidad",
+      "description": "Corte CNC y renta de router para talleres, rotulistas e industria.",
+      "sibling": "Muebles y espacios a medida",
+      "email": "cnc@woodax.design",
+      "copyright": "© {year} CNC by Woodax Design"
+    },
+    "capabilities": {
+      "title": "Lo que puede hacer la máquina",
+      "area": "Área de trabajo",
+      "areaValue": "{width} × {length} mm",
+      "thicknessValue": "{min}–{max} mm",
+      "note": "¿Tu proyecto no encaja? Escríbenos y lo revisamos.",
+      "materials": {
+        "wood": "Madera",
+        "mdf": "MDF",
+        "melamine": "melamina",
+        "plywood": "triplay",
+        "acrylic": "acrílico",
+        "plastic": "plástico",
+        "corian": "Corian",
+        "aluminum": "Aluminio"
+      }
     }
   },
   "contact": {

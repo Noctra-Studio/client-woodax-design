@@ -4,21 +4,26 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { BrandIcon } from "@/components/brand/brand-icon";
 import { CncLogo } from "@/components/brand/cnc-logo";
 import { AudienceSection } from "@/components/cnc/audience-section";
+import { CapabilitiesSection } from "@/components/cnc/capabilities-section";
 import { HeroSection } from "@/components/cnc/hero-section";
 import { IntroProvider } from "@/components/cnc/intro-provider";
 import { MaterialsSection } from "@/components/cnc/materials-section";
 import { ProcessSection } from "@/components/cnc/process-section";
-import { SiteFooter } from "@/components/cnc/site-footer";
 import { SiteNav } from "@/components/site/site-nav";
+import { SiteFooter } from "@/components/site/site-footer";
 import { WaysSection } from "@/components/cnc/ways-section";
 import { WorkSection } from "@/components/cnc/work-section";
 import { cncGallery } from "@/content/cnc-gallery";
-import { siteConfig } from "@/content/site-config";
+import {
+  cncSectionAnchors,
+  publishedSocialUrl,
+  siteConfig,
+} from "@/content/site-config";
 import { LeadCapture } from "@/features/leads/components/lead-capture";
 import { LeadUiProvider } from "@/features/leads/components/lead-ui";
 import { getLeadCopy } from "@/features/leads/copy";
 import { routing, type Locale } from "@/i18n/routing";
-import { clientEnv } from "@/lib/env";
+import { requestDesignHomeUrl } from "@/lib/request-site";
 import { localizedMetadata, siteOrigin } from "@/lib/seo";
 
 const introBoot = `(function(){try{if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;if(sessionStorage.getItem("woodax-cnc-intro")==="1")return;document.documentElement.setAttribute("data-cnc-intro","play");}catch(e){}})();`;
@@ -72,11 +77,16 @@ export default async function CncPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+  const { locale: requested } = await params;
+  const locale: Locale = hasLocale(routing.locales, requested)
+    ? requested
+    : routing.defaultLocale;
 
-  if (hasLocale(routing.locales, locale)) {
-    setRequestLocale(locale);
+  if (hasLocale(routing.locales, requested)) {
+    setRequestLocale(requested);
   }
+
+  const designUrl = await requestDesignHomeUrl(locale);
 
   const t = await getTranslations("cnc");
   const nav = await getTranslations("nav");
@@ -102,20 +112,20 @@ export default async function CncPage({
           <SiteNav
             variant="cnc"
             homeLabel={t("title")}
-            links={[
-              { type: "anchor", id: "servicio", label: nav("cnc.how") },
-              { type: "anchor", id: "materiales", label: nav("cnc.materials") },
-              { type: "anchor", id: "contacto", label: nav("cnc.contact") },
-            ]}
+            links={cncSectionAnchors().map((link) => ({
+              type: "anchor" as const,
+              id: link.id,
+              label: nav(`cnc.${link.labelKey}`),
+            }))}
             ctaLabel={nav("cnc.cta")}
             menuLabel={nav("menu")}
             closeLabel={nav("close")}
             languageLabel={nav("language")}
-            siblingHref={clientEnv.NEXT_PUBLIC_DESIGN_URL}
+            siblingHref={designUrl}
             siblingLabel={nav("sibling.toDesign")}
-            instagramUrl={siteConfig.instagramUrl}
+            instagramUrl={publishedSocialUrl(siteConfig.instagramUrl)}
             instagramLabel={nav("instagram")}
-            facebookUrl={siteConfig.facebookUrl}
+            facebookUrl={publishedSocialUrl(siteConfig.facebookUrl)}
             facebookLabel={nav("facebook")}
             logo={
               <CncLogo
@@ -134,6 +144,7 @@ export default async function CncPage({
           <main className="flex min-w-0 flex-1 flex-col overflow-x-clip pb-28 md:pb-0">
             <HeroSection />
             <WaysSection />
+            <CapabilitiesSection />
             <MaterialsSection />
             <AudienceSection />
             <ProcessSection />
@@ -142,12 +153,7 @@ export default async function CncPage({
           </main>
         </IntroProvider>
       </LeadUiProvider>
-      <SiteFooter
-        logo={<CncLogo className="h-8 w-auto" />}
-        designUrl={clientEnv.NEXT_PUBLIC_DESIGN_URL}
-        instagramUrl={siteConfig.instagramUrl}
-        instagramHandle={siteConfig.instagramHandle}
-      />
+      <SiteFooter variant="cnc" />
     </>
   );
 }
@@ -174,8 +180,14 @@ function cncJsonLd(name: string, parentName: string) {
     ],
   };
 
-  if (siteConfig.instagramUrl) {
-    data.sameAs = [siteConfig.instagramUrl];
+  const sameAs = [siteConfig.instagramUrl, siteConfig.facebookUrl].flatMap(
+    (url) => {
+      const published = publishedSocialUrl(url);
+      return published ? [published] : [];
+    },
+  );
+  if (sameAs.length > 0) {
+    data.sameAs = sameAs;
   }
 
   return JSON.stringify(data).replace(/</g, "\\u003c");

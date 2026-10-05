@@ -3,7 +3,7 @@ import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { LeadCapture } from "@/features/leads/components/lead-capture";
 import { getLeadCopy } from "@/features/leads/copy";
-import { siteConfig } from "@/content/site-config";
+import { publishedSocialUrl, siteConfig } from "@/content/site-config";
 import { routing, type Locale } from "@/i18n/routing";
 import { clientEnv } from "@/lib/env";
 import { localizedMetadata } from "@/lib/seo";
@@ -104,26 +104,27 @@ export default async function ContactPage({
               </li>
             ) : null}
           </ul>
-          {siteConfig.instagramUrl || siteConfig.facebookUrl ? (
+          {publishedSocialUrl(siteConfig.instagramUrl) ||
+          publishedSocialUrl(siteConfig.facebookUrl) ? (
             <div className="flex flex-col gap-2">
               <h3 className="text-[13px] font-semibold tracking-[0.18em] uppercase">
                 {t("channels.social")}
               </h3>
               <ul className="flex flex-col">
-                {siteConfig.instagramUrl ? (
+                {publishedSocialUrl(siteConfig.instagramUrl) ? (
                   <li>
                     <a
-                      href={siteConfig.instagramUrl}
+                      href={publishedSocialUrl(siteConfig.instagramUrl)}
                       className="focus-visible:outline-woodax-charcoal inline-flex min-h-11 items-center underline decoration-current/40 underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
                       {nav("instagram")}
                     </a>
                   </li>
                 ) : null}
-                {siteConfig.facebookUrl ? (
+                {publishedSocialUrl(siteConfig.facebookUrl) ? (
                   <li>
                     <a
-                      href={siteConfig.facebookUrl}
+                      href={publishedSocialUrl(siteConfig.facebookUrl)}
                       className="focus-visible:outline-woodax-charcoal inline-flex min-h-11 items-center underline decoration-current/40 underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
                       {nav("facebook")}

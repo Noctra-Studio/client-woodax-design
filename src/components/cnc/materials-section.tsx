@@ -3,7 +3,6 @@
 import { useLayoutEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { RegistrationMarks } from "@/components/cnc/registration-marks";
-import { siteConfig, type CncMaterial } from "@/content/site-config";
 import { cn } from "@/lib/utils";
 
 const materials = ["wood", "acrylic", "aluminum"] as const;
@@ -11,20 +10,14 @@ const materials = ["wood", "acrylic", "aluminum"] as const;
 export function MaterialsSection() {
   const t = useTranslations("cnc.materials");
   const listRef = useRef<HTMLDivElement>(null);
-  const specs = siteConfig.cncSpecs;
   const rows = materials.map((key) => {
     const [name, ...rest] = t(key).split(" · ");
     return {
       key,
       name: name ?? t(key),
       description: rest.join(" · "),
-      thickness: specs?.maxThicknessByMaterial?.[key as CncMaterial],
-      area: specs?.cuttingArea,
     };
   });
-  const showThickness = rows.some((row) => Boolean(row.thickness));
-  const showArea = rows.some((row) => Boolean(row.area));
-  const columns = columnClass(showThickness, showArea);
 
   useLayoutEffect(() => {
     const root = listRef.current;
@@ -83,38 +76,13 @@ export function MaterialsSection() {
           aria-labelledby="materials-title"
           className="border-cnc-line mt-10 border-t md:mt-14"
         >
-          {showThickness || showArea ? (
-            <div role="row" className={cn("hidden md:grid", columns)}>
-              <span role="columnheader">
-                <span className="sr-only">{t("title")}</span>
-              </span>
-              <span role="columnheader" />
-              {showThickness ? (
-                <span
-                  role="columnheader"
-                  className="text-cnc-muted font-mono text-sm tracking-[0.08em] uppercase md:text-right"
-                >
-                  {t("maxThickness")}
-                </span>
-              ) : null}
-              {showArea ? (
-                <span
-                  role="columnheader"
-                  className="text-cnc-muted font-mono text-sm tracking-[0.08em] uppercase md:text-right"
-                >
-                  {t("cuttingArea")}
-                </span>
-              ) : null}
-            </div>
-          ) : null}
           {rows.map((row, index) => (
             <div
               key={row.key}
               role="row"
               data-plotter=""
               className={cn(
-                "cnc-plotter border-cnc-line grid border-b",
-                columns,
+                "cnc-plotter border-cnc-line grid items-baseline gap-2 border-b py-4 md:grid-cols-[minmax(0,14rem)_minmax(0,1fr)] md:gap-6",
               )}
               style={{ transitionDelay: `${index * 70}ms` }}
             >
@@ -134,47 +102,10 @@ export function MaterialsSection() {
               >
                 {row.description}
               </p>
-              {showThickness ? (
-                <p
-                  role="cell"
-                  className="text-cnc-muted font-mono text-sm tracking-[0.08em] uppercase tabular-nums md:text-right"
-                >
-                  {row.thickness ? (
-                    <>
-                      <span className="md:sr-only">{t("maxThickness")} </span>
-                      {row.thickness}
-                    </>
-                  ) : null}
-                </p>
-              ) : null}
-              {showArea ? (
-                <p
-                  role="cell"
-                  className="text-cnc-muted font-mono text-sm tracking-[0.08em] uppercase tabular-nums md:text-right"
-                >
-                  {row.area ? (
-                    <>
-                      <span className="md:sr-only">{t("cuttingArea")} </span>
-                      {row.area}
-                    </>
-                  ) : null}
-                </p>
-              ) : null}
             </div>
           ))}
         </div>
       </div>
     </section>
   );
-}
-
-function columnClass(showThickness: boolean, showArea: boolean) {
-  const specs = Number(showThickness) + Number(showArea);
-  if (specs === 2) {
-    return "items-baseline gap-2 py-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_9rem_9rem] md:gap-6";
-  }
-  if (specs === 1) {
-    return "items-baseline gap-2 py-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_11rem] md:gap-6";
-  }
-  return "items-baseline gap-2 py-4 md:grid-cols-[minmax(0,14rem)_minmax(0,1fr)] md:gap-6";
 }

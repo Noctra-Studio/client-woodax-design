@@ -220,14 +220,37 @@ No italics anywhere (decision). Emphasis = weight and tone only.
 - Project cards: tall cards (aspect 3/4), radius-card, real photo full-bleed, tag pill top-left (eyebrow style, cream bg on design / cnc-surface on cnc), title bottom-left over a subtle bottom gradient (charcoal 0→45% / cnc-bg 0→60%). Mobile: horizontal scroll-snap with 16px peek of the next card. Desktop: 3–4 per row.
 - Footer: see section 13 (ultra-minimal). The dark closing block with giant wordmark is NOT used.
 
-## 13. Footer — ultra-minimal (both brands)
+## 13. Footer
 
-- One row on desktop (≥ 768px), stacked and centered on mobile. Top border 1px (design #D6D1BE / cnc-line). Padding 32px vertical. Page background (no dark block, no giant wordmark).
-- Left: © {year} Woodax Design (cnc: © {year} CNC by Woodax Design) · small sibling-brand link.
-- Center: legal links in 14px muted tone: Aviso de privacidad · Términos y condiciones · Preferencias de cookies (opens the consent preferences dialog).
-- Right: three 20px icon links, 44×44 hit area, aria-labels: Facebook, Instagram, Mail (mailto: hello@woodax.design / cnc@woodax.design). Brand icons as inline SVG components from Simple Icons (CC0) in src/components/icons/ — lucide's brand icons are deprecated; Mail uses lucide. Facebook/Instagram render only if their URL exists in site-config.
-- Last line, 12px muted: "Desarrollado por Noctra Studio" (link to https://noctra.studio). Contractual — do not remove.
-- No newsletter, no address, no phone in the footer.
+One component, `src/components/site/site-footer.tsx`, with variant `design | cnc`.
+
+- Design mounts it in `(design)/layout.tsx`, so it stays put while navigating. CNC mounts it inside the CNC page. Privacy pages have no footer.
+- Desktop is four columns, aligned to the start of each column. On mobile they stack, centered, in this order: brand, navigation, contact, sibling site, bottom bar. Alignment returns to the start from `sm` up.
+- Background is the page background (Design `#F3F1EA`, CNC `#16171A`). Neither footer changes with the system color scheme. No dark closing block and no giant wordmark.
+- Design uses Playfair for the description line and Quicksand everywhere else, on the woodax palette. CNC uses Quicksand and the `cnc-*` tokens for the whole footer.
+
+Brand: the site logo and one description line from messages (`design.footer.description` / `cnc.footer.description`). Those two lines are pending Adrián's approval. The Design lockup in the footer is 56px tall. `woodax-design-logo.svg` viewBox is cropped to the artwork, so that height is the ink, not the old empty artboard.
+
+Navigation is its own `<nav aria-label>`:
+- Design: enabled keys from `designNavKeys` (read from `designPages`), plus Contacto when that page is enabled. Unpublished pages are absent.
+- CNC: anchors Servicio, Capacidades (only when `cncSpecs` has data), Materiales, Contacto.
+
+Sibling site:
+- Design → CNC: «Corte CNC y renta de router» / «CNC cutting and router rental».
+- CNC → Design: «Muebles y espacios a medida» / «Custom furniture and spaces».
+- On previews (`*.vercel.app` and `NEXT_PUBLIC_APP_ENV !== "production"`) the link stays on the same origin with `?site=design|cnc` and keeps the locale (`/en?site=cnc`), in both directions.
+- Locally and in production it uses `NEXT_PUBLIC_DESIGN_URL` / `NEXT_PUBLIC_CNC_URL`.
+- `/servicios` keeps `design.footer.cncLink`. Do not reuse that string as the footer sibling link.
+
+Contact: mailto `hello@woodax.design` on Design and `cnc@woodax.design` on CNC, plus «Querétaro, México». Instagram and Facebook are shared 20px inline SVGs (Simple Icons paths, `currentColor`) with a 44px hit area, `aria-label` from messages, `target="_blank"` and `rel="noopener noreferrer"`. They render when the URL is set, including the temporary `"#"`. No WhatsApp.
+
+Bottom bar: `© {year} Woodax Design` on Design and `© {year} CNC by Woodax Design` on CNC. Privacy links to `/privacidad` and `/en/privacy`. The locale switch uses the same client transition as the nav (`router.replace`, `scroll: false`). Noctra credit: the label «Desarrollado por» / «Developed by» and an `<img alt="">` (`noctra-light.svg` on Design, `noctra-dark.svg` on CNC) form one link to `https://noctra.studio` with `rel="noopener"` and `aria-label` «Desarrollado por Noctra Studio» / «Developed by Noctra Studio». The credit stays quieter than the copyright line: the label is 12px and the logo is 20px tall. The link is still at least 44px tall. Opacity is reduced at rest and full on hover and focus.
+
+The MobileCtaBar must not cover the bottom bar. Add bottom padding while that bar is visible (hidden on Design `/contacto`, hidden on CNC while the form is in view, hidden from `md` up).
+
+Every link has a visible focus ring. Touch targets are at least 44px on mobile.
+
+Launch blocker: `instagramUrl` and `facebookUrl` cannot be `"#"` in production.
 
 ## 14. Cookie consent
 
@@ -259,7 +282,7 @@ No italics anywhere (decision). Emphasis = weight and tone only.
 
 - public/brand/woodax-design-logo.svg (full lockup, official colors), woodax-design-icon.svg (mark only), cnc-woodax-logo.svg (full lockup, white), cnc-woodax-icon.svg (mark only, white). Optional: woodax-design-wordmark.svg, cnc-woodax-wordmark.svg (text block only, same artboard height as the logo).
 - public/images/design/*, public/images/cnc/* — only real client photos. Single exception: public/images/cnc/materials/* (section 19), generic licensed material swatches.
-- src/content/site-config.ts holds: instagramUrl, instagramHandle, facebookUrl, cnc specs (all optional). Missing values = hidden UI.
+- src/content/site-config.ts holds: instagramUrl, facebookUrl (temporary `"#"` until the real profiles exist; `"#"` must not ship to production), cncSpecs (cutting area and thickness ranges). A missing or `"#"` social URL stays out of the nav, the contact page and JSON-LD. The footer still shows the icon while the placeholder is set. Missing machine specs hide the Capacidades section and its anchor.
 - All visible strings come from src/messages/{es,en}.json, populated from docs/brand/copy-deck.md.
 
 ## 18. CNC grid motion (ambient, after the intro)

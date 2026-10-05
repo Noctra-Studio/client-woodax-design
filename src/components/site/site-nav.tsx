@@ -3,7 +3,6 @@
 import {
   cloneElement,
   isValidElement,
-  Suspense,
   useEffect,
   useLayoutEffect,
   useRef,
@@ -21,11 +20,10 @@ import {
   useReducedMotion,
   useScroll,
 } from "motion/react";
-import { useSearchParams } from "next/navigation";
-import { useLocale } from "next-intl";
 import { useIntro as useDesignIntro } from "@/components/design/intro-provider";
 import { LogoToolpath } from "@/components/cnc/logo-toolpath";
 import { useIntro as useCncIntro } from "@/components/cnc/intro-provider";
+import { LocaleSlot } from "@/components/site/locale-switch";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -35,7 +33,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import type { Pathname } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 
@@ -45,8 +43,6 @@ if (typeof document !== "undefined") {
 
 const easeOut = [0.22, 1, 0.36, 1] as const;
 const morphTransition = { duration: 0.32, ease: easeOut };
-const locales = ["es", "en"] as const;
-const LOCALE_SCROLL_KEY = "woodax-locale-scroll";
 const SCROLL_DOWN = 64;
 const SCROLL_UP = 24;
 
@@ -388,7 +384,7 @@ function DesktopNav({
           initial={false}
           animate={{
             width: box ? (morph ? box.shut : box.open) : "100%",
-            height: morph ? 56 : 72,
+            height: morph ? 56 : 80,
             ...(morph ? shutPad : openPad),
           }}
           transition={tween ? morphTransition : { duration: 0 }}
@@ -445,13 +441,13 @@ function MeasureRow({
         {links.map((link) => (
           <li
             key={itemKey(link)}
-            className="inline-flex min-h-11 items-center px-3 text-[15px] font-normal whitespace-nowrap"
+            className="mx-1 inline-flex min-h-11 items-center px-3 text-[15px] font-normal whitespace-nowrap"
           >
             {link.label}
           </li>
         ))}
       </ul>
-      <span className="size-10 shrink-0" />
+      <span className="ml-2 size-11 shrink-0" />
     </div>
   );
 }
@@ -459,7 +455,7 @@ function MeasureRow({
 function ReducedBars(props: BarContentProps & { scrolled: boolean }) {
   const { scrolled, ...bar } = props;
   return (
-    <div className="relative h-[72px]">
+    <div className="relative h-20">
       <AnimatePresence initial={false}>
         <motion.div
           key={scrolled ? "shut" : "open"}
@@ -473,7 +469,7 @@ function ReducedBars(props: BarContentProps & { scrolled: boolean }) {
             "site-nav-bar pointer-events-auto absolute top-0 flex items-center gap-2 overflow-hidden",
             scrolled
               ? "inset-x-0 mx-auto h-14 w-max py-2 pr-2 pl-3"
-              : "inset-x-0 h-[72px] w-full py-4 pr-2 pl-5",
+              : "inset-x-0 h-20 w-full py-4 pr-2 pl-5",
             bar.variant === "design" ? "text-woodax-charcoal" : "text-cnc-text",
           )}
           style={{ borderRadius: 9999 }}
@@ -522,6 +518,7 @@ function BarContent({
   return (
     <>
       <LogoSlot
+        variant={props.variant}
         homeLabel={props.logoLabel}
         focusRing={props.focusRing}
         compact={compact}
@@ -627,6 +624,7 @@ function MobileNav({
         style={{ borderRadius: 9999 }}
       >
         <LogoSlot
+          variant={variant}
           homeLabel={logoLabel}
           focusRing={focusRing}
           compact
@@ -724,6 +722,7 @@ function MobileNav({
 }
 
 function LogoSlot({
+  variant,
   homeLabel,
   focusRing,
   compact,
@@ -734,6 +733,7 @@ function LogoSlot({
   logo,
   logoCompact,
 }: {
+  variant: Variant;
   homeLabel: string;
   focusRing: string;
   compact: boolean;
@@ -817,7 +817,10 @@ function LogoSlot({
               </span>
             </span>
             <motion.span
-              className="relative block h-7 overflow-hidden"
+              className={cn(
+                "relative block overflow-hidden",
+                variant === "design" && !compact ? "h-11" : "h-7",
+              )}
               initial={false}
               animate={slotWidth ? { width: slotWidth } : { width: "auto" }}
               transition={tween ? morphTransition : { duration: 0 }}
@@ -925,7 +928,7 @@ function SiteNavItem({
     focusRing,
     menu
       ? "inline-flex min-h-11 w-full items-center rounded-full px-3 text-[17px] focus-visible:outline-offset-2"
-      : "relative inline-flex min-h-11 items-center rounded-full px-3 text-[15px] font-normal whitespace-nowrap focus-visible:outline-offset-[-2px]",
+      : "relative mx-1 inline-flex min-h-11 items-center rounded-full px-3 text-[15px] font-normal whitespace-nowrap focus-visible:outline-offset-[-2px]",
     menu &&
       active &&
       (variant === "design" ? "bg-woodax-cream" : "bg-cnc-line"),
@@ -1004,7 +1007,7 @@ function NavCta({
         aria-label={label}
         aria-current={onContact ? "page" : undefined}
         className={cn(
-          "relative h-11 min-h-11 shrink-0 gap-0 rounded-full px-0 focus-visible:outline-offset-[-2px]",
+          "relative ml-2 h-11 min-h-11 shrink-0 gap-0 rounded-full px-0 focus-visible:outline-offset-[-2px]",
           variant === "cnc" && "focus-visible:outline-cnc-bg",
         )}
       >
@@ -1100,155 +1103,3 @@ function CtaTooltip({
   );
 }
 
-function LocaleSlot({
-  variant,
-  label,
-  size,
-}: {
-  variant: Variant;
-  label: string;
-  size: "bar" | "menu";
-}) {
-  return (
-    <Suspense fallback={<LocaleFallback variant={variant} size={size} />}>
-      <LocaleSwitch variant={variant} label={label} size={size} />
-    </Suspense>
-  );
-}
-
-function LocaleFallback({
-  variant,
-}: {
-  variant: Variant;
-  size: "bar" | "menu";
-}) {
-  return (
-    <div
-      aria-hidden="true"
-      className={cn(
-        "h-11 w-[5.5rem]",
-        variant === "design" ? "rounded-full" : "rounded-[4px]",
-      )}
-    />
-  );
-}
-
-function LocaleSwitch({
-  variant,
-  label,
-}: {
-  variant: Variant;
-  label: string;
-  size: "bar" | "menu";
-}) {
-  const locale = useLocale();
-  const pathname = usePathname();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const focusRing =
-    variant === "design"
-      ? "focus-visible:outline-woodax-charcoal"
-      : "focus-visible:outline-cnc-white";
-  const hit = "min-h-11 min-w-11";
-
-  useLayoutEffect(() => {
-    let raw: string | null = null;
-    try {
-      raw = sessionStorage.getItem(LOCALE_SCROLL_KEY);
-      sessionStorage.removeItem(LOCALE_SCROLL_KEY);
-    } catch {
-      return;
-    }
-    if (!raw) return;
-
-    let saved: { y?: number; hash?: string };
-    try {
-      saved = JSON.parse(raw) as { y?: number; hash?: string };
-    } catch {
-      return;
-    }
-
-    const hash = saved.hash ?? "";
-    if (hash && window.location.hash !== hash) {
-      const next = `${window.location.pathname}${window.location.search}${hash}`;
-      window.history.replaceState(null, "", next);
-    }
-    if (typeof saved.y === "number") window.scrollTo(0, saved.y);
-  }, [locale]);
-
-  function selectLocale(code: (typeof locales)[number]) {
-    if (code === locale) return;
-    try {
-      sessionStorage.setItem(
-        LOCALE_SCROLL_KEY,
-        JSON.stringify({
-          y: window.scrollY,
-          hash: window.location.hash,
-        }),
-      );
-    } catch {
-      // Private browsing can reject storage; the locale still changes.
-    }
-    const query = Object.fromEntries(searchParams.entries());
-    const href = Object.keys(query).length > 0 ? { pathname, query } : pathname;
-    router.replace(href, { locale: code, scroll: false });
-  }
-
-  return (
-    <div
-      role="group"
-      aria-label={label}
-      className={cn(
-        "inline-flex items-center p-0.5 text-[13px]",
-        variant === "design"
-          ? "text-woodax-charcoal rounded-full"
-          : "border-cnc-line rounded-[4px] border tracking-[0.08em]",
-      )}
-    >
-      {locales.map((code) => {
-        const codeLabel = code.toUpperCase();
-        const active = code === locale;
-        const shape = variant === "design" ? "rounded-full" : "rounded-[4px]";
-        if (active) {
-          return (
-            <span
-              key={code}
-              aria-current="true"
-              lang={code}
-              className={cn(
-                "inline-flex items-center justify-center px-2 font-medium",
-                hit,
-                shape,
-                variant === "design"
-                  ? "bg-woodax-cream text-woodax-charcoal"
-                  : "bg-cnc-white text-cnc-bg",
-              )}
-            >
-              {codeLabel}
-            </span>
-          );
-        }
-
-        return (
-          <button
-            key={code}
-            type="button"
-            lang={code}
-            onClick={() => selectLocale(code)}
-            className={cn(
-              "inline-flex items-center justify-center px-2 font-normal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
-              hit,
-              shape,
-              focusRing,
-              variant === "design"
-                ? "text-woodax-charcoal/75 pointer-fine:hover:bg-woodax-cream"
-                : "text-cnc-muted pointer-fine:hover:bg-cnc-surface",
-            )}
-          >
-            {codeLabel}
-          </button>
-        );
-      })}
-    </div>
-  );
-}

@@ -417,4 +417,5 @@ Entrega lista de lo corregido y lo pendiente.
 3. **Gmail**: filtro `to:(cnc@woodax.design)` → etiqueta "CNC"; `subject:"[Design]"` → "Woodax Design".
 4. **Adrián**: aprobar copy deck (⚠︎), WhatsApp, URL de Instagram, specs del router (área de corte, espesores por material), formatos de archivo aceptados, video(s) del hero.
    - **Bloqueo de producción — Servicios:** las descripciones de Cocinas, Clósets y vestidores, Piezas a medida y Espacios comerciales se muestran en staging. No salen a producción en woodax.design hasta que Adrián las apruebe.
+   - **Bloqueo de lanzamiento — redes:** `instagramUrl` y `facebookUrl` no pueden ser `"#"` en producción.
 5. **Producción** (tras aprobación): asignar `woodax.design` (+ `www` → redirect) y `cnc.woodax.design` al proyecto en Vercel.

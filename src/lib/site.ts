@@ -1,3 +1,4 @@
+import { routing, type Locale } from "@/i18n/routing";
 import { clientEnv } from "@/lib/env";
 
 export type Site = "design" | "cnc";
@@ -48,6 +49,68 @@ export function resolveSite(host: string, previewSite?: string | null): Site {
   }
 
   return parseSite(previewSite) ?? getSite(host);
+}
+
+export function publicOrigin(headerStore: HeaderSource): string {
+  const host = hostFromHeaders(headerStore).split(",")[0]?.trim() ?? "";
+  if (!host) return "";
+
+  const proto =
+    headerStore.get("x-forwarded-proto")?.split(",")[0]?.trim() || "https";
+  return `${proto}://${host}`;
+}
+
+/**
+ * Design → CNC links. Preview deployments share one host, so CNC is that
+ * origin with `?site=cnc` instead of `NEXT_PUBLIC_CNC_URL`. English keeps `/en`.
+ */
+export function cncHomeUrl(host: string, origin: string, locale: Locale): string {
+  if (!allowsPreviewSiteOverride(host)) {
+    return clientEnv.NEXT_PUBLIC_CNC_URL;
+  }
+
+  const pathname = locale === routing.defaultLocale ? "/" : `/${locale}`;
+  const url = new URL(pathname, origin);
+  url.searchParams.set("site", "cnc");
+  return url.toString();
+}
+
+/** 301 target for a Design `/cnc` path. Previews stay on the request origin. */
+export function cncRedirectUrl(
+  host: string,
+  origin: string,
+  pathname: string,
+  search: string,
+): string {
+  const preview = allowsPreviewSiteOverride(host);
+  const destination = new URL(
+    pathname,
+    preview ? origin : clientEnv.NEXT_PUBLIC_CNC_URL,
+  );
+  destination.search = search;
+  if (preview) {
+    destination.searchParams.set("site", "cnc");
+  }
+  return destination.toString();
+}
+
+/**
+ * CNC → Design links. Preview deployments share one host, so Design is that
+ * origin with `?site=design`. English keeps the `/en` prefix.
+ */
+export function designHomeUrl(
+  host: string,
+  origin: string,
+  locale: Locale,
+): string {
+  if (!allowsPreviewSiteOverride(host)) {
+    return clientEnv.NEXT_PUBLIC_DESIGN_URL;
+  }
+
+  const pathname = locale === routing.defaultLocale ? "/" : `/${locale}`;
+  const url = new URL(pathname, origin);
+  url.searchParams.set("site", "design");
+  return url.toString();
 }
 
 function hostnameFromHost(host: string): string {

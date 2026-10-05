@@ -57,7 +57,10 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - mobileBar — ES: Cuéntanos tu proyecto | EN: Tell us about your project
 
 ### Footer
-- cncLink — ES: ¿Necesitas corte CNC? Conoce CNC by Woodax Design | EN: Need CNC cutting? Meet CNC by Woodax Design
+- cncLink — ES: ¿Necesitas corte CNC? Conoce CNC by Woodax Design | EN: Need CNC cutting? Meet CNC by Woodax Design (lo usa /servicios, no el footer)
+- sibling — ES: Corte CNC y renta de router | EN: CNC cutting and router rental
+- email — hello@woodax.design
+- copyright — ES: © {year} Woodax Design | EN: © {year} Woodax Design
 - location — ES: Querétaro, México | EN: Querétaro, Mexico
 - privacy — ES: Aviso de privacidad | EN: Privacy notice
 
@@ -134,9 +137,16 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - mobileBar — ES: Cotizar mi proyecto | EN: Get a quote
 
 ### Footer
-- designLink — ES: Muebles y espacios a medida → Woodax Design | EN: Bespoke furniture and spaces → Woodax Design
+- designLink — ES: Muebles y espacios a medida → Woodax Design | EN: Bespoke furniture and spaces → Woodax Design (clave anterior; el footer usa sibling)
+- sibling — ES: Muebles y espacios a medida | EN: Custom furniture and spaces
+- email — cnc@woodax.design
+- copyright — ES: © {year} CNC by Woodax Design | EN: © {year} CNC by Woodax Design
 - location — ES: Querétaro, México | EN: Querétaro, Mexico
 - privacy — ES: Aviso de privacidad | EN: Privacy notice
+
+### Footer — descripción ⚠︎ (pendiente de aprobación de Adrián)
+- design.footer.description — ES: Carpintería a medida para espacios y piezas únicas, en Querétaro. | EN: Custom carpentry for spaces and one-of-a-kind pieces, in Querétaro.
+- cnc.footer.description — ES: Corte CNC y renta de router para talleres, rotulistas e industria. | EN: CNC cutting and router rental for workshops, sign makers and industry.
 
 ---
 
@@ -152,6 +162,7 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - (nav.design.projects y nav.design.process quedan obsoletas en el sitio multipágina)
 - nav.design.cta — ES: Cuéntanos tu proyecto | EN: Tell us about your project
 - nav.cnc.how — ES: Servicio | EN: Service
+- nav.cnc.capabilities — ES: Capacidades | EN: Capabilities
 - nav.cnc.materials — ES: Materiales | EN: Materials
 - nav.cnc.contact — ES: Contacto | EN: Contact
 - nav.cnc.cta — ES: Cotizar | EN: Get a quote
@@ -264,6 +275,7 @@ Al lanzar el multipágina se elimina `hero.eyebrow` ("Nuevo sitio en camino"): q
 ### Servicios ⚠︎ (descripciones pendientes de aprobación de Adrián)
 
 Bloqueo de lanzamiento: kitchens, closets, custom y commercial se ven en staging. No se publican en producción hasta que Adrián las apruebe.
+Bloqueo de lanzamiento: instagramUrl y facebookUrl no pueden ser "#" en producción.
 - meta.title — ES: Servicios · Woodax Design | EN: Services · Woodax Design
 - meta.description — ES: Cocinas, clósets y vestidores, piezas a medida y mobiliario para negocios en Querétaro, del diseño a la instalación. | EN: Kitchens, closets and walk-ins, custom pieces and furniture for businesses in Querétaro, from design to installation.
 - title (h1) — ES: Lo que diseñamos y fabricamos | EN: What we design and build
