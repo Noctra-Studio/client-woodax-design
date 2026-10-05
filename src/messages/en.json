@@ -7,7 +7,43 @@
   },
   "design": {
     "title": "Woodax Design",
-    "headline": "The beginning of a bespoke piece",
+    "meta": {
+      "title": "Woodax Design · Bespoke carpentry in Querétaro",
+      "description": "Kitchens, closets, one-of-a-kind pieces and furniture for businesses, designed with you and made to fit your space."
+    },
+    "skipToContent": "TODO(copy)",
+    "hero": {
+      "eyebrow": "New site on the way · Open for projects",
+      "headlineLead": "We design and build what your space needs.",
+      "headlineTail": "Piece by piece.",
+      "subhead": "Bespoke carpentry for homes and businesses in Querétaro, from first idea to installation.",
+      "ctaPrimary": "Tell us about your project",
+      "ctaSecondary": "See our work",
+      "skipIntro": "Skip"
+    },
+    "audience": {
+      "title": "For your home and your business",
+      "homeTitle": "Your home",
+      "homeBody": "Kitchens, closets, walk-ins and one-of-a-kind pieces designed around the way you live.",
+      "businessTitle": "Your business",
+      "businessBody": "Furniture for offices, firms, cafés and coworking spaces that shows your brand from the moment people walk in."
+    },
+    "projects": {
+      "title": "Recent projects",
+      "instagramCta": "More projects on Instagram",
+      "tags": {
+        "kitchen": "Kitchen",
+        "closet": "Closet",
+        "custom-piece": "Custom piece",
+        "commercial-space": "Commercial space"
+      }
+    },
+    "process": {
+      "title": "How we work",
+      "step1": "We listen — We get to know your space, take measurements and understand what you need.",
+      "step2": "We design — We present a proposal and refine it with you until it's exactly right.",
+      "step3": "We build and install — We make every piece to measure and deliver it ready to use."
+    },
     "form": {
       "title": "Let's start with your space",
       "step1": {
@@ -69,7 +105,54 @@
   },
   "cnc": {
     "title": "CNC by Woodax Design",
-    "headline": "Your project has already started",
+    "skipToContent": "TODO(copy)",
+    "meta": {
+      "title": "CNC by Woodax Design · CNC cutting and router rental in Querétaro",
+      "description": "Precision CNC cutting in wood, acrylic and aluminum for workshops and companies. Rent machine time or order volume production."
+    },
+    "hero": {
+      "eyebrow": "Capacity available · Now quoting",
+      "headline": "CNC precision, without buying the machine.",
+      "subhead": "For workshops and companies in Querétaro: rent machine time or hand us the full production run, from one part to thousands.",
+      "ctaPrimary": "Get a quote",
+      "ctaSecondary": "How it works",
+      "skipIntro": "Skip",
+      "axisX": "X",
+      "axisY": "Y"
+    },
+    "ways": {
+      "title": "Two ways to work with us",
+      "rentLabel": "01",
+      "rentTitle": "Machine time rental",
+      "rentBody": "For workshops that need extra capacity. Use our CNC router when you need it, with no investment in equipment or maintenance.",
+      "volumeLabel": "02",
+      "volumeTitle": "Volume production",
+      "volumeBody": "For companies that need batches of identical parts, as precise on the last one as on the first."
+    },
+    "materials": {
+      "title": "Materials",
+      "wood": "Wood · MDF, plywood and solid wood",
+      "acrylic": "Acrylic",
+      "aluminum": "Thin aluminum",
+      "maxThickness": "Max thickness",
+      "cuttingArea": "Cutting area"
+    },
+    "audience": {
+      "title": "Built for",
+      "workshops": "Woodworking shops — More capacity without buying another machine.",
+      "companies": "Companies and industry — Serial components with exact dimensions.",
+      "signs": "Sign makers — Letters, parts and signage in acrylic and aluminum."
+    },
+    "process": {
+      "title": "From file to finished part",
+      "step1": "01 Send us your file or your idea",
+      "step2": "02 We review and quote",
+      "step3": "03 We cut and deliver",
+      "formats": "Formats: DXF, DWG, SVG, AI, PDF. You can send it later."
+    },
+    "work": {
+      "title": "TODO(copy)"
+    },
     "form": {
       "title": "Tell us what you need to produce",
       "step1": {
@@ -141,12 +224,12 @@
   },
   "metadata": {
     "design": {
-      "title": "Woodax Design",
-      "description": "Custom furniture and made-to-measure spaces. The new Woodax Design site is on its way."
+      "title": "Woodax Design · Bespoke carpentry in Querétaro",
+      "description": "Kitchens, closets, one-of-a-kind pieces and furniture for businesses, designed with you and made to fit your space."
     },
     "cnc": {
-      "title": "CNC by Woodax Design",
-      "description": "Precision CNC production. The new CNC by Woodax Design site is on its way."
+      "title": "CNC by Woodax Design · CNC cutting and router rental in Querétaro",
+      "description": "Precision CNC cutting in wood, acrylic and aluminum for workshops and companies. Rent machine time or order volume production."
     }
   }
 }

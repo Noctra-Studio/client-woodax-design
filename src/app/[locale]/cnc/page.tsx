@@ -1,8 +1,68 @@
+import type { Metadata, Viewport } from "next";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { CncLogo } from "@/components/brand/cnc-logo";
+import { AudienceSection } from "@/components/cnc/audience-section";
+import { HeroSection } from "@/components/cnc/hero-section";
+import { IntroProvider } from "@/components/cnc/intro-provider";
+import { MaterialsSection } from "@/components/cnc/materials-section";
+import { ProcessSection } from "@/components/cnc/process-section";
+import { SiteFooter } from "@/components/cnc/site-footer";
+import { SiteHeader } from "@/components/cnc/site-header";
+import { WaysSection } from "@/components/cnc/ways-section";
+import { WorkSection } from "@/components/cnc/work-section";
+import { cncGallery } from "@/content/cnc-gallery";
+import { siteConfig } from "@/content/site-config";
 import { LeadCapture } from "@/features/leads/components/lead-capture";
+import { LeadUiProvider } from "@/features/leads/components/lead-ui";
 import { getLeadCopy } from "@/features/leads/copy";
-import { routing } from "@/i18n/routing";
+import { routing, type Locale } from "@/i18n/routing";
+import { clientEnv } from "@/lib/env";
+import { localizedMetadata, siteOrigin } from "@/lib/seo";
+
+const introBoot = `(function(){try{if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;if(sessionStorage.getItem("woodax-cnc-intro")==="1")return;document.documentElement.setAttribute("data-cnc-intro","play");}catch(e){}})();`;
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#16171A" },
+    { media: "(prefers-color-scheme: dark)", color: "#16171A" },
+  ],
+};
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: requested } = await params;
+  const locale: Locale = hasLocale(routing.locales, requested)
+    ? requested
+    : routing.defaultLocale;
+  const t = await getTranslations({ locale, namespace: "cnc.meta" });
+  const metadata = localizedMetadata({
+    site: "cnc",
+    locale,
+    title: t("title"),
+    description: t("description"),
+  });
+  const poster = cncGallery[0];
+  if (!poster) return metadata;
+
+  return {
+    ...metadata,
+    openGraph: {
+      ...metadata.openGraph,
+      images: [
+        {
+          url: poster.src,
+          width: poster.width,
+          height: poster.height,
+          alt: poster.alt[locale],
+        },
+      ],
+    },
+  };
+}
 
 export default async function CncPage({
   params,
@@ -16,18 +76,80 @@ export default async function CncPage({
   }
 
   const t = await getTranslations("cnc");
-  const common = await getTranslations("common");
+  const design = await getTranslations("design");
   const copy = await getLeadCopy("cnc");
+  const jsonLd = cncJsonLd(t("title"), design("title"));
 
   return (
-    <main className="flex flex-1 flex-col pb-28 md:pb-0">
-      <div className="flex min-h-[100svh] flex-col justify-end px-5 pb-16">
-        <p>{common("language")}</p>
-        <h1 className="max-w-[16ch] text-[clamp(2.5rem,6vw,5rem)] leading-[1.02] font-normal tracking-[-0.02em]">
-          {t("headline")}
-        </h1>
-      </div>
-      <LeadCapture copy={copy} />
-    </main>
+    <>
+      <script dangerouslySetInnerHTML={{ __html: introBoot }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd }}
+      />
+      <a
+        href="#hero-title"
+        className="bg-cnc-bg text-cnc-text focus-visible:outline-cnc-white sr-only z-50 rounded-[4px] focus-visible:not-sr-only focus-visible:fixed focus-visible:top-[max(1rem,env(safe-area-inset-top))] focus-visible:left-4 focus-visible:inline-flex focus-visible:min-h-11 focus-visible:items-center focus-visible:px-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+      >
+        {t("skipToContent")}
+      </a>
+      <LeadUiProvider>
+        <IntroProvider>
+          <SiteHeader
+            logo={
+              <CncLogo
+                priority={cncGallery.length === 0}
+                className="h-9 w-auto"
+              />
+            }
+            skipLabel={t("hero.skipIntro")}
+          />
+          <main className="flex flex-1 flex-col overflow-x-clip pb-28 md:pb-0">
+            <HeroSection />
+            <WaysSection />
+            <MaterialsSection />
+            <AudienceSection />
+            <ProcessSection />
+            <WorkSection />
+            <LeadCapture copy={copy} />
+          </main>
+        </IntroProvider>
+      </LeadUiProvider>
+      <SiteFooter
+        logo={<CncLogo className="h-8 w-auto" />}
+        designUrl={clientEnv.NEXT_PUBLIC_DESIGN_URL}
+        instagramUrl={siteConfig.instagramUrl}
+        instagramHandle={siteConfig.instagramHandle}
+      />
+    </>
   );
+}
+
+function cncJsonLd(name: string, parentName: string) {
+  const data: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name,
+    url: siteOrigin("cnc"),
+    areaServed: "Querétaro",
+    parentOrganization: {
+      "@type": "Organization",
+      name: parentName,
+      url: siteOrigin("design"),
+    },
+    knowsAbout: [
+      "CNC router cutting",
+      "CNC router rental",
+      "acrylic cutting",
+      "aluminum cutting",
+      "MDF cutting",
+      "signage",
+    ],
+  };
+
+  if (siteConfig.instagramUrl) {
+    data.sameAs = [siteConfig.instagramUrl];
+  }
+
+  return JSON.stringify(data).replace(/</g, "\\u003c");
 }

@@ -7,7 +7,43 @@
   },
   "design": {
     "title": "Woodax Design",
-    "headline": "El inicio de una pieza a medida",
+    "meta": {
+      "title": "Woodax Design · Carpintería a medida en Querétaro",
+      "description": "Cocinas, clósets, piezas únicas y mobiliario para negocios, diseñados contigo y hechos a la medida de tu espacio."
+    },
+    "skipToContent": "TODO(copy)",
+    "hero": {
+      "eyebrow": "Nuevo sitio en camino · Abiertos a proyectos",
+      "headlineLead": "Diseñamos y fabricamos lo que tu espacio necesita.",
+      "headlineTail": "Pieza por pieza.",
+      "subhead": "Carpintería a medida para hogares y negocios en Querétaro, de la primera idea a la instalación.",
+      "ctaPrimary": "Cuéntanos tu proyecto",
+      "ctaSecondary": "Ver proyectos",
+      "skipIntro": "Saltar"
+    },
+    "audience": {
+      "title": "Para tu hogar y para tu negocio",
+      "homeTitle": "Tu hogar",
+      "homeBody": "Cocinas, clósets, vestidores y piezas únicas pensadas para la forma en que vives.",
+      "businessTitle": "Tu negocio",
+      "businessBody": "Mobiliario para oficinas, despachos, cafeterías y coworkings que refleja tu marca desde la entrada."
+    },
+    "projects": {
+      "title": "Proyectos recientes",
+      "instagramCta": "Más proyectos en Instagram",
+      "tags": {
+        "kitchen": "Cocina",
+        "closet": "Clóset",
+        "custom-piece": "Pieza a medida",
+        "commercial-space": "Espacio comercial"
+      }
+    },
+    "process": {
+      "title": "Así trabajamos",
+      "step1": "Escuchamos — Conocemos tu espacio, tomamos medidas y entendemos lo que necesitas.",
+      "step2": "Diseñamos — Te presentamos una propuesta y la ajustamos contigo hasta que quede exacta.",
+      "step3": "Fabricamos e instalamos — Construimos cada pieza a medida y la entregamos lista para usarse."
+    },
     "form": {
       "title": "Empecemos por tu espacio",
       "step1": {
@@ -69,7 +105,54 @@
   },
   "cnc": {
     "title": "CNC by Woodax Design",
-    "headline": "Tu proyecto ya empezó",
+    "skipToContent": "TODO(copy)",
+    "meta": {
+      "title": "CNC by Woodax Design · Corte CNC y renta de router en Querétaro",
+      "description": "Corte CNC de precisión en madera, acrílico y aluminio para talleres y empresas. Renta tiempo de máquina o encarga producción en volumen."
+    },
+    "hero": {
+      "eyebrow": "Capacidad disponible · Cotizaciones abiertas",
+      "headline": "Precisión CNC, sin invertir en la máquina.",
+      "subhead": "Para talleres y empresas en Querétaro: renta tiempo de máquina o encárganos la producción completa, desde una pieza hasta miles.",
+      "ctaPrimary": "Cotizar mi proyecto",
+      "ctaSecondary": "Cómo funciona",
+      "skipIntro": "Saltar",
+      "axisX": "X",
+      "axisY": "Y"
+    },
+    "ways": {
+      "title": "Dos formas de trabajar con nosotros",
+      "rentLabel": "01",
+      "rentTitle": "Renta de tiempo de máquina",
+      "rentBody": "Para talleres que necesitan capacidad extra. Usa nuestro router CNC cuando lo necesites, sin invertir en equipo ni mantenimiento.",
+      "volumeLabel": "02",
+      "volumeTitle": "Producción en volumen",
+      "volumeBody": "Para empresas que necesitan lotes de piezas idénticas, con la misma precisión de la primera a la última."
+    },
+    "materials": {
+      "title": "Materiales",
+      "wood": "Madera · MDF, triplay y madera sólida",
+      "acrylic": "Acrílico",
+      "aluminum": "Aluminio delgado",
+      "maxThickness": "Espesor máx.",
+      "cuttingArea": "Área de corte"
+    },
+    "audience": {
+      "title": "Hecho para",
+      "workshops": "Talleres de carpintería — Más capacidad sin comprar otra máquina.",
+      "companies": "Empresas e industria — Componentes en serie con medidas exactas.",
+      "signs": "Rotulistas — Letras, piezas y señalética en acrílico y aluminio."
+    },
+    "process": {
+      "title": "Del archivo a la pieza",
+      "step1": "01 Envíanos tu archivo o tu idea",
+      "step2": "02 Revisamos y cotizamos",
+      "step3": "03 Cortamos y entregamos",
+      "formats": "Formatos: DXF, DWG, SVG, AI, PDF. Puedes enviarlo después."
+    },
+    "work": {
+      "title": "TODO(copy)"
+    },
     "form": {
       "title": "Cuéntanos qué necesitas producir",
       "step1": {
@@ -141,12 +224,12 @@
   },
   "metadata": {
     "design": {
-      "title": "Woodax Design",
-      "description": "Muebles y espacios a medida. Pronto, el nuevo sitio de Woodax Design."
+      "title": "Woodax Design · Carpintería a medida en Querétaro",
+      "description": "Cocinas, clósets, piezas únicas y mobiliario para negocios, diseñados contigo y hechos a la medida de tu espacio."
     },
     "cnc": {
-      "title": "CNC by Woodax Design",
-      "description": "Producción CNC de precisión. Pronto, el nuevo sitio de CNC by Woodax Design."
+      "title": "CNC by Woodax Design · Corte CNC y renta de router en Querétaro",
+      "description": "Corte CNC de precisión en madera, acrílico y aluminio para talleres y empresas. Renta tiempo de máquina o encarga producción en volumen."
     }
   }
 }

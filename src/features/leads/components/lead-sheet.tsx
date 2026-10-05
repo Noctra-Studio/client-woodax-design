@@ -7,15 +7,10 @@ import {
   type ReactNode,
   type RefObject,
 } from "react";
-import {
-  motion,
-  useDragControls,
-  useReducedMotion,
-  type PanInfo,
-} from "motion/react";
+import { createPortal } from "react-dom";
+import { motion, useDragControls, type PanInfo } from "motion/react";
 import { cn } from "@/lib/utils";
 
-const easeOut = [0.22, 1, 0.36, 1] as const;
 const focusableSelector = [
   "a[href]",
   "button:not([disabled])",
@@ -46,7 +41,6 @@ export function LeadSheet({
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
   const dragControls = useDragControls();
-  const reduceMotion = useReducedMotion();
   const inset = useKeyboardInset(open && active);
   const trapped = open && active;
 
@@ -55,7 +49,7 @@ export function LeadSheet({
 
   const isDesign = variant === "design";
 
-  return (
+  const sheet = (
     <>
       {open ? (
         <button
@@ -74,7 +68,7 @@ export function LeadSheet({
         inert={!open && active ? true : undefined}
         tabIndex={-1}
         data-open={open ? "true" : "false"}
-        drag={active ? "y" : false}
+        drag={active && open ? "y" : false}
         dragControls={dragControls}
         dragListener={false}
         dragConstraints={{ top: 0, bottom: 0 }}
@@ -82,12 +76,11 @@ export function LeadSheet({
         onDragEnd={(_event, info) => {
           if (shouldDismiss(info)) onClose();
         }}
-        initial={false}
-        animate={{ y: open ? 0 : "100%" }}
-        transition={{ duration: reduceMotion ? 0 : 0.24, ease: easeOut }}
         className={cn(
           "lead-sheet z-50 flex max-h-[90dvh] flex-col outline-none",
           "max-md:fixed max-md:inset-x-0 max-md:bottom-0 max-md:rounded-t-[var(--radius-card)]",
+          "max-md:transition-transform max-md:duration-[240ms] max-md:ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
+          active && !open && "max-md:translate-y-full",
           "md:relative md:max-h-none md:rounded-[var(--radius-card)]",
           isDesign
             ? "bg-woodax-cream text-woodax-charcoal"
@@ -118,7 +111,7 @@ export function LeadSheet({
           <button
             type="button"
             onClick={onClose}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center text-[15px] underline underline-offset-4"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center text-[15px] underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
           >
             {closeLabel}
           </button>
@@ -132,6 +125,12 @@ export function LeadSheet({
       </motion.div>
     </>
   );
+
+  if (active && typeof document !== "undefined") {
+    return createPortal(sheet, document.body);
+  }
+
+  return sheet;
 }
 
 function shouldDismiss(info: PanInfo) {

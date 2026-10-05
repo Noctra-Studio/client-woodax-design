@@ -13,8 +13,8 @@ export async function WoodaxLogo({ className, priority = false }: LogoProps) {
     <Image
       src="/brand/woodax-logo.svg"
       alt={t("title")}
-      width={160}
-      height={40}
+      width={206}
+      height={80}
       preload={priority}
       className={className}
     />

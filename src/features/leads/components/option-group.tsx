@@ -87,7 +87,7 @@ export function OptionGroup({
                     : "border-cnc-white"
                   : isDesign
                     ? "border-transparent"
-                    : "border-cnc-line",
+                    : "border-cnc-muted",
               )}
             >
               <input

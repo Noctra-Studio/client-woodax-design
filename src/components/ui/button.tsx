@@ -14,7 +14,7 @@ const variants = {
   "cnc-primary":
     "rounded-[4px] bg-cnc-white text-cnc-bg pointer-fine:hover:bg-cnc-text focus-visible:outline-cnc-white",
   "cnc-secondary":
-    "rounded-[4px] border border-cnc-line text-cnc-text pointer-fine:hover:border-cnc-muted pointer-fine:hover:bg-cnc-surface focus-visible:outline-cnc-text",
+    "rounded-[4px] border border-cnc-muted text-cnc-text pointer-fine:hover:border-cnc-text pointer-fine:hover:bg-cnc-surface focus-visible:outline-cnc-white",
 } as const;
 
 type CommonProps = {
@@ -42,7 +42,7 @@ export function Button({
   ...props
 }: ButtonAsButton | ButtonAsLink) {
   const classes = cn(
-    "group inline-flex min-h-11 items-center justify-center gap-2 px-5 text-base font-medium transition-[transform,background-color,border-color] duration-(--duration-press) ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100",
+    "group inline-flex min-h-11 items-center justify-center gap-2 px-5 text-base font-medium transition-[transform,background-color,border-color] duration-(--duration-press) ease-out select-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100",
     variants[variant],
     className,
   );

@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant pointer-fine (@media (pointer: fine));
+
 @theme inline {
   --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
@@ -37,14 +39,26 @@
   --radius-control: 4px;
 }
 
+html {
+  scroll-padding-top: 5.5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 body[data-site="design"] {
   background-color: var(--color-woodax-cream);
   color: var(--color-woodax-charcoal);
+  color-scheme: light;
 }
 
 body[data-site="cnc"] {
   background-color: var(--color-cnc-bg);
   color: var(--color-cnc-text);
+  color-scheme: dark;
 }
 
 @keyframes lead-draw-check {
@@ -81,9 +95,170 @@ body[data-site="cnc"] {
   }
 }
 
+@keyframes arc-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.arc-motif[data-arcs="wait"] path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.arc-motif[data-arcs="draw"] path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: arc-draw 1.2s var(--ease-out) forwards;
+}
+
+.design-reveal[data-reveal="hidden"] {
+  transform: translateY(16px);
+  opacity: 0;
+}
+
+.design-reveal[data-reveal="shown"] {
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    transform var(--duration-reveal) var(--ease-out),
+    opacity var(--duration-reveal) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .design-reveal[data-reveal="hidden"],
+  .design-reveal[data-reveal="shown"] {
+    transform: none;
+    opacity: 1;
+    transition: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .lead-check-draw,
-  .lead-card-settle {
+  .lead-card-settle,
+  .arc-motif[data-arcs="draw"] path {
     animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+.cnc-hero-grid {
+  background-image:
+    linear-gradient(to right, var(--color-cnc-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-cnc-line) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(ellipse at center, #000 32%, transparent 78%);
+}
+
+@keyframes cnc-grid-draw {
+  from {
+    clip-path: inset(0 100% 100% 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+
+html[data-cnc-intro="play"] .cnc-hero-grid {
+  animation: cnc-grid-draw 600ms var(--ease-out) both;
+}
+
+@keyframes cnc-stroke-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.cnc-logo-stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+html[data-cnc-intro="play"] .cnc-logo-stroke {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: cnc-stroke-draw 900ms var(--ease-out) forwards;
+}
+
+.cnc-plotter[data-plot="hidden"] {
+  clip-path: inset(0 100% 0 0);
+}
+
+.cnc-plotter[data-plot="shown"] {
+  clip-path: inset(0);
+  transition: clip-path var(--duration-reveal) var(--ease-out);
+}
+
+.cnc-track {
+  transform-origin: left center;
+}
+
+.cnc-track-y {
+  transform-origin: center top;
+}
+
+[data-draw="wait"] .cnc-track {
+  transform: scaleX(0);
+}
+
+[data-draw="shown"] .cnc-track {
+  transform: scaleX(1);
+  transition: transform var(--duration-reveal) var(--ease-out);
+}
+
+[data-draw="wait"] .cnc-track-y {
+  transform: scaleY(0);
+}
+
+[data-draw="shown"] .cnc-track-y {
+  transform: scaleY(1);
+  transition: transform var(--duration-reveal) var(--ease-out);
+}
+
+[data-draw="wait"] .cnc-step {
+  transform: translateY(16px);
+  opacity: 0;
+}
+
+[data-draw="shown"] .cnc-step {
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    transform var(--duration-reveal) var(--ease-out),
+    opacity var(--duration-reveal) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-cnc-intro="play"] .cnc-hero-grid,
+  html[data-cnc-intro="play"] .cnc-logo-stroke {
+    animation: none;
+    clip-path: none;
+    stroke-dashoffset: 0;
+  }
+
+  [data-draw="wait"] .cnc-track,
+  [data-draw="shown"] .cnc-track,
+  [data-draw="wait"] .cnc-track-y,
+  [data-draw="shown"] .cnc-track-y {
+    transform: none;
+    transition: none;
+  }
+
+  .cnc-plotter[data-plot="hidden"],
+  .cnc-plotter[data-plot="shown"] {
+    clip-path: none;
+    transition: none;
+  }
+
+  [data-draw="wait"] .cnc-step,
+  [data-draw="shown"] .cnc-step {
+    transform: none;
+    opacity: 1;
+    transition: none;
   }
 }
