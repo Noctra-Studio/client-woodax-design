@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, Outfit } from "next/font/google";
+import { JetBrains_Mono, Playfair_Display, Quicksand } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -9,10 +9,19 @@ import { requestSite } from "@/lib/request-site";
 import { localizedMetadata } from "@/lib/seo";
 import "../globals.css";
 
-const outfit = Outfit({
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-outfit",
+  weight: ["400", "700"],
+  style: "normal",
+  variable: "--font-playfair",
+  display: "swap",
+});
+
+const quicksand = Quicksand({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: "normal",
+  variable: "--font-quicksand",
   display: "swap",
 });
 
@@ -70,7 +79,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${outfit.variable} ${jetbrainsMono.variable} h-full antialiased [-webkit-tap-highlight-color:transparent]`}
+      className={`${playfair.variable} ${quicksand.variable} ${jetbrainsMono.variable} h-full antialiased [-webkit-tap-highlight-color:transparent]`}
     >
       <body
         data-site={site}

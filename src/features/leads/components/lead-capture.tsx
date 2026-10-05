@@ -60,7 +60,10 @@ export function LeadCapture({ copy }: { copy: LeadCopy }) {
       <div className="relative mx-auto flex w-full max-w-[1200px] flex-col gap-8">
         <h2
           id={`${copy.variant}-form-title`}
-          className="max-w-[18ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.02em] text-balance"
+          className={cn(
+            "max-w-[18ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal text-balance",
+            isDesign ? "font-serif tracking-[-0.01em]" : "tracking-[-0.02em]",
+          )}
         >
           {copy.title}
         </h2>

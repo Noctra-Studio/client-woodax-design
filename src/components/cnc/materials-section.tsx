@@ -112,7 +112,10 @@ export function MaterialsSection() {
               key={row.key}
               role="row"
               data-plotter=""
-              className={cn("cnc-plotter border-cnc-line grid border-b", columns)}
+              className={cn(
+                "cnc-plotter border-cnc-line grid border-b",
+                columns,
+              )}
               style={{ transitionDelay: `${index * 70}ms` }}
             >
               <p
@@ -125,7 +128,7 @@ export function MaterialsSection() {
                 role="cell"
                 className={
                   row.description
-                    ? "max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-light text-pretty"
+                    ? "max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-medium text-pretty"
                     : "hidden md:block"
                 }
               >

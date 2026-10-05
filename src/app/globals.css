@@ -3,7 +3,9 @@
 @custom-variant pointer-fine (@media (pointer: fine));
 
 @theme inline {
-  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-quicksand), ui-sans-serif, system-ui, sans-serif;
+  --font-serif:
+    var(--font-playfair), ui-serif, Georgia, "Times New Roman", serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
 

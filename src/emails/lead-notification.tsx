@@ -242,7 +242,7 @@ export function LeadNotificationEmail({
 
 const body = {
   backgroundColor: "#F4F1EC",
-  fontFamily: "Outfit, Helvetica, Arial, sans-serif",
+  fontFamily: "Helvetica, Arial, sans-serif",
   margin: "0",
   padding: "32px 16px",
 };

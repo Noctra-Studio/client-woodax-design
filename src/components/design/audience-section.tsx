@@ -16,17 +16,17 @@ export async function AudienceSection() {
         <div className="relative mx-auto w-full max-w-[1200px] px-5 md:px-8">
           <h2
             id="audience-title"
-            className="max-w-[16ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.02em] text-balance"
+            className="max-w-[16ch] font-serif text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.01em] text-balance"
           >
             {t("title")}
           </h2>
           <div className="mt-12 grid gap-12 md:mt-16 md:grid-cols-2 md:gap-16">
             <article className="max-w-[62ch]">
               <House aria-hidden="true" strokeWidth={1.5} className="size-7" />
-              <h3 className="mt-4 text-[clamp(1.25rem,2vw,1.5rem)] font-medium text-balance">
+              <h3 className="mt-4 font-serif text-[clamp(1.25rem,2vw,1.5rem)] font-bold text-balance">
                 {t("homeTitle")}
               </h3>
-              <p className="mt-3 text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-light text-pretty">
+              <p className="mt-3 text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.65] font-medium text-pretty">
                 {t("homeBody")}
               </p>
             </article>
@@ -36,10 +36,10 @@ export async function AudienceSection() {
                 strokeWidth={1.5}
                 className="size-7"
               />
-              <h3 className="mt-4 text-[clamp(1.25rem,2vw,1.5rem)] font-medium text-balance">
+              <h3 className="mt-4 font-serif text-[clamp(1.25rem,2vw,1.5rem)] font-bold text-balance">
                 {t("businessTitle")}
               </h3>
-              <p className="mt-3 text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-light text-pretty">
+              <p className="mt-3 text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.65] font-medium text-pretty">
                 {t("businessBody")}
               </p>
             </article>

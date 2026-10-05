@@ -37,7 +37,7 @@ export async function WaysSection() {
                 <h3 className="mt-4 text-[clamp(1.25rem,2vw,1.5rem)] font-medium text-balance">
                   {t(panel.title)}
                 </h3>
-                <p className="mt-3 max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-light text-pretty">
+                <p className="mt-3 max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-medium text-pretty">
                   {t(panel.body)}
                 </p>
               </article>

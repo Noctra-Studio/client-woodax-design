@@ -16,7 +16,7 @@ export async function ProcessSection() {
         <div className="mx-auto w-full max-w-[1200px]">
           <h2
             id="process-title"
-            className="max-w-[16ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.02em] text-balance"
+            className="max-w-[16ch] font-serif text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.01em] text-balance"
           >
             {t("title")}
           </h2>
@@ -25,14 +25,14 @@ export async function ProcessSection() {
               const [title, body] = t(key).split(" — ");
               return (
                 <li key={key} className="max-w-[62ch]">
-                  <p className="text-[clamp(3rem,6vw,4.5rem)] leading-none font-light tracking-[-0.02em] tabular-nums">
+                  <p className="text-woodax-charcoal/75 font-serif text-[clamp(1.25rem,2vw,1.5rem)] leading-none font-normal tracking-[-0.01em] tabular-nums">
                     {String(index + 1).padStart(2, "0")}
                   </p>
-                  <h3 className="mt-4 text-[clamp(1.25rem,2vw,1.5rem)] font-medium text-balance">
+                  <h3 className="mt-4 font-serif text-[clamp(1.25rem,2vw,1.5rem)] font-bold text-balance">
                     {title}
                   </h3>
                   {body ? (
-                    <p className="mt-3 text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-light text-pretty">
+                    <p className="mt-3 text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.65] font-medium text-pretty">
                       {body}
                     </p>
                   ) : null}

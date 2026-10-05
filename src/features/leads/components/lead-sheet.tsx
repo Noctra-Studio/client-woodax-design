@@ -79,7 +79,7 @@ export function LeadSheet({
         className={cn(
           "lead-sheet z-50 flex max-h-[90dvh] flex-col outline-none",
           "max-md:fixed max-md:inset-x-0 max-md:bottom-0 max-md:rounded-t-[var(--radius-card)]",
-          "max-md:transition-transform max-md:duration-[240ms] max-md:ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
+          "motion-reduce:transition-none max-md:transition-transform max-md:duration-[240ms] max-md:ease-[cubic-bezier(0.22,1,0.36,1)]",
           active && !open && "max-md:translate-y-full",
           "md:relative md:max-h-none md:rounded-[var(--radius-card)]",
           isDesign
@@ -104,7 +104,10 @@ export function LeadSheet({
         <div className="flex items-start justify-between gap-4 px-5 pt-2 pb-1 md:hidden">
           <h2
             id={titleId}
-            className="text-[1.75rem] leading-tight font-normal tracking-[-0.02em]"
+            className={cn(
+              "text-[1.75rem] leading-tight font-normal",
+              isDesign ? "font-serif tracking-[-0.01em]" : "tracking-[-0.02em]",
+            )}
           >
             {title}
           </h2>

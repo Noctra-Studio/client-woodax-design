@@ -48,10 +48,17 @@ export function LeadSuccess({
       <div className="flex items-start gap-3">
         <DrawnCheck className="mt-1 size-8" />
         <div>
-          <h3 className="text-[clamp(1.25rem,2vw,1.5rem)] font-medium tracking-[-0.02em]">
+          <h3
+            className={cn(
+              "text-[clamp(1.25rem,2vw,1.5rem)]",
+              isDesign
+                ? "font-serif font-bold tracking-[-0.01em]"
+                : "font-medium tracking-[-0.02em]",
+            )}
+          >
             {copy.successTitle}
           </h3>
-          <p className="mt-2 max-w-[62ch] text-[17px] leading-relaxed font-light">
+          <p className="mt-2 max-w-[62ch] text-[17px] leading-relaxed font-medium">
             {copy.successBody}
           </p>
         </div>

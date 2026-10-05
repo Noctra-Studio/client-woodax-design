@@ -96,7 +96,7 @@ export function HeroSection() {
             >
               {t("headline")}
             </h1>
-            <p className="text-cnc-text mt-5 max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-light text-pretty">
+            <p className="text-cnc-text mt-5 max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-medium text-pretty">
               {t("subhead")}
             </p>
             <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap">

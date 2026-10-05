@@ -37,7 +37,7 @@ export async function ProjectsSection({
         <div className="mx-auto w-full max-w-[1200px]">
           <h2
             id="projects-title"
-            className="px-5 text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.02em] text-balance md:px-8"
+            className="px-5 font-serif text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.01em] text-balance md:px-8"
           >
             {t("title")}
           </h2>
@@ -58,7 +58,7 @@ export async function ProjectsSection({
                     sizes="(min-width: 768px) 40vw, 82vw"
                     className="object-cover"
                   />
-                  <p className="bg-woodax-cream text-woodax-charcoal absolute bottom-4 left-4 rounded-full px-3 py-1 text-[12px] font-medium tracking-[0.18em] uppercase">
+                  <p className="bg-woodax-cream text-woodax-charcoal absolute bottom-4 left-4 rounded-full px-3 py-1 text-[12px] font-semibold tracking-[0.18em] uppercase">
                     {t(`tags.${item.tag as DesignGalleryTag}`)}
                   </p>
                 </li>

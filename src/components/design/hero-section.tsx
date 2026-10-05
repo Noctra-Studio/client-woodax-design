@@ -92,13 +92,13 @@ export function HeroSection() {
           onPhoto ? "text-woodax-cream" : "text-woodax-charcoal",
         )}
       >
-        <p className="text-[13px] font-medium tracking-[0.18em] uppercase">
+        <p className="text-[13px] font-semibold tracking-[0.18em] uppercase">
           {t("eyebrow")}
         </p>
         <h1
           id="hero-title"
           tabIndex={-1}
-          className="mt-4 scroll-mt-24 text-[clamp(2.5rem,6vw,5rem)] leading-[1.02] font-normal tracking-[-0.02em] text-balance focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+          className="mt-4 scroll-mt-24 font-serif text-[clamp(2.5rem,5.5vw,4.75rem)] leading-[1.05] font-normal tracking-[-0.01em] text-balance focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
         >
           <motion.span animate={leadControls} className="block">
             {t("headlineLead")}
@@ -108,7 +108,7 @@ export function HeroSection() {
           </motion.span>
         </h1>
         <motion.div animate={copyControls}>
-          <p className="mt-5 max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-light text-pretty">
+          <p className="mt-5 max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.65] font-medium text-pretty">
             {t("subhead")}
           </p>
           <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap">

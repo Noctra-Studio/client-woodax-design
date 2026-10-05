@@ -32,12 +32,16 @@ export async function AudienceSection() {
               const Icon = block.icon;
               return (
                 <article key={block.key} className="max-w-[62ch]">
-                  <Icon aria-hidden="true" strokeWidth={1.5} className="size-7" />
+                  <Icon
+                    aria-hidden="true"
+                    strokeWidth={1.5}
+                    className="size-7"
+                  />
                   <h3 className="mt-4 text-[clamp(1.25rem,2vw,1.5rem)] font-medium text-balance">
                     {title}
                   </h3>
                   {body ? (
-                    <p className="mt-3 text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-light text-pretty">
+                    <p className="mt-3 text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-medium text-pretty">
                       {body}
                     </p>
                   ) : null}

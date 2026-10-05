@@ -19,7 +19,7 @@ export async function SiteFooter({
     <footer className="scroll-mt-24 px-5 py-16 md:px-8 md:py-24">
       <div className="mx-auto flex w-full max-w-[1200px] flex-col items-start gap-6">
         <div translate="no">{logo}</div>
-        <p className="text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-light">
+        <p className="text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.65] font-medium">
           {t("location")}
         </p>
         {instagramUrl ? (
