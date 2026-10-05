@@ -258,6 +258,59 @@ No italics anywhere (decision). Emphasis = weight and tone only.
 ## 16. Assets & config
 
 - public/brand/woodax-design-logo.svg (full lockup, official colors), woodax-design-icon.svg (mark only), cnc-woodax-logo.svg (full lockup, white), cnc-woodax-icon.svg (mark only, white). Optional: woodax-design-wordmark.svg, cnc-woodax-wordmark.svg (text block only, same artboard height as the logo).
-- public/images/design/*, public/images/cnc/* — only real client photos.
+- public/images/design/*, public/images/cnc/* — only real client photos. Single exception: public/images/cnc/materials/* (section 19), generic licensed material swatches.
 - src/content/site-config.ts holds: instagramUrl, instagramHandle, facebookUrl, cnc specs (all optional). Missing values = hidden UI.
 - All visible strings come from src/messages/{es,en}.json, populated from docs/brand/copy-deck.md.
+
+## 18. CNC grid motion (ambient, after the intro)
+
+The grid is the CNC signature; it should feel like a machine bed, not a screensaver. Three layers, all optional to the eye and never competing with the headline:
+1. Homing (load, once): the existing intro draw-in from the top-left (section 5). When the intro is skipped or already played this session, the grid is simply present.
+2. Toolpath pass (loop): a single "toolhead" (a 9px crosshair in cnc-text at 70% opacity + a 1px trail) travels along grid lines only, snapped to the 24px grid, tracing one closed rectangular cut path in the hero (orthogonal moves, no diagonals, constant speed ~120px/s, --ease-in-out at each corner). The trail is an SVG path with stroke-dashoffset in cnc-muted at 50%, fading out over 1.2s behind the head. One pass, then 6–10s pause, then a new path at a different position. Max one toolhead on screen. It always stays in the hero zone outside the text column (never passes behind the headline, subhead or CTAs).
+3. Pointer spotlight (desktop only, `(hover: hover) and (pointer: fine)`): grid lines within ~180px of the pointer brighten from cnc-line to cnc-muted via a second grid layer revealed with a radial mask-image whose center follows the pointer through CSS variables (--mx, --my) updated in rAF. No lerp lag above 80ms; it fades out when the pointer leaves the hero.
+Rules:
+- Only transform, opacity, stroke-dashoffset and mask/CSS variables. No canvas, no WebGL, no layout-affecting properties, no JS animation library for the loop (CSS keyframes or WAAPI).
+- Pause everything when the hero is off-screen (IntersectionObserver) and when document.hidden.
+- prefers-reduced-motion: static grid, no toolhead, no spotlight. Save-Data: no toolhead.
+- Over hero media the grid keeps the section 17 order and opacity; the toolhead is above the grid and below registration marks/content.
+- The rest of the page grid (outside the hero) stays static. Spec rows keep their plotter reveal (section 5).
+
+## 19. CNC materials section
+
+- 10 materials confirmed by Adrián, fixed order and copy from the copy deck ("Materiales"). Data in src/content/cnc-materials.ts: { slug, image: { src, width, height, credit: { name, url, source: "unsplash" | "woodax" } } }. Labels come from messages; thickness from site-config.cncSpecs.maxThickness[slug] and only renders when present.
+- Images: until Adrián sends his own, licensed Unsplash photos in public/images/cnc/materials/{slug}.jpg (fetched with docs/brand/fetch-cnc-materials.sh). They are generic material references: never captioned or arranged as Woodax projects, never in the "Trabajos" gallery, never in Open Graph or JSON-LD. Replace a file in place when a real photo arrives and set credit.source to "woodax". Credits live in the data file (Unsplash license does not require visible attribution).
+- Treatment (keeps CNC accent-free): images render grayscale(1) contrast(1.05) brightness(.9) with a cnc-bg 20% overlay. On hover/focus-visible (pointer: fine) the card restores color over 400ms --ease-out and the image scales 1 → 1.03 inside an overflow-hidden frame. On touch devices color comes back when the card is centered in the viewport (IntersectionObserver with rootMargin "-40% 0px -40% 0px"), one card at a time. Reduced motion: no scale, instant color swap.
+- Layout: cards with 4:3 image, radius --radius-card, 1px cnc-line border, label in Quicksand 500 and an index in JetBrains Mono ("01" … "10"). Grid 2 columns mobile, 3 at md, 5 at lg (2 rows of 5). Reveal: plotter pass left→right, 70ms stagger, once.
+- next/image with explicit sizes ("(min-width:1024px) 20vw, (min-width:768px) 33vw, 50vw"), lazy, AVIF/WebP via Next. Alt text = material name + imageNote.
+
+## 20. Woodax Design multi-page site (CNC stays a single page)
+
+Routes (next-intl `pathnames`, localized, es unprefixed):
+| Key | ES | EN |
+|---|---|---|
+| home | / | /en |
+| about | /nosotros | /en/about |
+| services | /servicios | /en/services |
+| clients | /clientes | /en/clients |
+| contact | /contacto | /en/contact |
+- Every internal link uses the typed `Link`/`router` from src/i18n/navigation.ts with route keys, never hard-coded strings. The language switch (section 15) maps the current route to its counterpart in the other locale.
+- These routes exist only on the Design host. On the CNC host they 404; CNC keeps anchors.
+
+Navigation (extends section 10; same glass recipe and animation rules):
+- Logo (full lockup, or mark when collapsed / on mobile) is always a link to home, aria-label from nav.design.homeAria. On home it scrolls to top smoothly (instant under reduced motion) instead of re-navigating.
+- Items: [Inicio — only off home] · Nosotros · Servicios · Clientes · and Contacto as the right-side pill (the CTA that collapses into the 40px circle). Contacto is NOT repeated as a text link.
+- "Inicio" (arrow-left 16px + label) is the first item, rendered only when pathname ≠ home. It enters/leaves with the same grid-template-columns 0fr↔1fr + opacity technique (160ms in after width grows, 120ms out before it shrinks). The nav lives in the Design layout so it persists across navigations and animates instead of remounting.
+- An item whose page is unpublished (see below) is not rendered at all.
+- Active state: aria-current="page" on the current route; the background shape behind it moves between items with the layoutId pill from section 10 (shape only, no text). On the contact page the pill CTA shows its active state.
+- Mobile Sheet: Inicio (off home only) · Nosotros · Servicios · Clientes · Contacto · divider · sibling-brand link · social · ES/EN. Tapping a link closes the sheet before navigating.
+- MobileCtaBar is hidden on /contacto (the form is already on the page).
+
+Pages and content rules:
+- Home: hero, statement, "Para quién", featured projects (design-gallery), services teaser (4 items → /servicios), "Así trabajamos", CTA to /contacto. No inline form on home; ctaPrimary goes to /contacto.
+- Servicios: 4 services from the copy deck as numbered rows (section 11), "Así trabajamos", cross-link to CNC, CTA.
+- Nosotros and Clientes are published ONLY when their real content exists: src/content/design-about.ts (story ES/EN approved by Adrián + at least one real photo) and src/content/design-clients.ts (each client with permission: name, optional logo SVG, project cards, optional testimonial { quote, author, role, approved: true } quoted verbatim). Until then: no route (notFound()), no nav item, not in the sitemap. Never placeholder logos, invented testimonials or stock "team" photos.
+- Contacto: LeadForm variant="design" inline (no sheet), channels (email, WhatsApp only if configured, Instagram/Facebook from site-config), location. No street address unless provided.
+- Page intro (section 5) plays only on the home's first visit in the session; never on inner pages or client-side navigations.
+- Route transitions: template.tsx fades content in + 8px rise, 240ms --ease-out; no exit animation, no layout shift; disabled under reduced motion. Scroll resets to top on route change, except language switch (section 15).
+- SEO: generateMetadata per page from messages, canonical + hreflang alternates per localized path, Open Graph per page, sitemap per host lists only published pages for both locales. JSON-LD: HomeAndConstructionBusiness on home, Service per service on /servicios, BreadcrumbList on inner pages, ContactPage on /contacto, AboutPage on /nosotros.
+

@@ -306,6 +306,84 @@ Reglas: textos solo desde messages (copia los nuevos del copy deck tal cual), na
 
 ---
 
+## Fase CNC+ — Grid animado y sección de materiales (correr después de la Fase CNC)
+
+```
+Contexto: la página de CNC ya es sitio completo. Ahora: (1) animar el grid del hero y (2) rehacer la sección de Materiales con los 10 materiales que confirmó Adrián, con imágenes. Antes de tocar código lee completas las secciones 1, 3, 5, 17, 18 y 19 de .agents/skills/woodax-brand/SKILL.md y la sección "Materiales" de CNC en docs/brand/copy-deck.md.
+
+Paso 0 — Inventario (sin cambios)
+Dime cómo está construido hoy el grid (CSS background, SVG o componente; dónde vive; cómo se hace el draw-in del intro) y cómo está la sección de Materiales y el campo de material del formulario. Propón dónde montarías cada capa de la sección 18. Espera mi OK.
+
+Paso 1 — Toolpath pass
+- Componente cliente pequeño (HeroToolpath) montado solo en el hero, encima del grid y debajo de marcas/contenido.
+- Genera rutas rectangulares cerradas sobre la retícula de 24px, en zonas del hero fuera de la columna de texto (calcúlalas a partir del bounding box del contenido, recalcula en resize con ResizeObserver).
+- Cabezal: cruz de 9px + estela SVG con stroke-dashoffset, velocidad constante ~120px/s, pausa 6–10s entre pasadas. Animación con WAAPI o CSS, sin librerías.
+- Pausa fuera de viewport y con document.hidden. Nada con prefers-reduced-motion ni Save-Data.
+
+Paso 2 — Spotlight del puntero (solo desktop)
+- Segunda capa de grid en cnc-muted, revelada con mask-image radial (~180px) centrada en --mx/--my, actualizadas en rAF desde pointermove sobre el hero. Fade in/out al entrar/salir.
+- Solo con (hover: hover) and (pointer: fine). Sin re-renders de React por movimiento: escribe las variables directo al style del nodo.
+
+Paso 3 — Imágenes de materiales
+- Corre: bash docs/brand/fetch-cnc-materials.sh (descarga 10 fotos con licencia Unsplash a public/images/cnc/materials/). Si un archivo ya existe, el script no lo pisa.
+- Crea src/content/cnc-materials.ts con el tipo de la sección 19: slug, image { src, width, height, credit { name, url, source } } usando los créditos que imprime el script. Lee width/height reales de cada archivo.
+- Extiende site-config.cncSpecs.maxThickness como Partial<Record<MaterialSlug, number>> (vacío por ahora).
+
+Paso 4 — Sección Materiales
+- Reemplaza la sección actual por la grilla de la sección 19: 10 tarjetas en el orden del copy deck, título + intro del copy deck, índice mono 01–10, grayscale → color en hover/focus (desktop) o al centrarse en viewport (touch), revelado tipo plotter.
+- El grosor solo aparece si existe maxThickness[slug].
+- Actualiza las opciones de material del formulario con el copy deck nuevo (4 grupos + Otro) sin cambiar los valores que ya llegan en el correo más allá del label.
+
+Paso 5 — QA
+- review-animations y mobile-native sobre el hero y la sección; break-ui con nombres largos en EN.
+- Performance: el hero no debe bajar el Lighthouse móvil de 90; sin long tasks > 50ms causadas por la animación (Performance panel, 10s de idle con el hero visible). CLS 0 en la grilla de materiales.
+- Verifica reduced motion (todo estático) y que el toolhead nunca pase detrás del titular en 360, 390, 768, 1024 y 1440 px.
+
+Reglas: textos solo desde messages, nada inventado, solo shadcn + tokens de la skill, un commit por paso (Conventional Commits en inglés), push a staging y link del preview al final de cada paso.
+```
+
+---
+
+## Fase Woodax — Sitio multipágina (CNC sigue como one-page)
+
+```
+Contexto: Woodax Design pasa de one-page coming soon a sitio multipágina: Inicio, Nosotros, Servicios, Clientes y Contacto. CNC no cambia (sigue one-page con anclas). Antes de tocar código lee completas las secciones 1, 10, 13, 15 y 20 de .agents/skills/woodax-brand/SKILL.md y "Woodax Design — sitio multipágina" + "Navegación" en docs/brand/copy-deck.md.
+
+Paso 0 — Inventario (sin cambios)
+Dime: cómo está hoy la config de next-intl (routing, navigation, middleware/proxy), cómo se resuelve el host Design vs CNC, qué secciones tiene la página de Woodax y qué componentes del nav dependen de anclas. Propón la estructura de carpetas para las rutas nuevas sin romper el rewrite por host. Espera mi OK.
+
+Paso 1 — Rutas localizadas
+- Agrega `pathnames` en src/i18n/routing.ts con la tabla de la sección 20 y usa el Link/router tipados en todo el sitio.
+- Crea las páginas dentro del grupo de Design con un layout compartido que contenga nav, footer y MobileCtaBar (persisten entre navegaciones).
+- Nosotros y Clientes: la página llama notFound() si no existe su contenido real (src/content/design-about.ts / design-clients.ts, tipados, vacíos por ahora).
+- Verifica: ES↔EN cambia /servicios ↔ /en/services sin recarga; en el host de CNC esas rutas dan 404; ?site=design en previews sigue funcionando.
+
+Paso 2 — Navegación
+- Ajusta SiteNav (sección 20): logo siempre lleva al home (en el home hace scroll al top), item "Inicio" solo fuera del home con la animación 0fr↔1fr, items Nosotros · Servicios · Clientes, Contacto como el pill de la derecha. Items de páginas no publicadas no se renderizan.
+- aria-current="page" + pill de fondo con layoutId que se mueve entre rutas. El nav no debe remontarse al navegar (compruébalo: la animación de colapso no se reinicia).
+- Sheet móvil con el orden de la sección 20; cierra antes de navegar. MobileCtaBar oculto en /contacto.
+
+Paso 3 — Contenido de páginas
+- Home: reacomoda lo actual según la sección 20 (quita el formulario inline y el eyebrow de "nuevo sitio"; ctaPrimary → /contacto; agrega el teaser de servicios).
+- Servicios: filas numeradas con los 4 servicios del copy deck + Así trabajamos + link a CNC + CTA.
+- Contacto: LeadForm en línea + canales + ubicación.
+- Textos nuevos del copy deck tal cual a messages. Lo que tenga TODO(adrian) no se publica.
+
+Paso 4 — Transiciones y scroll
+- template.tsx con fade + 8px (240ms), sin animación de salida. Scroll al top en cada navegación, excepto el cambio de idioma. Intro solo en la primera visita al home de la sesión.
+
+Paso 5 — SEO/GEO
+- generateMetadata por página, canonical y hreflang por ruta localizada, OG por página, sitemap del host Design solo con páginas publicadas en ambos idiomas. JSON-LD por página según la sección 20.
+
+Paso 6 — QA
+- break-ui (EN largo, sin Nosotros/Clientes, con todo publicado), review-animations y mobile-native sobre el nav en las 5 rutas. Lighthouse móvil ≥ 90/100/100 en home y servicios.
+- Prueba manual: entrar directo a /en/services, cambiar a ES, navegar a Contacto, volver con el logo y con "Inicio", botón atrás del navegador.
+
+Reglas: textos solo desde messages, nada inventado, solo shadcn + tokens de la skill, un commit por paso (Conventional Commits en inglés), push a staging y link del preview al final de cada paso.
+```
+
+---
+
 ## Fase 4 — QA antes de mostrarle a Adrián
 
 ```

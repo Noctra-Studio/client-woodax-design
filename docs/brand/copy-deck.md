@@ -86,12 +86,22 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - volume.title — ES: Producción en volumen | EN: Volume production
 - volume.body — ES: Para empresas que necesitan lotes de piezas idénticas, con la misma precisión de la primera a la última. | EN: For companies that need batches of identical parts, as precise on the last one as on the first.
 
-### Materiales
-- title — ES: Materiales | EN: Materials
-- wood — ES: Madera · MDF, triplay y madera sólida | EN: Wood · MDF, plywood and solid wood
-- acrylic — ES: Acrílico | EN: Acrylic
-- aluminum — ES: Aluminio delgado | EN: Thin aluminum
-- specLabels — ES: Espesor máx. · Área de corte | EN: Max thickness · Cutting area (valores desde site-config; si no hay, se ocultan)
+### Materiales (confirmado por Adrián: 10 materiales)
+- title — ES: Materiales que cortamos | EN: Materials we cut
+- intro — ES: Madera, plásticos y metales ligeros. ¿Tu material no está en la lista? Pregúntanos. | EN: Wood, plastics and light metals. Don't see your material? Just ask.
+- items (orden fijo; slug → ES | EN):
+  - madera-maciza — Madera maciza | Solid wood
+  - mdf — MDF | MDF
+  - pvc — PVC | PVC
+  - acrilico — Acrílico | Acrylic
+  - alucobond — Alucobond | Aluminum composite (Alucobond)
+  - resina — Resina | Resin
+  - plastico — Plásticos | Plastics
+  - estireno — Estireno | Styrene
+  - aluminio — Aluminio | Aluminum
+  - corian — Corian | Solid surface (Corian)
+- thicknessLabel — ES: Hasta {value} mm | EN: Up to {value} mm (solo si existe site-config.cncSpecs.maxThickness[slug])
+- imageNote (solo para lectores de pantalla, no visible) — ES: Imagen de referencia del material | EN: Reference image of the material
 
 ### Para quién
 - title — ES: Hecho para | EN: Built for
@@ -109,7 +119,7 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 ### Formulario
 - title — ES: Cuéntanos qué necesitas producir | EN: Tell us what you need to produce
 - step1.question — ES: ¿En qué material? | EN: Which material?
-- materialOptions — ES: Madera · Acrílico · Aluminio · Otro | EN: Wood · Acrylic · Aluminum · Other
+- materialOptions — ES: Madera o MDF · Acrílico o plásticos · Aluminio o Alucobond · Otro | EN: Wood or MDF · Acrylic or plastics · Aluminum or Alucobond · Other
 - step1b.question — ES: ¿En qué punto está tu proyecto? | EN: Where is your project at?
 - stateOptions — ES: Tengo el archivo listo · Necesito ayuda con el archivo · Solo tengo la idea | EN: My file is ready · I need help with the file · I only have the idea
 - step2.name — ES: Nombre o empresa | EN: Name or company
@@ -133,9 +143,13 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 ## Navegación (ambas marcas)
 - nav.menu — ES: Menú | EN: Menu
 - nav.close — ES: Cerrar | EN: Close
-- nav.design.projects — ES: Proyectos | EN: Projects
-- nav.design.process — ES: Proceso | EN: Process
-- nav.design.contact — ES: Contacto | EN: Contact
+- nav.design.home — ES: Inicio | EN: Home (solo fuera del home)
+- nav.design.homeAria — ES: Woodax Design, ir al inicio | EN: Woodax Design, go to home (aria-label del logo)
+- nav.design.about — ES: Nosotros | EN: About
+- nav.design.services — ES: Servicios | EN: Services
+- nav.design.clients — ES: Clientes | EN: Clients
+- nav.design.contact — ES: Contacto | EN: Contact (es el botón pill de la derecha)
+- (nav.design.projects y nav.design.process quedan obsoletas en el sitio multipágina)
 - nav.design.cta — ES: Cuéntanos tu proyecto | EN: Tell us about your project
 - nav.cnc.how — ES: Servicio | EN: Service
 - nav.cnc.materials — ES: Materiales | EN: Materials
@@ -231,3 +245,56 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - details.fileLink — ES: Link a tu archivo (Drive, WeTransfer, Dropbox) | EN: Link to your file (Drive, WeTransfer, Dropbox)
 - details.submit — ES: Enviar detalles | EN: Send details
 - details.sent — ES: Listo, ya tenemos los detalles. | EN: Done, we've got the details.
+
+---
+
+## Woodax Design — sitio multipágina (nuevas claves)
+
+Rutas: ES `/` · `/nosotros` · `/servicios` · `/clientes` · `/contacto` — EN `/en` · `/en/about` · `/en/services` · `/en/clients` · `/en/contact`.
+Al lanzar el multipágina se elimina `hero.eyebrow` ("Nuevo sitio en camino"): queda sin eyebrow o con `home.eyebrow`.
+
+### Home
+- home.eyebrow — ES: Carpintería a medida · Querétaro | EN: Bespoke carpentry · Querétaro
+- home.servicesTeaser.title — ES: Lo que hacemos | EN: What we do
+- home.servicesTeaser.cta — ES: Ver servicios | EN: See services
+- home.aboutTeaser.cta — ES: Conócenos | EN: About us
+
+### Servicios ⚠︎ (descripciones pendientes de aprobación de Adrián)
+- meta.title — ES: Servicios · Woodax Design | EN: Services · Woodax Design
+- meta.description — ES: Cocinas, clósets y vestidores, piezas a medida y mobiliario para negocios en Querétaro, del diseño a la instalación. | EN: Kitchens, closets and walk-ins, custom pieces and furniture for businesses in Querétaro, from design to installation.
+- title (h1) — ES: Lo que diseñamos y fabricamos | EN: What we design and build
+- intro — ES: Cada proyecto se diseña contigo y se fabrica a la medida de tu espacio. | EN: Every project is designed with you and built to fit your space.
+- kitchens — ES: Cocinas — Pensadas para cómo cocinas y convives, con el espacio de guardado justo donde lo necesitas. | EN: Kitchens — Designed around how you cook and gather, with storage exactly where you need it.
+- closets — ES: Clósets y vestidores — Orden a la medida de lo que guardas, aprovechando cada centímetro. | EN: Closets and walk-ins — Storage built around what you keep, making the most of every inch.
+- custom — ES: Piezas a medida — Muebles únicos para un rincón, una pared o una idea que no encuentras en tienda. | EN: Custom pieces — One-of-a-kind furniture for a corner, a wall or an idea you can't find in stores.
+- commercial — ES: Espacios comerciales — Mobiliario para oficinas, despachos, cafeterías y coworkings que refleja tu marca. | EN: Commercial spaces — Furniture for offices, firms, cafés and coworking spaces that reflects your brand.
+- (Reutiliza "Así trabajamos" y footer.cncLink en esta página.)
+- cta — ES: Cuéntanos tu proyecto | EN: Tell us about your project
+
+### Nosotros (solo se publica cuando Adrián entregue historia y fotos reales)
+- meta.title — ES: Nosotros · Woodax Design | EN: About · Woodax Design
+- meta.description — TODO(adrian) a partir de la historia
+- title (h1) — ES: Quiénes somos | EN: Who we are
+- statement — reutiliza el Statement de Woodax
+- story — TODO(adrian): cómo empezó Woodax, quién está detrás, desde cuándo, cómo es el taller
+- workshop — fotos reales del taller y del equipo (sin fotos, el bloque no existe)
+
+### Clientes (solo se publica con datos reales y permiso de cada cliente)
+- meta.title — ES: Clientes · Woodax Design | EN: Clients · Woodax Design
+- meta.description — ES: Proyectos de carpintería a medida para hogares y negocios en Querétaro. | EN: Bespoke carpentry projects for homes and businesses in Querétaro.
+- title (h1) — ES: Con quién hemos trabajado | EN: Who we've worked with
+- intro ⚠︎ — ES: Hogares y negocios que nos confiaron su espacio. | EN: Homes and businesses that trusted us with their space.
+- testimonialsTitle — ES: Lo que dicen | EN: In their words (solo testimonios reales, textuales y aprobados por el cliente)
+- empty — no aplica: sin clientes en src/content/design-clients.ts la página y su tab no existen
+
+### Contacto
+- meta.title — ES: Contacto · Woodax Design | EN: Contact · Woodax Design
+- meta.description — ES: Cuéntanos tu proyecto de carpintería a medida en Querétaro y te contactamos para platicar los detalles. | EN: Tell us about your bespoke carpentry project in Querétaro and we'll reach out to talk through the details.
+- title (h1) — ES: Hablemos de tu espacio | EN: Let's talk about your space
+- intro — ES: Cuéntanos qué tienes en mente y te contactamos para platicar los detalles. | EN: Tell us what you have in mind and we'll reach out to talk through the details.
+- channels.title — ES: Otras formas de contactarnos | EN: Other ways to reach us
+- channels.email — ES: Correo | EN: Email
+- channels.whatsapp — ES: WhatsApp | EN: WhatsApp (solo si existe NEXT_PUBLIC_WHATSAPP_NUMBER)
+- channels.social — ES: Síguenos | EN: Follow us
+- (El formulario es el LeadForm variant="design" en línea, no en sheet.)
+
