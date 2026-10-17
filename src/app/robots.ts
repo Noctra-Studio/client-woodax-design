@@ -1,16 +1,18 @@
 import type { MetadataRoute } from "next";
 import { headers } from "next/headers";
 import { clientEnv } from "@/lib/env";
-import { siteOrigin } from "@/lib/seo";
-import { getSite, hostFromHeaders } from "@/lib/site";
+import { isIndexingAllowed, siteOrigin } from "@/lib/seo";
+import { allowsPreviewSiteOverride, getSite, hostFromHeaders } from "@/lib/site";
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
   const headerStore = await headers();
-  const site = getSite(hostFromHeaders(headerStore));
-  const indexable =
-    clientEnv.NEXT_PUBLIC_APP_ENV === "production" && site === "cnc";
+  const host = hostFromHeaders(headerStore);
+  const site = getSite(host);
+  const isProduction =
+    clientEnv.NEXT_PUBLIC_APP_ENV === "production" &&
+    !allowsPreviewSiteOverride(host);
 
-  if (!indexable) {
+  if (!isProduction) {
     return {
       rules: {
         userAgent: "*",
@@ -24,6 +26,8 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: `${siteOrigin("cnc")}/sitemap.xml`,
+    ...(isIndexingAllowed()
+      ? { sitemap: `${siteOrigin(site)}/sitemap.xml` }
+      : {}),
   };
 }

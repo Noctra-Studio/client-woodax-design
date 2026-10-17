@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { AnalyticsAnchor } from "@/components/analytics/tracked-link";
 import { ProcessSection } from "@/components/design/process-section";
 import { Button } from "@/components/ui/button";
+import { designPages } from "@/content/design-pages";
 import { routing, type Locale } from "@/i18n/routing";
 import { requestCncHomeUrl } from "@/lib/request-site";
 import { localizedMetadata } from "@/lib/seo";
@@ -15,6 +17,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
+  if (!designPages.services.enabled) return {};
+
   const { locale: requested } = await params;
   const locale: Locale = hasLocale(routing.locales, requested)
     ? requested
@@ -46,6 +50,8 @@ export default async function ServicesPage({
   if (hasLocale(routing.locales, requested)) {
     setRequestLocale(requested);
   }
+
+  if (!designPages.services.enabled) notFound();
 
   const t = await getTranslations("design.services");
   const footer = await getTranslations("design.footer");

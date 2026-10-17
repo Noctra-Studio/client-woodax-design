@@ -1,10 +1,10 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
-import { clientEnv } from "./src/lib/env";
+import { isIndexingAllowed } from "./src/lib/flags";
 
 const nextConfig: NextConfig = {
   headers() {
-    if (clientEnv.NEXT_PUBLIC_APP_ENV === "production") {
+    if (isIndexingAllowed()) {
       return [];
     }
 

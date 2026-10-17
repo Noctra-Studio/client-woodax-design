@@ -12,6 +12,8 @@ import {
   MobileCtaBar,
   useFormSectionInView,
 } from "@/features/leads/components/mobile-cta-bar";
+import { isDesignFull } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 const MOBILE_QUERY = "(max-width: 767px)";
 
@@ -30,7 +32,7 @@ function useIsMobile() {
 }
 
 export function LeadCapture({ copy }: { copy: LeadCopy }) {
-  if (copy.variant === "design") {
+  if (copy.variant === "design" && isDesignFull()) {
     return <DesignLeadCapture copy={copy} />;
   }
 
@@ -71,31 +73,48 @@ function SheetLeadCapture({ copy }: { copy: LeadCopy }) {
   const setOpen = leadUi?.setOpen ?? setLocalOpen;
   const isMobile = useIsMobile();
   const inView = useFormSectionInView("contacto");
+  const isDesign = copy.variant === "design";
   const sheetOpen = isMobile && open;
 
   const section = (
     <section
       id="contacto"
       aria-labelledby={`${copy.variant}-form-title`}
-      className="relative scroll-mt-24 px-5 py-16 md:px-8 md:py-24 lg:py-40"
+      className={cn(
+        "relative scroll-mt-24 px-5 py-16 md:px-8 md:py-24 lg:py-40",
+        isDesign && "bg-woodax-green text-woodax-charcoal",
+      )}
     >
+      {isDesign ? (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+        >
+          <ArcMotif className="absolute -top-24 -left-16 h-80 w-80" />
+        </div>
+      ) : null}
       <div className="relative mx-auto flex w-full max-w-[1200px] flex-col gap-8">
         <h2
           id={`${copy.variant}-form-title`}
-          className="max-w-[18ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.02em] text-balance"
+          className={cn(
+            "max-w-[18ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal text-balance",
+            isDesign
+              ? "font-serif tracking-[-0.01em]"
+              : "tracking-[-0.02em]",
+          )}
         >
           {copy.title}
         </h2>
         <div className="md:hidden">
           <Button
             type="button"
-            variant="cnc-primary"
+            variant={isDesign ? "design-primary" : "cnc-primary"}
             onClick={() => setOpen(true)}
           >
             {copy.mobileBar}
           </Button>
         </div>
-        <div>
+        <div className={cn(isDesign && "md:max-w-[720px]")}>
           <LeadSheet
             open={sheetOpen}
             onClose={() => setOpen(false)}
@@ -117,7 +136,7 @@ function SheetLeadCapture({ copy }: { copy: LeadCopy }) {
       <Reveal>{section}</Reveal>
       <MobileCtaBar
         label={copy.mobileBar}
-        variant="cnc"
+        variant={copy.variant}
         hidden={sheetOpen || inView}
         onOpen={() => setOpen(true)}
       />

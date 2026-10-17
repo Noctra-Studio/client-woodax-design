@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "@/i18n/navigation";
+import { isDesignFull } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export function DesignFrame({
@@ -13,7 +14,8 @@ export function DesignFrame({
   children: ReactNode;
 }) {
   const pathname = usePathname();
-  const showBar = pathname !== "/contact";
+  const full = isDesignFull();
+  const showBar = full && pathname !== "/contact";
 
   return (
     <>
@@ -22,7 +24,7 @@ export function DesignFrame({
         tabIndex={-1}
         className={cn(
           "flex min-w-0 flex-1 flex-col overflow-x-clip outline-none",
-          showBar && "pb-28 md:pb-0",
+          (!full || showBar) && "pb-28 md:pb-0",
         )}
       >
         {children}

@@ -7,7 +7,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { clientEnv } from "@/lib/env";
 import { requestSite } from "@/lib/request-site";
-import { localizedMetadata } from "@/lib/seo";
+import { isIndexingAllowed, localizedMetadata } from "@/lib/seo";
 import "../globals.css";
 
 const playfair = Playfair_Display({
@@ -57,12 +57,9 @@ export async function generateMetadata({
   const description =
     site === "cnc" ? t("cnc.description") : t("design.description");
 
-  const indexable =
-    clientEnv.NEXT_PUBLIC_APP_ENV === "production" && site === "cnc";
-
   return {
     ...localizedMetadata({ site, locale, title, description }),
-    ...(indexable ? {} : { robots: { index: false, follow: false } }),
+    ...(isIndexingAllowed() ? {} : { robots: { index: false, follow: false } }),
   };
 }
 

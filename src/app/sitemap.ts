@@ -2,25 +2,26 @@ import type { MetadataRoute } from "next";
 import { headers } from "next/headers";
 import { designPageKeys, designPages } from "@/content/design-pages";
 import type { Pathname } from "@/i18n/routing";
-import { clientEnv } from "@/lib/env";
-import { languageAlternates } from "@/lib/seo";
+import { isDesignFull, isIndexingAllowed, languageAlternates } from "@/lib/seo";
 import { getSite, hostFromHeaders } from "@/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const headerStore = await headers();
+  if (!isIndexingAllowed()) {
+    return [];
+  }
+
   const site = getSite(hostFromHeaders(headerStore));
-  const indexable =
-    clientEnv.NEXT_PUBLIC_APP_ENV === "production" && site === "cnc";
 
   if (site === "design") {
+    if (!isDesignFull()) {
+      return sitemapEntries(site, "/");
+    }
+
     return designPageKeys
       .filter((key) => designPages[key].enabled)
       .flatMap((key) => sitemapEntries(site, designPages[key].href))
       .concat(sitemapEntries(site, "/privacy"));
-  }
-
-  if (!indexable) {
-    return [];
   }
 
   return [...sitemapEntries(site, "/"), ...sitemapEntries(site, "/privacy")];

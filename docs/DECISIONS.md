@@ -18,7 +18,7 @@ Esta fase solo captura el contacto del coming soon y lo envía por correo. Resen
 
 ## Hosting en Vercel
 
-`NEXT_PUBLIC_APP_ENV` se define por entorno en el panel de Vercel (`production` / `staging`). Los secretos (`RESEND_API_KEY` y el resto) se configuran en el panel y no entran al repositorio.
+`NEXT_PUBLIC_APP_ENV` se define por entorno en el panel de Vercel (`production` / `staging`). `NEXT_PUBLIC_DESIGN_MODE` y `NEXT_PUBLIC_ALLOW_INDEXING` se fijan en build; cambiarlas en Vercel requiere redeploy. Los secretos (`RESEND_API_KEY` y el resto) se configuran en el panel y no entran al repositorio.
 
 En producción el sitio sigue el host. En un preview de Vercel la URL es única y termina en `.vercel.app`, así que `?site=cnc` o `?site=design` fuerza la marca y la elección queda en la cookie `preview-site`. En production esa vía se ignora.
 

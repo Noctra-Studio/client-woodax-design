@@ -1,19 +1,24 @@
 "use client";
 
+import type { MouseEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { HeroMedia } from "@/components/design/hero-media";
 import { useIntro } from "@/components/design/intro-provider";
 import { designGallery } from "@/content/design-gallery";
+import { useLeadUi } from "@/features/leads/components/lead-ui";
 import { analyticsLocale, track } from "@/lib/analytics";
+import { isDesignFull } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export function HeroSection() {
   const t = useTranslations("design.hero");
   const locale = useLocale();
+  const leadUi = useLeadUi();
   const { status, skip } = useIntro();
   const poster = designGallery[0];
   const onPhoto = Boolean(poster);
+  const full = isDesignFull();
 
   return (
     <section className="relative min-h-[100svh]" aria-labelledby="hero-title">
@@ -55,15 +60,19 @@ export function HeroSection() {
           </p>
           <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap">
             <Button
-              href="/contact"
+              href={full ? "/contact" : "#contacto"}
               variant="design-primary"
               arrow
-              onClick={() => {
+              onClick={(event: MouseEvent<HTMLAnchorElement>) => {
                 track("cta_click", {
                   site: "design",
                   locale: analyticsLocale(locale),
                   location: "hero",
                 });
+                if (full) return;
+                if (!window.matchMedia("(max-width: 767px)").matches) return;
+                event.preventDefault();
+                leadUi?.setOpen(true);
               }}
             >
               {t("ctaPrimary")}

@@ -73,6 +73,22 @@ const clientSchema = defineClientSchema({
       error: required("Expected development, staging, or production"),
     }),
   ),
+  NEXT_PUBLIC_DESIGN_MODE: z.preprocess(
+    emptyAsUndefined,
+    z
+      .enum(["coming-soon", "full"], {
+        error: "Expected coming-soon or full",
+      })
+      .default("coming-soon"),
+  ),
+  NEXT_PUBLIC_ALLOW_INDEXING: z.preprocess(
+    emptyAsUndefined,
+    z
+      .enum(["true", "false"], {
+        error: "Expected true or false",
+      })
+      .default("false"),
+  ),
   // Optional. The GA4 script loads only when this is set and APP_ENV is production.
   NEXT_PUBLIC_GA_ID: z.preprocess(
     emptyAsUndefined,
@@ -124,6 +140,8 @@ type ServerEnv = z.infer<typeof serverSchema>;
 function readClientInput(): { [K in keyof ClientEnv]: string | undefined } {
   return {
     NEXT_PUBLIC_APP_ENV: process.env.NEXT_PUBLIC_APP_ENV,
+    NEXT_PUBLIC_DESIGN_MODE: process.env.NEXT_PUBLIC_DESIGN_MODE,
+    NEXT_PUBLIC_ALLOW_INDEXING: process.env.NEXT_PUBLIC_ALLOW_INDEXING,
     NEXT_PUBLIC_GA_ID: process.env.NEXT_PUBLIC_GA_ID,
     NEXT_PUBLIC_DESIGN_URL: process.env.NEXT_PUBLIC_DESIGN_URL,
     NEXT_PUBLIC_CNC_URL: process.env.NEXT_PUBLIC_CNC_URL,

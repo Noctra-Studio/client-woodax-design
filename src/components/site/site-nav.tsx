@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/sheet";
 import { Link, usePathname } from "@/i18n/navigation";
 import type { Pathname } from "@/i18n/routing";
+import { isDesignFull } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 if (typeof document !== "undefined") {
@@ -998,8 +999,9 @@ function NavCta({
   labelsOn: boolean;
   pathname: string;
 }) {
-  const href = variant === "design" ? "/contact" : "#contacto";
-  const onContact = variant === "design" && pathname === "/contact";
+  const full = isDesignFull();
+  const href = variant === "design" && full ? "/contact" : "#contacto";
+  const onContact = variant === "design" && full && pathname === "/contact";
   const locale = useLocale();
 
   return (

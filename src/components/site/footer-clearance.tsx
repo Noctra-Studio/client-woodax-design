@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { useFormSectionInView } from "@/features/leads/components/mobile-cta-bar";
 import { usePathname } from "@/i18n/navigation";
+import { isDesignFull } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export function FooterClearance({
@@ -14,7 +15,9 @@ export function FooterClearance({
 }) {
   const pathname = usePathname();
   const formInView = useFormSectionInView("contacto");
-  const barVisible = variant === "design" ? pathname !== "/contact" : !formInView;
+  const full = isDesignFull();
+  const barVisible =
+    variant === "design" && full ? pathname !== "/contact" : !formInView;
 
   return (
     <div className={cn(barVisible && "pb-28 md:pb-0")}>{children}</div>

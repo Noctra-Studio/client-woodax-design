@@ -7,11 +7,16 @@ import { WoodaxLogo } from "@/components/brand/woodax-logo";
 import { FacebookIcon, InstagramIcon } from "@/components/icons/brand-social";
 import { FooterClearance } from "@/components/site/footer-clearance";
 import { LocaleSlot } from "@/components/site/locale-switch";
-import { designNavKeys, designPages } from "@/content/design-pages";
+import {
+  designNavKeys,
+  designPages,
+  designSectionAnchors,
+} from "@/content/design-pages";
 import { cncSectionAnchors, siteConfig } from "@/content/site-config";
 import { Link } from "@/i18n/navigation";
 import { routing, type Locale, type Pathname } from "@/i18n/routing";
 import { requestCncHomeUrl, requestDesignHomeUrl } from "@/lib/request-site";
+import { isDesignFull } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 const NOCTRA_URL = "https://noctra.studio";
@@ -73,13 +78,21 @@ export async function SiteFooter({ variant }: { variant: "design" | "cnc" }) {
             <nav aria-label={shared("navAria")}>
               <ul className="flex flex-col items-center sm:items-start">
                 {isDesign
-                  ? designFooterLinks().map((link) => (
-                      <li key={link.href}>
-                        <Link href={link.href} className={linkClass}>
-                          {nav(`design.${link.key}`)}
-                        </Link>
-                      </li>
-                    ))
+                  ? isDesignFull()
+                    ? designFooterLinks().map((link) => (
+                        <li key={link.href}>
+                          <Link href={link.href} className={linkClass}>
+                            {nav(`design.${link.key}`)}
+                          </Link>
+                        </li>
+                      ))
+                    : designSectionAnchors().map((link) => (
+                        <li key={link.id}>
+                          <a href={`#${link.id}`} className={linkClass}>
+                            {nav(`design.${link.labelKey}`)}
+                          </a>
+                        </li>
+                      ))
                   : cncSectionAnchors().map((link) => (
                       <li key={link.id}>
                         <a href={`#${link.id}`} className={linkClass}>

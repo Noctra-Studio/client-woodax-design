@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { getPathname } from "@/i18n/navigation";
 import { routing, type Locale, type Pathname } from "@/i18n/routing";
 import { clientEnv } from "@/lib/env";
+import { isDesignFull, isIndexingAllowed } from "@/lib/flags";
 import type { Site } from "@/lib/site";
+
+export { isDesignFull, isIndexingAllowed };
 
 const hreflang = {
   es: "es-MX",

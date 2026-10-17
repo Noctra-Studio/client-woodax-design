@@ -12,8 +12,10 @@ import {
   sameAsUrls,
   siteConfig,
 } from "@/content/site-config";
+import { LeadCapture } from "@/features/leads/components/lead-capture";
+import { getLeadCopy } from "@/features/leads/copy";
 import { routing, type Locale } from "@/i18n/routing";
-import { localizedMetadata, siteOrigin } from "@/lib/seo";
+import { isDesignFull, localizedMetadata, siteOrigin } from "@/lib/seo";
 
 export async function generateMetadata({
   params,
@@ -64,6 +66,8 @@ export default async function DesignPage({
 
   const t = await getTranslations("design");
   const jsonLd = designJsonLd(t("title"));
+  const full = isDesignFull();
+  const copy = full ? null : await getLeadCopy("design");
 
   return (
     <main className="flex min-w-0 flex-1 flex-col">
@@ -77,7 +81,7 @@ export default async function DesignPage({
         instagramUrl={publishedSocialUrl(siteConfig.instagramUrl)}
       />
       <ProcessSection />
-      <HomeCta />
+      {copy ? <LeadCapture copy={copy} /> : <HomeCta />}
     </main>
   );
 }

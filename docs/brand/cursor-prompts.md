@@ -419,3 +419,4 @@ Entrega lista de lo corregido y lo pendiente.
    - **Bloqueo de producción — Servicios:** las descripciones de Cocinas, Clósets y vestidores, Piezas a medida y Espacios comerciales se muestran en staging. No salen a producción en woodax.design hasta que Adrián las apruebe.
    - **Bloqueo de lanzamiento — redes:** `instagramUrl` y `facebookUrl` no pueden ser `"#"` en producción.
 5. **Producción** (tras aprobación): asignar `woodax.design` (+ `www` → redirect) y `cnc.woodax.design` al proyecto en Vercel.
+   - **Switches de lanzamiento:** `NEXT_PUBLIC_DESIGN_MODE` y `NEXT_PUBLIC_ALLOW_INDEXING` se fijan en build; cambiarlas en Vercel requiere redeploy.

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { LeadCapture } from "@/features/leads/components/lead-capture";
 import { getLeadCopy } from "@/features/leads/copy";
+import { designPages } from "@/content/design-pages";
 import { publishedSocialUrl, siteConfig } from "@/content/site-config";
 import { routing, type Locale } from "@/i18n/routing";
 import { clientEnv } from "@/lib/env";
@@ -15,6 +17,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
+  if (!designPages.contact.enabled) return {};
+
   const { locale: requested } = await params;
   const locale: Locale = hasLocale(routing.locales, requested)
     ? requested
@@ -43,6 +47,8 @@ export default async function ContactPage({
   if (hasLocale(routing.locales, locale)) {
     setRequestLocale(locale);
   }
+
+  if (!designPages.contact.enabled) notFound();
 
   const t = await getTranslations("design.contact");
   const footer = await getTranslations("design.footer");
