@@ -26,6 +26,8 @@ export type CncHeroAlt = {
 export type CncHeroVideoSrc = {
   webm?: string;
   mp4?: string;
+  mobileMp4?: string;
+  desktopMp4?: string;
 };
 
 export type CncHero =
@@ -33,24 +35,35 @@ export type CncHero =
       type: "none";
       src?: undefined;
       poster?: undefined;
+      mobilePoster?: undefined;
       alt?: undefined;
     }
   | {
       type: "image";
       src: string;
       poster?: undefined;
+      mobilePoster?: string;
       alt: CncHeroAlt;
     }
   | {
       type: "video";
       src: CncHeroVideoSrc;
       poster: string;
+      mobilePoster?: string;
       alt: CncHeroAlt;
     };
+
+export type CncSpecsImage = {
+  src: string;
+  width: number;
+  height: number;
+  alt: CncHeroAlt;
+};
 
 export type CncSpecs = {
   cuttingArea: { widthMm: number; lengthMm: number };
   maxThicknessByMaterial: readonly CncThicknessRange[];
+  machineImage?: CncSpecsImage;
 };
 
 export type SiteConfig = {
@@ -66,10 +79,18 @@ export const siteConfig: SiteConfig = {
   instagramUrl: "https://www.instagram.com/woodaxdesign",
   facebookUrl: "https://www.facebook.com/share/1AkP7NEJno/",
   cncHero: {
-    type: "none",
-    src: undefined,
-    poster: undefined,
-    alt: undefined,
+    type: "video",
+    src: {
+      mobileMp4: "/media/cnc/cnc-hero-mobile.mp4",
+      desktopMp4: "/media/cnc/cnc-hero-desktop.mp4",
+      mp4: "/media/cnc/cnc-hero-desktop.mp4",
+    },
+    poster: "/media/cnc/cnc-hero-desktop-poster.jpg",
+    mobilePoster: "/media/cnc/cnc-hero-mobile-poster.jpg",
+    alt: {
+      es: "Router CNC SIDECO ProCut SIR-1325VI en el taller",
+      en: "SIDECO ProCut SIR-1325VI CNC router in the workshop",
+    },
   },
   cncSpecs: {
     cuttingArea: { widthMm: 1300, lengthMm: 2500 },
@@ -95,6 +116,15 @@ export const siteConfig: SiteConfig = {
         maxMm: 5,
       },
     ],
+    machineImage: {
+      src: "/media/cnc/cnc-maquina-frente.jpg",
+      width: 1200,
+      height: 1500,
+      alt: {
+        es: "Router CNC SIDECO ProCut SIR-1325VI en el taller",
+        en: "SIDECO ProCut SIR-1325VI CNC router in the workshop",
+      },
+    },
   },
 };
 

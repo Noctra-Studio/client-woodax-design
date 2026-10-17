@@ -130,14 +130,14 @@ export default async function CncPage({
             facebookLabel={nav("facebook")}
             logo={
               <CncLogo
-                priority={cncGallery.length === 0}
+                priority={siteConfig.cncHero.type === "none"}
                 className="h-7 w-auto"
               />
             }
             logoCompact={
               <BrandIcon
                 variant="cnc"
-                priority={cncGallery.length === 0}
+                priority={siteConfig.cncHero.type === "none"}
                 className="h-7 w-auto"
               />
             }

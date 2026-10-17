@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useLayoutEffect, useRef } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { RegistrationMarks } from "@/components/cnc/registration-marks";
@@ -10,7 +11,12 @@ export function CapabilitiesSection() {
   const locale = useLocale();
   const listRef = useRef<HTMLDivElement>(null);
   const specs = siteConfig.cncSpecs;
-  const rows = specs && hasCncCapabilities(specs) ? capabilityRows(specs, locale, t) : [];
+  const rows =
+    specs && hasCncCapabilities(specs) ? capabilityRows(specs, locale, t) : [];
+  const machineImage = specs?.machineImage;
+  const imageAlt = machineImage
+    ? machineImage.alt[locale === "en" ? "en" : "es"]
+    : "";
 
   useLayoutEffect(() => {
     const root = listRef.current;
@@ -66,33 +72,58 @@ export function CapabilitiesSection() {
           {t("title")}
         </h2>
         <div
-          ref={listRef}
-          role="table"
-          aria-labelledby="capabilities-title"
-          className="border-cnc-line mt-10 border-t md:mt-14"
+          className={
+            machineImage
+              ? "mt-10 grid items-start gap-10 md:mt-14 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,26rem)] lg:gap-12"
+              : "mt-10 md:mt-14"
+          }
         >
-          {rows.map((row, index) => (
+          <div>
             <div
-              key={row.key}
-              role="row"
-              className="cnc-plotter border-cnc-line grid items-baseline gap-2 border-b py-4 md:grid-cols-[minmax(0,1fr)_auto] md:gap-8"
-              style={{ transitionDelay: `${index * 70}ms` }}
+              ref={listRef}
+              role="table"
+              aria-labelledby="capabilities-title"
+              className="border-cnc-line border-t"
             >
-              <p role="cell" className="max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-medium text-pretty">
-                {row.label}
-              </p>
-              <p
-                role="cell"
-                className="text-cnc-muted font-mono text-sm tracking-[0.08em] uppercase tabular-nums md:text-right"
-              >
-                {row.value}
-              </p>
+              {rows.map((row, index) => (
+                <div
+                  key={row.key}
+                  role="row"
+                  className="cnc-plotter border-cnc-line grid items-baseline gap-2 border-b py-4 md:grid-cols-[minmax(0,1fr)_auto] md:gap-8"
+                  style={{ transitionDelay: `${index * 70}ms` }}
+                >
+                  <p
+                    role="cell"
+                    className="max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-medium text-pretty"
+                  >
+                    {row.label}
+                  </p>
+                  <p
+                    role="cell"
+                    className="text-cnc-muted font-mono text-sm tracking-[0.08em] uppercase tabular-nums md:text-right"
+                  >
+                    {row.value}
+                  </p>
+                </div>
+              ))}
             </div>
-          ))}
+            <p className="text-cnc-muted mt-6 max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-medium text-pretty">
+              {t("note")}
+            </p>
+          </div>
+          {machineImage ? (
+            <div className="border-cnc-line bg-cnc-surface overflow-hidden rounded-[var(--radius-card)] border">
+              <Image
+                src={machineImage.src}
+                alt={imageAlt}
+                width={machineImage.width}
+                height={machineImage.height}
+                sizes="(min-width: 1024px) 416px, 100vw"
+                className="h-auto w-full object-cover"
+              />
+            </div>
+          ) : null}
         </div>
-        <p className="text-cnc-muted mt-6 max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-medium text-pretty">
-          {t("note")}
-        </p>
       </div>
     </section>
   );

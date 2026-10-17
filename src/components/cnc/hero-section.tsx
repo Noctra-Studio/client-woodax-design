@@ -44,10 +44,15 @@ export function HeroSection() {
         <div className="absolute inset-0">
           <HeroMedia
             poster={media.poster}
+            mobilePoster={media.mobilePoster}
             alt={media.alt}
             videoSrc={media.videoSrc}
           />
-          <div aria-hidden="true" className="bg-cnc-bg/80 absolute inset-0" />
+          <div aria-hidden="true" className="bg-cnc-bg/60 absolute inset-0" />
+          <div
+            aria-hidden="true"
+            className="from-cnc-bg via-cnc-bg/65 md:via-cnc-bg/55 pointer-events-none absolute inset-0 bg-gradient-to-t to-transparent md:bg-gradient-to-r"
+          />
         </div>
       ) : null}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
@@ -129,15 +134,30 @@ export function HeroSection() {
 
 function heroMedia(hero: CncHero, locale: "es" | "en") {
   if (hero.type === "image") {
-    return { poster: hero.src, alt: hero.alt[locale], videoSrc: undefined };
+    return {
+      poster: hero.src,
+      mobilePoster: hero.mobilePoster,
+      alt: hero.alt[locale],
+      videoSrc: undefined,
+    };
   }
 
   if (hero.type === "video") {
     const videoSrc =
-      hero.src.webm || hero.src.mp4
-        ? { webm: hero.src.webm, mp4: hero.src.mp4 }
+      hero.src.webm || hero.src.mp4 || hero.src.mobileMp4 || hero.src.desktopMp4
+        ? {
+            webm: hero.src.webm,
+            mp4: hero.src.mp4,
+            mobileMp4: hero.src.mobileMp4,
+            desktopMp4: hero.src.desktopMp4,
+          }
         : undefined;
-    return { poster: hero.poster, alt: hero.alt[locale], videoSrc };
+    return {
+      poster: hero.poster,
+      mobilePoster: hero.mobilePoster,
+      alt: hero.alt[locale],
+      videoSrc,
+    };
   }
 
   return null;

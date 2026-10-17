@@ -12,7 +12,6 @@ import "../globals.css";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["400", "700"],
   style: "normal",
   variable: "--font-playfair",
   display: "swap",
@@ -20,7 +19,6 @@ const playfair = Playfair_Display({
 
 const quicksand = Quicksand({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
   style: "normal",
   variable: "--font-quicksand",
   display: "swap",
@@ -28,7 +26,7 @@ const quicksand = Quicksand({
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  style: "normal",
   variable: "--font-jetbrains-mono",
   display: "swap",
 });
