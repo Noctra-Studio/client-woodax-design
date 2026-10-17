@@ -1,16 +1,14 @@
 import { hasLocale } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
 import Image from "next/image";
+import { AnalyticsAnchor } from "@/components/analytics/tracked-link";
 import { CncLogo } from "@/components/brand/cnc-logo";
 import { WoodaxLogo } from "@/components/brand/woodax-logo";
 import { FacebookIcon, InstagramIcon } from "@/components/icons/brand-social";
 import { FooterClearance } from "@/components/site/footer-clearance";
 import { LocaleSlot } from "@/components/site/locale-switch";
 import { designNavKeys, designPages } from "@/content/design-pages";
-import {
-  cncSectionAnchors,
-  siteConfig,
-} from "@/content/site-config";
+import { cncSectionAnchors, siteConfig } from "@/content/site-config";
 import { Link } from "@/i18n/navigation";
 import { routing, type Locale, type Pathname } from "@/i18n/routing";
 import { requestCncHomeUrl, requestDesignHomeUrl } from "@/lib/request-site";
@@ -103,34 +101,52 @@ export async function SiteFooter({ variant }: { variant: "design" | "cnc" }) {
                 <ul className="flex items-center justify-center sm:justify-start">
                   {siteConfig.instagramUrl ? (
                     <li>
-                      <a
+                      <AnalyticsAnchor
                         href={siteConfig.instagramUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={shared("instagramAria")}
+                        tracking={{
+                          event: "social_click",
+                          params: {
+                            site: variant,
+                            locale,
+                            platform: "instagram",
+                            location: "footer",
+                          },
+                        }}
                         className={cn(
                           "inline-flex size-11 items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
                           focus,
                         )}
                       >
                         <InstagramIcon className="size-5" />
-                      </a>
+                      </AnalyticsAnchor>
                     </li>
                   ) : null}
                   {siteConfig.facebookUrl ? (
                     <li>
-                      <a
+                      <AnalyticsAnchor
                         href={siteConfig.facebookUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={shared("facebookAria")}
+                        tracking={{
+                          event: "social_click",
+                          params: {
+                            site: variant,
+                            locale,
+                            platform: "facebook",
+                            location: "footer",
+                          },
+                        }}
                         className={cn(
                           "inline-flex size-11 items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
                           focus,
                         )}
                       >
                         <FacebookIcon className="size-5" />
-                      </a>
+                      </AnalyticsAnchor>
                     </li>
                   ) : null}
                 </ul>
@@ -138,9 +154,25 @@ export async function SiteFooter({ variant }: { variant: "design" | "cnc" }) {
             </div>
 
             <div className="flex justify-center sm:justify-start">
-              <a href={siblingHref} className={cn(linkClass, "max-w-[28ch] text-center sm:text-left")}>
+              <AnalyticsAnchor
+                href={siblingHref}
+                tracking={{
+                  event: "sister_site_click",
+                  params: {
+                    site: variant,
+                    locale,
+                    from: variant,
+                    to: isDesign ? "cnc" : "design",
+                    location: "footer",
+                  },
+                }}
+                className={cn(
+                  linkClass,
+                  "max-w-[28ch] text-center sm:text-left",
+                )}
+              >
                 {t("sibling")}
-              </a>
+              </AnalyticsAnchor>
             </div>
           </div>
 
@@ -154,11 +186,7 @@ export async function SiteFooter({ variant }: { variant: "design" | "cnc" }) {
             <Link href="/privacy" className={cn(linkClass, "text-sm")}>
               {t("privacy")}
             </Link>
-            <LocaleSlot
-              variant={variant}
-              label={nav("language")}
-              size="bar"
-            />
+            <LocaleSlot variant={variant} label={nav("language")} size="bar" />
             <a
               href={NOCTRA_URL}
               rel="noopener"
@@ -191,7 +219,10 @@ export async function SiteFooter({ variant }: { variant: "design" | "cnc" }) {
   );
 }
 
-function designFooterLinks(): { key: "about" | "services" | "clients" | "contact"; href: Pathname }[] {
+function designFooterLinks(): {
+  key: "about" | "services" | "clients" | "contact";
+  href: Pathname;
+}[] {
   const keys = [
     ...designNavKeys.filter((key) => designPages[key].enabled),
     ...(designPages.contact.enabled ? (["contact"] as const) : []),

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { AnalyticsAnchor } from "@/components/analytics/tracked-link";
 import { ProcessSection } from "@/components/design/process-section";
 import { Button } from "@/components/ui/button";
 import { routing, type Locale } from "@/i18n/routing";
@@ -96,12 +97,22 @@ export default async function ServicesPage({
       <ProcessSection />
       <section className="px-5 pb-16 md:px-8 md:pb-24">
         <div className="mx-auto flex w-full max-w-[1200px] flex-col items-start gap-6">
-          <a
+          <AnalyticsAnchor
             href={cncUrl}
+            tracking={{
+              event: "sister_site_click",
+              params: {
+                site: "design",
+                locale,
+                from: "design",
+                to: "cnc",
+                location: "services",
+              },
+            }}
             className="focus-visible:outline-woodax-charcoal inline-flex min-h-11 max-w-[62ch] items-center underline decoration-current/40 underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 pointer-fine:hover:decoration-current"
           >
             {footer("cncLink")}
-          </a>
+          </AnalyticsAnchor>
           <Button href="/contact" variant="design-primary" arrow>
             {t("cta")}
           </Button>

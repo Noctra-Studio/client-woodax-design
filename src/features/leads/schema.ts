@@ -205,30 +205,38 @@ export function leadDetailsPayload(formData: FormData) {
   };
 }
 
+/** The hidden website field. A value here is a bot; the lead is not emailed. */
+export function honeypotFilled(formData: FormData): boolean {
+  const website = formData.get("website");
+  return typeof website === "string" ? website.trim() !== "" : website !== null;
+}
+
+/** Milliseconds since the form was opened, or null when startedAt is unusable. */
+export function submitElapsedMs(
+  formData: FormData,
+  now = Date.now(),
+): number | null {
+  const rawStartedAt = formData.get("startedAt");
+  if (typeof rawStartedAt !== "string" || rawStartedAt.trim() === "") {
+    return null;
+  }
+
+  const startedAt = Number(rawStartedAt);
+  if (!Number.isFinite(startedAt)) return null;
+  return now - startedAt;
+}
+
 /**
- * Bots get the same success state as a real lead, and nothing is sent.
- * A filled honeypot or a submit sooner than {@link MIN_SUBMIT_MS} qualifies.
+ * Details follow-up still drops both cases. The main lead form only drops a
+ * filled honeypot; a submit sooner than {@link MIN_SUBMIT_MS} is emailed and flagged.
  */
 export function isSilentSubmission(
   formData: FormData,
   now = Date.now(),
 ): boolean {
-  const website = formData.get("website");
-  const honeypotFilled =
-    typeof website === "string" ? website.trim() !== "" : website !== null;
-
-  if (honeypotFilled) return true;
-
-  const rawStartedAt = formData.get("startedAt");
-  if (typeof rawStartedAt !== "string" || rawStartedAt.trim() === "") {
-    return false;
-  }
-
-  const startedAt = Number(rawStartedAt);
-  if (!Number.isFinite(startedAt)) return false;
-
-  const elapsed = now - startedAt;
-  return elapsed < MIN_SUBMIT_MS;
+  if (honeypotFilled(formData)) return true;
+  const elapsed = submitElapsedMs(formData, now);
+  return elapsed !== null && elapsed < MIN_SUBMIT_MS;
 }
 
 export function fieldErrorsFrom(error: z.ZodError): Record<string, string> {

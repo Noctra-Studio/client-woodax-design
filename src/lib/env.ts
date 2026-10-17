@@ -73,6 +73,14 @@ const clientSchema = defineClientSchema({
       error: required("Expected development, staging, or production"),
     }),
   ),
+  // Optional. The GA4 script loads only when this is set and APP_ENV is production.
+  NEXT_PUBLIC_GA_ID: z.preprocess(
+    emptyAsUndefined,
+    z
+      .string()
+      .regex(/^G-[A-Za-z0-9]+$/, "Expected a GA4 measurement ID (G-XXXXXXXX)")
+      .optional(),
+  ),
   NEXT_PUBLIC_DESIGN_URL: z.preprocess(
     emptyAsUndefined,
     z.url({ error: required("Must be a valid URL") }),
@@ -116,6 +124,7 @@ type ServerEnv = z.infer<typeof serverSchema>;
 function readClientInput(): { [K in keyof ClientEnv]: string | undefined } {
   return {
     NEXT_PUBLIC_APP_ENV: process.env.NEXT_PUBLIC_APP_ENV,
+    NEXT_PUBLIC_GA_ID: process.env.NEXT_PUBLIC_GA_ID,
     NEXT_PUBLIC_DESIGN_URL: process.env.NEXT_PUBLIC_DESIGN_URL,
     NEXT_PUBLIC_CNC_URL: process.env.NEXT_PUBLIC_CNC_URL,
     NEXT_PUBLIC_WHATSAPP_NUMBER: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER,

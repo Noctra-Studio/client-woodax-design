@@ -9,6 +9,7 @@ import { useIntro } from "@/components/cnc/intro-provider";
 import { Button } from "@/components/ui/button";
 import { siteConfig, type CncHero } from "@/content/site-config";
 import { useLeadUi } from "@/features/leads/components/lead-ui";
+import { analyticsLocale, track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 const easeOut = [0.22, 1, 0.36, 1] as const;
@@ -93,6 +94,11 @@ export function HeroSection() {
                 variant="cnc-primary"
                 arrow
                 onClick={(event) => {
+                  track("cta_click", {
+                    site: "cnc",
+                    locale: analyticsLocale(locale),
+                    location: "hero",
+                  });
                   if (!window.matchMedia("(max-width: 767px)").matches) return;
                   event.preventDefault();
                   leadUi?.setOpen(true);

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { HeroMedia } from "@/components/design/hero-media";
 import { useIntro } from "@/components/design/intro-provider";
 import { designGallery } from "@/content/design-gallery";
+import { analyticsLocale, track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 export function HeroSection() {
@@ -53,7 +54,18 @@ export function HeroSection() {
             {t("subhead")}
           </p>
           <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap">
-            <Button href="/contact" variant="design-primary" arrow>
+            <Button
+              href="/contact"
+              variant="design-primary"
+              arrow
+              onClick={() => {
+                track("cta_click", {
+                  site: "design",
+                  locale: analyticsLocale(locale),
+                  location: "hero",
+                });
+              }}
+            >
               {t("ctaPrimary")}
             </Button>
             {designGallery.length > 0 ? (

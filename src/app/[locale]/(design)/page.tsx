@@ -7,7 +7,11 @@ import { HomeCta } from "@/components/design/home-cta";
 import { ProcessSection } from "@/components/design/process-section";
 import { ProjectsSection } from "@/components/design/projects-section";
 import { designGallery } from "@/content/design-gallery";
-import { publishedSocialUrl, siteConfig } from "@/content/site-config";
+import {
+  publishedSocialUrl,
+  sameAsUrls,
+  siteConfig,
+} from "@/content/site-config";
 import { routing, type Locale } from "@/i18n/routing";
 import { localizedMetadata, siteOrigin } from "@/lib/seo";
 
@@ -69,7 +73,9 @@ export default async function DesignPage({
       />
       <HeroSection />
       <AudienceSection />
-      <ProjectsSection instagramUrl={publishedSocialUrl(siteConfig.instagramUrl)} />
+      <ProjectsSection
+        instagramUrl={publishedSocialUrl(siteConfig.instagramUrl)}
+      />
       <ProcessSection />
       <HomeCta />
     </main>
@@ -91,12 +97,7 @@ function designJsonLd(name: string) {
     ],
   };
 
-  const sameAs = [siteConfig.instagramUrl, siteConfig.facebookUrl].flatMap(
-    (url) => {
-      const published = publishedSocialUrl(url);
-      return published ? [published] : [];
-    },
-  );
+  const sameAs = sameAsUrls([siteConfig.instagramUrl, siteConfig.facebookUrl]);
   if (sameAs.length > 0) {
     data.sameAs = sameAs;
   }

@@ -20,11 +20,13 @@ import {
   useReducedMotion,
   useScroll,
 } from "motion/react";
+import { useLocale } from "next-intl";
 import { useIntro as useDesignIntro } from "@/components/design/intro-provider";
 import { LogoToolpath } from "@/components/cnc/logo-toolpath";
 import { useIntro as useCncIntro } from "@/components/cnc/intro-provider";
 import { LocaleSlot } from "@/components/site/locale-switch";
 import { Button } from "@/components/ui/button";
+import { analyticsLocale, track } from "@/lib/analytics";
 import {
   Sheet,
   SheetClose,
@@ -998,6 +1000,7 @@ function NavCta({
 }) {
   const href = variant === "design" ? "/contact" : "#contacto";
   const onContact = variant === "design" && pathname === "/contact";
+  const locale = useLocale();
 
   return (
     <CtaTooltip label={label} enabled={compact} variant={variant}>
@@ -1006,6 +1009,13 @@ function NavCta({
         variant={variant === "design" ? "design-primary" : "cnc-primary"}
         aria-label={label}
         aria-current={onContact ? "page" : undefined}
+        onClick={() => {
+          track("cta_click", {
+            site: variant,
+            locale: analyticsLocale(locale),
+            location: "nav",
+          });
+        }}
         className={cn(
           "relative ml-2 h-11 min-h-11 shrink-0 gap-0 rounded-full px-0 focus-visible:outline-offset-[-2px]",
           variant === "cnc" && "focus-visible:outline-cnc-bg",
@@ -1102,4 +1112,3 @@ function CtaTooltip({
     </span>
   );
 }
-

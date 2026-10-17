@@ -100,6 +100,30 @@ type SubjectInput =
       material: keyof typeof materialLabel;
     };
 
+function formatElapsed(elapsedMs: number): string {
+  const rounded = Math.round(elapsedMs);
+  if (rounded < 1000) return `${rounded} ms`;
+  return `${(rounded / 1000).toFixed(1)} s`;
+}
+
+/** Marks a short submit so a person can decide. The message is still sent. */
+export function flagPossibleSpam(
+  content: LeadEmailContent,
+  elapsedMs: number,
+): LeadEmailContent {
+  return {
+    ...content,
+    subject: `[Posible spam] ${content.subject}`,
+    rows: [
+      {
+        label: "Posible spam",
+        value: `Enviado ${formatElapsed(elapsedMs)} después de abrir el formulario.`,
+      },
+      ...content.rows,
+    ],
+  };
+}
+
 export function leadSubject(lead: SubjectInput) {
   if (lead.site === "design") {
     return `[Design] Nuevo proyecto: ${projectTypeLabel[lead.projectType]} — ${lead.name}`;

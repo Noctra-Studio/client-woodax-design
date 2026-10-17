@@ -17,6 +17,7 @@ import { cncGallery } from "@/content/cnc-gallery";
 import {
   cncSectionAnchors,
   publishedSocialUrl,
+  sameAsUrls,
   siteConfig,
 } from "@/content/site-config";
 import { LeadCapture } from "@/features/leads/components/lead-capture";
@@ -180,12 +181,7 @@ function cncJsonLd(name: string, parentName: string) {
     ],
   };
 
-  const sameAs = [siteConfig.instagramUrl, siteConfig.facebookUrl].flatMap(
-    (url) => {
-      const published = publishedSocialUrl(url);
-      return published ? [published] : [];
-    },
-  );
+  const sameAs = sameAsUrls([siteConfig.instagramUrl, siteConfig.facebookUrl]);
   if (sameAs.length > 0) {
     data.sameAs = sameAs;
   }

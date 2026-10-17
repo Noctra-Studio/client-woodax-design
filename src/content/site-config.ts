@@ -63,8 +63,8 @@ export type SiteConfig = {
 
 export const siteConfig: SiteConfig = {
   // Launch blocker: instagramUrl and facebookUrl cannot stay "#" in production.
-  instagramUrl: "#",
-  facebookUrl: "#",
+  instagramUrl: "https://www.instagram.com/woodaxdesign",
+  facebookUrl: "https://www.facebook.com/share/1AkP7NEJno/",
   cncHero: {
     type: "none",
     src: undefined,
@@ -98,7 +98,9 @@ export const siteConfig: SiteConfig = {
   },
 };
 
-export function hasCncCapabilities(specs: CncSpecs | undefined): specs is CncSpecs {
+export function hasCncCapabilities(
+  specs: CncSpecs | undefined,
+): specs is CncSpecs {
   if (!specs) return false;
   const { widthMm, lengthMm } = specs.cuttingArea;
   return (
@@ -107,9 +109,19 @@ export function hasCncCapabilities(specs: CncSpecs | undefined): specs is CncSpe
 }
 
 /** Real profile URLs. The temporary "#" placeholder stays out of nav, contact and JSON-LD. */
-export function publishedSocialUrl(url: string | undefined): string | undefined {
+export function publishedSocialUrl(
+  url: string | undefined,
+): string | undefined {
   if (!url || url === "#") return undefined;
   return url;
+}
+
+/** schema.org sameAs. Drops "#" and temporary Facebook /share/ links. Visible links stay as they are. */
+export function sameAsUrls(urls: ReadonlyArray<string | undefined>): string[] {
+  return urls.flatMap((url) => {
+    if (!url || url === "#" || url.includes("/share/")) return [];
+    return [url];
+  });
 }
 
 export function cncSectionAnchors() {

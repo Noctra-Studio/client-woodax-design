@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { getLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
-import { Button } from "@/components/ui/button";
+import { AnalyticsButton } from "@/components/analytics/tracked-link";
 import { Reveal } from "@/components/design/reveal";
 import { designGallery, type DesignGalleryTag } from "@/content/design-gallery";
 import { routing } from "@/i18n/routing";
@@ -67,9 +67,22 @@ export async function ProjectsSection({
           ) : null}
           {instagramUrl ? (
             <div className="mt-8 px-5 md:px-8">
-              <Button href={instagramUrl} variant="design-secondary" arrow>
+              <AnalyticsButton
+                href={instagramUrl}
+                variant="design-secondary"
+                arrow
+                tracking={{
+                  event: "social_click",
+                  params: {
+                    site: "design",
+                    locale,
+                    platform: "instagram",
+                    location: "projects",
+                  },
+                }}
+              >
                 {t("instagramCta")}
-              </Button>
+              </AnalyticsButton>
             </div>
           ) : null}
         </div>

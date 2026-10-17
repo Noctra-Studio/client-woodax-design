@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { JetBrains_Mono, Playfair_Display, Quicksand } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -92,6 +93,10 @@ export default async function LocaleLayout({
         className="flex min-h-svh touch-manipulation flex-col pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] font-sans"
       >
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        {clientEnv.NEXT_PUBLIC_APP_ENV === "production" &&
+        clientEnv.NEXT_PUBLIC_GA_ID ? (
+          <GoogleAnalytics gaId={clientEnv.NEXT_PUBLIC_GA_ID} />
+        ) : null}
       </body>
     </html>
   );

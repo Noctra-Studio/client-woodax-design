@@ -217,6 +217,10 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 ## Cookies
 - Textos: portar los del banner de noctra.studio y adaptarlos a Woodax (marca y correo). ⚠︎ Revisión de Adrián.
 
+## Aviso de privacidad — Google Analytics ⚠︎ Pendiente de aprobación de Adrián
+- privacy.analytics — ES: Usamos Google Analytics para medir, de forma agregada, cuántas personas visitan el sitio y qué páginas abren. No enviamos a Google Analytics el nombre, el email, el teléfono ni el texto del formulario. Puedes desactivar esta medición con el complemento de inhabilitación de Google Analytics. | EN: We use Google Analytics to measure, in aggregate, how many people visit the site and which pages they open. We do not send your name, email, phone, or form text to Google Analytics. You can turn this measurement off with the Google Analytics Opt-out Browser Add-on.
+- Link del complemento: https://tools.google.com/dlpage/gaoptout
+
 ## Términos y condiciones ⚠︎
 - Contenido legal pendiente: requiere razón social, domicilio y RFC de Woodax. Mientras tanto la página muestra solo título + "TODO(legal)" en staging; no se publica en producción sin el texto final.
 

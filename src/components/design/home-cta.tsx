@@ -1,9 +1,13 @@
-import { getTranslations } from "next-intl/server";
-import { Button } from "@/components/ui/button";
+import { hasLocale } from "next-intl";
+import { getLocale, getTranslations } from "next-intl/server";
+import { AnalyticsButton } from "@/components/analytics/tracked-link";
+import { routing } from "@/i18n/routing";
 
 export async function HomeCta() {
   const t = await getTranslations("design.homeCta");
   const hero = await getTranslations("design.hero");
+  const requested = await getLocale();
+  const locale = hasLocale(routing.locales, requested) ? requested : "es";
 
   return (
     <section
@@ -20,9 +24,17 @@ export async function HomeCta() {
         <p className="max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.65] font-medium text-pretty">
           {t("body")}
         </p>
-        <Button href="/contact" variant="design-primary" arrow>
+        <AnalyticsButton
+          href="/contact"
+          variant="design-primary"
+          arrow
+          tracking={{
+            event: "cta_click",
+            params: { site: "design", locale, location: "home" },
+          }}
+        >
           {hero("ctaPrimary")}
-        </Button>
+        </AnalyticsButton>
       </div>
     </section>
   );

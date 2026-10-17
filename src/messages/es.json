@@ -312,6 +312,7 @@
     "intro": "Cuando envías el formulario, Woodax Design y CNC by Woodax Design reciben tu nombre, tu WhatsApp o email, y los datos del proyecto que nos compartes.",
     "purpose": "Usamos esa información únicamente para responder tu solicitud y dar seguimiento al proyecto.",
     "sale": "No vendemos estos datos ni los compartimos con terceros para publicidad.",
+    "analytics": "Usamos Google Analytics para medir, de forma agregada, cuántas personas visitan el sitio y qué páginas abren. No enviamos a Google Analytics el nombre, el email, el teléfono ni el texto del formulario. Puedes desactivar esta medición con el <optOut>complemento de inhabilitación de Google Analytics</optOut>.",
     "contact": "Si quieres preguntar por tu información, escribe a hello@woodax.design."
   },
   "metadata": {

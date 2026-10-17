@@ -3,6 +3,7 @@
 import {
   useActionState,
   useEffect,
+  useRef,
   useState,
   useSyncExternalStore,
 } from "react";
@@ -20,6 +21,7 @@ import {
   useFocusOnError,
 } from "@/features/leads/components/lead-success";
 import { TextField } from "@/features/leads/components/text-field";
+import { isLeadMaterial, track } from "@/lib/analytics";
 
 const easeOut = [0.22, 1, 0.36, 1] as const;
 const slide = {
@@ -53,6 +55,16 @@ type StoredDraft = {
 function storageKey(variant: string) {
   return `woodax-lead:v1:${variant}`;
 }
+
+function leadTrackKey(site: string, startedAt: string) {
+  return `${site}:${startedAt}`;
+}
+
+/**
+ * Survives a remount, including StrictMode. Cleared when that same
+ * submission is sent again so the next success can fire once.
+ */
+const trackedLeadKeys = new Set<string>();
 
 type ClientLeadSnapshot = {
   ready: boolean;
@@ -235,6 +247,65 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
     }
   }, [state.status, copy.variant]);
 
+  const successStartedAt =
+    state.status === "success" ? (state.values?.startedAt ?? "") : "";
+  const successKey = successStartedAt
+    ? leadTrackKey(copy.variant, successStartedAt)
+    : null;
+  const trackedLeadRef = useRef<string | null>(
+    successKey && trackedLeadKeys.has(successKey) ? successKey : null,
+  );
+
+  useEffect(() => {
+    if (state.status !== "success" || state.delivered !== true) return;
+
+    const startedAtValue = state.values?.startedAt ?? "";
+    if (!startedAtValue) return;
+
+    const key = leadTrackKey(copy.variant, startedAtValue);
+    if (trackedLeadRef.current === key || trackedLeadKeys.has(key)) {
+      trackedLeadRef.current = key;
+      return;
+    }
+
+    const flagged = state.flagged ? ({ flagged: true } as const) : {};
+
+    if (copy.variant === "cnc") {
+      const submittedMaterial = state.values?.material;
+      if (!isLeadMaterial(submittedMaterial)) return;
+      trackedLeadRef.current = key;
+      trackedLeadKeys.add(key);
+      track("generate_lead", {
+        site: "cnc",
+        locale: copy.locale,
+        material: submittedMaterial,
+        ...flagged,
+      });
+      return;
+    }
+
+    trackedLeadRef.current = key;
+    trackedLeadKeys.add(key);
+    track("generate_lead", { site: "design", locale: copy.locale, ...flagged });
+  }, [
+    state.status,
+    state.delivered,
+    state.flagged,
+    state.values,
+    copy.variant,
+    copy.locale,
+  ]);
+
+  function beginLeadSubmit(formData: FormData) {
+    const key = leadTrackKey(
+      copy.variant,
+      String(formData.get("startedAt") ?? ""),
+    );
+    trackedLeadKeys.delete(key);
+    trackedLeadRef.current = null;
+    formAction(formData);
+  }
+
   function patch(partial: Partial<LeadFields>) {
     setFields((current) => ({
       projectType: current?.projectType ?? stored?.projectType ?? "",
@@ -282,7 +353,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
 
   return (
     <form
-      action={formAction}
+      action={beginLeadSubmit}
       className="relative flex flex-col gap-6"
       noValidate
       aria-busy={pending}

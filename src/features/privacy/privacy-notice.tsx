@@ -9,6 +9,7 @@ import { requestSite } from "@/lib/request-site";
 import { localizedMetadata } from "@/lib/seo";
 
 const contactEmail = "hello@woodax.design";
+const gaOptOutUrl = "https://tools.google.com/dlpage/gaoptout";
 
 export async function generatePrivacyMetadata({
   params,
@@ -63,6 +64,21 @@ export async function PrivacyNotice({
         <p>{t("intro")}</p>
         <p>{t("purpose")}</p>
         <p>{t("sale")}</p>
+        {/* Copy pending Adrián's approval. */}
+        <p>
+          {t.rich("analytics", {
+            optOut: (chunks) => (
+              <a
+                href={gaOptOutUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-current/40 underline-offset-4"
+              >
+                {chunks}
+              </a>
+            ),
+          })}
+        </p>
         <p>
           {beforeEmail}
           <a

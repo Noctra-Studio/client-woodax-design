@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLocale } from "next-intl";
 import { Button } from "@/components/ui/button";
+import { analyticsLocale, track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 export function MobileCtaBar({
@@ -16,6 +18,7 @@ export function MobileCtaBar({
   onOpen: () => void;
 }) {
   const isDesign = variant === "design";
+  const locale = useLocale();
 
   return (
     <div
@@ -32,7 +35,14 @@ export function MobileCtaBar({
       <Button
         type="button"
         variant={isDesign ? "design-primary" : "cnc-primary"}
-        onClick={onOpen}
+        onClick={() => {
+          track("cta_click", {
+            site: variant,
+            locale: analyticsLocale(locale),
+            location: "mobile_bar",
+          });
+          onOpen();
+        }}
         className="w-full"
         arrow
       >
