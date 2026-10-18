@@ -8,6 +8,7 @@ import {
   useState,
   useSyncExternalStore,
   type FormEvent,
+  type MouseEvent,
 } from "react";
 import { ArrowLeft, Check } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
@@ -22,11 +23,13 @@ import {
   OptionGroup,
 } from "@/features/leads/components/option-group";
 import { PendingSpinner } from "@/features/leads/components/pending-spinner";
+import { useLeadSheetNested } from "@/features/leads/components/lead-sheet";
 import {
   LeadSuccess,
   useFocusOnError,
 } from "@/features/leads/components/lead-success";
 import { TextField } from "@/features/leads/components/text-field";
+import { PrivacyDialog } from "@/features/privacy/privacy-dialog";
 import { isLeadMaterial, track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
@@ -166,6 +169,9 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
   const [fields, setFields] = useState<LeadFields | null>(null);
   const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
   const [dismissedOptionError, setDismissedOptionError] = useState("");
+  const [privacyOpen, setPrivacyOpen] = useState(false);
+  const privacyLinkRef = useRef<HTMLAnchorElement>(null);
+  const leadSheetNested = useLeadSheetNested();
   const shouldFocusStepRef = useRef<0 | 1 | null>(null);
   const snapshot = useLeadSnapshot(copy.variant);
   const reduceMotion = useReducedMotion();
@@ -204,6 +210,37 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
   const shownErrors = { ...clientErrors, ...serverErrors };
 
   useFocusOnError(state.status, state.fieldErrors, idPrefix);
+
+  function handlePrivacyOpenChange(nextOpen: boolean) {
+    if (nextOpen) {
+      leadSheetNested?.setNestedDialogOpen(true);
+    } else if (leadSheetNested) {
+      requestAnimationFrame(() => {
+        leadSheetNested.setNestedDialogOpen(false);
+      });
+    }
+    setPrivacyOpen(nextOpen);
+  }
+
+  useEffect(() => {
+    return () => {
+      leadSheetNested?.setNestedDialogOpen(false);
+    };
+  }, [leadSheetNested]);
+
+  function handlePrivacyLinkClick(event: MouseEvent<HTMLAnchorElement>) {
+    if (
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) {
+      return;
+    }
+    event.preventDefault();
+    handlePrivacyOpenChange(true);
+  }
 
   useEffect(() => {
     if (!snapshot.ready || state.status === "success") return;
@@ -668,7 +705,9 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
                         {copy.consentBefore}
                       </label>{" "}
                       <Link
+                        ref={privacyLinkRef}
                         href="/privacy"
+                        onClick={handlePrivacyLinkClick}
                         className={cn(
                           "underline decoration-current/40 underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
                           !isDesign
@@ -756,6 +795,13 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
           </motion.div>
         </AnimatePresence>
       </motion.div>
+      <PrivacyDialog
+        open={privacyOpen}
+        onOpenChange={handlePrivacyOpenChange}
+        variant={copy.variant}
+        closeLabel={copy.closeLabel}
+        triggerRef={privacyLinkRef}
+      />
     </form>
   );
 }
