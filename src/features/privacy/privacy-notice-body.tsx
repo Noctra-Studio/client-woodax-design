@@ -1,12 +1,15 @@
 import { useTranslations } from "next-intl";
+import { siteConfig } from "@/content/site-config";
 import { cn } from "@/lib/utils";
 
-const contactEmail = "hello@woodax.design";
 const gaOptOutUrl = "https://tools.google.com/dlpage/gaoptout";
 
 export function PrivacyNoticeBody({ className }: { className?: string }) {
   const t = useTranslations("privacy");
-  const [beforeEmail, afterEmail] = t("contact").split(contactEmail);
+  const { privacyEmail } = siteConfig;
+  const [beforeEmail, afterEmail] = t("contact", { email: privacyEmail }).split(
+    privacyEmail,
+  );
 
   return (
     <div
@@ -36,10 +39,10 @@ export function PrivacyNoticeBody({ className }: { className?: string }) {
       <p>
         {beforeEmail}
         <a
-          href={`mailto:${contactEmail}`}
+          href={`mailto:${privacyEmail}`}
           className="underline decoration-current/40 underline-offset-4"
         >
-          {contactEmail}
+          {privacyEmail}
         </a>
         {afterEmail}
       </p>

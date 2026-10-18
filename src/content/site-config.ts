@@ -67,6 +67,7 @@ export type CncSpecs = {
 };
 
 export type SiteConfig = {
+  privacyEmail: string;
   instagramUrl?: string;
   instagramHandle?: string;
   facebookUrl?: string;
@@ -75,6 +76,7 @@ export type SiteConfig = {
 };
 
 export const siteConfig: SiteConfig = {
+  privacyEmail: "privacidad@woodax.design",
   // Launch blocker: instagramUrl and facebookUrl cannot stay "#" in production.
   instagramUrl: "https://www.instagram.com/woodaxdesign",
   facebookUrl: "https://www.facebook.com/share/1AkP7NEJno/",
