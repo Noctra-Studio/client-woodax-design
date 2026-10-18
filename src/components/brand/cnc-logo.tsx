@@ -17,6 +17,7 @@ export async function CncLogo({ className, priority = false }: LogoProps) {
       width={1787}
       height={733}
       preload={priority}
+      loading="eager"
       className={className}
     />
   );

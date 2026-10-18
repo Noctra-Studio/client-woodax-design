@@ -19,6 +19,7 @@ export function BrandIcon({
       width={1888}
       height={2157}
       preload={priority}
+      loading="eager"
       className={className}
     />
   );

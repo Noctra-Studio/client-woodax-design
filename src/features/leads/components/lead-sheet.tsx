@@ -154,7 +154,10 @@ export function LeadSheet({
   );
 
   if (active && typeof document !== "undefined") {
-    return createPortal(sheet, document.body);
+    const target =
+      document.querySelector<HTMLElement>("[data-site-font-root]") ??
+      document.body;
+    return createPortal(sheet, target);
   }
 
   return sheet;

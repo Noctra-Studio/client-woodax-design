@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { GoogleAnalytics } from "@next/third-parties/google";
-import { JetBrains_Mono, Playfair_Display, Quicksand } from "next/font/google";
+import { Quicksand } from "next/font/google";
+import Script from "next/script";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -10,24 +10,10 @@ import { requestSite } from "@/lib/request-site";
 import { isIndexingAllowed, localizedMetadata } from "@/lib/seo";
 import "../globals.css";
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  style: "normal",
-  variable: "--font-playfair",
-  display: "swap",
-});
-
 const quicksand = Quicksand({
   subsets: ["latin"],
   style: "normal",
   variable: "--font-quicksand",
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  style: "normal",
-  variable: "--font-jetbrains-mono",
   display: "swap",
 });
 
@@ -81,7 +67,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${playfair.variable} ${quicksand.variable} ${jetbrainsMono.variable} h-full antialiased [-webkit-tap-highlight-color:transparent]`}
+      className={`${quicksand.variable} h-full antialiased [-webkit-tap-highlight-color:transparent]`}
     >
       <body
         data-site={site}
@@ -90,7 +76,19 @@ export default async function LocaleLayout({
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
         {clientEnv.NEXT_PUBLIC_APP_ENV === "production" &&
         clientEnv.NEXT_PUBLIC_GA_ID ? (
-          <GoogleAnalytics gaId={clientEnv.NEXT_PUBLIC_GA_ID} />
+          <>
+            <Script
+              id="ga-init"
+              strategy="lazyOnload"
+              dangerouslySetInnerHTML={{
+                __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config',${JSON.stringify(clientEnv.NEXT_PUBLIC_GA_ID)});`,
+              }}
+            />
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(clientEnv.NEXT_PUBLIC_GA_ID)}`}
+              strategy="lazyOnload"
+            />
+          </>
         ) : null}
       </body>
     </html>

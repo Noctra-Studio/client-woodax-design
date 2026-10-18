@@ -1,7 +1,8 @@
 "use client";
 
 import Image, { getImageProps } from "next/image";
-import { useEffect, useRef, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import ReactDOM from "react-dom";
 
 export type HeroVideoSources = {
   webm?: string;
@@ -35,6 +36,7 @@ export function HeroMedia({
   videoSrc,
 }: HeroMediaProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [posterLoaded, setPosterLoaded] = useState(false);
   const saveData = useSyncExternalStore(
     subscribeSaveData,
     readSaveData,
@@ -51,16 +53,53 @@ export function HeroMedia({
   );
   const hasVideo = Boolean(
     videoSrc?.webm ||
-    videoSrc?.mp4 ||
-    videoSrc?.mobileMp4 ||
-    videoSrc?.desktopMp4,
+      videoSrc?.mp4 ||
+      videoSrc?.mobileMp4 ||
+      videoSrc?.desktopMp4,
   );
-  const showVideo = hasVideo && !saveData && !reduce;
+  const canPlayVideo = hasVideo && !saveData && !reduce;
+  const activateVideo = canPlayVideo && posterLoaded;
+
+  useEffect(() => {
+    if (!canPlayVideo) return;
+
+    let idleId: number | undefined;
+    let timeoutId: number | undefined;
+    const scheduleIdle = () => {
+      if (typeof window.requestIdleCallback === "function") {
+        idleId = window.requestIdleCallback(() => setPosterLoaded(true), {
+          timeout: 1500,
+        });
+      } else {
+        timeoutId = setTimeout(() => setPosterLoaded(true), 200) as unknown as number;
+      }
+    };
+
+    if (document.readyState === "complete") {
+      scheduleIdle();
+    } else {
+      window.addEventListener("load", scheduleIdle, { once: true });
+    }
+
+    return () => {
+      window.removeEventListener("load", scheduleIdle);
+      if (
+        idleId !== undefined &&
+        typeof window.cancelIdleCallback === "function"
+      ) {
+        window.cancelIdleCallback(idleId);
+      }
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [canPlayVideo]);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || !showVideo) return;
+    if (!video || !activateVideo) return;
 
+    video.load();
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) {
@@ -73,18 +112,17 @@ export function HeroMedia({
     );
     observer.observe(video);
     return () => observer.disconnect();
-  }, [showVideo]);
+  }, [activateVideo]);
 
   if (mobilePoster) {
     const common = {
       alt,
       fill: true,
-      preload: true,
       sizes: "100vw",
       className: "object-cover",
     };
     const {
-      props: { srcSet: mobileSrcSet },
+      props: { src: mobileSrc, srcSet: mobileSrcSet, sizes: mobileSizes },
     } = getImageProps({
       ...common,
       src: mobilePoster,
@@ -97,42 +135,68 @@ export function HeroMedia({
       src: poster,
     });
 
+    if (mobileSrcSet) {
+      ReactDOM.preload(mobileSrc, {
+        as: "image",
+        imageSrcSet: mobileSrcSet,
+        imageSizes: mobileSizes ?? "100vw",
+        media: "(max-width: 767px)",
+        fetchPriority: "high",
+      });
+    }
+    if (desktopProps.srcSet) {
+      ReactDOM.preload(desktopProps.src, {
+        as: "image",
+        imageSrcSet: desktopProps.srcSet,
+        imageSizes: desktopProps.sizes ?? "100vw",
+        media: "(min-width: 768px)",
+        fetchPriority: "high",
+      });
+    }
+
     return (
       <>
         <picture className="absolute inset-0 block h-full w-full">
           <source media="(max-width: 767px)" srcSet={mobileSrcSet} />
-          <img {...desktopProps} alt={alt} />
+          <img
+            {...desktopProps}
+            alt={alt}
+            onLoad={() => setPosterLoaded(true)}
+          />
         </picture>
-        {showVideo && videoSrc ? (
+        {hasVideo && videoSrc ? (
           <video
             ref={videoRef}
             aria-hidden="true"
-            autoPlay
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="none"
             className="absolute inset-0 h-full w-full object-cover"
           >
-            {videoSrc.mobileMp4 ? (
-              <source
-                src={videoSrc.mobileMp4}
-                type="video/mp4"
-                media="(max-width: 767px)"
-              />
-            ) : null}
-            {videoSrc.desktopMp4 ? (
-              <source
-                src={videoSrc.desktopMp4}
-                type="video/mp4"
-                media="(min-width: 768px)"
-              />
-            ) : null}
-            {videoSrc.webm ? (
-              <source src={videoSrc.webm} type="video/webm" />
-            ) : null}
-            {videoSrc.mp4 ? (
-              <source src={videoSrc.mp4} type="video/mp4" />
+            {activateVideo ? (
+              <>
+                {videoSrc.mobileMp4 ? (
+                  <source
+                    src={videoSrc.mobileMp4}
+                    type="video/mp4"
+                    media="(max-width: 767px)"
+                  />
+                ) : null}
+                {videoSrc.desktopMp4 ? (
+                  <source
+                    src={videoSrc.desktopMp4}
+                    type="video/mp4"
+                    media="(min-width: 768px)"
+                  />
+                ) : null}
+                {videoSrc.webm ? (
+                  <source src={videoSrc.webm} type="video/webm" />
+                ) : null}
+                {videoSrc.mp4 ? (
+                  <source src={videoSrc.mp4} type="video/mp4" />
+                ) : null}
+              </>
             ) : null}
           </video>
         ) : null}
@@ -150,23 +214,29 @@ export function HeroMedia({
         fetchPriority="high"
         sizes="100vw"
         className="object-cover"
+        onLoad={() => setPosterLoaded(true)}
       />
-      {showVideo && videoSrc ? (
+      {hasVideo && videoSrc ? (
         <video
           ref={videoRef}
           aria-hidden="true"
-          autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
           poster={poster}
           className="absolute inset-0 h-full w-full object-cover"
         >
-          {videoSrc.webm ? (
-            <source src={videoSrc.webm} type="video/webm" />
+          {activateVideo ? (
+            <>
+              {videoSrc.webm ? (
+                <source src={videoSrc.webm} type="video/webm" />
+              ) : null}
+              {videoSrc.mp4 ? (
+                <source src={videoSrc.mp4} type="video/mp4" />
+              ) : null}
+            </>
           ) : null}
-          {videoSrc.mp4 ? <source src={videoSrc.mp4} type="video/mp4" /> : null}
         </video>
       ) : null}
     </>

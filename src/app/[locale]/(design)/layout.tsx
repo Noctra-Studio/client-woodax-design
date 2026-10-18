@@ -16,6 +16,7 @@ import {
 import { publishedSocialUrl, siteConfig } from "@/content/site-config";
 import { LeadUiProvider } from "@/features/leads/components/lead-ui";
 import { routing, type Locale } from "@/i18n/routing";
+import { playfair } from "@/lib/font-design";
 import { requestCncHomeUrl } from "@/lib/request-site";
 import { isDesignFull } from "@/lib/seo";
 
@@ -63,46 +64,51 @@ export default async function DesignLayout({
       }));
 
   return (
-    <LeadUiProvider>
-      <IntroProvider>
-        <a
-          href="#content"
-          className="bg-woodax-cream text-woodax-charcoal focus-visible:outline-woodax-charcoal sr-only z-50 rounded-full focus-visible:not-sr-only focus-visible:fixed focus-visible:top-[max(1rem,env(safe-area-inset-top))] focus-visible:left-4 focus-visible:inline-flex focus-visible:min-h-11 focus-visible:items-center focus-visible:px-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-        >
-          {t("skipToContent")}
-        </a>
-        <SiteNav
-          variant="design"
-          homeLabel={t("title")}
-          logoLabel={nav("design.homeAria")}
-          links={links}
-          ctaLabel={nav("design.cta")}
-          menuLabel={nav("menu")}
-          closeLabel={nav("close")}
-          languageLabel={nav("language")}
-          siblingHref={cncUrl}
-          siblingLabel={nav("sibling.toCnc")}
-          instagramUrl={publishedSocialUrl(siteConfig.instagramUrl)}
-          instagramLabel={nav("instagram")}
-          facebookUrl={publishedSocialUrl(siteConfig.facebookUrl)}
-          facebookLabel={nav("facebook")}
-          logo={
-            <WoodaxLogo
-              priority={designGallery.length === 0}
-              className="h-11 w-auto"
-            />
-          }
-          logoCompact={
-            <BrandIcon
-              variant="design"
-              priority={designGallery.length === 0}
-              className="h-7 w-auto"
-            />
-          }
-        />
-        <DesignFrame mobileCtaLabel={nav("design.cta")}>{children}</DesignFrame>
-        <SiteFooter variant="design" />
-      </IntroProvider>
-    </LeadUiProvider>
+    <div
+      data-site-font-root
+      className={`${playfair.variable} flex flex-1 flex-col`}
+    >
+      <LeadUiProvider>
+        <IntroProvider>
+          <a
+            href="#content"
+            className="bg-woodax-cream text-woodax-charcoal focus-visible:outline-woodax-charcoal sr-only z-50 rounded-full focus-visible:not-sr-only focus-visible:fixed focus-visible:top-[max(1rem,env(safe-area-inset-top))] focus-visible:left-4 focus-visible:inline-flex focus-visible:min-h-11 focus-visible:items-center focus-visible:px-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          >
+            {t("skipToContent")}
+          </a>
+          <SiteNav
+            variant="design"
+            homeLabel={t("title")}
+            logoLabel={nav("design.homeAria")}
+            links={links}
+            ctaLabel={nav("design.cta")}
+            menuLabel={nav("menu")}
+            closeLabel={nav("close")}
+            languageLabel={nav("language")}
+            siblingHref={cncUrl}
+            siblingLabel={nav("sibling.toCnc")}
+            instagramUrl={publishedSocialUrl(siteConfig.instagramUrl)}
+            instagramLabel={nav("instagram")}
+            facebookUrl={publishedSocialUrl(siteConfig.facebookUrl)}
+            facebookLabel={nav("facebook")}
+            logo={
+              <WoodaxLogo
+                priority={designGallery.length === 0}
+                className="h-11 w-auto"
+              />
+            }
+            logoCompact={
+              <BrandIcon
+                variant="design"
+                priority={false}
+                className="h-7 w-auto"
+              />
+            }
+          />
+          <DesignFrame mobileCtaLabel={nav("design.cta")}>{children}</DesignFrame>
+          <SiteFooter variant="design" />
+        </IntroProvider>
+      </LeadUiProvider>
+    </div>
   );
 }

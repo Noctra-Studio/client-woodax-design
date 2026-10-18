@@ -17,6 +17,7 @@ export async function WoodaxLogo({ className, priority = false }: LogoProps) {
       width={1636}
       height={514}
       preload={priority}
+      loading="eager"
       className={className}
     />
   );
