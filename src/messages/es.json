@@ -139,7 +139,7 @@
       "location": "Querétaro, México",
       "privacy": "Aviso de privacidad",
       "description": "Carpintería a medida para espacios y piezas únicas, en Querétaro.",
-      "sibling": "Corte CNC y renta de router",
+      "sibling": "Corte CNC para talleres y empresas",
       "email": "hello@woodax.design",
       "copyright": "© {year} Woodax Design"
     },
@@ -180,12 +180,12 @@
     "skipToContent": "Saltar al contenido",
     "meta": {
       "title": "Corte CNC en Querétaro | CNC by Woodax Design",
-      "description": "Renta de tiempo de router CNC y producción en volumen en madera, acrílico y aluminio para talleres, empresas y rotulistas en Querétaro. Cotiza tu proyecto."
+      "description": "Maquila y servicio de corte CNC en madera, acrílico y aluminio para carpinterías, talleres, empresas y rotulistas en Querétaro. Cotiza tu proyecto."
     },
     "hero": {
       "eyebrow": "Capacidad disponible · Cotizaciones abiertas",
       "headline": "Precisión CNC, sin invertir en la máquina.",
-      "subhead": "Para talleres y empresas en Querétaro: renta tiempo de máquina o encárganos la producción completa, desde una pieza hasta miles.",
+      "subhead": "Servicio de corte CNC y maquila para carpinterías, talleres y empresas en Querétaro: envíanos tu archivo y producimos tus piezas, desde una hasta miles.",
       "ctaPrimary": "Cotizar mi proyecto",
       "ctaSecondary": "Cómo funciona",
       "skipIntro": "Saltar",
@@ -194,12 +194,14 @@
     },
     "ways": {
       "title": "Dos formas de trabajar con nosotros",
-      "rentLabel": "01",
-      "rentTitle": "Renta de tiempo de máquina",
-      "rentBody": "Para talleres que necesitan capacidad extra. Usa nuestro router CNC cuando lo necesites, sin invertir en equipo ni mantenimiento.",
+      "serviceType": "Corte CNC",
+      "workshopLabel": "01",
+      "workshopTitle": "Maquila CNC para talleres",
+      "workshopBody": "Para carpinterías y talleres que necesitan cortes CNC sin tener la máquina. Nos mandas tu archivo y nosotros producimos las piezas: sin invertir en equipo, operador ni mantenimiento.",
       "volumeLabel": "02",
-      "volumeTitle": "Producción en volumen",
-      "volumeBody": "Para empresas que necesitan lotes de piezas idénticas, con la misma precisión de la primera a la última."
+      "volumeTitle": "Producción para empresas",
+      "volumeServiceTitle": "Producción CNC para empresas",
+      "volumeBody": "Piezas en volumen para empresas, rotulistas e industria. Del archivo a la pieza terminada, con cortes consistentes en toda la serie."
     },
     "materials": {
       "title": "Materiales",
@@ -310,7 +312,7 @@
       "designLink": "Muebles y espacios a medida → Woodax Design",
       "location": "Querétaro, México",
       "privacy": "Aviso de privacidad",
-      "description": "Corte CNC y renta de router para talleres, rotulistas e industria.",
+      "description": "Servicio de corte CNC y maquila para talleres, rotulistas e industria.",
       "sibling": "Muebles y espacios a medida",
       "email": "cnc@woodax.design",
       "copyright": "© {year} CNC by Woodax Design"
@@ -351,7 +353,7 @@
     },
     "cnc": {
       "title": "Corte CNC en Querétaro | CNC by Woodax Design",
-      "description": "Renta de tiempo de router CNC y producción en volumen en madera, acrílico y aluminio para talleres, empresas y rotulistas en Querétaro. Cotiza tu proyecto."
+      "description": "Maquila y servicio de corte CNC en madera, acrílico y aluminio para carpinterías, talleres, empresas y rotulistas en Querétaro. Cotiza tu proyecto."
     }
   }
 }

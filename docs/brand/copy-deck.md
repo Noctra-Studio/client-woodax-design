@@ -58,7 +58,7 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 
 ### Footer
 - cncLink — ES: ¿Necesitas corte CNC? Conoce CNC by Woodax Design | EN: Need CNC cutting? Meet CNC by Woodax Design (lo usa /servicios, no el footer)
-- sibling — ES: Corte CNC y renta de router | EN: CNC cutting and router rental
+- sibling ⚠︎ (pendiente de aprobación de Adrián) — ES: Corte CNC para talleres y empresas | EN: CNC cutting for workshops and businesses
 - email — hello@woodax.design
 - copyright — ES: © {year} Woodax Design | EN: © {year} Woodax Design
 - location — ES: Querétaro, México | EN: Querétaro, Mexico
@@ -68,26 +68,28 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 
 ## CNC by Woodax Design
 
-### Meta
-- title — ES: CNC by Woodax Design · Corte CNC y renta de router en Querétaro | EN: CNC by Woodax Design · CNC cutting and router rental in Querétaro
-- description — ES: Corte CNC de precisión en madera, acrílico y aluminio para talleres y empresas. Renta tiempo de máquina o encarga producción en volumen. | EN: Precision CNC cutting in wood, acrylic and aluminum for workshops and companies. Rent machine time or order volume production.
+### Meta ⚠︎ (pendiente de aprobación de Adrián)
+- title — ES: Corte CNC en Querétaro | CNC by Woodax Design | EN: CNC Cutting in Querétaro | CNC by Woodax Design
+- description ⚠︎ — ES: Maquila y servicio de corte CNC en madera, acrílico y aluminio para carpinterías, talleres, empresas y rotulistas en Querétaro. Cotiza tu proyecto. | EN: CNC cutting service and volume production in wood, acrylic and aluminum for workshops, businesses and sign makers in Querétaro. Send your file or idea.
 
 ### Hero
 - eyebrow — ES: Capacidad disponible · Cotizaciones abiertas | EN: Capacity available · Now quoting
 - headline — ES: Precisión CNC, sin invertir en la máquina. | EN: CNC precision, without buying the machine.
-- subhead — ES: Para talleres y empresas en Querétaro: renta tiempo de máquina o encárganos la producción completa, desde una pieza hasta miles. | EN: For workshops and companies in Querétaro: rent machine time or hand us the full production run, from one part to thousands.
+- subhead ⚠︎ (pendiente de aprobación de Adrián) — ES: Servicio de corte CNC y maquila para carpinterías, talleres y empresas en Querétaro: envíanos tu archivo y producimos tus piezas, desde una hasta miles. | EN: CNC cutting service for workshops and businesses in Querétaro: send us your file and we produce your parts, from a single piece to thousands.
 - ctaPrimary — ES: Cotizar mi proyecto | EN: Get a quote
 - ctaSecondary — ES: Cómo funciona | EN: How it works
 - skipIntro — ES: Saltar | EN: Skip
 
-### Dos formas de trabajar
+### Dos formas de trabajar ⚠︎ (pendiente de aprobación de Adrián)
 - title — ES: Dos formas de trabajar con nosotros | EN: Two ways to work with us
-- rent.label — 01
-- rent.title — ES: Renta de tiempo de máquina | EN: Machine time rental
-- rent.body — ES: Para talleres que necesitan capacidad extra. Usa nuestro router CNC cuando lo necesites, sin invertir en equipo ni mantenimiento. | EN: For workshops that need extra capacity. Use our CNC router when you need it, with no investment in equipment or maintenance.
+- serviceType ⚠︎ — ES: Corte CNC | EN: CNC cutting
+- workshop.label — 01
+- workshop.title ⚠︎ — ES: Maquila CNC para talleres | EN: CNC cutting for workshops
+- workshop.body ⚠︎ — ES: Para carpinterías y talleres que necesitan cortes CNC sin tener la máquina. Nos mandas tu archivo y nosotros producimos las piezas: sin invertir en equipo, operador ni mantenimiento. | EN: For carpentry and fabrication shops that need CNC cuts without owning the machine. Send us your file and we produce the parts, with no equipment, operator or maintenance to invest in.
 - volume.label — 02
-- volume.title — ES: Producción en volumen | EN: Volume production
-- volume.body — ES: Para empresas que necesitan lotes de piezas idénticas, con la misma precisión de la primera a la última. | EN: For companies that need batches of identical parts, as precise on the last one as on the first.
+- volume.title ⚠︎ — ES: Producción para empresas | EN: Production for businesses
+- volume.serviceTitle ⚠︎ — ES: Producción CNC para empresas | EN: CNC production for businesses
+- volume.body ⚠︎ — ES: Piezas en volumen para empresas, rotulistas e industria. Del archivo a la pieza terminada, con cortes consistentes en toda la serie. | EN: Volume parts for businesses, sign makers and industry. From file to finished part, with consistent cuts across the whole run.
 
 ### Materiales (confirmado por Adrián: 10 materiales)
 - title — ES: Materiales que cortamos | EN: Materials we cut
@@ -146,7 +148,7 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 
 ### Footer — descripción ⚠︎ (pendiente de aprobación de Adrián)
 - design.footer.description — ES: Carpintería a medida para espacios y piezas únicas, en Querétaro. | EN: Custom carpentry for spaces and one-of-a-kind pieces, in Querétaro.
-- cnc.footer.description — ES: Corte CNC y renta de router para talleres, rotulistas e industria. | EN: CNC cutting and router rental for workshops, sign makers and industry.
+- cnc.footer.description ⚠︎ — ES: Servicio de corte CNC y maquila para talleres, rotulistas e industria. | EN: CNC cutting service for workshops, sign makers and industry.
 
 ---
 
@@ -235,9 +237,9 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 
 ## CNC — sitio completo (nuevas claves)
 
-### Meta (reemplaza la de coming soon)
-- title — ES: Corte CNC en Querétaro · Madera, acrílico y aluminio | CNC by Woodax Design | EN: CNC Cutting in Querétaro · Wood, acrylic and aluminum | CNC by Woodax Design
-- description — ES: Renta de tiempo de router CNC y producción en volumen para talleres, empresas y rotulistas en Querétaro. Envía tu archivo o tu idea y recibe una cotización. | EN: CNC router time rental and volume production for workshops, companies and sign makers in Querétaro. Send your file or idea and get a quote.
+### Meta (reemplaza la de coming soon) ⚠︎ (pendiente de aprobación de Adrián)
+- title — ES: Corte CNC en Querétaro | CNC by Woodax Design | EN: CNC Cutting in Querétaro | CNC by Woodax Design
+- description ⚠︎ — ES: Maquila y servicio de corte CNC en madera, acrílico y aluminio para carpinterías, talleres, empresas y rotulistas en Querétaro. Cotiza tu proyecto. | EN: CNC cutting service and volume production in wood, acrylic and aluminum for workshops, businesses and sign makers in Querétaro. Send your file or idea.
 
 ### Capacidades (tabla técnica; cada fila solo si el dato existe en site-config.cncSpecs)
 - label — ES: Capacidades | EN: Capabilities

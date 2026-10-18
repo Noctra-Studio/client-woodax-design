@@ -119,13 +119,14 @@ export default async function CncPage({
     name: t("title"),
     description: t("meta.description"),
     parentName: design("title"),
+    serviceType: t("ways.serviceType"),
     services: [
       {
-        name: t("ways.rentTitle"),
-        description: t("ways.rentBody"),
+        name: t("ways.workshopTitle"),
+        description: t("ways.workshopBody"),
       },
       {
-        name: t("ways.volumeTitle"),
+        name: t("ways.volumeServiceTitle"),
         description: t("ways.volumeBody"),
       },
     ],
@@ -199,11 +200,13 @@ function cncJsonLd({
   name,
   description,
   parentName,
+  serviceType,
   services,
 }: {
   name: string;
   description: string;
   parentName: string;
+  serviceType: string;
   services: Array<{ name: string; description: string }>;
 }) {
   const origin = siteOrigin("cnc");
@@ -224,7 +227,7 @@ function cncJsonLd({
     },
     knowsAbout: [
       "CNC router cutting",
-      "CNC router rental",
+      "CNC cutting service",
       "acrylic cutting",
       "aluminum cutting",
       "MDF cutting",
@@ -237,6 +240,7 @@ function cncJsonLd({
     "@type": "Service",
     name: service.name,
     description: service.description,
+    serviceType,
     areaServed: "Querétaro",
     provider: { "@id": businessId },
   }));

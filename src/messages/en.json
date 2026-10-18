@@ -139,7 +139,7 @@
       "location": "Querétaro, Mexico",
       "privacy": "Privacy notice",
       "description": "Custom carpentry for spaces and one-of-a-kind pieces, in Querétaro.",
-      "sibling": "CNC cutting and router rental",
+      "sibling": "CNC cutting for workshops and businesses",
       "email": "hello@woodax.design",
       "copyright": "© {year} Woodax Design"
     },
@@ -180,12 +180,12 @@
     "skipToContent": "Skip to content",
     "meta": {
       "title": "CNC Cutting in Querétaro | CNC by Woodax Design",
-      "description": "CNC router time rental and volume production in wood, acrylic and aluminum for workshops, companies and sign makers in Querétaro. Send your file or idea."
+      "description": "CNC cutting service and volume production in wood, acrylic and aluminum for workshops, businesses and sign makers in Querétaro. Send your file or idea."
     },
     "hero": {
       "eyebrow": "Capacity available · Now quoting",
       "headline": "CNC precision, without buying the machine.",
-      "subhead": "For workshops and companies in Querétaro: rent machine time or hand us the full production run, from one part to thousands.",
+      "subhead": "CNC cutting service for workshops and businesses in Querétaro: send us your file and we produce your parts, from a single piece to thousands.",
       "ctaPrimary": "Get a quote",
       "ctaSecondary": "How it works",
       "skipIntro": "Skip",
@@ -194,12 +194,14 @@
     },
     "ways": {
       "title": "Two ways to work with us",
-      "rentLabel": "01",
-      "rentTitle": "Machine time rental",
-      "rentBody": "For workshops that need extra capacity. Use our CNC router when you need it, with no investment in equipment or maintenance.",
+      "serviceType": "CNC cutting",
+      "workshopLabel": "01",
+      "workshopTitle": "CNC cutting for workshops",
+      "workshopBody": "For carpentry and fabrication shops that need CNC cuts without owning the machine. Send us your file and we produce the parts, with no equipment, operator or maintenance to invest in.",
       "volumeLabel": "02",
-      "volumeTitle": "Volume production",
-      "volumeBody": "For companies that need batches of identical parts, as precise on the last one as on the first."
+      "volumeTitle": "Production for businesses",
+      "volumeServiceTitle": "CNC production for businesses",
+      "volumeBody": "Volume parts for businesses, sign makers and industry. From file to finished part, with consistent cuts across the whole run."
     },
     "materials": {
       "title": "Materials",
@@ -310,7 +312,7 @@
       "designLink": "Bespoke furniture and spaces → Woodax Design",
       "location": "Querétaro, Mexico",
       "privacy": "Privacy notice",
-      "description": "CNC cutting and router rental for workshops, sign makers and industry.",
+      "description": "CNC cutting service for workshops, sign makers and industry.",
       "sibling": "Custom furniture and spaces",
       "email": "cnc@woodax.design",
       "copyright": "© {year} CNC by Woodax Design"
@@ -351,7 +353,7 @@
     },
     "cnc": {
       "title": "CNC Cutting in Querétaro | CNC by Woodax Design",
-      "description": "CNC router time rental and volume production in wood, acrylic and aluminum for workshops, companies and sign makers in Querétaro. Send your file or idea."
+      "description": "CNC cutting service and volume production in wood, acrylic and aluminum for workshops, businesses and sign makers in Querétaro. Send your file or idea."
     }
   }
 }

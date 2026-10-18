@@ -15,7 +15,7 @@ description: Brand, visual, motion and copy rules for the Woodax Design and CNC 
 
 Two sibling brands, one repo, one deploy.
 - Woodax Design → woodax.design. Bespoke carpentry for homes AND businesses. Strong Instagram presence. Light, natural, warm.
-- CNC by Woodax Design → cnc.woodax.design. New B2B venture: rents CNC router time to workshops and produces bulk parts for companies and sign makers. Goal: get the machine booked. Dark, technical, precise.
+- CNC by Woodax Design → cnc.woodax.design. New B2B venture: CNC no renta la máquina; es proveedor del servicio de corte (maquila) — el cliente manda su archivo y recibe las piezas terminadas (carpinterías, talleres, rotulistas y empresas privadas). Goal: get the machine booked. Dark, technical, precise.
 
 If a request conflicts with this file, stop and ask. Never "fill gaps" with invented content.
 
@@ -236,7 +236,7 @@ Navigation is its own `<nav aria-label>`:
 - CNC: anchors Servicio, Capacidades (only when `cncSpecs` has data), Materiales, Contacto.
 
 Sibling site:
-- Design → CNC: «Corte CNC y renta de router» / «CNC cutting and router rental».
+- Design → CNC: «Corte CNC para talleres y empresas» / «CNC cutting for workshops and businesses».
 - CNC → Design: «Muebles y espacios a medida» / «Custom furniture and spaces».
 - On previews (`*.vercel.app` and `NEXT_PUBLIC_APP_ENV !== "production"`) the link stays on the same origin with `?site=design|cnc` and keeps the locale (`/en?site=cnc`), in both directions.
 - Locally and in production it uses `NEXT_PUBLIC_DESIGN_URL` / `NEXT_PUBLIC_CNC_URL`.

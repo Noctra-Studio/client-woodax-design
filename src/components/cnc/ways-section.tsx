@@ -3,7 +3,7 @@ import { RegistrationMarks } from "@/components/cnc/registration-marks";
 import { Reveal } from "@/components/design/reveal";
 
 const panels = [
-  { label: "rentLabel", title: "rentTitle", body: "rentBody" },
+  { label: "workshopLabel", title: "workshopTitle", body: "workshopBody" },
   { label: "volumeLabel", title: "volumeTitle", body: "volumeBody" },
 ] as const;
 

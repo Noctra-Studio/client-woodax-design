@@ -180,7 +180,7 @@ Estructura:
 9. Footer: CncLogo pequeño, ubicación, Instagram (site-config), link a NEXT_PUBLIC_DESIGN_URL con designLink, privacidad.
 10. MobileCtaBar con mobileBar.
 
-SEO/GEO: igual que Woodax con meta de CNC, canonical NEXT_PUBLIC_CNC_URL y JSON-LD LocalBusiness con parentOrganization → Woodax Design, knowsAbout ["CNC router cutting","CNC router rental","acrylic cutting","aluminum cutting","MDF cutting","signage"].
+SEO/GEO: igual que Woodax con meta de CNC, canonical NEXT_PUBLIC_CNC_URL y JSON-LD LocalBusiness con parentOrganization → Woodax Design, knowsAbout ["CNC router cutting","CNC cutting service","acrylic cutting","aluminum cutting","MDF cutting","signage"].
 
 Calidad: mismos objetivos. Contraste AA en todo el texto sobre cnc-bg (cnc-muted solo para texto ≥ 14px). Revisa con web-design-guidelines.
 ```
@@ -293,7 +293,7 @@ Paso 4 — Formulario v2 (detalles opcionales)
 - Sin carga de archivos en esta versión.
 
 Paso 5 — SEO/GEO de producción
-- JSON-LD: LocalBusiness (ya existe) + un Service por modalidad (renta de tiempo de máquina, producción en volumen) con areaServed Querétaro. FAQPage solo con las preguntas publicadas.
+- JSON-LD: LocalBusiness (ya existe) + un Service por modalidad (maquila CNC para talleres, producción CNC para empresas) con serviceType Corte CNC / CNC cutting y areaServed Querétaro. FAQPage solo con las preguntas publicadas.
 - Imagen Open Graph generada con next/og (src/app/[locale]/cnc/opengraph-image.tsx): fondo cnc-bg, retícula, logo blanco y el titular. Una por idioma.
 - Revisa que el h1, los headings y los landmarks sigan en orden con las secciones nuevas.
 
