@@ -236,7 +236,7 @@
     },
     "process": {
       "title": "From file to finished part",
-      "step1": "01 Send us your file or your idea — Share your cut-ready vector or a sketch with dimensions and the material you need.",
+      "step1": "01 Send us your file or your idea — Send your cut-ready vector, or a sketch with dimensions and material.",
       "step1Output": "File or sketch",
       "step2": "02 We review and quote — We check dimensions, material and thickness, and send you a quote.",
       "step2Output": "Quote",

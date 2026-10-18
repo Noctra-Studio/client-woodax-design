@@ -188,7 +188,7 @@ export function ProcessSection() {
                     </h3>
                   ) : null}
                   {bodyPart ? (
-                    <p className="text-cnc-muted mt-2 line-clamp-2 max-w-[44ch] text-[clamp(1rem,1.05vw,1.0625rem)] leading-[1.55] font-medium text-pretty">
+                    <p className="text-cnc-muted mt-2 max-w-[44ch] text-[clamp(1rem,1.05vw,1.0625rem)] leading-[1.55] font-medium text-pretty">
                       {bodyPart}
                     </p>
                   ) : null}

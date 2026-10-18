@@ -108,7 +108,7 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 
 ### Proceso ⚠︎ (pendiente Adrián)
 - title — ES: Del archivo a la pieza | EN: From file to finished part
-- step1 ⚠︎ (pendiente Adrián) — ES: 01 Envíanos tu archivo o tu idea — Compártenos tu vector listo para corte o un boceto con medidas y el material que necesitas. | EN: 01 Send us your file or your idea — Share your cut-ready vector or a sketch with dimensions and the material you need.
+- step1 ⚠︎ (pendiente Adrián) — ES: 01 Envíanos tu archivo o tu idea — Mándanos tu vector listo para corte, o un boceto con medidas y material. | EN: 01 Send us your file or your idea — Send your cut-ready vector, or a sketch with dimensions and material.
 - step1Output ⚠︎ (pendiente Adrián) — ES: Archivo o boceto | EN: File or sketch
 - step2 ⚠︎ (pendiente Adrián) — ES: 02 Revisamos y cotizamos — Revisamos medidas, material y espesor, y te enviamos la cotización. | EN: 02 We review and quote — We check dimensions, material and thickness, and send you a quote.
 - step2Output ⚠︎ (pendiente Adrián) — ES: Cotización | EN: Quote

@@ -236,7 +236,7 @@
     },
     "process": {
       "title": "Del archivo a la pieza",
-      "step1": "01 Envíanos tu archivo o tu idea — Compártenos tu vector listo para corte o un boceto con medidas y el material que necesitas.",
+      "step1": "01 Envíanos tu archivo o tu idea — Mándanos tu vector listo para corte, o un boceto con medidas y material.",
       "step1Output": "Archivo o boceto",
       "step2": "02 Revisamos y cotizamos — Revisamos medidas, material y espesor, y te enviamos la cotización.",
       "step2Output": "Cotización",
