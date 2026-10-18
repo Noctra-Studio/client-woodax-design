@@ -60,6 +60,14 @@ export function languageAlternates(site: Site, href: Pathname = "/") {
   };
 }
 
+export function siteBrandName(site: Site): string {
+  return site === "cnc" ? "CNC by Woodax Design" : "Woodax Design";
+}
+
+export function ogImageUrl(site: Site, locale: Locale): string {
+  return `${siteOrigin(site)}/api/og?site=${site}&locale=${locale}`;
+}
+
 export function localizedMetadata({
   site,
   locale,
@@ -76,6 +84,8 @@ export function localizedMetadata({
   const canonical = absoluteUrl(site, getPathname({ href, locale }));
   const currentOgLocale = ogLocale[locale];
   const alternateOgLocale = locale === "es" ? ogLocale.en : ogLocale.es;
+  const siteName = siteBrandName(site);
+  const imageUrl = ogImageUrl(site, locale);
 
   return {
     metadataBase: new URL(siteOrigin(site)),
@@ -89,9 +99,68 @@ export function localizedMetadata({
       title,
       description,
       url: canonical,
+      siteName,
       locale: currentOgLocale,
       alternateLocale: [alternateOgLocale],
       type: "website",
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+          type: "image/png",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [imageUrl],
+    },
+  };
+}
+
+export function unlistedPageMetadata({
+  site,
+  title,
+  description,
+}: {
+  site: Site;
+  title: string;
+  description: string;
+}): Metadata {
+  return {
+    metadataBase: new URL(siteOrigin(site)),
+    title,
+    description,
+    robots: {
+      index: false,
+      follow: false,
+      nocache: true,
+      googleBot: {
+        index: false,
+        follow: false,
+        noimageindex: true,
+      },
+    },
+    alternates: {
+      canonical: null,
+      languages: {},
+    },
+    openGraph: {
+      title,
+      description,
+      siteName: siteBrandName(site),
+      url: undefined,
+      images: [],
+    },
+    twitter: {
+      card: "summary",
+      title,
+      description,
+      images: [],
     },
   };
 }

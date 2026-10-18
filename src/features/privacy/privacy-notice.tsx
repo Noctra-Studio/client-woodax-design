@@ -7,7 +7,7 @@ import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { requestSite } from "@/lib/request-site";
-import { localizedMetadata } from "@/lib/seo";
+import { localizedMetadata, siteBrandName } from "@/lib/seo";
 
 export { PrivacyNoticeBody } from "@/features/privacy/privacy-notice-body";
 
@@ -22,10 +22,11 @@ export async function generatePrivacyMetadata({
     : routing.defaultLocale;
   const site = await requestSite();
   const t = await getTranslations({ locale, namespace: "privacy" });
+  const brand = siteBrandName(site);
   return localizedMetadata({
     site,
     locale,
-    title: t("title"),
+    title: `${t("title")} · ${brand}`,
     description: t("intro"),
     href: "/privacy",
   });

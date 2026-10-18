@@ -2,13 +2,36 @@ import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 import { isIndexingAllowed } from "./src/lib/flags";
 
+const immutableAssetHeaders = [
+  {
+    key: "Cache-Control",
+    value: "public, max-age=31536000, immutable",
+  },
+];
+
 const nextConfig: NextConfig = {
   headers() {
+    const assetRules = [
+      {
+        source: "/media/:path*",
+        headers: immutableAssetHeaders,
+      },
+      {
+        source: "/brand/:path*",
+        headers: immutableAssetHeaders,
+      },
+      {
+        source: "/images/:path*",
+        headers: immutableAssetHeaders,
+      },
+    ];
+
     if (isIndexingAllowed()) {
-      return [];
+      return assetRules;
     }
 
     return [
+      ...assetRules,
       {
         source: "/:path*",
         headers: [

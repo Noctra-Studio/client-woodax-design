@@ -30,7 +30,11 @@ export function RegistrationMarks({
 
 function Mark({ className }: { className: string }) {
   return (
-    <svg viewBox="0 0 12 12" className={cn("size-3 text-cnc-muted", className)}>
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 12 12"
+      className={cn("size-3 text-cnc-muted", className)}
+    >
       <path
         d="M6 0v12M0 6h12"
         fill="none"

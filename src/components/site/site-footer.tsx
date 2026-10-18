@@ -12,7 +12,7 @@ import {
   designPages,
   designSectionAnchors,
 } from "@/content/design-pages";
-import { cncSectionAnchors, siteConfig } from "@/content/site-config";
+import { cncSectionAnchors, siteConfig, siteEmail } from "@/content/site-config";
 import { Link } from "@/i18n/navigation";
 import { routing, type Locale, type Pathname } from "@/i18n/routing";
 import { requestCncHomeUrl, requestDesignHomeUrl } from "@/lib/request-site";
@@ -44,6 +44,7 @@ export async function SiteFooter({ variant }: { variant: "design" | "cnc" }) {
   const noctraSrc = isDesign
     ? "/images/design/noctra-light.svg"
     : "/images/design/noctra-dark.svg";
+  const email = siteEmail(variant);
 
   return (
     <FooterClearance variant={variant}>
@@ -58,9 +59,9 @@ export async function SiteFooter({ variant }: { variant: "design" | "cnc" }) {
             <div className="flex flex-col items-center gap-4 text-center sm:items-start sm:text-left">
               <div translate="no">
                 {isDesign ? (
-                  <WoodaxLogo className="h-14 w-auto" />
+                  <WoodaxLogo className="h-14 w-auto" loading="lazy" />
                 ) : (
-                  <CncLogo className="h-8 w-auto" />
+                  <CncLogo className="h-8 w-auto" loading="lazy" />
                 )}
               </div>
               <p
@@ -104,8 +105,8 @@ export async function SiteFooter({ variant }: { variant: "design" | "cnc" }) {
             </nav>
 
             <div className="flex flex-col items-center sm:items-start">
-              <a href={`mailto:${t("email")}`} className={linkClass}>
-                {t("email")}
+              <a href={`mailto:${email}`} className={linkClass}>
+                {email}
               </a>
               <p className="inline-flex min-h-11 items-center text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-medium">
                 {t("location")}
@@ -212,7 +213,7 @@ export async function SiteFooter({ variant }: { variant: "design" | "cnc" }) {
               <span
                 className={cn(
                   "text-xs font-medium",
-                  isDesign ? "text-woodax-charcoal/60" : "text-cnc-muted",
+                  isDesign ? "text-woodax-charcoal" : "text-cnc-muted",
                 )}
               >
                 {shared("developedBy")}
@@ -222,7 +223,7 @@ export async function SiteFooter({ variant }: { variant: "design" | "cnc" }) {
                 alt=""
                 width={isDesign ? 126 : 123}
                 height={32}
-                className="h-8 w-auto opacity-60 transition-opacity duration-200 ease-out group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
+                className="h-8 w-auto opacity-75 transition-opacity duration-200 ease-out group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
               />
             </a>
           </div>

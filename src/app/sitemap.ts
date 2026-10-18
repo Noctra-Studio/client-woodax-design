@@ -1,21 +1,19 @@
 import type { MetadataRoute } from "next";
-import { headers } from "next/headers";
 import { designPageKeys, designPages } from "@/content/design-pages";
 import type { Pathname } from "@/i18n/routing";
+import { requestSite } from "@/lib/request-site";
 import { isDesignFull, isIndexingAllowed, languageAlternates } from "@/lib/seo";
-import { getSite, hostFromHeaders } from "@/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const headerStore = await headers();
   if (!isIndexingAllowed()) {
     return [];
   }
 
-  const site = getSite(hostFromHeaders(headerStore));
+  const site = await requestSite();
 
   if (site === "design") {
     if (!isDesignFull()) {
-      return sitemapEntries(site, "/");
+      return [...sitemapEntries(site, "/"), ...sitemapEntries(site, "/privacy")];
     }
 
     return designPageKeys
