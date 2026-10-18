@@ -94,12 +94,12 @@ export const siteConfig: SiteConfig = {
   cncHero: {
     type: "video",
     src: {
-      mobileMp4: "/media/cnc/cnc-hero-mobile.mp4",
-      desktopMp4: "/media/cnc/cnc-hero-desktop.mp4",
-      mp4: "/media/cnc/cnc-hero-desktop.mp4",
+      mobileMp4: "/media/cnc/cnc-hero-mobile-v2.mp4",
+      desktopMp4: "/media/cnc/cnc-hero-desktop-v2.mp4",
+      mp4: "/media/cnc/cnc-hero-desktop-v2.mp4",
     },
-    poster: "/media/cnc/cnc-hero-desktop-poster.jpg",
-    mobilePoster: "/media/cnc/cnc-hero-mobile-poster.jpg",
+    poster: "/media/cnc/cnc-hero-desktop-poster-v2.jpg",
+    mobilePoster: "/media/cnc/cnc-hero-mobile-poster-v2.jpg",
     alt: {
       es: "Router CNC SIDECO ProCut SIR-1325VI en el taller",
       en: "SIDECO ProCut SIR-1325VI CNC router in the workshop",

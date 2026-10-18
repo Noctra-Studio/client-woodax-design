@@ -24,6 +24,10 @@ En producción el sitio sigue el host. En un preview de Vercel la URL es única 
 
 El DNS del dominio se administra en Vercel.
 
+## Assets en `/media`
+
+`/media`, `/brand` e `/images` se sirven con `Cache-Control: public, max-age=31536000, immutable`. Cualquier asset en `/media` que se reemplace debe cambiar de nombre (`-vN`) por el Cache-Control immutable. El hero de CNC usa el sufijo `-v2`.
+
 ## Deuda técnica post-lanzamiento
 
 Ver `docs/TECH-DEBT.md`. Quedan fuera de este lanzamiento. El orden lo marca el LCP simulado: primero el JS inicial, después el mp4 del hero CNC, el CSS crítico y, al final, AVIF y `no-store`/bfcache.
