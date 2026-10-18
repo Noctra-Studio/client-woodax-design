@@ -214,6 +214,28 @@ html[data-cnc-intro="play"] .cnc-logo-stroke {
   transition: clip-path var(--duration-reveal) var(--ease-out);
 }
 
+.cnc-capabilities-mask-desktop {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 35%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 35%);
+}
+
+.cnc-capabilities-mask-mobile {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 12%,
+    #000 58%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 12%,
+    #000 58%,
+    transparent 100%
+  );
+}
+
 .cnc-track {
   transform-origin: left center;
 }
@@ -410,6 +432,84 @@ html[data-cnc-intro="play"] .cnc-logo-stroke {
   .nav-sheet-panel[data-state="closed"],
   .nav-sheet-overlay[data-state="closed"] {
     animation-name: sheet-fade-out;
+  }
+}
+
+.privacy-dialog-overlay {
+  background-color: var(--nav-sheet-overlay);
+  animation: privacy-dialog-overlay-in 200ms var(--ease-out);
+}
+
+.privacy-dialog-overlay[data-state="closed"] {
+  animation: privacy-dialog-overlay-out 200ms var(--ease-out);
+}
+
+@media (min-width: 768px) {
+  .privacy-dialog-panel[data-state="open"] {
+    animation: privacy-dialog-panel-in-desktop 200ms var(--ease-out);
+  }
+
+  .privacy-dialog-panel[data-state="closed"] {
+    animation: privacy-dialog-panel-out-desktop 200ms var(--ease-out);
+  }
+}
+
+@media (max-width: 767px) {
+  .privacy-dialog-panel[data-state="open"] {
+    animation: privacy-dialog-overlay-in 200ms var(--ease-out);
+  }
+
+  .privacy-dialog-panel[data-state="closed"] {
+    animation: privacy-dialog-overlay-out 200ms var(--ease-out);
+  }
+}
+
+@keyframes privacy-dialog-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes privacy-dialog-overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes privacy-dialog-panel-in-desktop {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes privacy-dialog-panel-out-desktop {
+  from {
+    opacity: 1;
+    scale: 1;
+  }
+  to {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .privacy-dialog-overlay[data-state="open"],
+  .privacy-dialog-overlay[data-state="closed"],
+  .privacy-dialog-panel[data-state="open"],
+  .privacy-dialog-panel[data-state="closed"] {
+    animation: none;
   }
 }
 
