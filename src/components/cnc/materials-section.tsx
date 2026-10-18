@@ -982,10 +982,9 @@ export function MaterialsSection() {
                       pathLength={1}
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="1.6"
+                      strokeWidth="1.5"
                       strokeLinejoin="round"
                       strokeLinecap="round"
-                      vectorEffect="non-scaling-stroke"
                       className="cnc-cut-path text-cnc-white"
                     />
 
@@ -996,10 +995,9 @@ export function MaterialsSection() {
                         pathLength={1}
                         fill="none"
                         stroke="currentColor"
-                        strokeWidth="1.25"
+                        strokeWidth="1.2"
                         strokeLinejoin="round"
                         strokeLinecap="round"
-                        vectorEffect="non-scaling-stroke"
                         className="cnc-cut-path text-cnc-text"
                       />
                     ))}
@@ -1028,8 +1026,8 @@ export function MaterialsSection() {
                 </div>
 
                 {/* Footer: Example counter + Polite live region for example name + Step dots */}
-                <div className="border-cnc-line/80 flex w-full items-center justify-between gap-3 border-t pt-3.5">
-                  <div className="flex min-w-0 items-baseline gap-2.5">
+                <div className="border-cnc-line/80 flex w-full items-center justify-between gap-2 border-t pt-3.5">
+                  <div className="flex min-w-0 items-baseline gap-2">
                     <span className="text-cnc-muted shrink-0 font-mono text-xs tracking-[0.06em] uppercase tabular-nums">
                       {exampleCounter}
                     </span>
