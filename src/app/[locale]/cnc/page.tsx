@@ -98,8 +98,8 @@ export default async function CncPage({
     ],
     specProperties: cncSpecPropertyValues(locale, {
       area: t("capabilities.area"),
-      areaValue: t("capabilities.areaValue"),
-      thicknessValue: t("capabilities.thicknessValue"),
+      areaValue: t.raw("capabilities.areaValue"),
+      thicknessValue: t.raw("capabilities.thicknessValue"),
       groupNames: {
         wood: t("materials.groups.wood.name"),
         acrylic: t("materials.groups.acrylic.name"),
