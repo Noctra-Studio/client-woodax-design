@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useSyncExternalStore } from "react";
-import { AnalyticsButton } from "@/components/analytics/tracked-link";
+import { AnalyticsAnchor } from "@/components/analytics/tracked-link";
+import { WhatsAppIcon } from "@/components/icons/brand-social";
 import { ArcMotif } from "@/components/design/arc-motif";
 import { Reveal } from "@/components/design/reveal";
 import { Button } from "@/components/ui/button";
@@ -128,24 +129,27 @@ function SheetLeadCapture({ copy }: { copy: LeadCopy }) {
             active={isMobile}
           >
             <LeadForm copy={copy} />
+            {copy.variant === "cnc" &&
+            copy.whatsappHref &&
+            copy.whatsappPrefer ? (
+              <div className="border-cnc-line mt-6 border-t pt-5">
+                <AnalyticsAnchor
+                  href={copy.whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={copy.whatsappAria}
+                  tracking={{
+                    event: "whatsapp_click",
+                    params: { site: "cnc", location: "contact" },
+                  }}
+                  className="text-cnc-text focus-visible:outline-cnc-white inline-flex min-h-11 items-center gap-2 text-[15px] font-medium underline decoration-current/40 underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 pointer-fine:hover:decoration-current"
+                >
+                  <WhatsAppIcon className="size-4 shrink-0" />
+                  {copy.whatsappPrefer}
+                </AnalyticsAnchor>
+              </div>
+            ) : null}
           </LeadSheet>
-          {copy.variant === "cnc" &&
-          copy.whatsappHref &&
-          copy.whatsappChannel ? (
-            <AnalyticsButton
-              href={copy.whatsappHref}
-              variant="cnc-secondary"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full self-start md:w-auto"
-              tracking={{
-                event: "whatsapp_click",
-                params: { site: "cnc", location: "contact" },
-              }}
-            >
-              {copy.whatsappChannel}
-            </AnalyticsButton>
-          ) : null}
         </div>
       </div>
     </section>
@@ -161,6 +165,7 @@ function SheetLeadCapture({ copy }: { copy: LeadCopy }) {
         onOpen={() => setOpen(true)}
         whatsappHref={copy.variant === "cnc" ? copy.whatsappHref : null}
         whatsappLabel={copy.whatsappChannel}
+        whatsappAria={copy.whatsappAria}
       />
     </>
   );

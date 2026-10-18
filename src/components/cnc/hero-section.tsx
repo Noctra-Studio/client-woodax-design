@@ -40,7 +40,11 @@ export function HeroSection() {
   const media = heroMedia(siteConfig.cncHero, locale === "en" ? "en" : "es");
 
   return (
-    <section className="relative min-h-[100svh]" aria-labelledby="hero-title">
+    <section
+      id="hero"
+      className="relative min-h-[100svh]"
+      aria-labelledby="hero-title"
+    >
       {media ? (
         <div className="absolute inset-0">
           <HeroMedia

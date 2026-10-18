@@ -29,7 +29,7 @@ type AnalyticsEventMap = {
   };
   whatsapp_click: {
     site: Site;
-    location: "contact" | "mobile_bar" | "success";
+    location: "floating" | "mobile_bar" | "contact" | "success";
   };
 };
 

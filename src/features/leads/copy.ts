@@ -43,8 +43,11 @@ export type LeadCopy = {
   errors: Record<string, string>;
   closeLabel: string;
   mobileBar: string;
-  /** Short channel label for the CNC contact button. Null on Design. */
+  /** Short channel label for the CNC pill and mobile bar. Null on Design. */
   whatsappChannel: string | null;
+  /** Link under the CNC form card. Null on Design. */
+  whatsappPrefer: string | null;
+  whatsappAria: string;
   whatsappHref: string | null;
 };
 
@@ -125,6 +128,8 @@ export async function getLeadCopy(
       closeLabel: form("close"),
       mobileBar: form("mobileBar"),
       whatsappChannel: null,
+      whatsappPrefer: null,
+      whatsappAria: form("whatsappAria"),
       whatsappHref: href,
     };
   }
@@ -203,6 +208,8 @@ export async function getLeadCopy(
     closeLabel: form("close"),
     mobileBar: form("mobileBar"),
     whatsappChannel: form("whatsapp"),
+    whatsappPrefer: form("whatsappPrefer"),
+    whatsappAria: form("whatsappAria"),
     whatsappHref: href,
   };
 }

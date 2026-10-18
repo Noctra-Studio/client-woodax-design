@@ -44,6 +44,7 @@ export function AnalyticsButton({
   className,
   target,
   rel,
+  "aria-label": ariaLabel,
 }: {
   href: string;
   variant: ButtonVariant;
@@ -51,6 +52,7 @@ export function AnalyticsButton({
   className?: string;
   target?: string;
   rel?: string;
+  "aria-label"?: string;
   children: ReactNode;
   tracking: Tracking;
   onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
@@ -63,6 +65,7 @@ export function AnalyticsButton({
       className={className}
       target={target}
       rel={rel}
+      aria-label={ariaLabel}
       onClick={(event: MouseEvent<HTMLAnchorElement>) => {
         onClick?.(event);
         if (event.defaultPrevented) return;

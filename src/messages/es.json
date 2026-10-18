@@ -132,6 +132,7 @@
       },
       "errorPrefix": "Error:",
       "close": "Cerrar",
+      "whatsappAria": "Escribir por WhatsApp",
       "mobileBar": "Cuéntanos tu proyecto"
     },
     "footer": {
@@ -171,6 +172,7 @@
         "title": "Otras formas de contactarnos",
         "email": "Correo",
         "whatsapp": "WhatsApp",
+        "whatsappAria": "Escribir por WhatsApp",
         "social": "Síguenos"
       }
     }
@@ -304,6 +306,8 @@
       "errorPrefix": "Error:",
       "close": "Cerrar",
       "whatsapp": "WhatsApp",
+      "whatsappPrefer": "¿Prefieres WhatsApp? Escríbenos",
+      "whatsappAria": "Escribir por WhatsApp",
       "mobileBar": "Cotizar mi proyecto"
     },
     "footer": {

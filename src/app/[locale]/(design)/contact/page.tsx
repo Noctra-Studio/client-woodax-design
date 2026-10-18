@@ -106,6 +106,7 @@ export default async function ContactPage({
                   href={designWhatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={t("channels.whatsappAria")}
                   tracking={{
                     event: "whatsapp_click",
                     params: { site: "design", location: "contact" },

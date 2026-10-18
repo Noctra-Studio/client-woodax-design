@@ -132,6 +132,7 @@
       },
       "errorPrefix": "Error:",
       "close": "Close",
+      "whatsappAria": "Message us on WhatsApp",
       "mobileBar": "Tell us about your project"
     },
     "footer": {
@@ -171,6 +172,7 @@
         "title": "Other ways to reach us",
         "email": "Email",
         "whatsapp": "WhatsApp",
+        "whatsappAria": "Message us on WhatsApp",
         "social": "Follow us"
       }
     }
@@ -304,6 +306,8 @@
       "errorPrefix": "Error:",
       "close": "Close",
       "whatsapp": "WhatsApp",
+      "whatsappPrefer": "Prefer WhatsApp? Message us",
+      "whatsappAria": "Message us on WhatsApp",
       "mobileBar": "Get a quote"
     },
     "footer": {

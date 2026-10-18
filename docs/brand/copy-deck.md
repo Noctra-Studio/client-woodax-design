@@ -8,10 +8,12 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 ## Woodax Design
 
 ### Meta
+
 - title — ES: Woodax Design · Carpintería a medida en Querétaro | EN: Woodax Design · Bespoke carpentry in Querétaro
 - description — ES: Cocinas, clósets, piezas únicas y mobiliario para negocios, diseñados contigo y hechos a la medida de tu espacio. | EN: Kitchens, closets, one-of-a-kind pieces and furniture for businesses, designed with you and made to fit your space.
 
 ### Hero
+
 - eyebrow — ES: Nuevo sitio en camino · Abiertos a proyectos | EN: New site on the way · Open for projects
 - headline — ES: Diseñamos y fabricamos lo que tu espacio necesita. Pieza por pieza. | EN: We design and build what your space needs. Piece by piece.
 - subhead — ES: Carpintería a medida para hogares y negocios en Querétaro, de la primera idea a la instalación. | EN: Bespoke carpentry for homes and businesses in Querétaro, from first idea to installation.
@@ -20,6 +22,7 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - skipIntro — ES: Saltar | EN: Skip
 
 ### Para quién
+
 - title — ES: Para tu hogar y para tu negocio | EN: For your home and your business
 - home.title — ES: Tu hogar | EN: Your home
 - home.body — ES: Cocinas, clósets, vestidores y piezas únicas pensadas para la forma en que vives. | EN: Kitchens, closets, walk-ins and one-of-a-kind pieces designed around the way you live.
@@ -27,17 +30,20 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - business.body — ES: Mobiliario para oficinas, despachos, cafeterías y coworkings que refleja tu marca desde la entrada. | EN: Furniture for offices, firms, cafés and coworking spaces that shows your brand from the moment people walk in.
 
 ### Proyectos
+
 - title — ES: Proyectos recientes | EN: Recent projects
 - instagramCta — ES: Más proyectos en Instagram | EN: More projects on Instagram
 - tags — ES: Cocina · Clóset · Pieza a medida · Espacio comercial | EN: Kitchen · Closet · Custom piece · Commercial space
 
 ### Así trabajamos ⚠︎
+
 - title — ES: Así trabajamos | EN: How we work
 - step1 — ES: Escuchamos — Conocemos tu espacio, tomamos medidas y entendemos lo que necesitas. | EN: We listen — We get to know your space, take measurements and understand what you need.
 - step2 — ES: Diseñamos — Te presentamos una propuesta y la ajustamos contigo hasta que quede exacta. | EN: We design — We present a proposal and refine it with you until it's exactly right.
 - step3 — ES: Fabricamos e instalamos — Construimos cada pieza a medida y la entregamos lista para usarse. | EN: We build and install — We make every piece to measure and deliver it ready to use.
 
 ### Formulario
+
 - title — ES: Empecemos por tu espacio | EN: Let's start with your space
 - step1.question — ES: ¿Qué te gustaría transformar? | EN: What would you like to transform?
 - options — ES: Cocina · Clóset · Pieza a medida · Espacio comercial | EN: Kitchen · Closet · Custom piece · Commercial space
@@ -53,10 +59,12 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - success.stage — ES: ¿En qué etapa estás? Idea · Ya tengo medidas · Listo para cotizar | EN: Where are you at? Just an idea · I have measurements · Ready for a quote
 - success.timeline — ES: ¿Cuándo te gustaría empezar? Ya · En 1–3 meses · Más adelante | EN: When would you like to start? Now · In 1–3 months · Later
 - success.whatsapp — ES: Continuar por WhatsApp | EN: Continue on WhatsApp
+- whatsappAria — ES: Escribir por WhatsApp | EN: Message us on WhatsApp (nombre accesible de cada enlace de WhatsApp)
 - error.generic — ES: No pudimos enviar tu mensaje. Inténtalo de nuevo en un momento. | EN: We couldn't send your message. Please try again in a moment.
 - mobileBar — ES: Cuéntanos tu proyecto | EN: Tell us about your project
 
 ### Footer
+
 - cncLink — ES: ¿Necesitas corte CNC? Conoce CNC by Woodax Design | EN: Need CNC cutting? Meet CNC by Woodax Design (lo usa /servicios, no el footer)
 - sibling — ES: CNC by Woodax Design | EN: CNC by Woodax Design
 - email — `siteConfig.designEmail` (`hello@woodax.design`)
@@ -69,10 +77,12 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 ## CNC by Woodax Design
 
 ### Meta ⚠︎ (pendiente de aprobación de Adrián)
+
 - title — ES: Corte CNC en Querétaro | CNC by Woodax Design | EN: CNC Cutting in Querétaro | CNC by Woodax Design
 - description ⚠︎ — ES: Maquila y servicio de corte CNC en madera, acrílico y aluminio para carpinterías, talleres, empresas y rotulistas en Querétaro. Cotiza tu proyecto. | EN: CNC cutting service and volume production in wood, acrylic and aluminum for workshops, businesses and sign makers in Querétaro. Send your file or idea.
 
 ### Hero
+
 - eyebrow — ES: Capacidad disponible · Cotizaciones abiertas | EN: Capacity available · Now quoting
 - headline — ES: Precisión CNC, sin invertir en la máquina. | EN: CNC precision, without buying the machine.
 - subhead ⚠︎ (pendiente de aprobación de Adrián) — ES: Servicio de corte CNC y maquila para carpinterías, talleres y empresas en Querétaro: envíanos tu archivo y producimos tus piezas, desde una hasta miles. | EN: CNC cutting service for workshops and businesses in Querétaro: send us your file and we produce your parts, from a single piece to thousands.
@@ -81,6 +91,7 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - skipIntro — ES: Saltar | EN: Skip
 
 ### Dos formas de trabajar ⚠︎ (pendiente de aprobación de Adrián)
+
 - title — ES: Dos formas de trabajar con nosotros | EN: Two ways to work with us
 - serviceType ⚠︎ — ES: Corte CNC | EN: CNC cutting
 - forLabel ⚠︎ — ES: Para: | EN: For:
@@ -97,6 +108,7 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - volume.tag2 ⚠︎ — ES: Rotulistas | EN: Sign makers
 
 ### Materiales (leído de `siteConfig.cncSpecs.maxThicknessByMaterial`, una sola fuente)
+
 - title — ES: Materiales | EN: Materials
 - ideasTitle — ES: Ideas de lo que puedes hacer | EN: Ideas for what you can make
 - nextIdea — ES: Ver siguiente idea | EN: See next idea
@@ -107,6 +119,7 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
   - aluminum — ES: Aluminio | EN: Aluminum (`0.5–5 mm`)
 
 ### Proceso ⚠︎ (pendiente Adrián)
+
 - title — ES: Del archivo a la pieza | EN: From file to finished part
 - step1 ⚠︎ (pendiente Adrián) — ES: 01 Envíanos tu archivo o tu idea — Mándanos tu vector listo para corte, o un boceto con medidas y material. | EN: 01 Send us your file or your idea — Send your cut-ready vector, or a sketch with dimensions and material.
 - step1Output ⚠︎ (pendiente Adrián) — ES: Archivo o boceto | EN: File or sketch
@@ -119,6 +132,7 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - pickup/delivery ⚠︎ (pendiente Adrián: «listas para recoger o entregar» / modalidad de entrega o recolección; NO incluir en `llms.txt` ni en JSON-LD). Hoy no está en la UI; el paso 3 habla solo de corte.
 
 ### Formulario
+
 - title — ES: Cuéntanos qué necesitas producir | EN: Tell us what you need to produce
 - step1.question — ES: ¿En qué material? | EN: Which material?
 - materialOptions — ES: Madera o MDF · Acrílico o plásticos · Aluminio o Alucobond · Otro | EN: Wood or MDF · Acrylic or plastics · Aluminum or Alucobond · Other
@@ -132,12 +146,15 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - success.body — ES: Revisaremos tu proyecto y te contactaremos con los siguientes pasos. ¿Cuántas piezas necesitas? | EN: We'll review your project and get back to you with next steps. How many parts do you need?
 - success.quantity — ES: 1–10 · 11–100 · Más de 100 | EN: 1–10 · 11–100 · 100+
 - success.whatsapp — ES: Continuar por WhatsApp | EN: Continue on WhatsApp
-- whatsapp — ES: WhatsApp | EN: WhatsApp (botón secundario en contacto y en la barra móvil; solo si el número de entorno es válido. El número no se muestra.)
+- whatsapp — ES: WhatsApp | EN: WhatsApp (píldora flotante en desktop, después del hero y fuera de contacto y del footer; segundo botón de la barra móvil. Solo si el número de entorno es válido. El número no se muestra.)
+- whatsappPrefer — ES: ¿Prefieres WhatsApp? Escríbenos | EN: Prefer WhatsApp? Message us (enlace dentro de la tarjeta del formulario)
+- whatsappAria — ES: Escribir por WhatsApp | EN: Message us on WhatsApp
 - whatsappPrefill (cuerpo del enlace wa.me, no se muestra en la página) — ES: Hola, vengo de cnc.woodax.design y quiero cotizar un corte. | EN: Hi, I found you on cnc.woodax.design and I'd like a cutting quote.
 - error.generic — ES: No pudimos enviar tu solicitud. Inténtalo de nuevo en un momento. | EN: We couldn't send your request. Please try again in a moment.
 - mobileBar — ES: Cotizar mi proyecto | EN: Get a quote
 
 ### Footer
+
 - designLink — ES: Muebles y espacios a medida → Woodax Design | EN: Bespoke furniture and spaces → Woodax Design (clave anterior; el footer usa sibling)
 - sibling — ES: Muebles y espacios a medida | EN: Custom furniture and spaces
 - email — `siteConfig.cncEmail` (`cnc@woodax.design`)
@@ -146,12 +163,14 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - privacy — ES: Aviso de privacidad | EN: Privacy notice
 
 ### Footer — descripción ⚠︎ (pendiente de aprobación de Adrián)
+
 - design.footer.description — ES: Carpintería a medida para espacios y piezas únicas, en Querétaro. | EN: Custom carpentry for spaces and one-of-a-kind pieces, in Querétaro.
 - cnc.footer.description ⚠︎ — ES: Servicio de corte CNC y maquila para talleres, rotulistas e industria. | EN: CNC cutting service for workshops, sign makers and industry.
 
 ---
 
 ## Navegación (ambas marcas)
+
 - nav.menu — ES: Menú | EN: Menu
 - nav.close — ES: Cerrar | EN: Close
 - nav.design.home — ES: Inicio | EN: Home (solo fuera del home)
@@ -177,14 +196,17 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 ## Secciones nuevas (layout de referencia)
 
 ### Woodax — Statement (va después del hero, antes de "Para quién")
+
 - label — ES: Nosotros | EN: About us
 - statement — ES: Cada pieza empieza con una conversación: <b>cómo usas tu espacio</b>, qué necesitas guardar y <b>qué quieres sentir al entrar</b>. Desde ahí la diseñamos y la <b>fabricamos a la medida</b>. | EN: Every piece starts with a conversation: <b>how you use your space</b>, what you need to store and <b>how you want it to feel</b>. From there, we design it and <b>build it to measure</b>.
 
 ### CNC — Statement (después del hero)
+
 - label — ES: El servicio | EN: The service
 - statement — ES: Tú pones <b>el diseño o la idea</b>. Nosotros ponemos la máquina, la operación y la precisión, para que <b>produzcas más sin invertir en equipo</b>. | EN: You bring <b>the design or the idea</b>. We bring the machine, the operation and the precision, so you can <b>produce more without investing in equipment</b>.
 
 ### Labels de sección (punto + eyebrow)
+
 - design.label.projects — ES: Proyectos | EN: Projects
 - design.label.process — ES: Proceso | EN: Process
 - design.label.contact — ES: Contacto | EN: Contact
@@ -193,6 +215,7 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - cnc.label.process — ES: Proceso | EN: Process
 
 ### Footer de cierre (ambas marcas)
+
 - footer.design.line — ES: ¿Tienes un espacio en mente? | EN: Have a space in mind?
 - footer.cnc.line — ES: ¿Tienes algo que producir? | EN: Got something to produce?
 - footer.email.design — `siteConfig.designEmail` (`hello@woodax.design`)
@@ -204,6 +227,7 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 ---
 
 ## Footer minimalista y legales (reemplaza "Footer de cierre")
+
 - footer.copyright.design — ES: © {year} Woodax Design | EN: © {year} Woodax Design
 - footer.copyright.cnc — ES: © {year} CNC by Woodax Design | EN: © {year} CNC by Woodax Design
 - footer.privacy — ES: Aviso de privacidad | EN: Privacy notice
@@ -216,9 +240,11 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - Rutas: /privacidad · /terminos (es) — /en/privacy · /en/terms (en)
 
 ## Cookies
+
 - Textos: portar los del banner de noctra.studio y adaptarlos a Woodax (marca y correo). ⚠︎ Revisión de Adrián.
 
 ## Aviso de privacidad ⚠︎ Pendiente de aprobación de Adrián
+
 - El aviso de privacidad lo valida Adrián como responsable.
 - Correo de contacto para privacidad, solicitudes ARCO, revocación del consentimiento u opt-out ⚠︎ (pendiente de aprobación de Adrián): `privacidad@woodax.design` (`siteConfig.privacyEmail`, enlace `mailto:`).
 - privacy.title — ES: Aviso de privacidad | EN: Privacy notice
@@ -230,6 +256,7 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - privacy.contact ⚠︎ — ES: Si quieres preguntar por tu información, escribe a privacidad@woodax.design. | EN: To ask about your information, write to privacidad@woodax.design. (en messages usa `{email}` inyectado desde `siteConfig.privacyEmail`)
 
 ## Términos y condiciones ⚠︎
+
 - Contenido legal pendiente: requiere razón social, domicilio y RFC de Woodax. Mientras tanto la página muestra solo título + "TODO(legal)" en staging; no se publica en producción sin el texto final.
 
 ---
@@ -237,10 +264,12 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 ## CNC — sitio completo (nuevas claves)
 
 ### Meta (reemplaza la de coming soon) ⚠︎ (pendiente de aprobación de Adrián)
+
 - title — ES: Corte CNC en Querétaro | CNC by Woodax Design | EN: CNC Cutting in Querétaro | CNC by Woodax Design
 - description ⚠︎ — ES: Maquila y servicio de corte CNC en madera, acrílico y aluminio para carpinterías, talleres, empresas y rotulistas en Querétaro. Cotiza tu proyecto. | EN: CNC cutting service and volume production in wood, acrylic and aluminum for workshops, businesses and sign makers in Querétaro. Send your file or idea.
 
 ### Capacidades (tabla técnica; cada fila solo si el dato existe en `siteConfig.cncSpecs`)
+
 - label — ES: Capacidades | EN: Capabilities
 - title — ES: Lo que puede hacer la máquina | EN: What the machine can do
 - area — ES: Área de trabajo (`{width} × {length} mm` → `1300 × 2500 mm` desde `siteConfig.cncSpecs.cuttingArea`) | EN: Work area (`{width} × {length} mm` → `1300 × 2500 mm`)
@@ -248,10 +277,12 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - note — ES: ¿Tu proyecto no encaja? Escríbenos y lo revisamos. | EN: Project doesn't fit? Write to us and we'll take a look.
 
 ### Trabajos
+
 - label — ES: Trabajos | EN: Work
 - title — ES: Piezas recientes | EN: Recent parts
 
 ### Preguntas frecuentes (solo se publican las que tengan respuesta aprobada por Adrián)
+
 - label — ES: Preguntas | EN: FAQ
 - title — ES: Preguntas frecuentes | EN: Frequently asked questions
 - q1 — ES: ¿Qué archivos aceptan? | EN: Which file formats do you accept? — a1: TODO(adrian)
@@ -262,6 +293,7 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - q6 — ES: ¿Hacen entregas o se recoge en taller? | EN: Do you deliver or is it pick-up only? — a6: TODO(adrian)
 
 ### Formulario — detalles opcionales (estado de éxito)
+
 - details.title — ES: ¿Quieres adelantar la cotización? | EN: Want to speed up your quote?
 - details.dimensions — ES: Medidas aproximadas (largo × ancho × espesor) | EN: Approximate size (length × width × thickness)
 - details.quantity — ES: Cantidad de piezas | EN: Number of parts
@@ -278,6 +310,7 @@ Rutas: ES `/` · `/nosotros` · `/servicios` · `/clientes` · `/contacto` — E
 Al lanzar el multipágina se elimina `hero.eyebrow` ("Nuevo sitio en camino"): queda sin eyebrow o con `home.eyebrow`.
 
 ### Home
+
 - home.eyebrow — ES: Carpintería a medida · Querétaro | EN: Bespoke carpentry · Querétaro
 - home.servicesTeaser.title — ES: Lo que hacemos | EN: What we do
 - home.servicesTeaser.cta — ES: Ver servicios | EN: See services
@@ -289,6 +322,7 @@ Al lanzar el multipágina se elimina `hero.eyebrow` ("Nuevo sitio en camino"): q
 
 Bloqueo de lanzamiento: kitchens, closets, custom y commercial se ven en staging. No se publican en producción hasta que Adrián las apruebe.
 Bloqueo de lanzamiento: instagramUrl y facebookUrl no pueden ser "#" en producción.
+
 - meta.title — ES: Servicios · Woodax Design | EN: Services · Woodax Design
 - meta.description — ES: Cocinas, clósets y vestidores, piezas a medida y mobiliario para negocios en Querétaro, del diseño a la instalación. | EN: Kitchens, closets and walk-ins, custom pieces and furniture for businesses in Querétaro, from design to installation.
 - title (h1) — ES: Lo que diseñamos y fabricamos | EN: What we design and build
@@ -301,6 +335,7 @@ Bloqueo de lanzamiento: instagramUrl y facebookUrl no pueden ser "#" en producci
 - cta — ES: Cuéntanos tu proyecto | EN: Tell us about your project
 
 ### Nosotros (solo se publica cuando Adrián entregue historia y fotos reales)
+
 - meta.title — ES: Nosotros · Woodax Design | EN: About · Woodax Design
 - meta.description — TODO(adrian) a partir de la historia
 - title (h1) — ES: Quiénes somos | EN: Who we are
@@ -309,6 +344,7 @@ Bloqueo de lanzamiento: instagramUrl y facebookUrl no pueden ser "#" en producci
 - workshop — fotos reales del taller y del equipo (sin fotos, el bloque no existe)
 
 ### Clientes (solo se publica con datos reales y permiso de cada cliente)
+
 - meta.title — ES: Clientes · Woodax Design | EN: Clients · Woodax Design
 - meta.description — ES: Proyectos de carpintería a medida para hogares y negocios en Querétaro. | EN: Bespoke carpentry projects for homes and businesses in Querétaro.
 - title (h1) — ES: Con quién hemos trabajado | EN: Who we've worked with
@@ -317,6 +353,7 @@ Bloqueo de lanzamiento: instagramUrl y facebookUrl no pueden ser "#" en producci
 - empty — no aplica: sin clientes en src/content/design-clients.ts la página y su tab no existen
 
 ### Contacto
+
 - meta.title — ES: Contacto · Woodax Design | EN: Contact · Woodax Design
 - meta.description — ES: Cuéntanos tu proyecto de carpintería a medida en Querétaro y te contactamos para platicar los detalles. | EN: Tell us about your bespoke carpentry project in Querétaro and we'll reach out to talk through the details.
 - title (h1) — ES: Hablemos de tu espacio | EN: Let's talk about your space
@@ -324,7 +361,7 @@ Bloqueo de lanzamiento: instagramUrl y facebookUrl no pueden ser "#" en producci
 - channels.title — ES: Otras formas de contactarnos | EN: Other ways to reach us
 - channels.email — ES: Correo | EN: Email
 - channels.whatsapp — ES: WhatsApp | EN: WhatsApp (solo si NEXT_PUBLIC_WHATSAPP_NUMBER es válido. El número no se muestra.)
+- channels.whatsappAria — ES: Escribir por WhatsApp | EN: Message us on WhatsApp
 - whatsappPrefill (cuerpo del enlace wa.me, no se muestra en la página) — ES: Hola, vengo de woodax.design y me interesa un proyecto. | EN: Hi, I found you on woodax.design and I'm interested in a project.
 - channels.social — ES: Síguenos | EN: Follow us
 - (El formulario es el LeadForm variant="design" en línea, no en sheet.)
-

@@ -16,6 +16,7 @@ export function MobileCtaBar({
   onOpen,
   whatsappHref,
   whatsappLabel,
+  whatsappAria,
 }: {
   label: string;
   variant: "design" | "cnc";
@@ -24,6 +25,7 @@ export function MobileCtaBar({
   onOpen?: () => void;
   whatsappHref?: string | null;
   whatsappLabel?: string | null;
+  whatsappAria?: string | null;
 }) {
   const isDesign = variant === "design";
   const locale = useLocale();
@@ -69,6 +71,7 @@ export function MobileCtaBar({
             target="_blank"
             rel="noopener noreferrer"
             className="w-full"
+            aria-label={whatsappAria ?? undefined}
             tracking={{
               event: "whatsapp_click",
               params: { site: variant, location: "mobile_bar" },

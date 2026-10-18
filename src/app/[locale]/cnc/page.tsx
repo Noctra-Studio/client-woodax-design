@@ -5,6 +5,7 @@ import { BrandIcon } from "@/components/brand/brand-icon";
 import { CncLogo } from "@/components/brand/cnc-logo";
 import { CapabilitiesSection } from "@/components/cnc/capabilities-section";
 import { HeroSection } from "@/components/cnc/hero-section";
+import { WhatsappFloating } from "@/components/cnc/whatsapp-floating";
 import { IntroProvider } from "@/components/cnc/intro-provider";
 import { MaterialsSection } from "@/components/cnc/materials-section";
 import { ProcessSection } from "@/components/cnc/process-section";
@@ -165,6 +166,13 @@ export default async function CncPage({
           </main>
         </IntroProvider>
       </LeadUiProvider>
+      {copy.whatsappHref && copy.whatsappChannel ? (
+        <WhatsappFloating
+          href={copy.whatsappHref}
+          label={copy.whatsappChannel}
+          ariaLabel={copy.whatsappAria}
+        />
+      ) : null}
       <SiteFooter variant="cnc" />
     </>
   );

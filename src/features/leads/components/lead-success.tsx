@@ -188,6 +188,7 @@ export function LeadSuccess({
           target="_blank"
           rel="noopener noreferrer"
           className="w-full sm:w-auto"
+          aria-label={copy.whatsappAria}
           tracking={{
             event: "whatsapp_click",
             params: { site: copy.variant, location: "success" },
