@@ -16,7 +16,11 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { submitLead } from "@/features/leads/actions";
 import type { LeadCopy } from "@/features/leads/copy";
-import { leadError, parseContact } from "@/features/leads/schema";
+import {
+  leadError,
+  parseContact,
+  referrerOriginPath,
+} from "@/features/leads/schema";
 import { initialLeadState } from "@/features/leads/state";
 import {
   FieldErrorMessage,
@@ -341,6 +345,10 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
     );
     trackedLeadKeys.delete(key);
     trackedLeadRef.current = null;
+    formData.set("page", window.location.pathname.slice(0, 200));
+    const referrer = referrerOriginPath(document.referrer);
+    if (referrer) formData.set("referrer", referrer);
+    else formData.delete("referrer");
     formAction(formData);
   }
 
@@ -476,6 +484,8 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
       <input type="hidden" name="projectType" value={projectType} />
       <input type="hidden" name="material" value={material} />
       <input type="hidden" name="projectState" value={projectState} />
+      <input type="hidden" name="page" value="" />
+      <input type="hidden" name="referrer" value="" />
       <div
         aria-hidden="true"
         className="absolute -left-[9999px] h-px w-px overflow-hidden"

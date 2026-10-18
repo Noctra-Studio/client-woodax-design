@@ -58,6 +58,25 @@ function emptyToUndefined(value: unknown): unknown {
 const optionalText = (max: number) =>
   z.preprocess(emptyToUndefined, z.string().max(max).optional());
 
+/** Origin and pathname only. Query and hash can carry tokens from other sites. */
+export function referrerOriginPath(raw: string): string | undefined {
+  const trimmed = raw.trim();
+  if (!trimmed) return undefined;
+
+  try {
+    const url = new URL(trimmed);
+    if (url.protocol !== "http:" && url.protocol !== "https:") return undefined;
+    return `${url.origin}${url.pathname}`.slice(0, 200);
+  } catch {
+    return undefined;
+  }
+}
+
+function referrerField(value: unknown): unknown {
+  if (typeof value !== "string") return undefined;
+  return referrerOriginPath(value);
+}
+
 const nameField = z
   .string()
   .trim()
@@ -80,6 +99,8 @@ const sharedFields = {
   utm_source: optionalText(200),
   utm_medium: optionalText(200),
   utm_campaign: optionalText(200),
+  page: optionalText(200),
+  referrer: z.preprocess(referrerField, z.string().max(200).optional()),
   startedAt: z.coerce.number({ error: leadError.generic }),
 };
 
@@ -132,6 +153,10 @@ export const leadDetailsSchema = z.discriminatedUnion("site", [
       site: z.literal("cnc"),
       ...detailsShared,
       material: z.enum(materials, { error: leadError.material }),
+      projectState: z.preprocess(
+        emptyToUndefined,
+        z.enum(projectStates, { error: leadError.generic }).optional(),
+      ),
       quantity: z.preprocess(
         emptyToUndefined,
         z.enum(quantities, { error: leadError.details }).optional(),
@@ -182,6 +207,8 @@ export function leadPayload(formData: FormData) {
     utm_source: formData.get("utm_source"),
     utm_medium: formData.get("utm_medium"),
     utm_campaign: formData.get("utm_campaign"),
+    page: formData.get("page"),
+    referrer: formData.get("referrer"),
     startedAt: formData.get("startedAt"),
     projectType: formData.get("projectType"),
     city: formData.get("city"),
@@ -199,6 +226,7 @@ export function leadDetailsPayload(formData: FormData) {
     startedAt: formData.get("startedAt"),
     projectType: formData.get("projectType"),
     material: formData.get("material"),
+    projectState: formData.get("projectState"),
     stage: formData.get("stage"),
     timeline: formData.get("timeline"),
     quantity: formData.get("quantity"),

@@ -59,13 +59,59 @@ const localeLabel = {
   en: "English",
 } as const;
 
+const nextStepCopy = {
+  cnc: {
+    idea: "Pide referencias, medidas aproximadas y cantidad.",
+    "needs-help":
+      "Ofrece apoyo para preparar el archivo; pide medidas y referencia.",
+    "file-ready": "Pide el archivo vectorial y confirma material y espesor.",
+  },
+  design: "Agenda una llamada para levantar medidas y alcance.",
+} as const;
+
+const leadEyebrow = {
+  cnc: "NUEVA COTIZACIÓN CNC",
+  design: "NUEVO PROYECTO DESIGN",
+} as const;
+
+export type LeadReply = { kind: "email" | "phone"; value: string };
+
 export type LeadEmailContent = {
   subject: string;
   preview: string;
   eyebrow: string;
+  heading: string;
   rows: { label: string; value: string }[];
-  whatsappHref?: string;
+  nextStep?: string;
+  reply?: LeadReply;
 };
+
+export function mailtoReplyHref(email: string, subject: string) {
+  return `mailto:${email}?subject=${encodeURIComponent(`Re: ${subject}`)}`;
+}
+
+function replyLink(reply: LeadReply, subject: string) {
+  if (reply.kind === "email") {
+    return {
+      href: mailtoReplyHref(reply.value, subject),
+      label: "Responder por email",
+    };
+  }
+
+  return {
+    href: `https://wa.me/${reply.value}`,
+    label: "Responder por WhatsApp",
+  };
+}
+
+function nextStepFor(
+  site: "design" | "cnc",
+  projectState?: keyof typeof nextStepCopy.cnc,
+) {
+  if (site === "design") return nextStepCopy.design;
+  if (!projectState) return undefined;
+  return nextStepCopy.cnc[projectState];
+}
 
 function brandName(site: "design" | "cnc") {
   return site === "design" ? "Woodax Design" : "CNC by Woodax Design";
@@ -138,7 +184,6 @@ export function notificationContent(
 ): LeadEmailContent {
   const contact = parseContact(lead.contact);
   const rows: { label: string; value: string }[] = [
-    { label: "Marca", value: brandName(lead.site) },
     { label: "Nombre", value: lead.name },
     {
       label: contact?.kind === "phone" ? "WhatsApp" : "Email",
@@ -166,15 +211,22 @@ export function notificationContent(
   pushRow(rows, "UTM source", lead.utm_source);
   pushRow(rows, "UTM medium", lead.utm_medium);
   pushRow(rows, "UTM campaign", lead.utm_campaign);
+  pushRow(rows, "Página", lead.page);
+  pushRow(rows, "Referrer", lead.referrer);
   rows.push({ label: "Fecha", value: mexicoCityTimestamp(sentAt) });
 
+  const subject = leadSubject(lead);
   return {
-    subject: leadSubject(lead),
+    subject,
     preview: `${brandName(lead.site)} · ${lead.name}`,
-    eyebrow: "Nuevo contacto",
+    eyebrow: leadEyebrow[lead.site],
+    heading: lead.name,
     rows,
-    whatsappHref:
-      contact?.kind === "phone" ? `https://wa.me/${contact.value}` : undefined,
+    nextStep: nextStepFor(
+      lead.site,
+      lead.site === "cnc" ? lead.projectState : undefined,
+    ),
+    reply: contact ?? undefined,
   };
 }
 
@@ -184,7 +236,6 @@ export function detailsContent(
 ): LeadEmailContent {
   const contact = parseContact(details.contact);
   const rows: { label: string; value: string }[] = [
-    { label: "Marca", value: brandName(details.site) },
     { label: "Nombre", value: details.name },
     {
       label: contact?.kind === "phone" ? "WhatsApp" : "Email",
@@ -221,23 +272,31 @@ export function detailsContent(
     { label: "Fecha", value: mexicoCityTimestamp(sentAt) },
   );
 
-  const base = leadSubject(details);
   return {
-    subject: `${base} · detalles`,
+    subject: leadSubject(details),
     preview: `Detalles adicionales · ${details.name}`,
     eyebrow: "Detalles adicionales",
+    heading: details.name,
     rows,
-    whatsappHref:
-      contact?.kind === "phone" ? `https://wa.me/${contact.value}` : undefined,
+    nextStep: nextStepFor(
+      details.site,
+      details.site === "cnc" ? details.projectState : undefined,
+    ),
+    reply: contact ?? undefined,
   };
 }
 
 export function LeadNotificationEmail({
+  subject,
   preview,
   eyebrow,
+  heading: headingText,
   rows,
-  whatsappHref,
+  nextStep,
+  reply,
 }: LeadEmailContent) {
+  const action = reply ? replyLink(reply, subject) : undefined;
+
   return (
     <Html lang="es">
       <Head />
@@ -245,7 +304,7 @@ export function LeadNotificationEmail({
       <Body style={body}>
         <Container style={container}>
           <Text style={eyebrowStyle}>{eyebrow}</Text>
-          <Heading style={heading}>{rows[0]?.value}</Heading>
+          <Heading style={heading}>{headingText}</Heading>
           <Hr style={rule} />
           {rows.map((row) => (
             <Section key={row.label} style={rowStyle}>
@@ -253,9 +312,12 @@ export function LeadNotificationEmail({
               <Text style={valueStyle}>{row.value}</Text>
             </Section>
           ))}
-          {whatsappHref ? (
-            <Button href={whatsappHref} style={whatsappButton}>
-              Responder por WhatsApp
+          {nextStep ? (
+            <Text style={nextStepStyle}>Siguiente paso: {nextStep}</Text>
+          ) : null}
+          {action ? (
+            <Button href={action.href} style={replyButton}>
+              {action.label}
             </Button>
           ) : null}
         </Container>
@@ -319,7 +381,14 @@ const valueStyle = {
   margin: "2px 0 0",
 };
 
-const whatsappButton = {
+const nextStepStyle = {
+  color: "#9A9FA6",
+  fontSize: "14px",
+  lineHeight: "1.45",
+  margin: "22px 0 0",
+};
+
+const replyButton = {
   backgroundColor: "#483D3C",
   borderRadius: "9999px",
   color: "#E5E1D1",

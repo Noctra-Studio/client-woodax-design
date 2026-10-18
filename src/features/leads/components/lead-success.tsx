@@ -34,7 +34,7 @@ export function LeadSuccess({
   useFocusOnError(state.status, state.fieldErrors, copy.variant);
   const detailsError =
     state.fieldErrors?.details ?? state.fieldErrors?.quantity;
-  const formError = state.fieldErrors?.form;
+  const formError = state.fieldErrors?.form ?? state.fieldErrors?.projectState;
   const isDesign = copy.variant === "design";
   const buttonVariant = isDesign ? "design-primary" : "cnc-primary";
 
@@ -81,6 +81,11 @@ export function LeadSuccess({
             value={values.projectType ?? ""}
           />
           <input type="hidden" name="material" value={values.material ?? ""} />
+          <input
+            type="hidden"
+            name="projectState"
+            value={values.projectState ?? ""}
+          />
           <Honeypot idPrefix={`${copy.variant}-details`} />
 
           {copy.stageQuestion && copy.stageOptions ? (
