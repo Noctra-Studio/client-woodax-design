@@ -42,28 +42,29 @@
   --radius-control: 4px;
 
   /* Material illustration tokens (low saturation, ≥3:1 base luminance vs cnc-surface) */
-  --cnc-mat-shadow: rgb(0 0 0 / 0.52);
-  --cnc-mat-pocket: rgb(22 23 26 / 0.42);
+  --cnc-mat-shadow: rgb(0 0 0 / 0.68);
+  --cnc-mat-pocket: rgb(22 23 26 / 0.52);
 
   /* 01 · Wood, MDF, melamine, plywood */
   --cnc-mat-wood-hi: #b8a58b;
   --cnc-mat-wood-base: #a28c71;
   --cnc-mat-wood-lo: #86735c;
   --cnc-mat-wood-grain: rgb(60 45 30 / 0.25);
-  --cnc-mat-wood-edge: #c9b89e;
+  --cnc-mat-wood-edge: #cbbba2;
   --cnc-mat-mdf-edge: #a8977d;
 
   /* 02 · Acrylic (translucent) & Corian (matte white) */
   --cnc-mat-acrylic-fill: rgb(206 218 230 / 0.35);
-  --cnc-mat-acrylic-layer: rgb(222 232 242 / 0.32);
-  --cnc-mat-acrylic-sheen: rgb(255 255 255 / 0.24);
-  --cnc-mat-acrylic-edge: rgb(236 242 248 / 0.68);
+  --cnc-mat-acrylic-layer: rgb(222 232 242 / 0.34);
+  --cnc-mat-acrylic-canto: rgb(168 186 204 / 0.32);
+  --cnc-mat-acrylic-sheen: rgb(255 255 255 / 0.26);
+  --cnc-mat-acrylic-edge: rgb(236 242 248 / 0.72);
 
   --cnc-mat-corian-hi: #d8d9dd;
   --cnc-mat-corian-base: #c6c8cd;
   --cnc-mat-corian-basin: #aeb1b8;
-  --cnc-mat-corian-groove: rgb(70 74 82 / 0.28);
-  --cnc-mat-corian-edge: #e2e3e7;
+  --cnc-mat-corian-groove: rgb(70 74 82 / 0.3);
+  --cnc-mat-corian-edge: #e6e7eb;
 
   /* 03 · Brushed aluminum */
   --cnc-mat-alu-hi: #a7adb5;
@@ -71,8 +72,8 @@
   --cnc-mat-alu-lo: #6d737c;
   --cnc-mat-alu-brush: rgb(255 255 255 / 0.1);
   --cnc-mat-alu-highlight: rgb(255 255 255 / 0.45);
-  --cnc-mat-alu-engraved: rgb(35 38 44 / 0.45);
-  --cnc-mat-alu-edge: #c0c6ce;
+  --cnc-mat-alu-engraved: rgb(30 33 38 / 0.48);
+  --cnc-mat-alu-edge: #c4cad2;
 }
 
 html {

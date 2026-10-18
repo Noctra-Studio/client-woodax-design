@@ -67,31 +67,37 @@ const SILHOUETTES_BY_GROUP: Record<
         "M 104 57 H 136 V 63 H 104 Z",
         "M 104 86 H 136 V 92 H 104 Z",
       ],
-      guidePaths: ["M 32 20 H 208", "M 32 132 H 208", "M 120 12 V 138"],
+      guidePaths: ["M 30 20 H 210", "M 30 132 H 210", "M 120 12 V 138"],
       surfaceFeatures: [
+        // Recessed shadow reveal around the 3 drawer fronts inside the cabinet carcass
+        {
+          d: "M 50 26 H 190 V 112 H 50 Z",
+          fill: "var(--cnc-mat-pocket)",
+        },
         // 3 drawer fronts with smooth melamine/MDF perimeter edges
         {
           d: "M 52 28 H 188 V 52 H 52 Z M 52 57 H 188 V 81 H 52 Z M 52 86 H 188 V 110 H 52 Z",
           fill: "url(#cnc-grad-wood)",
           stroke: "var(--cnc-mat-mdf-edge)",
-          strokeWidth: 1.15,
+          strokeWidth: 1.2,
         },
-        // Recessed CNC-milled finger pulls
+        // Recessed CNC-milled finger pulls on each drawer
         {
-          d: "M 104 28 H 136 V 34 H 104 Z M 104 57 H 136 V 63 H 104 Z M 104 86 H 136 V 92 H 104 Z",
+          d: "M 104 28 H 136 V 35 H 104 Z M 104 57 H 136 V 64 H 104 Z M 104 86 H 136 V 93 H 104 Z",
           fill: "var(--cnc-mat-pocket)",
           stroke: "var(--cnc-mat-mdf-edge)",
           strokeWidth: 0.9,
         },
       ],
       textureLines: [
-        "M 56 39 Q 120 35 184 41",
-        "M 56 46 Q 118 49 184 45",
-        "M 56 69 Q 122 64 184 71",
-        "M 56 98 Q 116 94 184 100",
+        "M 56 39 Q 120 34 184 41",
+        "M 56 46 Q 118 50 184 44",
+        "M 56 69 Q 122 64 184 72",
+        "M 56 76 Q 116 79 184 74",
+        "M 56 99 Q 118 94 184 102",
       ],
       highlightLines: [
-        // Smooth continuous MDF/melamine top and bottom carcass edge bands
+        // Smooth continuous MDF/melamine carcass edge band
         {
           d: "M 44 21.2 H 196 M 44 116.8 H 196",
           stroke: "var(--cnc-mat-mdf-edge)",
@@ -131,13 +137,13 @@ const SILHOUETTES_BY_GROUP: Record<
         "M 142 86 A 7 7 0 0 1 156 86 V 116 A 7 7 0 0 1 142 116 Z",
         "M 170 86 A 7 7 0 0 1 184 86 V 116 A 7 7 0 0 1 170 116 Z",
       ],
-      guidePaths: ["M 30 75 H 210", "M 120 10 V 140"],
+      guidePaths: ["M 28 75 H 212", "M 120 10 V 140"],
       textureLines: [
-        "M 42 25 Q 118 21 198 26",
-        "M 42 50 Q 124 46 198 52",
-        "M 42 75 Q 116 79 198 74",
-        "M 42 102 Q 122 97 198 104",
-        "M 42 125 Q 120 128 198 124",
+        "M 42 25 Q 118 20 198 26",
+        "M 42 50 Q 124 45 198 52",
+        "M 42 75 Q 116 80 198 74",
+        "M 42 102 Q 122 96 198 104",
+        "M 42 125 Q 120 129 198 123",
       ],
       highlightLines: [
         // Smooth routed MDF perimeter edge band
@@ -171,12 +177,20 @@ const SILHOUETTES_BY_GROUP: Record<
         "M 54 71 A 6 6 0 1 0 54 83 A 6 6 0 1 0 54 71 Z",
         "M 186 71 A 6 6 0 1 0 186 83 A 6 6 0 1 0 186 71 Z",
       ],
-      guidePaths: ["M 120 16 V 134", "M 26 77 H 214"],
+      guidePaths: ["M 120 14 V 136", "M 24 77 H 216"],
+      surfaceFeatures: [
+        // Engraved calibration tick marks along the router copy window
+        {
+          d: "M 90 58 V 64 M 105 59 V 64 M 120 56 V 64 M 135 59 V 64 M 150 58 V 64",
+          stroke: "var(--cnc-mat-wood-grain)",
+          strokeWidth: 1.15,
+        },
+      ],
       textureLines: [
-        "M 36 52 Q 118 48 204 54",
-        "M 36 68 Q 124 72 204 67",
-        "M 36 96 Q 116 92 204 98",
-        "M 36 118 Q 122 121 204 116",
+        "M 36 52 Q 118 47 204 54",
+        "M 36 69 Q 124 74 204 67",
+        "M 36 96 Q 116 91 204 98",
+        "M 36 117 Q 122 121 204 115",
       ],
     },
   ],
@@ -204,7 +218,7 @@ const SILHOUETTES_BY_GROUP: Record<
         "M 108 54 H 128 A 9 9 0 0 1 128 73 A 10 10 0 0 1 130 96 H 108 Z M 116 61 V 70 H 126 A 4.5 4.5 0 0 0 126 61 Z M 116 77 V 89 H 127 A 6 6 0 0 0 127 77 Z",
         "M 177 60 A 21 21 0 1 0 177 90 L 170.5 83.5 A 12 12 0 1 1 170.5 66.5 Z",
       ],
-      guidePaths: ["M 44 54 H 196", "M 44 96 H 196"],
+      guidePaths: ["M 44 54 H 196", "M 44 96 H 196", "M 120 18 V 132"],
       surfaceFeatures: [
         // Dimensional laser/CNC-routed letters "A B C" bonded to the acrylic plate
         {
@@ -212,7 +226,7 @@ const SILHOUETTES_BY_GROUP: Record<
           fill: "var(--cnc-mat-acrylic-layer)",
           fillRule: "evenodd",
           stroke: "var(--cnc-mat-acrylic-edge)",
-          strokeWidth: 1.2,
+          strokeWidth: 1.25,
         },
       ],
       textureLines: [
@@ -246,21 +260,21 @@ const SILHOUETTES_BY_GROUP: Record<
         "M 58 106 H 78 V 110 H 58 Z",
         "M 162 106 H 182 V 110 H 162 Z",
       ],
-      guidePaths: ["M 120 14 V 134"],
+      guidePaths: ["M 120 14 V 134", "M 28 78 H 212"],
       surfaceFeatures: [
         // 3 horizontal translucent acrylic shelves (overlapping acrylic doubles opacity)
         {
           d: "M 56 40 H 184 V 54 H 56 Z M 50 70 H 190 V 86 H 50 Z M 44 100 H 196 V 116 H 44 Z",
           fill: "var(--cnc-mat-acrylic-layer)",
           stroke: "var(--cnc-mat-acrylic-edge)",
-          strokeWidth: 1.1,
+          strokeWidth: 1.15,
         },
         // Interlocking slot-fit tenons (triple-edge brightness)
         {
           d: "M 66 45 H 84 V 49 H 66 Z M 156 45 H 174 V 49 H 156 Z M 62 76 H 82 V 80 H 62 Z M 158 76 H 178 V 80 H 158 Z M 58 106 H 78 V 110 H 58 Z M 162 106 H 182 V 110 H 162 Z",
           fill: "var(--cnc-mat-acrylic-sheen)",
           stroke: "var(--cnc-mat-acrylic-edge)",
-          strokeWidth: 0.9,
+          strokeWidth: 0.95,
         },
       ],
       textureLines: [
@@ -302,7 +316,7 @@ const SILHOUETTES_BY_GROUP: Record<
           fill: "url(#cnc-grad-corian-basin)",
           fillRule: "evenodd",
           stroke: "var(--cnc-mat-corian-edge)",
-          strokeWidth: 1.15,
+          strokeWidth: 1.2,
         },
         // 4 ball-end milled drainboard channels
         {
@@ -343,14 +357,15 @@ const SILHOUETTES_BY_GROUP: Record<
           fill: "var(--cnc-mat-alu-engraved)",
           fillRule: "evenodd",
           stroke: "var(--cnc-mat-alu-edge)",
-          strokeWidth: 1.1,
+          strokeWidth: 1.15,
         },
       ],
       textureLines: [
-        "M 36 46 H 204",
-        "M 36 64 H 204",
-        "M 36 86 H 204",
-        "M 36 104 H 204",
+        "M 36 42 H 204",
+        "M 36 58 H 204",
+        "M 36 75 H 204",
+        "M 36 92 H 204",
+        "M 36 108 H 204",
       ],
       highlightLines: [
         {
@@ -385,10 +400,11 @@ const SILHOUETTES_BY_GROUP: Record<
         "M 120 10 V 140",
       ],
       textureLines: [
-        "M 60 38 H 180",
-        "M 60 62 H 180",
-        "M 60 88 H 180",
-        "M 60 110 H 180",
+        "M 60 36 H 180",
+        "M 60 56 H 180",
+        "M 60 76 H 180",
+        "M 60 94 H 180",
+        "M 60 112 H 180",
       ],
       highlightLines: [
         {
@@ -437,14 +453,15 @@ const SILHOUETTES_BY_GROUP: Record<
           fill: "var(--cnc-mat-alu-engraved)",
           fillRule: "evenodd",
           stroke: "var(--cnc-mat-alu-edge)",
-          strokeWidth: 0.9,
+          strokeWidth: 0.95,
         },
       ],
       textureLines: [
-        "M 38 44 H 202",
-        "M 38 62 H 202",
-        "M 38 88 H 202",
-        "M 38 106 H 202",
+        "M 38 40 H 202",
+        "M 38 58 H 202",
+        "M 38 75 H 202",
+        "M 38 92 H 202",
+        "M 38 110 H 202",
       ],
       highlightLines: [
         {
@@ -459,6 +476,7 @@ const SILHOUETTES_BY_GROUP: Record<
 
 function resolveFinishStyle(finish: MaterialFinishKind): {
   fill: string;
+  cantoFill: string;
   edgeStroke: string;
   textureStroke: string;
   textureStrokeWidth: number;
@@ -467,20 +485,23 @@ function resolveFinishStyle(finish: MaterialFinishKind): {
     case "wood-mdf":
       return {
         fill: "url(#cnc-grad-wood)",
+        cantoFill: "var(--cnc-mat-mdf-edge)",
         edgeStroke: "var(--cnc-mat-mdf-edge)",
         textureStroke: "var(--cnc-mat-wood-grain)",
-        textureStrokeWidth: 1.15,
+        textureStrokeWidth: 1.25,
       };
     case "wood-ply":
       return {
         fill: "url(#cnc-grad-wood)",
+        cantoFill: "var(--cnc-mat-wood-lo)",
         edgeStroke: "var(--cnc-mat-wood-edge)",
         textureStroke: "var(--cnc-mat-wood-grain)",
-        textureStrokeWidth: 1.15,
+        textureStrokeWidth: 1.25,
       };
     case "acrylic":
       return {
         fill: "var(--cnc-mat-acrylic-fill)",
+        cantoFill: "var(--cnc-mat-acrylic-canto)",
         edgeStroke: "var(--cnc-mat-acrylic-edge)",
         textureStroke: "var(--cnc-mat-acrylic-sheen)",
         textureStrokeWidth: 1.5,
@@ -488,6 +509,7 @@ function resolveFinishStyle(finish: MaterialFinishKind): {
     case "corian":
       return {
         fill: "url(#cnc-grad-corian)",
+        cantoFill: "var(--cnc-mat-corian-basin)",
         edgeStroke: "var(--cnc-mat-corian-edge)",
         textureStroke: "transparent",
         textureStrokeWidth: 1,
@@ -495,9 +517,10 @@ function resolveFinishStyle(finish: MaterialFinishKind): {
     case "aluminum":
       return {
         fill: "url(#cnc-grad-aluminum)",
+        cantoFill: "var(--cnc-mat-alu-lo)",
         edgeStroke: "var(--cnc-mat-alu-edge)",
         textureStroke: "var(--cnc-mat-alu-brush)",
-        textureStrokeWidth: 1.1,
+        textureStrokeWidth: 1.15,
       };
   }
 }
@@ -868,8 +891,16 @@ export function MaterialsSection() {
                       <path
                         d={compoundSolidPath}
                         fillRule="evenodd"
-                        transform="translate(0, 3.5)"
+                        transform="translate(0, 4.5)"
                         fill="var(--cnc-mat-shadow)"
+                      />
+
+                      {/* 3D material thickness lip / canto (smooth on MDF, darker edge on wood/alu/Corian) */}
+                      <path
+                        d={compoundSolidPath}
+                        fillRule="evenodd"
+                        transform="translate(0, 2)"
+                        fill={finishStyle.cantoFill}
                       />
 
                       {/* Base material body with through-holes punched out via fill-rule="evenodd" */}
@@ -888,6 +919,21 @@ export function MaterialsSection() {
                         />
                       ) : null}
 
+                      {/* Surface features: drawer fronts, raised acrylic letters, Corian basin, or engraved pockets */}
+                      {currentExample.surfaceFeatures?.map((feat, idx) => (
+                        <path
+                          key={`feat-${idx}`}
+                          d={feat.d}
+                          fill={feat.fill ?? "none"}
+                          fillRule={feat.fillRule ?? "nonzero"}
+                          stroke={feat.stroke ?? "none"}
+                          strokeWidth={feat.strokeWidth ?? 1}
+                          strokeLinejoin="round"
+                          strokeLinecap="round"
+                          vectorEffect="non-scaling-stroke"
+                        />
+                      ))}
+
                       {/* Clipped wood grain, brushed aluminum lines, or acrylic diagonal reflections */}
                       {currentExample.textureLines &&
                       currentExample.textureLines.length > 0 ? (
@@ -903,21 +949,6 @@ export function MaterialsSection() {
                           ))}
                         </g>
                       ) : null}
-
-                      {/* Surface features: drawer fronts, raised acrylic letters, Corian basin, or engraved pockets */}
-                      {currentExample.surfaceFeatures?.map((feat, idx) => (
-                        <path
-                          key={`feat-${idx}`}
-                          d={feat.d}
-                          fill={feat.fill ?? "none"}
-                          fillRule={feat.fillRule ?? "nonzero"}
-                          stroke={feat.stroke ?? "none"}
-                          strokeWidth={feat.strokeWidth ?? 1}
-                          strokeLinejoin="round"
-                          strokeLinecap="round"
-                          vectorEffect="non-scaling-stroke"
-                        />
-                      ))}
 
                       {/* Linear highlights or smooth MDF edge bands (clipped to solid part) */}
                       {currentExample.highlightLines?.map((hl, idx) => (
