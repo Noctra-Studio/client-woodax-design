@@ -220,9 +220,9 @@ export async function SiteFooter({ variant }: { variant: "design" | "cnc" }) {
               <Image
                 src={noctraSrc}
                 alt=""
-                width={isDesign ? 79 : 77}
-                height={20}
-                className="h-5 w-auto opacity-60 transition-opacity duration-200 ease-out group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
+                width={isDesign ? 126 : 123}
+                height={32}
+                className="h-8 w-auto opacity-60 transition-opacity duration-200 ease-out group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
               />
             </a>
           </div>
