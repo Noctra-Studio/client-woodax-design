@@ -1,12 +1,18 @@
 import { hasCncCapabilities, siteConfig, siteEmail } from "@/content/site-config";
+import { getPathname } from "@/i18n/navigation";
+import type { Locale, Pathname } from "@/i18n/routing";
 import { formatSpecMm } from "@/lib/cnc-specs";
-import { absoluteLocalizedUrl, siteBrandName, siteOrigin } from "@/lib/seo";
+import { absoluteUrl, siteBrandName, siteOrigin } from "@/lib/seo";
 import type { Site } from "@/lib/site";
 import en from "@/messages/en.json";
 import es from "@/messages/es.json";
 
 function fill(template: string, values: Record<string, string>): string {
   return template.replace(/\{(\w+)\}/g, (_, key: string) => values[key] ?? "");
+}
+
+function localizedHref(site: Site, locale: Locale, href: Pathname): string {
+  return absoluteUrl(site, getPathname({ href, locale }));
 }
 
 export function llmsTxt(site: Site): string {
@@ -26,7 +32,7 @@ function designLlmsTxt(): string {
     `> ${es.metadata.design.description}`,
     "",
     `- Website: ${origin}/`,
-    `- English: ${absoluteLocalizedUrl("design", "en")}`,
+    `- English: ${localizedHref("design", "en", "/")}`,
     `- Sister brand: ${siteBrandName("cnc")} (${siteOrigin("cnc")}/)`,
     `- Location: ${copy.footer.location}`,
     `- Email: ${siteEmail("design")}`,
@@ -47,8 +53,8 @@ function designLlmsTxt(): string {
     "",
     "## Links",
     "",
-    `- [${copy.footer.privacy}](${absoluteLocalizedUrl("design", "es", "/privacy")})`,
-    `- [Privacy notice](${absoluteLocalizedUrl("design", "en", "/privacy")})`,
+    `- [${copy.footer.privacy}](${localizedHref("design", "es", "/privacy")})`,
+    `- [Privacy notice](${localizedHref("design", "en", "/privacy")})`,
     `- [${siteBrandName("cnc")}](${siteOrigin("cnc")}/)`,
     "",
   ].join("\n");
@@ -68,7 +74,7 @@ function cncLlmsTxt(): string {
     `> ${es.metadata.cnc.description}`,
     "",
     `- Website: ${origin}/`,
-    `- English: ${absoluteLocalizedUrl("cnc", "en")}`,
+    `- English: ${localizedHref("cnc", "en", "/")}`,
     `- Parent: ${siteBrandName("design")} (${siteOrigin("design")}/)`,
     `- Location: ${copy.footer.location}`,
     `- Email: ${siteEmail("cnc")}`,
@@ -112,8 +118,8 @@ function cncLlmsTxt(): string {
   lines.push(
     "## Links",
     "",
-    `- [${copy.footer.privacy}](${absoluteLocalizedUrl("cnc", "es", "/privacy")})`,
-    `- [Privacy notice](${absoluteLocalizedUrl("cnc", "en", "/privacy")})`,
+    `- [${copy.footer.privacy}](${localizedHref("cnc", "es", "/privacy")})`,
+    `- [Privacy notice](${localizedHref("cnc", "en", "/privacy")})`,
     `- [${siteBrandName("design")}](${siteOrigin("design")}/)`,
     "",
   );
