@@ -96,16 +96,14 @@ export const siteConfig: SiteConfig = {
     cuttingArea: { widthMm: 1300, lengthMm: 2500 },
     maxThicknessByMaterial: [
       {
-        group: "panels",
-        materials: [
-          "wood",
-          "mdf",
-          "melamine",
-          "plywood",
-          "acrylic",
-          "plastic",
-          "corian",
-        ],
+        group: "wood",
+        materials: ["wood", "mdf", "melamine", "plywood"],
+        minMm: 3,
+        maxMm: 40,
+      },
+      {
+        group: "acrylic",
+        materials: ["acrylic", "plastic", "corian"],
         minMm: 3,
         maxMm: 40,
       },

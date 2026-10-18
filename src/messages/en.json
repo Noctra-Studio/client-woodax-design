@@ -202,11 +202,34 @@
     },
     "materials": {
       "title": "Materials",
+      "ideasTitle": "Ideas for what you can make",
+      "nextIdea": "See next idea",
+      "thicknessValue": "{min}–{max} mm",
       "wood": "Wood · MDF, plywood and solid wood",
       "acrylic": "Acrylic",
       "aluminum": "Thin aluminum",
       "maxThickness": "Max thickness",
-      "cuttingArea": "Cutting area"
+      "cuttingArea": "Cutting area",
+      "groups": {
+        "wood": {
+          "name": "Wood, MDF, melamine, plywood",
+          "example1": "Cabinet or chest of drawers",
+          "example2": "Fretwork decorative panel",
+          "example3": "Joinery router jig"
+        },
+        "acrylic": {
+          "name": "Acrylic, plastics, Corian",
+          "example1": "Lettered sign",
+          "example2": "Display stand",
+          "example3": "Corian countertop or part"
+        },
+        "aluminum": {
+          "name": "Aluminum",
+          "example1": "Logo plate",
+          "example2": "Dimensional letter",
+          "example3": "Technical part with cutouts"
+        }
+      }
     },
     "audience": {
       "title": "Built for",
