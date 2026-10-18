@@ -26,4 +26,4 @@ El DNS del dominio se administra en Vercel.
 
 ## Deuda técnica post-lanzamiento
 
-Ver `docs/TECH-DEBT.md`: separar Zod, Server Components/LazyMotion, AVIF y `no-store`/bfcache. Quedan fuera de este lanzamiento.
+Ver `docs/TECH-DEBT.md`. Quedan fuera de este lanzamiento. El orden lo marca el LCP simulado: primero el JS inicial, después el mp4 del hero CNC, el CSS crítico y, al final, AVIF y `no-store`/bfcache.
