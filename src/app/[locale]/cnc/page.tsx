@@ -3,7 +3,6 @@ import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { BrandIcon } from "@/components/brand/brand-icon";
 import { CncLogo } from "@/components/brand/cnc-logo";
-import { AudienceSection } from "@/components/cnc/audience-section";
 import { CapabilitiesSection } from "@/components/cnc/capabilities-section";
 import { HeroSection } from "@/components/cnc/hero-section";
 import { IntroProvider } from "@/components/cnc/intro-provider";
@@ -13,19 +12,19 @@ import { SiteNav } from "@/components/site/site-nav";
 import { SiteFooter } from "@/components/site/site-footer";
 import { WaysSection } from "@/components/cnc/ways-section";
 import { WorkSection } from "@/components/cnc/work-section";
-import { cncGallery } from "@/content/cnc-gallery";
 import {
   cncSectionAnchors,
   publishedSocialUrl,
-  sameAsUrls,
   siteConfig,
 } from "@/content/site-config";
 import { LeadCapture } from "@/features/leads/components/lead-capture";
 import { LeadUiProvider } from "@/features/leads/components/lead-ui";
 import { getLeadCopy } from "@/features/leads/copy";
 import { routing, type Locale } from "@/i18n/routing";
+import { cncLogoAsset } from "@/lib/cnc-nav-logo";
 import { requestDesignHomeUrl } from "@/lib/request-site";
-import { localizedMetadata, siteOrigin } from "@/lib/seo";
+import { localizedMetadata } from "@/lib/seo";
+import { cncJsonLd, cncSpecPropertyValues } from "@/lib/structured-data";
 
 const introBoot = `(function(){try{if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;if(sessionStorage.getItem("woodax-cnc-intro")==="1")return;document.documentElement.setAttribute("data-cnc-intro","play");}catch(e){}})();`;
 
@@ -48,51 +47,12 @@ export async function generateMetadata({
     ? requested
     : routing.defaultLocale;
   const t = await getTranslations({ locale, namespace: "cnc.meta" });
-  const metadata = localizedMetadata({
+  return localizedMetadata({
     site: "cnc",
     locale,
     title: t("title"),
     description: t("description"),
   });
-  const ogImage = cncOgImage(locale);
-  if (!ogImage) return metadata;
-
-  return {
-    ...metadata,
-    openGraph: {
-      ...metadata.openGraph,
-      images: [ogImage],
-    },
-  };
-}
-
-function cncOgImage(locale: Locale) {
-  const poster = cncGallery[0];
-  if (poster) {
-    return {
-      url: poster.src,
-      width: poster.width,
-      height: poster.height,
-      alt: poster.alt[locale],
-    };
-  }
-
-  const hero = siteConfig.cncHero;
-  if (hero.type === "video") {
-    return {
-      url: hero.poster,
-      alt: hero.alt[locale],
-    };
-  }
-
-  if (hero.type === "image") {
-    return {
-      url: hero.src,
-      alt: hero.alt[locale],
-    };
-  }
-
-  return null;
 }
 
 export default async function CncPage({
@@ -113,13 +73,19 @@ export default async function CncPage({
 
   const t = await getTranslations("cnc");
   const nav = await getTranslations("nav");
-  const design = await getTranslations("design");
   const copy = await getLeadCopy("cnc");
   const jsonLd = cncJsonLd({
     name: t("title"),
     description: t("meta.description"),
-    parentName: design("title"),
     serviceType: t("ways.serviceType"),
+    knowsAbout: [
+      t("ways.serviceType"),
+      t("ways.workshopTitle"),
+      t("ways.volumeServiceTitle"),
+      t("materials.groups.wood.name"),
+      t("materials.groups.acrylic.name"),
+      t("materials.groups.aluminum.name"),
+    ],
     services: [
       {
         name: t("ways.workshopTitle"),
@@ -130,6 +96,16 @@ export default async function CncPage({
         description: t("ways.volumeBody"),
       },
     ],
+    specProperties: cncSpecPropertyValues(locale, {
+      area: t("capabilities.area"),
+      areaValue: t("capabilities.areaValue"),
+      thicknessValue: t("capabilities.thicknessValue"),
+      groupNames: {
+        wood: t("materials.groups.wood.name"),
+        acrylic: t("materials.groups.acrylic.name"),
+        aluminum: t("materials.groups.aluminum.name"),
+      },
+    }),
   });
 
   return (
@@ -166,25 +142,16 @@ export default async function CncPage({
             facebookUrl={publishedSocialUrl(siteConfig.facebookUrl)}
             facebookLabel={nav("facebook")}
             logo={
-              <CncLogo
-                priority={siteConfig.cncHero.type === "none"}
-                className="h-7 w-auto"
-              />
+              <CncLogo variant="nav" alt={t("title")} className="h-11 w-auto" />
             }
-            logoCompact={
-              <BrandIcon
-                variant="cnc"
-                priority={siteConfig.cncHero.type === "none"}
-                className="h-7 w-auto"
-              />
-            }
+            logoCompact={<BrandIcon variant="cnc" className="h-8 w-auto" />}
+            logoTraceSrc={cncLogoAsset("nav").src}
           />
           <main className="flex min-w-0 flex-1 flex-col overflow-x-clip pb-28 md:pb-0">
             <HeroSection />
             <WaysSection />
             <CapabilitiesSection />
             <MaterialsSection />
-            <AudienceSection />
             <ProcessSection />
             <WorkSection />
             <LeadCapture copy={copy} />
@@ -194,61 +161,4 @@ export default async function CncPage({
       <SiteFooter variant="cnc" />
     </>
   );
-}
-
-function cncJsonLd({
-  name,
-  description,
-  parentName,
-  serviceType,
-  services,
-}: {
-  name: string;
-  description: string;
-  parentName: string;
-  serviceType: string;
-  services: Array<{ name: string; description: string }>;
-}) {
-  const origin = siteOrigin("cnc");
-  const businessId = `${origin}/#organization`;
-  const sameAs = sameAsUrls([siteConfig.instagramUrl, siteConfig.facebookUrl]);
-
-  const business: Record<string, unknown> = {
-    "@type": "LocalBusiness",
-    "@id": businessId,
-    name,
-    description,
-    url: origin,
-    areaServed: "Querétaro",
-    parentOrganization: {
-      "@type": "Organization",
-      name: parentName,
-      url: siteOrigin("design"),
-    },
-    knowsAbout: [
-      "CNC router cutting",
-      "CNC cutting service",
-      "acrylic cutting",
-      "aluminum cutting",
-      "MDF cutting",
-      "signage",
-    ],
-    ...(sameAs.length > 0 ? { sameAs } : {}),
-  };
-
-  const serviceNodes = services.map((service) => ({
-    "@type": "Service",
-    name: service.name,
-    description: service.description,
-    serviceType,
-    areaServed: "Querétaro",
-    provider: { "@id": businessId },
-  }));
-
-  const data = {
-    "@context": "https://schema.org",
-    "@graph": [business, ...serviceNodes],
-  };
-
-  return JSON.stringify(data).replace(/</g, "\\u003c");
 }

@@ -4,6 +4,19 @@ import { clientEnv } from "@/lib/env";
 import { isIndexingAllowed, siteOrigin } from "@/lib/seo";
 import { allowsPreviewSiteOverride, getSite, hostFromHeaders } from "@/lib/site";
 
+const INDEXING_AGENTS = [
+  "*",
+  "OAI-SearchBot",
+  "ChatGPT-User",
+  "GPTBot",
+  "PerplexityBot",
+  "ClaudeBot",
+  "Claude-SearchBot",
+  "Google-Extended",
+  "Applebot-Extended",
+  "Bingbot",
+] as const;
+
 export default async function robots(): Promise<MetadataRoute.Robots> {
   const headerStore = await headers();
   const host = hostFromHeaders(headerStore);
@@ -12,7 +25,7 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
     clientEnv.NEXT_PUBLIC_APP_ENV === "production" &&
     !allowsPreviewSiteOverride(host);
 
-  if (!isProduction) {
+  if (!isProduction || !isIndexingAllowed()) {
     return {
       rules: {
         userAgent: "*",
@@ -22,12 +35,10 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
   }
 
   return {
-    rules: {
-      userAgent: "*",
+    rules: INDEXING_AGENTS.map((userAgent) => ({
+      userAgent,
       allow: "/",
-    },
-    ...(isIndexingAllowed()
-      ? { sitemap: `${siteOrigin(site)}/sitemap.xml` }
-      : {}),
+    })),
+    sitemap: `${siteOrigin(site)}/sitemap.xml`,
   };
 }

@@ -6,16 +6,15 @@ import { HeroSection } from "@/components/design/hero-section";
 import { HomeCta } from "@/components/design/home-cta";
 import { ProcessSection } from "@/components/design/process-section";
 import { ProjectsSection } from "@/components/design/projects-section";
-import { designGallery } from "@/content/design-gallery";
 import {
   publishedSocialUrl,
-  sameAsUrls,
   siteConfig,
 } from "@/content/site-config";
 import { LeadCapture } from "@/features/leads/components/lead-capture";
 import { getLeadCopy } from "@/features/leads/copy";
 import { routing, type Locale } from "@/i18n/routing";
-import { isDesignFull, localizedMetadata, siteOrigin } from "@/lib/seo";
+import { isDesignFull, localizedMetadata } from "@/lib/seo";
+import { designJsonLd } from "@/lib/structured-data";
 
 export async function generateMetadata({
   params,
@@ -27,30 +26,13 @@ export async function generateMetadata({
     ? requested
     : routing.defaultLocale;
   const t = await getTranslations({ locale, namespace: "design.meta" });
-  const metadata = localizedMetadata({
+  return localizedMetadata({
     site: "design",
     locale,
     title: t("title"),
     description: t("description"),
     href: "/",
   });
-  const poster = designGallery[0];
-  if (!poster) return metadata;
-
-  return {
-    ...metadata,
-    openGraph: {
-      ...metadata.openGraph,
-      images: [
-        {
-          url: poster.src,
-          width: poster.width,
-          height: poster.height,
-          alt: poster.alt[locale],
-        },
-      ],
-    },
-  };
 }
 
 export default async function DesignPage({
@@ -65,7 +47,16 @@ export default async function DesignPage({
   }
 
   const t = await getTranslations("design");
-  const jsonLd = designJsonLd(t("title"));
+  const jsonLd = designJsonLd({
+    name: t("title"),
+    description: t("meta.description"),
+    knowsAbout: [
+      t("form.options.kitchen"),
+      t("form.options.closet"),
+      t("form.options.custom-piece"),
+      t("form.options.commercial-space"),
+    ],
+  });
   const full = isDesignFull();
   const copy = full ? null : await getLeadCopy("design");
 
@@ -84,27 +75,4 @@ export default async function DesignPage({
       {copy ? <LeadCapture copy={copy} /> : <HomeCta />}
     </main>
   );
-}
-
-function designJsonLd(name: string) {
-  const data: Record<string, unknown> = {
-    "@context": "https://schema.org",
-    "@type": "HomeAndConstructionBusiness",
-    name,
-    url: siteOrigin("design"),
-    areaServed: "Querétaro",
-    knowsAbout: [
-      "custom kitchens",
-      "closets",
-      "custom furniture",
-      "commercial interiors",
-    ],
-  };
-
-  const sameAs = sameAsUrls([siteConfig.instagramUrl, siteConfig.facebookUrl]);
-  if (sameAs.length > 0) {
-    data.sameAs = sameAs;
-  }
-
-  return JSON.stringify(data).replace(/</g, "\\u003c");
 }

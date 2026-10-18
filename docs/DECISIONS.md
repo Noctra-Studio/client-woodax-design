@@ -23,3 +23,7 @@ Esta fase solo captura el contacto del coming soon y lo envía por correo. Resen
 En producción el sitio sigue el host. En un preview de Vercel la URL es única y termina en `.vercel.app`, así que `?site=cnc` o `?site=design` fuerza la marca y la elección queda en la cookie `preview-site`. En production esa vía se ignora.
 
 El DNS del dominio se administra en Vercel.
+
+## Deuda técnica post-lanzamiento
+
+Ver `docs/TECH-DEBT.md`: separar Zod, Server Components/LazyMotion, AVIF y `no-store`/bfcache. Quedan fuera de este lanzamiento.
