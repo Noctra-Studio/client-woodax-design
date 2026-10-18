@@ -96,7 +96,7 @@
         "contact": "WhatsApp o email",
         "city": "Ciudad (opcional)"
       },
-      "consentBefore": "Acepto que Woodax use estos datos para responder mi solicitud.",
+      "consentBefore": "Acepto que Woodax Design use estos datos para responder mi solicitud.",
       "consentLink": "Ver aviso de privacidad.",
       "next": "Continuar",
       "back": "Atrás",
@@ -139,7 +139,7 @@
       "location": "Querétaro, México",
       "privacy": "Aviso de privacidad",
       "description": "Carpintería a medida para espacios y piezas únicas, en Querétaro.",
-      "sibling": "Corte CNC para talleres y empresas",
+      "sibling": "CNC by Woodax Design",
       "email": "hello@woodax.design",
       "copyright": "© {year} Woodax Design"
     },
@@ -195,13 +195,18 @@
     "ways": {
       "title": "Dos formas de trabajar con nosotros",
       "serviceType": "Corte CNC",
+      "forLabel": "Para:",
       "workshopLabel": "01",
       "workshopTitle": "Maquila CNC para talleres",
-      "workshopBody": "Para carpinterías y talleres que necesitan cortes CNC sin tener la máquina. Nos mandas tu archivo y nosotros producimos las piezas: sin invertir en equipo, operador ni mantenimiento.",
+      "workshopBody": "Para carpinterías y talleres de fabricación que necesitan cortes CNC sin tener la máquina. Nos mandas tu archivo y nosotros producimos las piezas: sin invertir en equipo, operador ni mantenimiento.",
+      "workshopTag1": "Talleres de carpintería",
+      "workshopTag2": "Talleres de fabricación",
       "volumeLabel": "02",
       "volumeTitle": "Producción para empresas",
       "volumeServiceTitle": "Producción CNC para empresas",
-      "volumeBody": "Piezas en volumen para empresas, rotulistas e industria. Del archivo a la pieza terminada, con cortes consistentes en toda la serie."
+      "volumeBody": "Piezas en volumen para empresas, rotulistas e industria: componentes en serie, letras, señalética y piezas técnicas en madera, acrílico y aluminio, con cortes consistentes en toda la serie.",
+      "volumeTag1": "Empresas e industria",
+      "volumeTag2": "Rotulistas"
     },
     "materials": {
       "title": "Materiales",
@@ -229,17 +234,14 @@
         }
       }
     },
-    "audience": {
-      "title": "Hecho para",
-      "workshops": "Talleres de carpintería — Más capacidad sin comprar otra máquina.",
-      "companies": "Empresas e industria — Componentes en serie con medidas exactas.",
-      "signs": "Rotulistas — Letras, piezas y señalética en acrílico y aluminio."
-    },
     "process": {
       "title": "Del archivo a la pieza",
-      "step1": "01 Envíanos tu archivo o tu idea",
-      "step2": "02 Revisamos y cotizamos",
-      "step3": "03 Cortamos y entregamos",
+      "step1": "01 Envíanos tu archivo o tu idea — Compártenos tu vector listo para corte o un boceto con medidas y el material que necesitas.",
+      "step1Output": "Archivo o boceto",
+      "step2": "02 Revisamos y cotizamos — Revisamos medidas, material y espesor, y te enviamos la cotización.",
+      "step2Output": "Cotización",
+      "step3": "03 Cortamos tus piezas — Las producimos con precisión repetible, de la primera a la última de la serie.",
+      "step3Output": "Piezas",
       "formats": "Formatos: DXF, DWG, SVG, AI, PDF. Puedes enviarlo después."
     },
     "work": {

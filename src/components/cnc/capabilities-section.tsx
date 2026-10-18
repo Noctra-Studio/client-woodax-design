@@ -5,6 +5,7 @@ import { useLayoutEffect, useRef } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { RegistrationMarks } from "@/components/cnc/registration-marks";
 import { hasCncCapabilities, siteConfig } from "@/content/site-config";
+import { formatSpecMm } from "@/lib/cnc-specs";
 import { cn } from "@/lib/utils";
 
 export function CapabilitiesSection() {
@@ -64,7 +65,7 @@ export function CapabilitiesSection() {
       aria-labelledby="capabilities-title"
       className={cn(
         "relative scroll-mt-24 overflow-hidden lg:px-8",
-        !machineImage && "px-5 py-16 md:px-8 md:py-24 lg:py-32",
+        !machineImage && "px-5 py-14 md:px-8 md:py-20 lg:py-24",
       )}
     >
       <RegistrationMarks className="z-20" />
@@ -87,13 +88,13 @@ export function CapabilitiesSection() {
         className={cn(
           "relative z-10 w-full",
           machineImage &&
-            "-mt-8 px-5 pb-16 md:-mt-12 md:px-8 md:pb-24 lg:mt-0 lg:p-0",
+            "-mt-8 px-5 pb-14 md:-mt-12 md:px-8 md:pb-20 lg:mt-0 lg:p-0",
         )}
       >
         <div
           className={cn(
             "relative mx-auto w-full max-w-[1200px]",
-            machineImage && "lg:flex lg:min-h-[520px] lg:items-center lg:py-32",
+            machineImage && "lg:flex lg:min-h-[480px] lg:items-center lg:py-24",
           )}
         >
           {machineImage ? (
@@ -172,8 +173,8 @@ function capabilityRows(
       key: "area",
       label: t("area"),
       value: t("areaValue", {
-        width: formatMm(locale, widthMm),
-        length: formatMm(locale, lengthMm),
+        width: formatSpecMm(locale, widthMm),
+        length: formatSpecMm(locale, lengthMm),
       }),
     });
   }
@@ -192,8 +193,8 @@ function capabilityRows(
       key: range.group,
       label: formatted.charAt(0).toUpperCase() + formatted.slice(1),
       value: t("thicknessValue", {
-        min: formatMm(locale, range.minMm),
-        max: formatMm(locale, range.maxMm),
+        min: formatSpecMm(locale, range.minMm),
+        max: formatSpecMm(locale, range.maxMm),
       }),
     });
   }
@@ -201,9 +202,3 @@ function capabilityRows(
   return rows;
 }
 
-function formatMm(locale: string, value: number) {
-  return new Intl.NumberFormat(locale === "en" ? "en" : "es-MX", {
-    maximumFractionDigits: 1,
-    useGrouping: false,
-  }).format(value);
-}

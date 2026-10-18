@@ -44,7 +44,7 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - step2.name — ES: Tu nombre | EN: Your name
 - step2.contact — ES: WhatsApp o email | EN: WhatsApp or email
 - step2.city — ES: Ciudad (opcional) | EN: City (optional)
-- consent — ES: Acepto que Woodax use estos datos para responder mi solicitud. Ver aviso de privacidad. | EN: I agree that Woodax may use this information to reply to my request. See privacy notice.
+- consent — ES: Acepto que Woodax Design use estos datos para responder mi solicitud. Ver aviso de privacidad. | EN: I agree that Woodax Design may use this information to reply to my request. See privacy notice.
 - next — ES: Continuar | EN: Continue
 - back — ES: Atrás | EN: Back
 - submit — ES: Enviar mi proyecto | EN: Send my project
@@ -58,8 +58,8 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 
 ### Footer
 - cncLink — ES: ¿Necesitas corte CNC? Conoce CNC by Woodax Design | EN: Need CNC cutting? Meet CNC by Woodax Design (lo usa /servicios, no el footer)
-- sibling ⚠︎ (pendiente de aprobación de Adrián) — ES: Corte CNC para talleres y empresas | EN: CNC cutting for workshops and businesses
-- email — hello@woodax.design
+- sibling — ES: CNC by Woodax Design | EN: CNC by Woodax Design
+- email — `siteConfig.designEmail` (`hello@woodax.design`)
 - copyright — ES: © {year} Woodax Design | EN: © {year} Woodax Design
 - location — ES: Querétaro, México | EN: Querétaro, Mexico
 - privacy — ES: Aviso de privacidad | EN: Privacy notice
@@ -83,13 +83,18 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 ### Dos formas de trabajar ⚠︎ (pendiente de aprobación de Adrián)
 - title — ES: Dos formas de trabajar con nosotros | EN: Two ways to work with us
 - serviceType ⚠︎ — ES: Corte CNC | EN: CNC cutting
+- forLabel ⚠︎ — ES: Para: | EN: For:
 - workshop.label — 01
 - workshop.title ⚠︎ — ES: Maquila CNC para talleres | EN: CNC cutting for workshops
-- workshop.body ⚠︎ — ES: Para carpinterías y talleres que necesitan cortes CNC sin tener la máquina. Nos mandas tu archivo y nosotros producimos las piezas: sin invertir en equipo, operador ni mantenimiento. | EN: For carpentry and fabrication shops that need CNC cuts without owning the machine. Send us your file and we produce the parts, with no equipment, operator or maintenance to invest in.
+- workshop.body ⚠︎ — ES: Para carpinterías y talleres de fabricación que necesitan cortes CNC sin tener la máquina. Nos mandas tu archivo y nosotros producimos las piezas: sin invertir en equipo, operador ni mantenimiento. | EN: For carpentry and fabrication shops that need CNC cuts without owning the machine. Send us your file and we produce the parts, with no equipment, operator or maintenance to invest in.
+- workshop.tag1 ⚠︎ — ES: Talleres de carpintería | EN: Woodworking shops
+- workshop.tag2 ⚠︎ — ES: Talleres de fabricación | EN: Fabrication shops
 - volume.label — 02
 - volume.title ⚠︎ — ES: Producción para empresas | EN: Production for businesses
 - volume.serviceTitle ⚠︎ — ES: Producción CNC para empresas | EN: CNC production for businesses
-- volume.body ⚠︎ — ES: Piezas en volumen para empresas, rotulistas e industria. Del archivo a la pieza terminada, con cortes consistentes en toda la serie. | EN: Volume parts for businesses, sign makers and industry. From file to finished part, with consistent cuts across the whole run.
+- volume.body ⚠︎ — ES: Piezas en volumen para empresas, rotulistas e industria: componentes en serie, letras, señalética y piezas técnicas en madera, acrílico y aluminio, con cortes consistentes en toda la serie. | EN: Volume parts for businesses, sign makers and industry: serial components, letters, signage and technical parts in wood, acrylic and aluminum, with consistent cuts across the whole run.
+- volume.tag1 ⚠︎ — ES: Empresas e industria | EN: Companies and industry
+- volume.tag2 ⚠︎ — ES: Rotulistas | EN: Sign makers
 
 ### Materiales (leído de `siteConfig.cncSpecs.maxThicknessByMaterial`, una sola fuente)
 - title — ES: Materiales | EN: Materials
@@ -101,18 +106,17 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
   - acrylic — ES: Acrílico, plásticos, Corian | EN: Acrylic, plastics, Corian (`3–40 mm`)
   - aluminum — ES: Aluminio | EN: Aluminum (`0.5–5 mm`)
 
-### Para quién
-- title — ES: Hecho para | EN: Built for
-- workshops — ES: Talleres de carpintería — Más capacidad sin comprar otra máquina. | EN: Woodworking shops — More capacity without buying another machine.
-- companies — ES: Empresas e industria — Componentes en serie con medidas exactas. | EN: Companies and industry — Serial components with exact dimensions.
-- signs — ES: Rotulistas — Letras, piezas y señalética en acrílico y aluminio. | EN: Sign makers — Letters, parts and signage in acrylic and aluminum.
-
 ### Proceso ⚠︎ (pendiente Adrián)
 - title — ES: Del archivo a la pieza | EN: From file to finished part
-- step1 — ES: 01 Envíanos tu archivo o tu idea | EN: 01 Send us your file or your idea
-- step2 — ES: 02 Revisamos y cotizamos | EN: 02 We review and quote
-- step3 ⚠︎ (pendiente Adrián: confirmar modalidad de entrega / recolección en taller; NO incluir «listas para recoger o entregar» en `llms.txt` ni en JSON-LD) — ES: 03 Cortamos y entregamos | EN: 03 We cut and deliver
-- formats ⚠︎ (pendiente Adrián: confirmar formatos aceptados; NO incluir en `llms.txt` ni en JSON-LD) — ES: Formatos: DXF, DWG, SVG, AI, PDF. Puedes enviarlo después. | EN: Formats: DXF, DWG, SVG, AI, PDF. You can send it later.
+- step1 ⚠︎ (pendiente Adrián) — ES: 01 Envíanos tu archivo o tu idea — Compártenos tu vector listo para corte o un boceto con medidas y el material que necesitas. | EN: 01 Send us your file or your idea — Share your cut-ready vector or a sketch with dimensions and the material you need.
+- step1Output ⚠︎ (pendiente Adrián) — ES: Archivo o boceto | EN: File or sketch
+- step2 ⚠︎ (pendiente Adrián) — ES: 02 Revisamos y cotizamos — Revisamos medidas, material y espesor, y te enviamos la cotización. | EN: 02 We review and quote — We check dimensions, material and thickness, and send you a quote.
+- step2Output ⚠︎ (pendiente Adrián) — ES: Cotización | EN: Quote
+- step3 ⚠︎ (pendiente Adrián: no prometer entrega hasta confirmar modalidad de entrega / recolección en taller; NO incluir en `llms.txt` ni en JSON-LD) — ES: 03 Cortamos tus piezas — Las producimos con precisión repetible, de la primera a la última de la serie. | EN: 03 We cut your parts — We produce them with repeatable precision, from the first part to the last.
+- step3Output ⚠︎ (pendiente Adrián) — ES: Piezas | EN: Parts
+- formats ⚠︎ (pendiente Adrián: confirmar formatos aceptados; detrás de `siteConfig.showFileFormats: false`; NO incluir en `llms.txt` ni en JSON-LD) — ES: Formatos: DXF, DWG, SVG, AI, PDF. Puedes enviarlo después. | EN: Formats: DXF, DWG, SVG, AI, PDF. You can send it later.
+  - Aparece en: `docs/brand/copy-deck.md`, `src/messages/{es,en}.json` → `cnc.process.formats`, `siteConfig.cncFileFormats` (UI solo si `showFileFormats`).
+- pickup/delivery ⚠︎ (pendiente Adrián: «listas para recoger o entregar» / modalidad de entrega o recolección; NO incluir en `llms.txt` ni en JSON-LD). Hoy no está en la UI; el paso 3 habla solo de corte.
 
 ### Formulario
 - title — ES: Cuéntanos qué necesitas producir | EN: Tell us what you need to produce
@@ -134,7 +138,7 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 ### Footer
 - designLink — ES: Muebles y espacios a medida → Woodax Design | EN: Bespoke furniture and spaces → Woodax Design (clave anterior; el footer usa sibling)
 - sibling — ES: Muebles y espacios a medida | EN: Custom furniture and spaces
-- email — cnc@woodax.design
+- email — `siteConfig.cncEmail` (`cnc@woodax.design`)
 - copyright — ES: © {year} CNC by Woodax Design | EN: © {year} CNC by Woodax Design
 - location — ES: Querétaro, México | EN: Querétaro, Mexico
 - privacy — ES: Aviso de privacidad | EN: Privacy notice
@@ -189,8 +193,8 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 ### Footer de cierre (ambas marcas)
 - footer.design.line — ES: ¿Tienes un espacio en mente? | EN: Have a space in mind?
 - footer.cnc.line — ES: ¿Tienes algo que producir? | EN: Got something to produce?
-- footer.email.design — hello@woodax.design
-- footer.email.cnc — cnc@woodax.design
+- footer.email.design — `siteConfig.designEmail` (`hello@woodax.design`)
+- footer.email.cnc — `siteConfig.cncEmail` (`cnc@woodax.design`)
 - footer.whatsapp — ES: WhatsApp | EN: WhatsApp
 - footer.backToTop — ES: Volver arriba | EN: Back to top
 - footer.credit — ES: Desarrollado por Noctra Studio | EN: Developed by Noctra Studio

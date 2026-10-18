@@ -10,7 +10,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import { clientEnv } from "@/lib/env";
 import { localizedMetadata } from "@/lib/seo";
 
-const contactEmail = "hello@woodax.design";
+const contactEmail = siteConfig.designEmail;
 
 export async function generateMetadata({
   params,

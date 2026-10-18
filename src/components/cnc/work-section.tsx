@@ -18,7 +18,7 @@ export async function WorkSection() {
       <section
         id="trabajos"
         aria-labelledby="cnc-work-title"
-        className="relative scroll-mt-24 px-5 py-16 md:px-8 md:py-24 lg:py-32"
+        className="relative scroll-mt-24 px-5 py-14 md:px-8 md:py-20 lg:py-24"
       >
         <RegistrationMarks edges="bottom" />
         <div className="relative mx-auto w-full max-w-[1200px]">

@@ -66,20 +66,31 @@ export type CncSpecs = {
   machineImage?: CncSpecsImage;
 };
 
+export type CncFileFormat = "DXF" | "DWG" | "SVG" | "AI" | "PDF";
+
 export type SiteConfig = {
   privacyEmail: string;
+  designEmail: string;
+  cncEmail: string;
   instagramUrl?: string;
   instagramHandle?: string;
   facebookUrl?: string;
   cncHero: CncHero;
   cncSpecs?: CncSpecs;
+  cncFileFormats: readonly CncFileFormat[];
+  showFileFormats: boolean;
 };
 
 export const siteConfig: SiteConfig = {
   privacyEmail: "privacidad@woodax.design",
+  designEmail: "hello@woodax.design",
+  cncEmail: "cnc@woodax.design",
   // Launch blocker: instagramUrl and facebookUrl cannot stay "#" in production.
   instagramUrl: "https://www.instagram.com/woodaxdesign",
   facebookUrl: "https://www.facebook.com/share/1AkP7NEJno/",
+  cncFileFormats: ["DXF", "DWG", "SVG", "AI", "PDF"],
+  // Pending Adrián's confirmation on accepted file formats before showing in UI.
+  showFileFormats: false,
   cncHero: {
     type: "video",
     src: {
@@ -127,6 +138,10 @@ export const siteConfig: SiteConfig = {
     },
   },
 };
+
+export function siteEmail(site: "design" | "cnc"): string {
+  return site === "cnc" ? siteConfig.cncEmail : siteConfig.designEmail;
+}
 
 export function hasCncCapabilities(
   specs: CncSpecs | undefined,

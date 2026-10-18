@@ -96,7 +96,7 @@
         "contact": "WhatsApp or email",
         "city": "City (optional)"
       },
-      "consentBefore": "I agree that Woodax may use this information to reply to my request.",
+      "consentBefore": "I agree that Woodax Design may use this information to reply to my request.",
       "consentLink": "See privacy notice.",
       "next": "Continue",
       "back": "Back",
@@ -139,7 +139,7 @@
       "location": "Querétaro, Mexico",
       "privacy": "Privacy notice",
       "description": "Custom carpentry for spaces and one-of-a-kind pieces, in Querétaro.",
-      "sibling": "CNC cutting for workshops and businesses",
+      "sibling": "CNC by Woodax Design",
       "email": "hello@woodax.design",
       "copyright": "© {year} Woodax Design"
     },
@@ -195,13 +195,18 @@
     "ways": {
       "title": "Two ways to work with us",
       "serviceType": "CNC cutting",
+      "forLabel": "For:",
       "workshopLabel": "01",
       "workshopTitle": "CNC cutting for workshops",
       "workshopBody": "For carpentry and fabrication shops that need CNC cuts without owning the machine. Send us your file and we produce the parts, with no equipment, operator or maintenance to invest in.",
+      "workshopTag1": "Woodworking shops",
+      "workshopTag2": "Fabrication shops",
       "volumeLabel": "02",
       "volumeTitle": "Production for businesses",
       "volumeServiceTitle": "CNC production for businesses",
-      "volumeBody": "Volume parts for businesses, sign makers and industry. From file to finished part, with consistent cuts across the whole run."
+      "volumeBody": "Volume parts for businesses, sign makers and industry: serial components, letters, signage and technical parts in wood, acrylic and aluminum, with consistent cuts across the whole run.",
+      "volumeTag1": "Companies and industry",
+      "volumeTag2": "Sign makers"
     },
     "materials": {
       "title": "Materials",
@@ -229,17 +234,14 @@
         }
       }
     },
-    "audience": {
-      "title": "Built for",
-      "workshops": "Woodworking shops — More capacity without buying another machine.",
-      "companies": "Companies and industry — Serial components with exact dimensions.",
-      "signs": "Sign makers — Letters, parts and signage in acrylic and aluminum."
-    },
     "process": {
       "title": "From file to finished part",
-      "step1": "01 Send us your file or your idea",
-      "step2": "02 We review and quote",
-      "step3": "03 We cut and deliver",
+      "step1": "01 Send us your file or your idea — Share your cut-ready vector or a sketch with dimensions and the material you need.",
+      "step1Output": "File or sketch",
+      "step2": "02 We review and quote — We check dimensions, material and thickness, and send you a quote.",
+      "step2Output": "Quote",
+      "step3": "03 We cut your parts — We produce them with repeatable precision, from the first part to the last.",
+      "step3Output": "Parts",
       "formats": "Formats: DXF, DWG, SVG, AI, PDF. You can send it later."
     },
     "work": {

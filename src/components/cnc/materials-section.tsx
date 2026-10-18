@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { RegistrationMarks } from "@/components/cnc/registration-marks";
 import { siteConfig } from "@/content/site-config";
+import { formatSpecMm } from "@/lib/cnc-specs";
 import { cn } from "@/lib/utils";
 
 const MATERIAL_GROUPS = ["wood", "acrylic", "aluminum"] as const;
@@ -525,12 +526,6 @@ function resolveFinishStyle(finish: MaterialFinishKind): {
   }
 }
 
-function formatMm(locale: string, value: number) {
-  return new Intl.NumberFormat(locale === "en" ? "en" : "es-MX", {
-    maximumFractionDigits: 1,
-    useGrouping: false,
-  }).format(value);
-}
 
 export function MaterialsSection() {
   const t = useTranslations("cnc.materials");
@@ -647,7 +642,7 @@ export function MaterialsSection() {
     <section
       id="materiales"
       aria-labelledby="materials-title"
-      className="relative scroll-mt-24 px-5 py-16 md:px-8 md:py-24 lg:py-32"
+      className="relative scroll-mt-24 px-5 py-14 md:px-8 md:py-20 lg:py-24"
     >
       <RegistrationMarks edges="bottom" />
 
@@ -750,8 +745,8 @@ export function MaterialsSection() {
             );
             const thicknessLabel = range
               ? t("thicknessValue", {
-                  min: formatMm(locale, range.minMm),
-                  max: formatMm(locale, range.maxMm),
+                  min: formatSpecMm(locale, range.minMm),
+                  max: formatSpecMm(locale, range.maxMm),
                 })
               : null;
 

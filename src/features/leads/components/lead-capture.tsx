@@ -81,8 +81,10 @@ function SheetLeadCapture({ copy }: { copy: LeadCopy }) {
       id="contacto"
       aria-labelledby={`${copy.variant}-form-title`}
       className={cn(
-        "relative scroll-mt-24 px-5 py-16 md:px-8 md:py-24 lg:py-40",
-        isDesign && "bg-woodax-green text-woodax-charcoal",
+        "relative scroll-mt-24 px-5",
+        isDesign
+          ? "bg-woodax-green text-woodax-charcoal py-16 md:px-8 md:py-24 lg:py-40"
+          : "py-14 md:px-8 md:py-20 lg:py-24",
       )}
     >
       {isDesign ? (

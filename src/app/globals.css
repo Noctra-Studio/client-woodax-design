@@ -284,6 +284,60 @@ html[data-cnc-intro="play"] .cnc-logo-stroke {
   transform-origin: center top;
 }
 
+.cnc-process-rail {
+  top: var(--process-y1);
+  left: var(--process-x1);
+  width: calc(var(--process-x3) - var(--process-x1));
+}
+
+.cnc-process-rail-y {
+  top: var(--process-y1);
+  left: var(--process-x1);
+  height: calc(var(--process-y3) - var(--process-y1));
+}
+
+.cnc-track-head-rail,
+.cnc-track-head-rail-y {
+  position: absolute;
+  inset: 0;
+}
+
+.cnc-track-head,
+.cnc-track-head-y {
+  position: absolute;
+  opacity: 0;
+}
+
+.cnc-track-head {
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+
+.cnc-track-head-y {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes cnc-track-head-travel {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes cnc-track-head-y-travel {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
 [data-draw="wait"] .cnc-track {
   transform: scaleX(0);
 }
@@ -293,6 +347,14 @@ html[data-cnc-intro="play"] .cnc-logo-stroke {
   transition: transform var(--duration-reveal) var(--ease-out);
 }
 
+[data-draw="shown"] .cnc-track-head {
+  opacity: 1;
+}
+
+[data-draw="shown"] .cnc-track-head-rail {
+  animation: cnc-track-head-travel var(--duration-reveal) var(--ease-out) forwards;
+}
+
 [data-draw="wait"] .cnc-track-y {
   transform: scaleY(0);
 }
@@ -300,6 +362,15 @@ html[data-cnc-intro="play"] .cnc-logo-stroke {
 [data-draw="shown"] .cnc-track-y {
   transform: scaleY(1);
   transition: transform var(--duration-reveal) var(--ease-out);
+}
+
+[data-draw="shown"] .cnc-track-head-y {
+  opacity: 1;
+}
+
+[data-draw="shown"] .cnc-track-head-rail-y {
+  animation: cnc-track-head-y-travel var(--duration-reveal) var(--ease-out)
+    forwards;
 }
 
 [data-draw="wait"] .cnc-step {
@@ -457,6 +528,18 @@ html[data-cnc-intro="play"] .cnc-logo-stroke {
   [data-draw="shown"] .cnc-track-y {
     transform: none;
     transition: none;
+  }
+
+  .cnc-track-head,
+  [data-draw="shown"] .cnc-track-head,
+  .cnc-track-head-y,
+  [data-draw="shown"] .cnc-track-head-y,
+  .cnc-track-head-rail,
+  [data-draw="shown"] .cnc-track-head-rail,
+  .cnc-track-head-rail-y,
+  [data-draw="shown"] .cnc-track-head-rail-y {
+    animation: none;
+    opacity: 0;
   }
 
   .cnc-plotter[data-plot="hidden"],

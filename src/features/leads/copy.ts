@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { siteConfig, type CncSpecs } from "@/content/site-config";
+import { formatSpecMm, thicknessRangeForGroup } from "@/lib/cnc-specs";
 import { clientEnv } from "@/lib/env";
 import { routing, type Locale } from "@/i18n/routing";
 import type { LeadOption } from "@/features/leads/components/option-group";
@@ -211,24 +212,11 @@ function resolveMaterialThickness(
   locale: Locale,
   t: Awaited<ReturnType<typeof getTranslations<"cnc.materials">>>,
 ): string | undefined {
-  if (!specs) return undefined;
-  const match =
-    specs.maxThicknessByMaterial.find((item) => item.group === groupKey) ??
-    (groupKey !== "aluminum"
-      ? specs.maxThicknessByMaterial.find((item) => item.group === "panels")
-      : undefined);
-
+  const match = thicknessRangeForGroup(specs, groupKey);
   if (!match) return undefined;
 
   return t("thicknessValue", {
-    min: formatMm(locale, match.minMm),
-    max: formatMm(locale, match.maxMm),
+    min: formatSpecMm(locale, match.minMm),
+    max: formatSpecMm(locale, match.maxMm),
   });
-}
-
-function formatMm(locale: Locale, value: number) {
-  return new Intl.NumberFormat(locale === "en" ? "en" : "es-MX", {
-    maximumFractionDigits: 1,
-    useGrouping: false,
-  }).format(value);
 }
