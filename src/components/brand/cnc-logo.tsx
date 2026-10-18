@@ -1,24 +1,35 @@
-import Image from "next/image";
-import { getTranslations } from "next-intl/server";
-import { brandAssets } from "@/lib/brand-assets";
+import { cncLogoAsset } from "@/lib/cnc-nav-logo";
 
 type LogoProps = {
   className?: string;
+  alt?: string;
   priority?: boolean;
+  loading?: "eager" | "lazy";
+  variant?: "full" | "nav";
+  "aria-hidden"?: boolean | "true" | "false";
 };
 
-export async function CncLogo({ className, priority = false }: LogoProps) {
-  const t = await getTranslations("cnc");
+export function CncLogo({
+  className,
+  alt = "CNC by Woodax Design",
+  loading = "eager",
+  variant = "full",
+  "aria-hidden": ariaHidden,
+}: LogoProps) {
+  const asset = cncLogoAsset(variant);
 
   return (
-    <Image
-      src={brandAssets.cnc.logo}
-      alt={t("title")}
-      width={1787}
-      height={733}
-      preload={priority}
-      loading="eager"
+    // Brand SVGs are served as-is; next/image would emit unscoped preloads.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={asset.src}
+      alt={alt}
+      width={asset.width}
+      height={asset.height}
+      loading={loading}
+      decoding="async"
       className={className}
+      aria-hidden={ariaHidden}
     />
   );
 }

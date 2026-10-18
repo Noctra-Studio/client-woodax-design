@@ -4,6 +4,7 @@ import Script from "next/script";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { NavLogoPreload } from "@/components/brand/nav-logo-preload";
 import { routing } from "@/i18n/routing";
 import { clientEnv } from "@/lib/env";
 import { requestSite } from "@/lib/request-site";
@@ -17,10 +18,19 @@ const quicksand = Quicksand({
   display: "swap",
 });
 
-export const viewport: Viewport = {
-  viewportFit: "cover",
-  interactiveWidget: "resizes-content",
-};
+export async function generateViewport(): Promise<Viewport> {
+  const site = await requestSite();
+  const color = site === "cnc" ? "#16171A" : "#F3F1EA";
+
+  return {
+    viewportFit: "cover",
+    interactiveWidget: "resizes-content",
+    themeColor: [
+      { media: "(prefers-color-scheme: light)", color },
+      { media: "(prefers-color-scheme: dark)", color },
+    ],
+  };
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -73,6 +83,7 @@ export default async function LocaleLayout({
         data-site={site}
         className="flex min-h-svh touch-manipulation flex-col pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] font-sans"
       >
+        <NavLogoPreload variant={site} />
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
         {clientEnv.NEXT_PUBLIC_APP_ENV === "production" &&
         clientEnv.NEXT_PUBLIC_GA_ID ? (

@@ -8,6 +8,7 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  type ReactElement,
   type ReactNode,
   type RefObject,
 } from "react";
@@ -41,14 +42,12 @@ import type { Pathname } from "@/i18n/routing";
 import { isDesignFull } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
-if (typeof document !== "undefined") {
-  document.documentElement.dataset.navModule = "1";
-}
-
 const easeOut = [0.22, 1, 0.36, 1] as const;
 const morphTransition = { duration: 0.32, ease: easeOut };
 const SCROLL_DOWN = 64;
 const SCROLL_UP = 24;
+const LOGO_FULL_PX = 44;
+const LOGO_COMPACT_PX = 32;
 const NAV_LOCK_EVENT = "woodax:nav-lock";
 const NAV_LOCK_TIMEOUT_MS = 900;
 const NAV_FADE_OUT_MS = 180;
@@ -165,6 +164,7 @@ type SiteNavProps = {
   facebookLabel: string;
   logo: ReactNode;
   logoCompact: ReactNode;
+  logoTraceSrc?: string;
 };
 
 type Box = { open: number; shut: number };
@@ -193,6 +193,7 @@ export function SiteNav({
   facebookLabel,
   logo,
   logoCompact,
+  logoTraceSrc,
 }: SiteNavProps) {
   const reduce = useReducedMotion() === true;
   const scrolled = useScrolled();
@@ -483,6 +484,7 @@ export function SiteNav({
     focusRing,
     logo,
     logoCompact,
+    logoTraceSrc,
     languageLabel,
     introPlaying,
     reduce,
@@ -517,25 +519,7 @@ function useScrolled() {
   const scrolledRef = useRef(false);
   const [scrolled, setScrolled] = useState(false);
 
-  useEffect(() => {
-    document.documentElement.dataset.navMounted = "1";
-    const unsubscribe = scrollY.on("change", (value) => {
-      document.documentElement.dataset.navOn = String(value);
-    });
-    const onScroll = () => {
-      document.documentElement.dataset.navWin = String(window.scrollY);
-      document.documentElement.dataset.navGet = String(scrollY.get());
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => {
-      unsubscribe();
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, [scrollY]);
-
   useMotionValueEvent(scrollY, "change", (latest) => {
-    document.documentElement.dataset.navScroll = String(latest);
     const next = scrolledRef.current
       ? latest >= SCROLL_UP
       : latest > SCROLL_DOWN;
@@ -738,8 +722,8 @@ function MeasureRow({
       className="site-nav-bar pointer-events-none invisible absolute top-0 left-0 flex w-max items-center gap-2 py-2 pr-2 pl-3"
       style={{ borderRadius: 9999 }}
     >
-      <span className="inline-flex h-7 items-center">
-        {cloneNode(logoCompact)}
+      <span className="inline-flex h-8 items-center" aria-hidden>
+        {cloneLogo(logoCompact, { measure: true })}
       </span>
       <ul className="flex items-center">
         {links.map((link) => (
@@ -806,6 +790,7 @@ type BarContentProps = {
   focusRing: string;
   logo: ReactNode;
   logoCompact: ReactNode;
+  logoTraceSrc?: string;
   languageLabel: string;
   introPlaying: boolean;
   reduce: boolean;
@@ -826,7 +811,6 @@ function BarContent({
   return (
     <>
       <LogoSlot
-        variant={props.variant}
         homeLabel={props.logoLabel}
         focusRing={props.focusRing}
         compact={compact}
@@ -836,6 +820,7 @@ function BarContent({
         fade={props.variant === "design" && props.introPlaying}
         logo={props.logo}
         logoCompact={props.logoCompact}
+        logoTraceSrc={props.logoTraceSrc}
       />
       <div className="flex min-w-0 flex-1 items-center justify-center">
         <NavLinks
@@ -910,6 +895,7 @@ function MobileNav({
   focusRing,
   logo,
   logoCompact,
+  logoTraceSrc,
   introPlaying,
 }: BarContentProps & {
   scrolled: boolean;
@@ -930,13 +916,12 @@ function MobileNav({
         data-variant={variant}
         data-scrolled={scrolled ? "true" : "false"}
         className={cn(
-          "site-nav-bar pointer-events-auto flex h-[52px] w-full items-center justify-between pr-1.5 pl-3 md:hidden",
+          "site-nav-bar pointer-events-auto flex h-14 w-full items-center justify-between pr-1.5 pl-3 md:hidden",
           variant === "design" ? "text-woodax-charcoal" : "text-cnc-text",
         )}
         style={{ borderRadius: 9999 }}
       >
         <LogoSlot
-          variant={variant}
           homeLabel={logoLabel}
           focusRing={focusRing}
           compact
@@ -946,6 +931,7 @@ function MobileNav({
           fade={variant === "design" && introPlaying}
           logo={logo}
           logoCompact={logoCompact}
+          logoTraceSrc={logoTraceSrc}
         />
         <SheetTrigger asChild>
           <Button
@@ -1034,7 +1020,6 @@ function MobileNav({
 }
 
 function LogoSlot({
-  variant,
   homeLabel,
   focusRing,
   compact,
@@ -1044,8 +1029,8 @@ function LogoSlot({
   fade,
   logo,
   logoCompact,
+  logoTraceSrc,
 }: {
-  variant: Variant;
   homeLabel: string;
   focusRing: string;
   compact: boolean;
@@ -1055,6 +1040,7 @@ function LogoSlot({
   fade: boolean;
   logo: ReactNode;
   logoCompact: ReactNode;
+  logoTraceSrc?: string;
 }) {
   const fullRef = useRef<HTMLSpanElement>(null);
   const markRef = useRef<HTMLSpanElement>(null);
@@ -1122,19 +1108,19 @@ function LogoSlot({
               className="pointer-events-none invisible absolute flex h-0 w-max"
             >
               <span ref={fullRef} className="inline-flex">
-                {cloneNode(logo)}
+                {cloneLogo(logo, { measure: true })}
               </span>
               <span ref={markRef} className="inline-flex">
-                {cloneNode(logoCompact)}
+                {cloneLogo(logoCompact, { measure: true })}
               </span>
             </span>
             <motion.span
-              className={cn(
-                "relative block overflow-hidden",
-                variant === "design" && !compact ? "h-11" : "h-7",
-              )}
+              className="relative block h-11 overflow-hidden"
               initial={false}
-              animate={slotWidth ? { width: slotWidth } : { width: "auto" }}
+              animate={{
+                width: slotWidth ?? "auto",
+                height: compact ? LOGO_COMPACT_PX : LOGO_FULL_PX,
+              }}
               transition={tween ? morphTransition : { duration: 0 }}
             >
               <span
@@ -1143,8 +1129,8 @@ function LogoSlot({
                   compact ? "opacity-0" : "opacity-100",
                 )}
               >
-                {cloneNode(logo)}
-                {trace ? <LogoToolpath /> : null}
+                {cloneLogo(logo, { visible: !compact })}
+                {trace ? <LogoToolpath src={logoTraceSrc} /> : null}
               </span>
               <span
                 className={cn(
@@ -1152,14 +1138,14 @@ function LogoSlot({
                   compact ? "opacity-100" : "opacity-0",
                 )}
               >
-                {cloneNode(logoCompact)}
+                {cloneLogo(logoCompact, { visible: compact })}
               </span>
             </motion.span>
           </>
         ) : (
-          <span className="relative inline-flex h-7 items-center">
-            {cloneNode(compact ? logoCompact : logo)}
-            {trace ? <LogoToolpath /> : null}
+          <span className="relative inline-flex h-8 items-center">
+            {cloneLogo(compact ? logoCompact : logo, { visible: true })}
+            {trace ? <LogoToolpath src={logoTraceSrc} /> : null}
           </span>
         )}
       </Link>
@@ -1167,8 +1153,75 @@ function LogoSlot({
   );
 }
 
-function cloneNode(node: ReactNode) {
-  return isValidElement(node) ? cloneElement(node) : node;
+type LogoCloneOptions = {
+  measure?: boolean;
+  visible?: boolean;
+};
+
+type LogoImgProps = {
+  loading?: "eager" | "lazy";
+  "aria-hidden"?: boolean | "true" | "false";
+};
+
+function cloneLogo(node: ReactNode, options: LogoCloneOptions = {}) {
+  if (!isValidElement<LogoImgProps>(node)) {
+    return node;
+  }
+
+  if (options.measure) {
+    return cloneElement(node, {
+      loading: "lazy",
+      "aria-hidden": true,
+    });
+  }
+
+  if (options.visible) {
+    return <DisplayedLogo mark={node} />;
+  }
+
+  return cloneElement(node, {
+    loading: "lazy",
+  });
+}
+
+function DisplayedLogo({ mark }: { mark: ReactElement<LogoImgProps> }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [shown, setShown] = useState(false);
+
+  useLayoutEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+
+    const sync = () => {
+      let current: HTMLElement | null = node;
+      while (current) {
+        const style = getComputedStyle(current);
+        if (style.display === "none" || style.visibility === "hidden") {
+          setShown(false);
+          return;
+        }
+        current = current.parentElement;
+      }
+      setShown(true);
+    };
+
+    sync();
+    const observer = new ResizeObserver(sync);
+    observer.observe(document.documentElement);
+    window.addEventListener("resize", sync, { passive: true });
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", sync);
+    };
+  }, []);
+
+  return (
+    <span ref={ref} className="contents">
+      {cloneElement(mark, {
+        loading: shown ? undefined : "lazy",
+      })}
+    </span>
+  );
 }
 
 function isLinkActive(

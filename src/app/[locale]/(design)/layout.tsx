@@ -7,7 +7,6 @@ import { DesignFrame } from "@/components/design/design-frame";
 import { IntroProvider } from "@/components/design/intro-provider";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteNav, type SiteNavLink } from "@/components/site/site-nav";
-import { designGallery } from "@/content/design-gallery";
 import {
   designNavKeys,
   designPages,
@@ -91,19 +90,8 @@ export default async function DesignLayout({
             instagramLabel={nav("instagram")}
             facebookUrl={publishedSocialUrl(siteConfig.facebookUrl)}
             facebookLabel={nav("facebook")}
-            logo={
-              <WoodaxLogo
-                priority={designGallery.length === 0}
-                className="h-11 w-auto"
-              />
-            }
-            logoCompact={
-              <BrandIcon
-                variant="design"
-                priority={false}
-                className="h-7 w-auto"
-              />
-            }
+            logo={<WoodaxLogo alt={t("title")} className="h-11 w-auto" />}
+            logoCompact={<BrandIcon variant="design" className="h-8 w-auto" />}
           />
           <DesignFrame mobileCtaLabel={nav("design.cta")}>{children}</DesignFrame>
           <SiteFooter variant="design" />

@@ -8,13 +8,13 @@ type LogoPaths = {
   paths: string[];
 };
 
-export function LogoToolpath() {
+export function LogoToolpath({ src = brandAssets.cnc.logo }: { src?: string }) {
   const [logo, setLogo] = useState<LogoPaths | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
 
-    fetch(brandAssets.cnc.logo, { signal: controller.signal })
+    fetch(src, { signal: controller.signal })
       .then((response) => (response.ok ? response.text() : null))
       .then((svg) => {
         if (!svg) return;
@@ -26,7 +26,7 @@ export function LogoToolpath() {
       });
 
     return () => controller.abort();
-  }, []);
+  }, [src]);
 
   if (!logo) return null;
 

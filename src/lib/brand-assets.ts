@@ -6,6 +6,7 @@ export const brandAssets = {
   cnc: {
     logo: "/brand/cnc-woodax-logo.svg",
     icon: "/brand/cnc-woodax-icon.svg",
+    nav: "/brand/cnc-woodax-nav.svg",
   },
 } as const;
 
