@@ -5,6 +5,7 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { NavLogoPreload } from "@/components/brand/nav-logo-preload";
+import { PrivacyDialogProvider } from "@/features/privacy/privacy-dialog-provider";
 import { routing } from "@/i18n/routing";
 import { clientEnv } from "@/lib/env";
 import { requestSite } from "@/lib/request-site";
@@ -84,7 +85,11 @@ export default async function LocaleLayout({
         className="flex min-h-svh touch-manipulation flex-col pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] font-sans"
       >
         <NavLogoPreload variant={site} />
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          <PrivacyDialogProvider variant={site}>
+            {children}
+          </PrivacyDialogProvider>
+        </NextIntlClientProvider>
         {clientEnv.NEXT_PUBLIC_APP_ENV === "production" &&
         clientEnv.NEXT_PUBLIC_GA_ID ? (
           <>

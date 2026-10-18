@@ -1,3 +1,4 @@
+import { SiteFooter } from "@/components/site/site-footer";
 import {
   generatePrivacyMetadata,
   PrivacyNotice,
@@ -17,6 +18,7 @@ export default async function DesignPrivacyPage({
       className={`${playfair.variable} flex flex-1 flex-col`}
     >
       <PrivacyNotice params={params} />
+      <SiteFooter variant="design" />
     </div>
   );
 }

@@ -29,7 +29,10 @@ import {
   useFocusOnError,
 } from "@/features/leads/components/lead-success";
 import { TextField } from "@/features/leads/components/text-field";
-import { PrivacyDialog } from "@/features/privacy/privacy-dialog";
+import {
+  isPlainLinkClick,
+  usePrivacyDialog,
+} from "@/features/privacy/privacy-dialog-provider";
 import { isLeadMaterial, track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
@@ -169,8 +172,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
   const [fields, setFields] = useState<LeadFields | null>(null);
   const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
   const [dismissedOptionError, setDismissedOptionError] = useState("");
-  const [privacyOpen, setPrivacyOpen] = useState(false);
-  const privacyLinkRef = useRef<HTMLAnchorElement>(null);
+  const { openPrivacy } = usePrivacyDialog();
   const leadSheetNested = useLeadSheetNested();
   const shouldFocusStepRef = useRef<0 | 1 | null>(null);
   const snapshot = useLeadSnapshot(copy.variant);
@@ -211,17 +213,6 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
 
   useFocusOnError(state.status, state.fieldErrors, idPrefix);
 
-  function handlePrivacyOpenChange(nextOpen: boolean) {
-    if (nextOpen) {
-      leadSheetNested?.setNestedDialogOpen(true);
-    } else if (leadSheetNested) {
-      requestAnimationFrame(() => {
-        leadSheetNested.setNestedDialogOpen(false);
-      });
-    }
-    setPrivacyOpen(nextOpen);
-  }
-
   useEffect(() => {
     return () => {
       leadSheetNested?.setNestedDialogOpen(false);
@@ -229,17 +220,19 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
   }, [leadSheetNested]);
 
   function handlePrivacyLinkClick(event: MouseEvent<HTMLAnchorElement>) {
-    if (
-      event.button !== 0 ||
-      event.metaKey ||
-      event.ctrlKey ||
-      event.shiftKey ||
-      event.altKey
-    ) {
-      return;
-    }
+    if (!isPlainLinkClick(event)) return;
     event.preventDefault();
-    handlePrivacyOpenChange(true);
+    const nested = leadSheetNested;
+    nested?.setNestedDialogOpen(true);
+    openPrivacy(event.currentTarget, {
+      onClose: nested
+        ? () => {
+            requestAnimationFrame(() => {
+              nested.setNestedDialogOpen(false);
+            });
+          }
+        : undefined,
+    });
   }
 
   useEffect(() => {
@@ -535,7 +528,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
         transition={{
           layout: { duration: reduceMotion ? 0 : 0.22, ease: easeOut },
         }}
-        className="overflow-hidden p-1 -m-1"
+        className="-m-1 overflow-hidden p-1"
       >
         <AnimatePresence mode="wait" initial={false} custom={direction}>
           <motion.div
@@ -705,7 +698,6 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
                         {copy.consentBefore}
                       </label>{" "}
                       <Link
-                        ref={privacyLinkRef}
                         href="/privacy"
                         onClick={handlePrivacyLinkClick}
                         className={cn(
@@ -795,13 +787,6 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
           </motion.div>
         </AnimatePresence>
       </motion.div>
-      <PrivacyDialog
-        open={privacyOpen}
-        onOpenChange={handlePrivacyOpenChange}
-        variant={copy.variant}
-        closeLabel={copy.closeLabel}
-        triggerRef={privacyLinkRef}
-      />
     </form>
   );
 }

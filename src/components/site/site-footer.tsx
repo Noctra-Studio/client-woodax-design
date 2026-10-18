@@ -2,6 +2,7 @@ import { hasLocale } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { AnalyticsAnchor } from "@/components/analytics/tracked-link";
+import { FooterPrivacyLink } from "@/components/site/footer-privacy-link";
 import { CncLogo } from "@/components/brand/cnc-logo";
 import { WoodaxLogo } from "@/components/brand/woodax-logo";
 import { FacebookIcon, InstagramIcon } from "@/components/icons/brand-social";
@@ -12,7 +13,11 @@ import {
   designPages,
   designSectionAnchors,
 } from "@/content/design-pages";
-import { cncSectionAnchors, siteConfig, siteEmail } from "@/content/site-config";
+import {
+  cncSectionAnchors,
+  siteConfig,
+  siteEmail,
+} from "@/content/site-config";
 import { Link } from "@/i18n/navigation";
 import { routing, type Locale, type Pathname } from "@/i18n/routing";
 import { requestCncHomeUrl, requestDesignHomeUrl } from "@/lib/request-site";
@@ -197,9 +202,9 @@ export async function SiteFooter({ variant }: { variant: "design" | "cnc" }) {
             )}
           >
             <p className="text-sm font-medium">{t("copyright", { year })}</p>
-            <Link href="/privacy" className={cn(linkClass, "text-sm")}>
+            <FooterPrivacyLink className={cn(linkClass, "text-sm")}>
               {t("privacy")}
-            </Link>
+            </FooterPrivacyLink>
             <LocaleSlot variant={variant} label={nav("language")} size="bar" />
             <a
               href={NOCTRA_URL}

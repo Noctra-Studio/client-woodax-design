@@ -17,9 +17,8 @@ export function FooterClearance({
   const formInView = useFormSectionInView("contacto");
   const full = isDesignFull();
   const barVisible =
-    variant === "design" && full ? pathname !== "/contact" : !formInView;
+    pathname !== "/privacy" &&
+    (variant === "design" && full ? pathname !== "/contact" : !formInView);
 
-  return (
-    <div className={cn(barVisible && "pb-28 md:pb-0")}>{children}</div>
-  );
+  return <div className={cn(barVisible && "pb-28 md:pb-0")}>{children}</div>;
 }

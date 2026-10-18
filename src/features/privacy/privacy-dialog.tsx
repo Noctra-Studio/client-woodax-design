@@ -40,10 +40,10 @@ export function PrivacyDialog({
           closeButtonRef.current?.focus();
         }}
         onCloseAutoFocus={(event) => {
-          if (triggerRef?.current) {
-            event.preventDefault();
-            triggerRef.current.focus();
-          }
+          const trigger = triggerRef?.current;
+          if (!trigger?.isConnected) return;
+          event.preventDefault();
+          trigger.focus();
         }}
         className={cn(
           "overflow-hidden md:border",
