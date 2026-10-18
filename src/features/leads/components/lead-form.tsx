@@ -2,19 +2,25 @@
 
 import {
   useActionState,
+  useCallback,
   useEffect,
   useRef,
   useState,
   useSyncExternalStore,
+  type FormEvent,
 } from "react";
+import { ArrowLeft, Check } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { submitLead } from "@/features/leads/actions";
 import type { LeadCopy } from "@/features/leads/copy";
-import { leadError } from "@/features/leads/schema";
+import { leadError, parseContact } from "@/features/leads/schema";
 import { initialLeadState } from "@/features/leads/state";
-import { OptionGroup } from "@/features/leads/components/option-group";
+import {
+  FieldErrorMessage,
+  OptionGroup,
+} from "@/features/leads/components/option-group";
 import { PendingSpinner } from "@/features/leads/components/pending-spinner";
 import {
   LeadSuccess,
@@ -22,16 +28,17 @@ import {
 } from "@/features/leads/components/lead-success";
 import { TextField } from "@/features/leads/components/text-field";
 import { isLeadMaterial, track } from "@/lib/analytics";
+import { cn } from "@/lib/utils";
 
 const easeOut = [0.22, 1, 0.36, 1] as const;
 const slide = {
   enter: (direction: number) => ({
-    x: direction > 0 ? 28 : -28,
+    x: direction > 0 ? 16 : -16,
     opacity: 0,
   }),
   center: { x: 0, opacity: 1 },
   exit: (direction: number) => ({
-    x: direction > 0 ? -28 : 28,
+    x: direction > 0 ? -16 : 16,
     opacity: 0,
   }),
 };
@@ -159,6 +166,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
   const [fields, setFields] = useState<LeadFields | null>(null);
   const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
   const [dismissedOptionError, setDismissedOptionError] = useState("");
+  const shouldFocusStepRef = useRef<0 | 1 | null>(null);
   const snapshot = useLeadSnapshot(copy.variant);
   const reduceMotion = useReducedMotion();
   const idPrefix = copy.variant;
@@ -343,9 +351,79 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
       return;
     }
     setDismissedOptionError(optionErrorStamp);
+    shouldFocusStepRef.current = 1;
     setDirection(1);
     setStep(1);
   }
+
+  function goBackStep() {
+    shouldFocusStepRef.current = 0;
+    setDirection(-1);
+    setStep(0);
+  }
+
+  function handleFormSubmit(event: FormEvent<HTMLFormElement>) {
+    if (visibleStep === 0) {
+      event.preventDefault();
+      continueStep();
+      return;
+    }
+
+    const nextErrors: Record<string, string> = {};
+    const trimmedName = name.trim();
+    if (trimmedName.length < 2 || trimmedName.length > 80) {
+      nextErrors.name = leadError.name;
+    }
+    if (!parseContact(contact)) {
+      nextErrors.contact = leadError.contact;
+    }
+    if (isDesign && city.trim().length > 0) {
+      const trimmedCity = city.trim();
+      if (trimmedCity.length < 2 || trimmedCity.length > 60) {
+        nextErrors.city = leadError.city;
+      }
+    }
+    if (!consent) {
+      nextErrors.consent = leadError.consent;
+    }
+
+    if (Object.keys(nextErrors).length > 0) {
+      event.preventDefault();
+      setClientErrors(nextErrors);
+      const first = Object.keys(nextErrors)[0];
+      if (first) {
+        document.getElementById(`${idPrefix}-${first}`)?.focus();
+      }
+    }
+  }
+
+  const handleStepMount = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (!node || shouldFocusStepRef.current === null) return;
+      const targetStep = shouldFocusStepRef.current;
+      shouldFocusStepRef.current = null;
+
+      requestAnimationFrame(() => {
+        if (targetStep === 1) {
+          document.getElementById(`${idPrefix}-name`)?.focus();
+          return;
+        }
+        const checkedRadio = node.querySelector<HTMLInputElement>(
+          'input[type="radio"]:checked',
+        );
+        if (checkedRadio) {
+          checkedRadio.focus();
+          return;
+        }
+        document
+          .getElementById(
+            `${idPrefix}-${isDesign ? "projectType" : "material"}`,
+          )
+          ?.focus();
+      });
+    },
+    [idPrefix, isDesign],
+  );
 
   if (state.status === "success") {
     return <LeadSuccess copy={copy} values={state.values ?? {}} />;
@@ -357,9 +435,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
       className="relative flex flex-col gap-6"
       noValidate
       aria-busy={pending}
-      onSubmit={(event) => {
-        if (visibleStep === 0) event.preventDefault();
-      }}
+      onSubmit={handleFormSubmit}
     >
       <input type="hidden" name="site" value={copy.variant} />
       <input type="hidden" name="locale" value={copy.locale} />
@@ -385,33 +461,55 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
         />
       </div>
 
+      {!isDesign && copy.stepIndicator ? (
+        <div className="flex flex-col gap-2">
+          <p className="text-cnc-muted font-mono text-xs tracking-[0.08em] uppercase tabular-nums">
+            {visibleStep === 0
+              ? copy.stepIndicator.step1
+              : copy.stepIndicator.step2}
+          </p>
+          <div
+            aria-hidden="true"
+            className="bg-cnc-line h-px w-full overflow-hidden"
+          >
+            <div
+              className="bg-cnc-white h-full w-full origin-left transition-transform duration-[240ms] ease-[var(--ease-out)] motion-reduce:transition-none"
+              style={{
+                transform: visibleStep === 0 ? "scaleX(0.5)" : "scaleX(1)",
+              }}
+            />
+          </div>
+        </div>
+      ) : null}
+
       {shownErrors.form ? (
-        <p
+        <FieldErrorMessage
           id={`${idPrefix}-form-error`}
           tabIndex={-1}
-          role="alert"
-          className="text-[14px] leading-snug outline-none"
-        >
-          {messageFor(copy, shownErrors.form)}
-        </p>
+          message={messageFor(copy, shownErrors.form) ?? copy.errorGeneric}
+          prefix={copy.errorPrefix}
+          variant={copy.variant}
+          className="mt-0"
+        />
       ) : null}
 
       <motion.div
         layout
         transition={{
-          layout: { duration: reduceMotion ? 0 : 0.24, ease: easeOut },
+          layout: { duration: reduceMotion ? 0 : 0.22, ease: easeOut },
         }}
-        className="overflow-hidden"
+        className="overflow-hidden p-1 -m-1"
       >
         <AnimatePresence mode="wait" initial={false} custom={direction}>
           <motion.div
             key={visibleStep}
+            ref={handleStepMount}
             custom={direction}
             variants={slide}
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{ duration: reduceMotion ? 0 : 0.24, ease: easeOut }}
+            transition={{ duration: reduceMotion ? 0 : 0.22, ease: easeOut }}
             className="flex flex-col gap-6"
           >
             {visibleStep === 0 ? (
@@ -419,7 +517,11 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
                 <OptionGroup
                   name={`${idPrefix}-choice-ui`}
                   fieldId={`${idPrefix}-${isDesign ? "projectType" : "material"}`}
-                  legend={copy.step1Question}
+                  legend={
+                    isDesign
+                      ? copy.step1Question
+                      : (copy.step1Label ?? copy.step1Question)
+                  }
                   options={copy.options}
                   value={isDesign ? projectType : material}
                   onChange={(value) => {
@@ -432,17 +534,19 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
                     }
                   }}
                   variant={copy.variant}
+                  layout={isDesign ? "stack" : "tiles"}
                   error={messageFor(
                     copy,
                     shownErrors[isDesign ? "projectType" : "material"],
                   )}
                   errorId={`${idPrefix}-${isDesign ? "projectType" : "material"}-error`}
+                  errorPrefix={copy.errorPrefix}
                 />
                 {copy.step1bQuestion && copy.stateOptions ? (
                   <OptionGroup
                     name={`${idPrefix}-state-ui`}
                     fieldId={`${idPrefix}-projectState`}
-                    legend={copy.step1bQuestion}
+                    legend={copy.step1bLabel ?? copy.step1bQuestion}
                     options={copy.stateOptions}
                     value={projectState}
                     onChange={(value) => {
@@ -450,14 +554,18 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
                       clearError("projectState");
                     }}
                     variant={copy.variant}
+                    layout="pills"
                     error={messageFor(copy, shownErrors.projectState)}
                     errorId={`${idPrefix}-projectState-error`}
+                    errorPrefix={copy.errorPrefix}
                   />
                 ) : null}
                 <Button
                   type="button"
                   variant={buttonVariant}
+                  arrow={!isDesign}
                   onClick={continueStep}
+                  className={cn(!isDesign && "w-full sm:w-auto sm:self-end")}
                 >
                   {copy.next}
                 </Button>
@@ -477,6 +585,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
                   autoComplete="name"
                   error={messageFor(copy, shownErrors.name)}
                   errorId={`${idPrefix}-name-error`}
+                  errorPrefix={copy.errorPrefix}
                 />
                 <TextField
                   id={`${idPrefix}-contact`}
@@ -492,6 +601,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
                   inputMode="text"
                   error={messageFor(copy, shownErrors.contact)}
                   errorId={`${idPrefix}-contact-error`}
+                  errorPrefix={copy.errorPrefix}
                 />
                 {copy.cityLabel ? (
                   <TextField
@@ -507,11 +617,15 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
                     autoComplete="address-level2"
                     error={messageFor(copy, shownErrors.city)}
                     errorId={`${idPrefix}-city-error`}
+                    errorPrefix={copy.errorPrefix}
                   />
                 ) : null}
                 <div>
                   <div className="flex items-start gap-1">
-                    <span className="flex size-11 shrink-0 items-center justify-center">
+                    <label
+                      htmlFor={`${idPrefix}-consent`}
+                      className="relative flex size-11 shrink-0 cursor-pointer items-center justify-center"
+                    >
                       <input
                         id={`${idPrefix}-consent`}
                         name="consent"
@@ -527,58 +641,116 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
                             ? `${idPrefix}-consent-error`
                             : undefined
                         }
-                        className="size-5 accent-current"
+                        className={cn(
+                          isDesign
+                            ? "size-5 accent-current"
+                            : "peer border-cnc-muted pointer-fine:hover:border-cnc-text checked:border-cnc-white checked:bg-cnc-white focus-visible:outline-cnc-white size-5 appearance-none rounded-[3px] border bg-transparent transition-colors duration-[var(--duration-ui)] ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+                        )}
                       />
-                    </span>
-                    <p className="pt-2.5 text-[15px] leading-relaxed">
-                      <label htmlFor={`${idPrefix}-consent`}>
+                      {!isDesign ? (
+                        <Check
+                          aria-hidden="true"
+                          strokeWidth={2}
+                          className="text-cnc-bg pointer-events-none absolute size-3.5 opacity-0 transition-opacity duration-[var(--duration-press)] peer-checked:opacity-100"
+                        />
+                      ) : null}
+                    </label>
+                    <p
+                      className={cn(
+                        "pt-2.5 text-[15px] leading-relaxed",
+                        !isDesign && "text-cnc-muted",
+                      )}
+                    >
+                      <label
+                        htmlFor={`${idPrefix}-consent`}
+                        className="cursor-pointer"
+                      >
                         {copy.consentBefore}
                       </label>{" "}
                       <Link
                         href="/privacy"
-                        className="underline decoration-current/40 underline-offset-4"
+                        className={cn(
+                          "underline decoration-current/40 underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+                          !isDesign
+                            ? "text-cnc-text focus-visible:outline-cnc-white"
+                            : "focus-visible:outline-woodax-charcoal",
+                        )}
                       >
                         {copy.consentLink}
                       </Link>
                     </p>
                   </div>
                   {shownErrors.consent ? (
-                    <p
+                    <FieldErrorMessage
                       id={`${idPrefix}-consent-error`}
-                      className="mt-1 text-[14px] leading-snug"
-                    >
-                      {messageFor(copy, shownErrors.consent)}
-                    </p>
+                      message={
+                        messageFor(copy, shownErrors.consent) ??
+                        copy.errorGeneric
+                      }
+                      prefix={copy.errorPrefix}
+                      variant={copy.variant}
+                      className="mt-1"
+                    />
                   ) : null}
                 </div>
-                <div className="flex flex-wrap gap-3">
-                  <Button
-                    type="button"
-                    variant={secondaryVariant}
-                    onClick={() => {
-                      setDirection(-1);
-                      setStep(0);
-                    }}
-                    disabled={pending}
-                  >
-                    {copy.back}
-                  </Button>
-                  <Button
-                    type="submit"
-                    variant={buttonVariant}
-                    disabled={pending}
-                    className="min-w-40"
-                  >
-                    {pending ? (
-                      <>
-                        <span className="sr-only">{copy.submit}</span>
-                        <PendingSpinner />
-                      </>
-                    ) : (
-                      copy.submit
-                    )}
-                  </Button>
-                </div>
+                {isDesign ? (
+                  <div className="flex flex-wrap gap-3">
+                    <Button
+                      type="button"
+                      variant={secondaryVariant}
+                      onClick={goBackStep}
+                      disabled={pending}
+                    >
+                      {copy.back}
+                    </Button>
+                    <Button
+                      type="submit"
+                      variant={buttonVariant}
+                      disabled={pending}
+                      className="min-w-40"
+                    >
+                      {pending ? (
+                        <>
+                          <span className="sr-only">{copy.submit}</span>
+                          <PendingSpinner />
+                        </>
+                      ) : (
+                        copy.submit
+                      )}
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between gap-4 pt-2">
+                    <button
+                      type="button"
+                      onClick={goBackStep}
+                      disabled={pending}
+                      className="text-cnc-muted pointer-fine:hover:text-cnc-text focus-visible:outline-cnc-white group inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-[4px] px-1 text-[15px] font-medium transition-colors duration-[var(--duration-press)] ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50"
+                    >
+                      <ArrowLeft
+                        aria-hidden="true"
+                        strokeWidth={1.5}
+                        className="size-4 transition-transform duration-[var(--duration-press)] ease-out motion-reduce:transition-none pointer-fine:group-hover:-translate-x-1"
+                      />
+                      <span>{copy.back}</span>
+                    </button>
+                    <Button
+                      type="submit"
+                      variant={buttonVariant}
+                      disabled={pending}
+                      className="min-w-40"
+                    >
+                      {pending ? (
+                        <>
+                          <span className="sr-only">{copy.submit}</span>
+                          <PendingSpinner />
+                        </>
+                      ) : (
+                        copy.submit
+                      )}
+                    </Button>
+                  </div>
+                )}
               </>
             )}
           </motion.div>

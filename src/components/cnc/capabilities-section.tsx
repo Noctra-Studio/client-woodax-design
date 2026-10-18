@@ -155,11 +155,12 @@ function capabilityRows(
 
   for (const range of specs.maxThicknessByMaterial) {
     if (range.materials.length === 0) continue;
+    const formatted = list.format(
+      range.materials.map((material) => t(`materials.${material}`)),
+    );
     rows.push({
       key: range.group,
-      label: list.format(
-        range.materials.map((material) => t(`materials.${material}`)),
-      ),
+      label: formatted.charAt(0).toUpperCase() + formatted.slice(1),
       value: t("thicknessValue", {
         min: formatMm(locale, range.minMm),
         max: formatMm(locale, range.maxMm),

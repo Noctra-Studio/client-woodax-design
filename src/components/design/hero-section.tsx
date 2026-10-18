@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { HeroMedia } from "@/components/design/hero-media";
 import { useIntro } from "@/components/design/intro-provider";
+import { lockNavAnchor } from "@/components/site/site-nav";
 import { designGallery } from "@/content/design-gallery";
 import { useLeadUi } from "@/features/leads/components/lead-ui";
 import { analyticsLocale, track } from "@/lib/analytics";
@@ -70,7 +71,10 @@ export function HeroSection() {
                   location: "hero",
                 });
                 if (full) return;
-                if (!window.matchMedia("(max-width: 767px)").matches) return;
+                if (!window.matchMedia("(max-width: 767px)").matches) {
+                  lockNavAnchor("contacto");
+                  return;
+                }
                 event.preventDefault();
                 leadUi?.setOpen(true);
               }}
@@ -81,6 +85,9 @@ export function HeroSection() {
               <Button
                 href="#proyectos"
                 variant={onPhoto ? "design-primary" : "design-secondary"}
+                onClick={() => {
+                  lockNavAnchor("proyectos");
+                }}
                 className={
                   onPhoto
                     ? "bg-woodax-cream text-woodax-charcoal pointer-fine:hover:bg-woodax-cream focus-visible:outline-woodax-charcoal"

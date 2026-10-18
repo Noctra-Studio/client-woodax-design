@@ -130,6 +130,7 @@
         "city": "City must be between 2 and 60 characters.",
         "details": "Choose at least one detail."
       },
+      "errorPrefix": "Error:",
       "close": "Close",
       "mobileBar": "Tell us about your project"
     },
@@ -202,6 +203,29 @@
     },
     "materials": {
       "title": "Materials",
+      "ideasTitle": "Ideas for what you can make",
+      "nextIdea": "See next idea",
+      "thicknessValue": "{min}–{max} mm",
+      "groups": {
+        "wood": {
+          "name": "Wood, MDF, melamine, plywood",
+          "example1": "Cabinet or drawer unit",
+          "example2": "Decorative fretwork panel",
+          "example3": "Joinery jig"
+        },
+        "acrylic": {
+          "name": "Acrylic, plastics, Corian",
+          "example1": "Dimensional letter sign",
+          "example2": "Retail display stand",
+          "example3": "Corian countertop or part"
+        },
+        "aluminum": {
+          "name": "Aluminum",
+          "example1": "Logo plate",
+          "example2": "Dimensional letter",
+          "example3": "Perforated technical part"
+        }
+      },
       "wood": "Wood · MDF, plywood and solid wood",
       "acrylic": "Acrylic",
       "aluminum": "Thin aluminum",
@@ -226,7 +250,10 @@
     },
     "form": {
       "title": "Tell us what you need to produce",
+      "subtitle": "We'll reply with a quote and next steps.",
+      "stepIndicator": "{current} / {total}",
       "step1": {
+        "label": "Material",
         "question": "Which material?"
       },
       "materialOptions": {
@@ -236,6 +263,7 @@
         "other": "Other"
       },
       "step1b": {
+        "label": "Your project",
         "question": "Where is your project at?"
       },
       "stateOptions": {
@@ -274,6 +302,7 @@
         "projectState": "Choose where your project is at.",
         "details": "Choose a quantity."
       },
+      "errorPrefix": "Error:",
       "close": "Close",
       "mobileBar": "Get a quote"
     },

@@ -1,5 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
+import { siteConfig, type CncSpecs } from "@/content/site-config";
 import { clientEnv } from "@/lib/env";
 import { routing, type Locale } from "@/i18n/routing";
 import type { LeadOption } from "@/features/leads/components/option-group";
@@ -8,8 +9,15 @@ export type LeadCopy = {
   variant: "design" | "cnc";
   locale: Locale;
   title: string;
+  subtitle?: string;
+  stepIndicator?: {
+    step1: string;
+    step2: string;
+  };
+  step1Label?: string;
   step1Question: string;
   options: LeadOption[];
+  step1bLabel?: string;
   step1bQuestion?: string;
   stateOptions?: LeadOption[];
   nameLabel: string;
@@ -30,6 +38,7 @@ export type LeadCopy = {
   whatsapp: string;
   detailsSubmit: string;
   errorGeneric: string;
+  errorPrefix: string;
   errors: Record<string, string>;
   closeLabel: string;
   mobileBar: string;
@@ -101,6 +110,7 @@ export async function getLeadCopy(
       whatsapp: form("success.whatsapp"),
       detailsSubmit: form("success.detailsSubmit"),
       errorGeneric: form("error.generic"),
+      errorPrefix: form("errorPrefix"),
       errors: withGeneric(
         {
           name: form("errors.name"),
@@ -118,18 +128,42 @@ export async function getLeadCopy(
     };
   }
 
-  const form = await getTranslations("cnc.form");
+  const [form, materials] = await Promise.all([
+    getTranslations("cnc.form"),
+    getTranslations("cnc.materials"),
+  ]);
+  const specs = siteConfig.cncSpecs;
+
   return {
     variant,
     locale,
     title: form("title"),
+    subtitle: form("subtitle"),
+    stepIndicator: {
+      step1: form("stepIndicator", { current: "01", total: "02" }),
+      step2: form("stepIndicator", { current: "02", total: "02" }),
+    },
+    step1Label: form("step1.label"),
     step1Question: form("step1.question"),
     options: [
-      { value: "wood", label: form("materialOptions.wood") },
-      { value: "acrylic", label: form("materialOptions.acrylic") },
-      { value: "aluminum", label: form("materialOptions.aluminum") },
+      {
+        value: "wood",
+        label: form("materialOptions.wood"),
+        meta: resolveMaterialThickness(specs, "wood", locale, materials),
+      },
+      {
+        value: "acrylic",
+        label: form("materialOptions.acrylic"),
+        meta: resolveMaterialThickness(specs, "acrylic", locale, materials),
+      },
+      {
+        value: "aluminum",
+        label: form("materialOptions.aluminum"),
+        meta: resolveMaterialThickness(specs, "aluminum", locale, materials),
+      },
       { value: "other", label: form("materialOptions.other") },
     ],
+    step1bLabel: form("step1b.label"),
     step1bQuestion: form("step1b.question"),
     stateOptions: [
       { value: "file-ready", label: form("stateOptions.file-ready") },
@@ -153,6 +187,7 @@ export async function getLeadCopy(
     whatsapp: form("success.whatsapp"),
     detailsSubmit: form("success.detailsSubmit"),
     errorGeneric: form("error.generic"),
+    errorPrefix: form("errorPrefix"),
     errors: withGeneric(
       {
         name: form("errors.name"),
@@ -168,4 +203,32 @@ export async function getLeadCopy(
     mobileBar: form("mobileBar"),
     whatsappHref,
   };
+}
+
+function resolveMaterialThickness(
+  specs: CncSpecs | undefined,
+  groupKey: "wood" | "acrylic" | "aluminum",
+  locale: Locale,
+  t: Awaited<ReturnType<typeof getTranslations<"cnc.materials">>>,
+): string | undefined {
+  if (!specs) return undefined;
+  const match =
+    specs.maxThicknessByMaterial.find((item) => item.group === groupKey) ??
+    (groupKey !== "aluminum"
+      ? specs.maxThicknessByMaterial.find((item) => item.group === "panels")
+      : undefined);
+
+  if (!match) return undefined;
+
+  return t("thicknessValue", {
+    min: formatMm(locale, match.minMm),
+    max: formatMm(locale, match.maxMm),
+  });
+}
+
+function formatMm(locale: Locale, value: number) {
+  return new Intl.NumberFormat(locale === "en" ? "en" : "es-MX", {
+    maximumFractionDigits: 1,
+    useGrouping: false,
+  }).format(value);
 }

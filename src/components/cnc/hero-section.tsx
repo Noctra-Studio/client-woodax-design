@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { RegistrationMarks } from "@/components/cnc/registration-marks";
 import { HeroMedia } from "@/components/design/hero-media";
 import { useIntro } from "@/components/cnc/intro-provider";
+import { lockNavAnchor } from "@/components/site/site-nav";
 import { Button } from "@/components/ui/button";
 import { siteConfig, type CncHero } from "@/content/site-config";
 import { useLeadUi } from "@/features/leads/components/lead-ui";
@@ -104,7 +105,10 @@ export function HeroSection() {
                     locale: analyticsLocale(locale),
                     location: "hero",
                   });
-                  if (!window.matchMedia("(max-width: 767px)").matches) return;
+                  if (!window.matchMedia("(max-width: 767px)").matches) {
+                    lockNavAnchor("contacto");
+                    return;
+                  }
                   event.preventDefault();
                   leadUi?.setOpen(true);
                 }}
