@@ -47,7 +47,7 @@
       "title": "Woodax Design · Bespoke carpentry in Querétaro",
       "description": "Kitchens, closets, one-of-a-kind pieces and furniture for businesses, designed with you and made to fit your space."
     },
-    "skipToContent": "TODO(copy)",
+    "skipToContent": "Skip to content",
     "hero": {
       "eyebrow": "New site on the way · Open for projects",
       "headlineLead": "We design and build what your space needs.",
@@ -178,8 +178,8 @@
     "title": "CNC by Woodax Design",
     "skipToContent": "Skip to content",
     "meta": {
-      "title": "CNC by Woodax Design · CNC cutting and router rental in Querétaro",
-      "description": "Precision CNC cutting in wood, acrylic and aluminum for workshops and companies. Rent machine time or order volume production."
+      "title": "CNC Cutting in Querétaro · Wood, acrylic and aluminum | CNC by Woodax Design",
+      "description": "CNC router time rental and volume production for workshops, companies and sign makers in Querétaro. Send your file or idea and get a quote."
     },
     "hero": {
       "eyebrow": "Capacity available · Now quoting",
@@ -230,8 +230,8 @@
         "question": "Which material?"
       },
       "materialOptions": {
-        "wood": "Wood",
-        "acrylic": "Acrylic",
+        "wood": "Wood, MDF, melamine or plywood",
+        "acrylic": "Acrylic, plastics or Corian",
         "aluminum": "Aluminum",
         "other": "Other"
       },
@@ -321,8 +321,8 @@
       "description": "Kitchens, closets, one-of-a-kind pieces and furniture for businesses, designed with you and made to fit your space."
     },
     "cnc": {
-      "title": "CNC by Woodax Design · CNC cutting and router rental in Querétaro",
-      "description": "Precision CNC cutting in wood, acrylic and aluminum for workshops and companies. Rent machine time or order volume production."
+      "title": "CNC Cutting in Querétaro · Wood, acrylic and aluminum | CNC by Woodax Design",
+      "description": "CNC router time rental and volume production for workshops, companies and sign makers in Querétaro. Send your file or idea and get a quote."
     }
   }
 }

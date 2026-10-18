@@ -47,7 +47,7 @@
       "title": "Woodax Design · Carpintería a medida en Querétaro",
       "description": "Cocinas, clósets, piezas únicas y mobiliario para negocios, diseñados contigo y hechos a la medida de tu espacio."
     },
-    "skipToContent": "TODO(copy)",
+    "skipToContent": "Saltar al contenido",
     "hero": {
       "eyebrow": "Nuevo sitio en camino · Abiertos a proyectos",
       "headlineLead": "Diseñamos y fabricamos lo que tu espacio necesita.",
@@ -178,8 +178,8 @@
     "title": "CNC by Woodax Design",
     "skipToContent": "Saltar al contenido",
     "meta": {
-      "title": "CNC by Woodax Design · Corte CNC y renta de router en Querétaro",
-      "description": "Corte CNC de precisión en madera, acrílico y aluminio para talleres y empresas. Renta tiempo de máquina o encarga producción en volumen."
+      "title": "Corte CNC en Querétaro · Madera, acrílico y aluminio | CNC by Woodax Design",
+      "description": "Renta de tiempo de router CNC y producción en volumen para talleres, empresas y rotulistas en Querétaro. Envía tu archivo o tu idea y recibe una cotización."
     },
     "hero": {
       "eyebrow": "Capacidad disponible · Cotizaciones abiertas",
@@ -230,8 +230,8 @@
         "question": "¿En qué material?"
       },
       "materialOptions": {
-        "wood": "Madera",
-        "acrylic": "Acrílico",
+        "wood": "Madera, MDF, melamina o triplay",
+        "acrylic": "Acrílico, plásticos o Corian",
         "aluminum": "Aluminio",
         "other": "Otro"
       },
@@ -321,8 +321,8 @@
       "description": "Cocinas, clósets, piezas únicas y mobiliario para negocios, diseñados contigo y hechos a la medida de tu espacio."
     },
     "cnc": {
-      "title": "CNC by Woodax Design · Corte CNC y renta de router en Querétaro",
-      "description": "Corte CNC de precisión en madera, acrílico y aluminio para talleres y empresas. Renta tiempo de máquina o encarga producción en volumen."
+      "title": "Corte CNC en Querétaro · Madera, acrílico y aluminio | CNC by Woodax Design",
+      "description": "Renta de tiempo de router CNC y producción en volumen para talleres, empresas y rotulistas en Querétaro. Envía tu archivo o tu idea y recibe una cotización."
     }
   }
 }

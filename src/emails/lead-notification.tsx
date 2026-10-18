@@ -24,8 +24,8 @@ const projectTypeLabel = {
 } as const;
 
 const materialLabel = {
-  wood: "Madera",
-  acrylic: "Acrílico",
+  wood: "Madera, MDF, melamina o triplay",
+  acrylic: "Acrílico, plásticos o Corian",
   aluminum: "Aluminio",
   other: "Otro",
 } as const;

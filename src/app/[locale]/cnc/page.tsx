@@ -54,23 +54,45 @@ export async function generateMetadata({
     title: t("title"),
     description: t("description"),
   });
-  const poster = cncGallery[0];
-  if (!poster) return metadata;
+  const ogImage = cncOgImage(locale);
+  if (!ogImage) return metadata;
 
   return {
     ...metadata,
     openGraph: {
       ...metadata.openGraph,
-      images: [
-        {
-          url: poster.src,
-          width: poster.width,
-          height: poster.height,
-          alt: poster.alt[locale],
-        },
-      ],
+      images: [ogImage],
     },
   };
+}
+
+function cncOgImage(locale: Locale) {
+  const poster = cncGallery[0];
+  if (poster) {
+    return {
+      url: poster.src,
+      width: poster.width,
+      height: poster.height,
+      alt: poster.alt[locale],
+    };
+  }
+
+  const hero = siteConfig.cncHero;
+  if (hero.type === "video") {
+    return {
+      url: hero.poster,
+      alt: hero.alt[locale],
+    };
+  }
+
+  if (hero.type === "image") {
+    return {
+      url: hero.src,
+      alt: hero.alt[locale],
+    };
+  }
+
+  return null;
 }
 
 export default async function CncPage({
@@ -93,7 +115,21 @@ export default async function CncPage({
   const nav = await getTranslations("nav");
   const design = await getTranslations("design");
   const copy = await getLeadCopy("cnc");
-  const jsonLd = cncJsonLd(t("title"), design("title"));
+  const jsonLd = cncJsonLd({
+    name: t("title"),
+    description: t("meta.description"),
+    parentName: design("title"),
+    services: [
+      {
+        name: t("ways.rentTitle"),
+        description: t("ways.rentBody"),
+      },
+      {
+        name: t("ways.volumeTitle"),
+        description: t("ways.volumeBody"),
+      },
+    ],
+  });
 
   return (
     <>
@@ -159,12 +195,27 @@ export default async function CncPage({
   );
 }
 
-function cncJsonLd(name: string, parentName: string) {
-  const data: Record<string, unknown> = {
-    "@context": "https://schema.org",
+function cncJsonLd({
+  name,
+  description,
+  parentName,
+  services,
+}: {
+  name: string;
+  description: string;
+  parentName: string;
+  services: Array<{ name: string; description: string }>;
+}) {
+  const origin = siteOrigin("cnc");
+  const businessId = `${origin}/#organization`;
+  const sameAs = sameAsUrls([siteConfig.instagramUrl, siteConfig.facebookUrl]);
+
+  const business: Record<string, unknown> = {
     "@type": "LocalBusiness",
+    "@id": businessId,
     name,
-    url: siteOrigin("cnc"),
+    description,
+    url: origin,
     areaServed: "Querétaro",
     parentOrganization: {
       "@type": "Organization",
@@ -179,12 +230,21 @@ function cncJsonLd(name: string, parentName: string) {
       "MDF cutting",
       "signage",
     ],
+    ...(sameAs.length > 0 ? { sameAs } : {}),
   };
 
-  const sameAs = sameAsUrls([siteConfig.instagramUrl, siteConfig.facebookUrl]);
-  if (sameAs.length > 0) {
-    data.sameAs = sameAs;
-  }
+  const serviceNodes = services.map((service) => ({
+    "@type": "Service",
+    name: service.name,
+    description: service.description,
+    areaServed: "Querétaro",
+    provider: { "@id": businessId },
+  }));
+
+  const data = {
+    "@context": "https://schema.org",
+    "@graph": [business, ...serviceNodes],
+  };
 
   return JSON.stringify(data).replace(/</g, "\\u003c");
 }
