@@ -26,6 +26,9 @@ function emit(tracking: Tracking) {
     case "generate_lead":
       track(tracking.event, tracking.params);
       break;
+    case "whatsapp_click":
+      track(tracking.event, tracking.params);
+      break;
   }
 }
 
@@ -35,22 +38,31 @@ export function AnalyticsButton({
   tracking,
   onClick,
   children,
-  ...props
+  href,
+  variant,
+  arrow,
+  className,
+  target,
+  rel,
 }: {
   href: string;
   variant: ButtonVariant;
   arrow?: boolean;
   className?: string;
+  target?: string;
+  rel?: string;
   children: ReactNode;
   tracking: Tracking;
   onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
 }) {
   return (
     <Button
-      href={props.href}
-      variant={props.variant}
-      arrow={props.arrow}
-      className={props.className}
+      href={href}
+      variant={variant}
+      arrow={arrow}
+      className={className}
+      target={target}
+      rel={rel}
       onClick={(event: MouseEvent<HTMLAnchorElement>) => {
         onClick?.(event);
         if (event.defaultPrevented) return;

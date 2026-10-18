@@ -132,6 +132,8 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - success.body — ES: Revisaremos tu proyecto y te contactaremos con los siguientes pasos. ¿Cuántas piezas necesitas? | EN: We'll review your project and get back to you with next steps. How many parts do you need?
 - success.quantity — ES: 1–10 · 11–100 · Más de 100 | EN: 1–10 · 11–100 · 100+
 - success.whatsapp — ES: Continuar por WhatsApp | EN: Continue on WhatsApp
+- whatsapp — ES: WhatsApp | EN: WhatsApp (botón secundario en contacto y en la barra móvil; solo si el número de entorno es válido. El número no se muestra.)
+- whatsappPrefill (cuerpo del enlace wa.me, no se muestra en la página) — ES: Hola, vengo de cnc.woodax.design y quiero cotizar un corte. | EN: Hi, I found you on cnc.woodax.design and I'd like a cutting quote.
 - error.generic — ES: No pudimos enviar tu solicitud. Inténtalo de nuevo en un momento. | EN: We couldn't send your request. Please try again in a moment.
 - mobileBar — ES: Cotizar mi proyecto | EN: Get a quote
 
@@ -321,7 +323,8 @@ Bloqueo de lanzamiento: instagramUrl y facebookUrl no pueden ser "#" en producci
 - intro — ES: Cuéntanos qué tienes en mente y te contactamos para platicar los detalles. | EN: Tell us what you have in mind and we'll reach out to talk through the details.
 - channels.title — ES: Otras formas de contactarnos | EN: Other ways to reach us
 - channels.email — ES: Correo | EN: Email
-- channels.whatsapp — ES: WhatsApp | EN: WhatsApp (solo si existe NEXT_PUBLIC_WHATSAPP_NUMBER)
+- channels.whatsapp — ES: WhatsApp | EN: WhatsApp (solo si NEXT_PUBLIC_WHATSAPP_NUMBER es válido. El número no se muestra.)
+- whatsappPrefill (cuerpo del enlace wa.me, no se muestra en la página) — ES: Hola, vengo de woodax.design y me interesa un proyecto. | EN: Hi, I found you on woodax.design and I'm interested in a project.
 - channels.social — ES: Síguenos | EN: Follow us
 - (El formulario es el LeadForm variant="design" en línea, no en sheet.)
 

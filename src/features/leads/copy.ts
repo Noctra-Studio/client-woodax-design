@@ -2,7 +2,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { siteConfig, type CncSpecs } from "@/content/site-config";
 import { formatSpecMm, thicknessRangeForGroup } from "@/lib/cnc-specs";
-import { clientEnv } from "@/lib/env";
+import { whatsappHref } from "@/lib/whatsapp";
 import { routing, type Locale } from "@/i18n/routing";
 import type { LeadOption } from "@/features/leads/components/option-group";
 
@@ -43,6 +43,8 @@ export type LeadCopy = {
   errors: Record<string, string>;
   closeLabel: string;
   mobileBar: string;
+  /** Short channel label for the CNC contact button. Null on Design. */
+  whatsappChannel: string | null;
   whatsappHref: string | null;
 };
 
@@ -65,10 +67,7 @@ export async function getLeadCopy(
   const locale = hasLocale(routing.locales, requested)
     ? requested
     : routing.defaultLocale;
-  const whatsappNumber = clientEnv.NEXT_PUBLIC_WHATSAPP_NUMBER;
-  const whatsappHref = whatsappNumber
-    ? `https://wa.me/${whatsappNumber}`
-    : null;
+  const href = whatsappHref(variant, locale);
 
   if (variant === "design") {
     const form = await getTranslations("design.form");
@@ -125,7 +124,8 @@ export async function getLeadCopy(
       ),
       closeLabel: form("close"),
       mobileBar: form("mobileBar"),
-      whatsappHref,
+      whatsappChannel: null,
+      whatsappHref: href,
     };
   }
 
@@ -202,7 +202,8 @@ export async function getLeadCopy(
     ),
     closeLabel: form("close"),
     mobileBar: form("mobileBar"),
-    whatsappHref,
+    whatsappChannel: form("whatsapp"),
+    whatsappHref: href,
   };
 }
 

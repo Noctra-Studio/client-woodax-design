@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useLocale } from "next-intl";
+import { AnalyticsButton } from "@/components/analytics/tracked-link";
 import { lockNavAnchor } from "@/components/site/site-nav";
 import { Button } from "@/components/ui/button";
 import { analyticsLocale, track } from "@/lib/analytics";
@@ -13,15 +14,20 @@ export function MobileCtaBar({
   hidden,
   href,
   onOpen,
+  whatsappHref,
+  whatsappLabel,
 }: {
   label: string;
   variant: "design" | "cnc";
   hidden: boolean;
   href?: string;
   onOpen?: () => void;
+  whatsappHref?: string | null;
+  whatsappLabel?: string | null;
 }) {
   const isDesign = variant === "design";
   const locale = useLocale();
+  const showWhatsapp = Boolean(whatsappHref && whatsappLabel);
 
   return (
     <div
@@ -35,26 +41,43 @@ export function MobileCtaBar({
           : "border-cnc-line bg-cnc-bg",
       )}
     >
-      <Button
-        href={href}
-        type={href ? undefined : "button"}
-        variant={isDesign ? "design-primary" : "cnc-primary"}
-        onClick={() => {
-          track("cta_click", {
-            site: variant,
-            locale: analyticsLocale(locale),
-            location: "mobile_bar",
-          });
-          if (href === "#contacto") {
-            lockNavAnchor("contacto");
-          }
-          onOpen?.();
-        }}
-        className="w-full"
-        arrow
-      >
-        {label}
-      </Button>
+      <div className={cn(showWhatsapp && "flex flex-col gap-2")}>
+        <Button
+          href={href}
+          type={href ? undefined : "button"}
+          variant={isDesign ? "design-primary" : "cnc-primary"}
+          onClick={() => {
+            track("cta_click", {
+              site: variant,
+              locale: analyticsLocale(locale),
+              location: "mobile_bar",
+            });
+            if (href === "#contacto") {
+              lockNavAnchor("contacto");
+            }
+            onOpen?.();
+          }}
+          className="w-full"
+          arrow
+        >
+          {label}
+        </Button>
+        {showWhatsapp && whatsappHref && whatsappLabel ? (
+          <AnalyticsButton
+            href={whatsappHref}
+            variant={isDesign ? "design-secondary" : "cnc-secondary"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full"
+            tracking={{
+              event: "whatsapp_click",
+              params: { site: variant, location: "mobile_bar" },
+            }}
+          >
+            {whatsappLabel}
+          </AnalyticsButton>
+        ) : null}
+      </div>
     </div>
   );
 }

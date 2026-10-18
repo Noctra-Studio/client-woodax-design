@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { AnalyticsAnchor } from "@/components/analytics/tracked-link";
 import { LeadCapture } from "@/features/leads/components/lead-capture";
 import { getLeadCopy } from "@/features/leads/copy";
 import { designPages } from "@/content/design-pages";
 import { publishedSocialUrl, siteConfig } from "@/content/site-config";
 import { routing, type Locale } from "@/i18n/routing";
-import { clientEnv } from "@/lib/env";
 import { localizedMetadata } from "@/lib/seo";
+import { whatsappHref } from "@/lib/whatsapp";
 
 const contactEmail = siteConfig.designEmail;
 
@@ -42,10 +43,13 @@ export default async function ContactPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+  const { locale: requested } = await params;
+  const locale: Locale = hasLocale(routing.locales, requested)
+    ? requested
+    : routing.defaultLocale;
 
-  if (hasLocale(routing.locales, locale)) {
-    setRequestLocale(locale);
+  if (hasLocale(routing.locales, requested)) {
+    setRequestLocale(requested);
   }
 
   if (!designPages.contact.enabled) notFound();
@@ -54,10 +58,7 @@ export default async function ContactPage({
   const footer = await getTranslations("design.footer");
   const nav = await getTranslations("nav");
   const copy = await getLeadCopy("design");
-  const whatsappNumber = clientEnv.NEXT_PUBLIC_WHATSAPP_NUMBER;
-  const whatsappHref = whatsappNumber
-    ? `https://wa.me/${whatsappNumber}`
-    : null;
+  const designWhatsappHref = whatsappHref("design", locale);
 
   return (
     <main className="flex flex-1 flex-col">
@@ -99,14 +100,20 @@ export default async function ContactPage({
                 <span>{contactEmail}</span>
               </a>
             </li>
-            {whatsappHref ? (
+            {designWhatsappHref ? (
               <li>
-                <a
-                  href={whatsappHref}
+                <AnalyticsAnchor
+                  href={designWhatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  tracking={{
+                    event: "whatsapp_click",
+                    params: { site: "design", location: "contact" },
+                  }}
                   className="focus-visible:outline-woodax-charcoal inline-flex min-h-11 items-center underline decoration-current/40 underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                 >
                   {t("channels.whatsapp")}
-                </a>
+                </AnalyticsAnchor>
               </li>
             ) : null}
           </ul>

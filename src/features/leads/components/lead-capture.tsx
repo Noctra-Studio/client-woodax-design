@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useSyncExternalStore } from "react";
+import { AnalyticsButton } from "@/components/analytics/tracked-link";
 import { ArcMotif } from "@/components/design/arc-motif";
 import { Reveal } from "@/components/design/reveal";
 import { Button } from "@/components/ui/button";
@@ -45,7 +46,7 @@ function DesignLeadCapture({ copy }: { copy: LeadCopy }) {
       <section
         id="contacto"
         aria-label={copy.title}
-        className="relative scroll-mt-24 bg-woodax-green px-5 py-16 text-woodax-charcoal md:px-8 md:py-24 lg:py-40"
+        className="bg-woodax-green text-woodax-charcoal relative scroll-mt-24 px-5 py-16 md:px-8 md:py-24 lg:py-40"
       >
         <div
           aria-hidden="true"
@@ -100,23 +101,23 @@ function SheetLeadCapture({ copy }: { copy: LeadCopy }) {
           id={`${copy.variant}-form-title`}
           className={cn(
             "max-w-[18ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal text-balance",
-            isDesign
-              ? "font-serif tracking-[-0.01em]"
-              : "tracking-[-0.02em]",
+            isDesign ? "font-serif tracking-[-0.01em]" : "tracking-[-0.02em]",
           )}
         >
           {copy.title}
         </h2>
-        <div className="md:hidden">
-          <Button
-            type="button"
-            variant={isDesign ? "design-primary" : "cnc-primary"}
-            onClick={() => setOpen(true)}
-          >
-            {copy.mobileBar}
-          </Button>
-        </div>
-        <div className={cn(isDesign && "md:max-w-[720px]")}>
+        <div
+          className={cn("flex flex-col gap-4", isDesign && "md:max-w-[720px]")}
+        >
+          <div className="md:hidden">
+            <Button
+              type="button"
+              variant={isDesign ? "design-primary" : "cnc-primary"}
+              onClick={() => setOpen(true)}
+            >
+              {copy.mobileBar}
+            </Button>
+          </div>
           <LeadSheet
             open={sheetOpen}
             onClose={() => setOpen(false)}
@@ -128,6 +129,23 @@ function SheetLeadCapture({ copy }: { copy: LeadCopy }) {
           >
             <LeadForm copy={copy} />
           </LeadSheet>
+          {copy.variant === "cnc" &&
+          copy.whatsappHref &&
+          copy.whatsappChannel ? (
+            <AnalyticsButton
+              href={copy.whatsappHref}
+              variant="cnc-secondary"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full self-start md:w-auto"
+              tracking={{
+                event: "whatsapp_click",
+                params: { site: "cnc", location: "contact" },
+              }}
+            >
+              {copy.whatsappChannel}
+            </AnalyticsButton>
+          ) : null}
         </div>
       </div>
     </section>
@@ -141,6 +159,8 @@ function SheetLeadCapture({ copy }: { copy: LeadCopy }) {
         variant={copy.variant}
         hidden={sheetOpen || inView}
         onOpen={() => setOpen(true)}
+        whatsappHref={copy.variant === "cnc" ? copy.whatsappHref : null}
+        whatsappLabel={copy.whatsappChannel}
       />
     </>
   );

@@ -20,11 +20,13 @@ import {
 import { LeadCapture } from "@/features/leads/components/lead-capture";
 import { LeadUiProvider } from "@/features/leads/components/lead-ui";
 import { getLeadCopy } from "@/features/leads/copy";
+import { mobileCtaClearanceClass } from "@/features/leads/mobile-cta";
 import { routing, type Locale } from "@/i18n/routing";
 import { cncLogoAsset } from "@/lib/cnc-nav-logo";
 import { requestDesignHomeUrl } from "@/lib/request-site";
 import { localizedMetadata } from "@/lib/seo";
 import { cncJsonLd, cncSpecPropertyValues } from "@/lib/structured-data";
+import { cn } from "@/lib/utils";
 
 const introBoot = `(function(){try{if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;if(sessionStorage.getItem("woodax-cnc-intro")==="1")return;document.documentElement.setAttribute("data-cnc-intro","play");}catch(e){}})();`;
 
@@ -147,7 +149,12 @@ export default async function CncPage({
             logoCompact={<BrandIcon variant="cnc" className="h-8 w-auto" />}
             logoTraceSrc={cncLogoAsset("nav").src}
           />
-          <main className="flex min-w-0 flex-1 flex-col overflow-x-clip pb-28 md:pb-0">
+          <main
+            className={cn(
+              "flex min-w-0 flex-1 flex-col overflow-x-clip",
+              mobileCtaClearanceClass(copy.whatsappHref !== null),
+            )}
+          >
             <HeroSection />
             <WaysSection />
             <CapabilitiesSection />

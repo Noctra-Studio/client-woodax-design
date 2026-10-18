@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
+import { AnalyticsButton } from "@/components/analytics/tracked-link";
 import { Button } from "@/components/ui/button";
 import { submitLeadDetails } from "@/features/leads/actions";
 import type { LeadCopy } from "@/features/leads/copy";
@@ -180,16 +181,20 @@ export function LeadSuccess({
       )}
 
       {copy.whatsappHref ? (
-        <Button
+        <AnalyticsButton
           href={copy.whatsappHref}
           variant={buttonVariant}
           arrow
           target="_blank"
           rel="noopener noreferrer"
-          className={cn("w-full sm:w-auto")}
+          className="w-full sm:w-auto"
+          tracking={{
+            event: "whatsapp_click",
+            params: { site: copy.variant, location: "success" },
+          }}
         >
           {copy.whatsapp}
-        </Button>
+        </AnalyticsButton>
       ) : null}
     </motion.div>
   );

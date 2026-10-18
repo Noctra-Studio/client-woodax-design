@@ -21,6 +21,22 @@ function emptyAsUndefined(value: unknown): unknown {
   return trimmed === "" ? undefined : trimmed;
 }
 
+const whatsappNumberPattern = /^52\d{10,11}$/;
+
+function readWhatsappNumber(value: unknown): string | undefined {
+  const trimmed = emptyAsUndefined(value);
+  if (typeof trimmed !== "string") return undefined;
+  if (whatsappNumberPattern.test(trimmed)) return trimmed;
+
+  if (typeof window === "undefined") {
+    console.warn(
+      "NEXT_PUBLIC_WHATSAPP_NUMBER is invalid and will be ignored. Expected 12–13 digits starting with 52.",
+    );
+  }
+
+  return undefined;
+}
+
 function required(invalid: string) {
   return (issue: { input?: unknown }) =>
     issue.input === undefined ? "Required" : invalid;
@@ -105,16 +121,10 @@ const clientSchema = defineClientSchema({
     emptyAsUndefined,
     z.url({ error: required("Must be a valid URL") }),
   ),
-  // Optional until the client confirms the number; WhatsApp CTAs stay hidden without it.
+  // Optional. 12–13 digits starting with 52. Invalid values are ignored so the build still succeeds.
   NEXT_PUBLIC_WHATSAPP_NUMBER: z.preprocess(
-    emptyAsUndefined,
-    z
-      .string()
-      .regex(
-        /^\d{8,15}$/,
-        "International format without + or spaces, for example 5214421234567",
-      )
-      .optional(),
+    readWhatsappNumber,
+    z.string().optional(),
   ),
 });
 

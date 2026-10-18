@@ -27,6 +27,10 @@ type AnalyticsEventMap = {
     to: Site;
     location: "footer" | "services";
   };
+  whatsapp_click: {
+    site: Site;
+    location: "contact" | "mobile_bar" | "success";
+  };
 };
 
 export type AnalyticsEvent = keyof AnalyticsEventMap;
