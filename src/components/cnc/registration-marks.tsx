@@ -1,15 +1,29 @@
 import { cn } from "@/lib/utils";
 
-export function RegistrationMarks({ className }: { className?: string }) {
+export function RegistrationMarks({
+  className,
+  edges = "both",
+}: {
+  className?: string;
+  edges?: "both" | "top" | "bottom";
+}) {
   return (
     <div
       aria-hidden="true"
       className={cn("pointer-events-none absolute inset-4 md:inset-6", className)}
     >
-      <Mark className="absolute top-0 left-0" />
-      <Mark className="absolute top-0 right-0" />
-      <Mark className="absolute bottom-0 left-0" />
-      <Mark className="absolute right-0 bottom-0" />
+      {edges !== "bottom" ? (
+        <>
+          <Mark className="absolute top-0 left-0" />
+          <Mark className="absolute top-0 right-0" />
+        </>
+      ) : null}
+      {edges !== "top" ? (
+        <>
+          <Mark className="absolute bottom-0 left-0" />
+          <Mark className="absolute right-0 bottom-0" />
+        </>
+      ) : null}
     </div>
   );
 }

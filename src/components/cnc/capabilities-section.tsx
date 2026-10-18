@@ -63,42 +63,24 @@ export function CapabilitiesSection() {
       id="capacidades"
       aria-labelledby="capabilities-title"
       className={cn(
-        "relative scroll-mt-24 overflow-hidden lg:px-8 lg:py-32",
-        machineImage
-          ? "lg:flex lg:min-h-[520px] lg:items-center"
-          : "px-5 py-16 md:px-8 md:py-24",
+        "relative scroll-mt-24 overflow-hidden lg:px-8",
+        !machineImage && "px-5 py-16 md:px-8 md:py-24 lg:py-32",
       )}
     >
       <RegistrationMarks className="z-20" />
 
       {machineImage ? (
-        <>
-          <div className="cnc-capabilities-mask-desktop pointer-events-none absolute inset-y-0 right-0 hidden lg:block lg:w-[48%] xl:w-[50%]">
-            <Image
-              src={machineImage.src}
-              alt={imageAlt}
-              fill
-              loading="lazy"
-              sizes="(min-width: 1280px) 50vw, 48vw"
-              className="object-cover object-[46%_54%]"
-            />
-            <div className="bg-cnc-bg/25 absolute inset-0" />
-            <div className="from-cnc-bg via-cnc-bg/0 to-cnc-bg absolute inset-0 bg-gradient-to-b via-25%" />
-            <div className="from-cnc-bg/0 via-cnc-bg/0 to-cnc-bg absolute inset-0 bg-gradient-to-b from-75%" />
-          </div>
-
-          <div className="cnc-capabilities-mask-mobile relative aspect-[4/3] w-full overflow-hidden lg:hidden">
-            <Image
-              src={machineImage.src}
-              alt={imageAlt}
-              fill
-              loading="lazy"
-              sizes="100vw"
-              className="object-cover object-[50%_52%]"
-            />
-            <div className="bg-cnc-bg/25 absolute inset-0" />
-          </div>
-        </>
+        <div className="cnc-capabilities-mask-mobile relative aspect-[4/3] w-full overflow-hidden lg:hidden">
+          <Image
+            src={machineImage.src}
+            alt={imageAlt}
+            fill
+            loading="lazy"
+            sizes="100vw"
+            className="object-cover object-[50%_52%]"
+          />
+          <div className="bg-cnc-bg/25 absolute inset-0" />
+        </div>
       ) : null}
 
       <div
@@ -108,8 +90,27 @@ export function CapabilitiesSection() {
             "-mt-8 px-5 pb-16 md:-mt-12 md:px-8 md:pb-24 lg:mt-0 lg:p-0",
         )}
       >
-        <div className="mx-auto w-full max-w-[1200px]">
-          <div className="lg:grid lg:grid-cols-12 lg:gap-8">
+        <div
+          className={cn(
+            "relative mx-auto w-full max-w-[1200px]",
+            machineImage && "lg:flex lg:min-h-[520px] lg:items-center lg:py-32",
+          )}
+        >
+          {machineImage ? (
+            <div className="cnc-capabilities-mask-desktop pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 lg:block">
+              <Image
+                src={machineImage.src}
+                alt={imageAlt}
+                fill
+                loading="lazy"
+                sizes="(min-width: 1024px) 600px, 100vw"
+                className="object-cover object-[50%_52%]"
+              />
+              <div className="bg-cnc-bg/25 absolute inset-0" />
+            </div>
+          ) : null}
+
+          <div className="relative z-10 w-full lg:grid lg:grid-cols-12 lg:gap-8">
             <div className="lg:col-span-6">
               <h2
                 id="capabilities-title"

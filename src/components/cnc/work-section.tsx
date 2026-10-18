@@ -20,7 +20,7 @@ export async function WorkSection() {
         aria-labelledby="cnc-work-title"
         className="relative scroll-mt-24 px-5 py-16 md:px-8 md:py-24 lg:py-32"
       >
-        <RegistrationMarks />
+        <RegistrationMarks edges="bottom" />
         <div className="relative mx-auto w-full max-w-[1200px]">
           <h2
             id="cnc-work-title"

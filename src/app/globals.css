@@ -249,8 +249,14 @@ html[data-cnc-intro="play"] .cnc-logo-stroke {
 }
 
 .cnc-capabilities-mask-desktop {
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 35%);
-  mask-image: linear-gradient(to right, transparent 0%, #000 35%);
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, #000 35%, #000 88%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0%, #000 35%, #000 88%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
+  mask-composite: intersect;
 }
 
 .cnc-capabilities-mask-mobile {

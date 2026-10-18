@@ -649,7 +649,7 @@ export function MaterialsSection() {
       aria-labelledby="materials-title"
       className="relative scroll-mt-24 px-5 py-16 md:px-8 md:py-24 lg:py-32"
     >
-      <RegistrationMarks />
+      <RegistrationMarks edges="bottom" />
 
       {/* Shared SVG gradient definitions for all material cards (rendered once) */}
       <svg
