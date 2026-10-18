@@ -227,12 +227,7 @@
           "example2": "Letra corpórea",
           "example3": "Pieza técnica con perforaciones"
         }
-      },
-      "wood": "Madera · MDF, triplay y madera sólida",
-      "acrylic": "Acrílico",
-      "aluminum": "Aluminio delgado",
-      "maxThickness": "Espesor máx.",
-      "cuttingArea": "Área de corte"
+      }
     },
     "audience": {
       "title": "Hecho para",

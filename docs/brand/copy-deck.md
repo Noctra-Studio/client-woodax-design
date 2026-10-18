@@ -91,22 +91,15 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - volume.serviceTitle ⚠︎ — ES: Producción CNC para empresas | EN: CNC production for businesses
 - volume.body ⚠︎ — ES: Piezas en volumen para empresas, rotulistas e industria. Del archivo a la pieza terminada, con cortes consistentes en toda la serie. | EN: Volume parts for businesses, sign makers and industry. From file to finished part, with consistent cuts across the whole run.
 
-### Materiales (confirmado por Adrián: 10 materiales)
-- title — ES: Materiales que cortamos | EN: Materials we cut
-- intro — ES: Madera, plásticos y metales ligeros. ¿Tu material no está en la lista? Pregúntanos. | EN: Wood, plastics and light metals. Don't see your material? Just ask.
-- items (orden fijo; slug → ES | EN):
-  - madera-maciza — Madera maciza | Solid wood
-  - mdf — MDF | MDF
-  - pvc — PVC | PVC
-  - acrilico — Acrílico | Acrylic
-  - alucobond — Alucobond | Aluminum composite (Alucobond)
-  - resina — Resina | Resin
-  - plastico — Plásticos | Plastics
-  - estireno — Estireno | Styrene
-  - aluminio — Aluminio | Aluminum
-  - corian — Corian | Solid surface (Corian)
-- thicknessLabel — ES: Hasta {value} mm | EN: Up to {value} mm (solo si existe site-config.cncSpecs.maxThickness[slug])
-- imageNote (solo para lectores de pantalla, no visible) — ES: Imagen de referencia del material | EN: Reference image of the material
+### Materiales (leído de `siteConfig.cncSpecs.maxThicknessByMaterial`, una sola fuente)
+- title — ES: Materiales | EN: Materials
+- ideasTitle — ES: Ideas de lo que puedes hacer | EN: Ideas for what you can make
+- nextIdea — ES: Ver siguiente idea | EN: See next idea
+- thicknessValue — ES: {min}–{max} mm | EN: {min}–{max} mm (leído dinámicamente de `siteConfig.cncSpecs.maxThicknessByMaterial`: madera/MDF/melamina/triplay `3–40 mm`, acrílico/plásticos/Corian `3–40 mm`, aluminio `0.5–5 mm`)
+- groups:
+  - wood — ES: Madera, MDF, melamina, triplay | EN: Wood, MDF, melamine, plywood (`3–40 mm`)
+  - acrylic — ES: Acrílico, plásticos, Corian | EN: Acrylic, plastics, Corian (`3–40 mm`)
+  - aluminum — ES: Aluminio | EN: Aluminum (`0.5–5 mm`)
 
 ### Para quién
 - title — ES: Hecho para | EN: Built for
@@ -114,12 +107,12 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - companies — ES: Empresas e industria — Componentes en serie con medidas exactas. | EN: Companies and industry — Serial components with exact dimensions.
 - signs — ES: Rotulistas — Letras, piezas y señalética en acrílico y aluminio. | EN: Sign makers — Letters, parts and signage in acrylic and aluminum.
 
-### Proceso ⚠︎
+### Proceso ⚠︎ (pendiente Adrián)
 - title — ES: Del archivo a la pieza | EN: From file to finished part
 - step1 — ES: 01 Envíanos tu archivo o tu idea | EN: 01 Send us your file or your idea
 - step2 — ES: 02 Revisamos y cotizamos | EN: 02 We review and quote
-- step3 — ES: 03 Cortamos y entregamos | EN: 03 We cut and deliver
-- formats ⚠︎ — ES: Formatos: DXF, DWG, SVG, AI, PDF. Puedes enviarlo después. | EN: Formats: DXF, DWG, SVG, AI, PDF. You can send it later.
+- step3 ⚠︎ (pendiente Adrián: confirmar modalidad de entrega / recolección en taller; NO incluir «listas para recoger o entregar» en `llms.txt` ni en JSON-LD) — ES: 03 Cortamos y entregamos | EN: 03 We cut and deliver
+- formats ⚠︎ (pendiente Adrián: confirmar formatos aceptados; NO incluir en `llms.txt` ni en JSON-LD) — ES: Formatos: DXF, DWG, SVG, AI, PDF. Puedes enviarlo después. | EN: Formats: DXF, DWG, SVG, AI, PDF. You can send it later.
 
 ### Formulario
 - title — ES: Cuéntanos qué necesitas producir | EN: Tell us what you need to produce
@@ -241,10 +234,11 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - title — ES: Corte CNC en Querétaro | CNC by Woodax Design | EN: CNC Cutting in Querétaro | CNC by Woodax Design
 - description ⚠︎ — ES: Maquila y servicio de corte CNC en madera, acrílico y aluminio para carpinterías, talleres, empresas y rotulistas en Querétaro. Cotiza tu proyecto. | EN: CNC cutting service and volume production in wood, acrylic and aluminum for workshops, businesses and sign makers in Querétaro. Send your file or idea.
 
-### Capacidades (tabla técnica; cada fila solo si el dato existe en site-config.cncSpecs)
+### Capacidades (tabla técnica; cada fila solo si el dato existe en `siteConfig.cncSpecs`)
 - label — ES: Capacidades | EN: Capabilities
 - title — ES: Lo que puede hacer la máquina | EN: What the machine can do
-- rows — ES: Área de trabajo · Espesor máximo por material · Tolerancia · Tiempo de entrega típico · Pedido mínimo | EN: Work area · Max thickness per material · Tolerance · Typical lead time · Minimum order
+- area — ES: Área de trabajo (`{width} × {length} mm` → `1300 × 2500 mm` desde `siteConfig.cncSpecs.cuttingArea`) | EN: Work area (`{width} × {length} mm` → `1300 × 2500 mm`)
+- thicknessValue — ES: `{min}–{max} mm` | EN: `{min}–{max} mm` (desde `siteConfig.cncSpecs.maxThicknessByMaterial`: Madera, MDF, melamina y triplay `3–40 mm`; Acrílico, plástico y Corian `3–40 mm`; Aluminio `0.5–5 mm`)
 - note — ES: ¿Tu proyecto no encaja? Escríbenos y lo revisamos. | EN: Project doesn't fit? Write to us and we'll take a look.
 
 ### Trabajos

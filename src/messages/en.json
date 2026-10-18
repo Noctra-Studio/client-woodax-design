@@ -227,12 +227,7 @@
           "example2": "Dimensional letter",
           "example3": "Perforated technical part"
         }
-      },
-      "wood": "Wood · MDF, plywood and solid wood",
-      "acrylic": "Acrylic",
-      "aluminum": "Thin aluminum",
-      "maxThickness": "Max thickness",
-      "cuttingArea": "Cutting area"
+      }
     },
     "audience": {
       "title": "Built for",
