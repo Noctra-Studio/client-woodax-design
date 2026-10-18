@@ -40,6 +40,40 @@
 [data-site="cnc"] {
   --radius-card: 6px;
   --radius-control: 4px;
+
+  /* Material illustration tokens (low saturation, ≥3:1 base luminance vs cnc-surface) */
+  --cnc-mat-shadow: rgb(0 0 0 / 0.68);
+  --cnc-mat-pocket: rgb(22 23 26 / 0.52);
+
+  /* 01 · Wood, MDF, melamine, plywood */
+  --cnc-mat-wood-hi: #b8a58b;
+  --cnc-mat-wood-base: #a28c71;
+  --cnc-mat-wood-lo: #86735c;
+  --cnc-mat-wood-grain: rgb(60 45 30 / 0.25);
+  --cnc-mat-wood-edge: #cbbba2;
+  --cnc-mat-mdf-edge: #a8977d;
+
+  /* 02 · Acrylic (translucent) & Corian (matte white) */
+  --cnc-mat-acrylic-fill: rgb(206 218 230 / 0.35);
+  --cnc-mat-acrylic-layer: rgb(222 232 242 / 0.34);
+  --cnc-mat-acrylic-canto: rgb(168 186 204 / 0.32);
+  --cnc-mat-acrylic-sheen: rgb(255 255 255 / 0.26);
+  --cnc-mat-acrylic-edge: rgb(236 242 248 / 0.72);
+
+  --cnc-mat-corian-hi: #d8d9dd;
+  --cnc-mat-corian-base: #c6c8cd;
+  --cnc-mat-corian-basin: #aeb1b8;
+  --cnc-mat-corian-groove: rgb(70 74 82 / 0.3);
+  --cnc-mat-corian-edge: #e6e7eb;
+
+  /* 03 · Brushed aluminum */
+  --cnc-mat-alu-hi: #a7adb5;
+  --cnc-mat-alu-mid: #8a9099;
+  --cnc-mat-alu-lo: #6d737c;
+  --cnc-mat-alu-brush: rgb(255 255 255 / 0.1);
+  --cnc-mat-alu-highlight: rgb(255 255 255 / 0.45);
+  --cnc-mat-alu-engraved: rgb(30 33 38 / 0.48);
+  --cnc-mat-alu-edge: #c4cad2;
 }
 
 html {
@@ -284,12 +318,44 @@ html[data-cnc-intro="play"] .cnc-logo-stroke {
   }
 }
 
-@keyframes cnc-toolhead-move {
+@keyframes cnc-cut-settle {
   from {
-    offset-distance: 0%;
+    opacity: 1;
   }
   to {
+    opacity: 0.28;
+  }
+}
+
+@keyframes cnc-toolhead-move {
+  0% {
+    offset-distance: 0%;
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
     offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes cnc-finish-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cnc-guide-dim {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.25;
   }
 }
 
@@ -302,25 +368,46 @@ html[data-cnc-intro="play"] .cnc-logo-stroke {
 
 .cnc-cut-path {
   stroke-dasharray: 1;
-  stroke-dashoffset: 0;
+  stroke-dashoffset: 1;
 }
 
 .cnc-toolhead {
   offset-rotate: 0deg;
   offset-distance: 0%;
+  opacity: 0;
+}
+
+.cnc-finished-layer {
+  opacity: 0;
+}
+
+.cnc-guide-layer {
+  opacity: 1;
 }
 
 [data-cutting="true"] .cnc-cut-path {
   stroke-dashoffset: 1;
-  animation: cnc-cut-stroke 1500ms var(--ease-out) forwards;
+  animation:
+    cnc-cut-stroke 1400ms var(--ease-out) forwards,
+    cnc-cut-settle 400ms var(--ease-out) 1400ms forwards;
 }
 
 [data-cutting="true"] .cnc-toolhead {
-  animation: cnc-toolhead-move 1500ms var(--ease-out) forwards;
+  animation: cnc-toolhead-move 1400ms var(--ease-out) forwards;
+}
+
+[data-cutting="true"] .cnc-finished-layer {
+  animation: cnc-finish-fade-in 400ms var(--ease-out) 1400ms forwards;
+}
+
+[data-cutting="true"] .cnc-guide-layer {
+  animation: cnc-guide-dim 400ms var(--ease-out) 1400ms forwards;
 }
 
 [data-in-view="false"] .cnc-cut-path,
-[data-in-view="false"] .cnc-toolhead {
+[data-in-view="false"] .cnc-toolhead,
+[data-in-view="false"] .cnc-finished-layer,
+[data-in-view="false"] .cnc-guide-layer {
   animation-play-state: paused;
 }
 
@@ -332,11 +419,30 @@ html[data-cnc-intro="play"] .cnc-logo-stroke {
     stroke-dashoffset: 0;
   }
 
-  [data-cutting="true"] .cnc-cut-path,
-  [data-cutting="true"] .cnc-toolhead {
+  .cnc-cut-path,
+  [data-cutting="true"] .cnc-cut-path {
     animation: none;
     stroke-dashoffset: 0;
+    opacity: 0.28;
+  }
+
+  .cnc-toolhead,
+  [data-cutting="true"] .cnc-toolhead {
+    animation: none;
     offset-distance: 0%;
+    opacity: 0;
+  }
+
+  .cnc-finished-layer,
+  [data-cutting="true"] .cnc-finished-layer {
+    animation: none;
+    opacity: 1;
+  }
+
+  .cnc-guide-layer,
+  [data-cutting="true"] .cnc-guide-layer {
+    animation: none;
+    opacity: 0.25;
   }
 
   [data-draw="wait"] .cnc-track,
