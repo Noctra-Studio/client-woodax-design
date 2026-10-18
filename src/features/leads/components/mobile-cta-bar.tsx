@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useLocale } from "next-intl";
+import { lockNavAnchor } from "@/components/site/site-nav";
 import { Button } from "@/components/ui/button";
 import { analyticsLocale, track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
@@ -10,12 +11,14 @@ export function MobileCtaBar({
   label,
   variant,
   hidden,
+  href,
   onOpen,
 }: {
   label: string;
   variant: "design" | "cnc";
   hidden: boolean;
-  onOpen: () => void;
+  href?: string;
+  onOpen?: () => void;
 }) {
   const isDesign = variant === "design";
   const locale = useLocale();
@@ -33,7 +36,8 @@ export function MobileCtaBar({
       )}
     >
       <Button
-        type="button"
+        href={href}
+        type={href ? undefined : "button"}
         variant={isDesign ? "design-primary" : "cnc-primary"}
         onClick={() => {
           track("cta_click", {
@@ -41,7 +45,10 @@ export function MobileCtaBar({
             locale: analyticsLocale(locale),
             location: "mobile_bar",
           });
-          onOpen();
+          if (href === "#contacto") {
+            lockNavAnchor("contacto");
+          }
+          onOpen?.();
         }}
         className="w-full"
         arrow

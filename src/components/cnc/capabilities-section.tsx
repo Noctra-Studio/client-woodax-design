@@ -5,6 +5,7 @@ import { useLayoutEffect, useRef } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { RegistrationMarks } from "@/components/cnc/registration-marks";
 import { hasCncCapabilities, siteConfig } from "@/content/site-config";
+import { cn } from "@/lib/utils";
 
 export function CapabilitiesSection() {
   const t = useTranslations("cnc.capabilities");
@@ -61,68 +62,96 @@ export function CapabilitiesSection() {
     <section
       id="capacidades"
       aria-labelledby="capabilities-title"
-      className="relative scroll-mt-24 px-5 py-16 md:px-8 md:py-24 lg:py-32"
+      className={cn(
+        "relative scroll-mt-24 overflow-hidden lg:px-8 lg:py-32",
+        machineImage
+          ? "lg:flex lg:min-h-[520px] lg:items-center"
+          : "px-5 py-16 md:px-8 md:py-24",
+      )}
     >
-      <RegistrationMarks />
-      <div className="relative mx-auto w-full max-w-[1200px]">
-        <h2
-          id="capabilities-title"
-          className="max-w-[16ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.02em] text-balance"
-        >
-          {t("title")}
-        </h2>
-        <div
-          className={
-            machineImage
-              ? "mt-10 grid items-start gap-10 md:mt-14 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,26rem)] lg:gap-12"
-              : "mt-10 md:mt-14"
-          }
-        >
-          <div>
-            <div
-              ref={listRef}
-              role="table"
-              aria-labelledby="capabilities-title"
-              className="border-cnc-line border-t"
-            >
-              {rows.map((row, index) => (
-                <div
-                  key={row.key}
-                  role="row"
-                  className="cnc-plotter border-cnc-line grid items-baseline gap-2 border-b py-4 md:grid-cols-[minmax(0,1fr)_auto] md:gap-8"
-                  style={{ transitionDelay: `${index * 70}ms` }}
-                >
-                  <p
-                    role="cell"
-                    className="max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-medium text-pretty"
-                  >
-                    {row.label}
-                  </p>
-                  <p
-                    role="cell"
-                    className="text-cnc-muted font-mono text-sm tracking-[0.08em] uppercase tabular-nums md:text-right"
-                  >
-                    {row.value}
-                  </p>
-                </div>
-              ))}
-            </div>
-            <p className="text-cnc-muted mt-6 max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-medium text-pretty">
-              {t("note")}
-            </p>
+      <RegistrationMarks className="z-20" />
+
+      {machineImage ? (
+        <>
+          <div className="cnc-capabilities-mask-desktop pointer-events-none absolute inset-y-0 right-0 hidden lg:block lg:w-[48%] xl:w-[50%]">
+            <Image
+              src={machineImage.src}
+              alt={imageAlt}
+              fill
+              loading="lazy"
+              sizes="(min-width: 1280px) 50vw, 48vw"
+              className="object-cover object-[46%_54%]"
+            />
+            <div className="bg-cnc-bg/25 absolute inset-0" />
+            <div className="from-cnc-bg via-cnc-bg/0 to-cnc-bg absolute inset-0 bg-gradient-to-b via-25%" />
+            <div className="from-cnc-bg/0 via-cnc-bg/0 to-cnc-bg absolute inset-0 bg-gradient-to-b from-75%" />
           </div>
-          {machineImage ? (
-            <div className="border-cnc-line bg-cnc-surface overflow-hidden rounded-[var(--radius-card)] border">
-              <Image
-                src={machineImage.src}
-                alt={imageAlt}
-                width={machineImage.width}
-                height={machineImage.height}
-                sizes="(min-width: 1024px) 416px, 100vw"
-                className="h-auto w-full object-cover"
-              />
+
+          <div className="cnc-capabilities-mask-mobile relative aspect-[4/3] w-full overflow-hidden lg:hidden">
+            <Image
+              src={machineImage.src}
+              alt={imageAlt}
+              fill
+              loading="lazy"
+              sizes="100vw"
+              className="object-cover object-[50%_52%]"
+            />
+            <div className="bg-cnc-bg/25 absolute inset-0" />
+          </div>
+        </>
+      ) : null}
+
+      <div
+        className={cn(
+          "relative z-10 w-full",
+          machineImage &&
+            "-mt-8 px-5 pb-16 md:-mt-12 md:px-8 md:pb-24 lg:mt-0 lg:p-0",
+        )}
+      >
+        <div className="mx-auto w-full max-w-[1200px]">
+          <div className="lg:grid lg:grid-cols-12 lg:gap-8">
+            <div className="lg:col-span-6">
+              <h2
+                id="capabilities-title"
+                className="max-w-[16ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.02em] text-balance"
+              >
+                {t("title")}
+              </h2>
+              <div className="mt-10 md:mt-14">
+                <div
+                  ref={listRef}
+                  role="table"
+                  aria-labelledby="capabilities-title"
+                  className="border-cnc-line w-full border-t"
+                >
+                  {rows.map((row, index) => (
+                    <div
+                      key={row.key}
+                      role="row"
+                      className="cnc-plotter border-cnc-line grid w-full grid-cols-[minmax(0,1fr)_auto] items-baseline gap-4 border-b py-4 md:gap-8"
+                      style={{ transitionDelay: `${index * 70}ms` }}
+                    >
+                      <p
+                        role="cell"
+                        className="max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-medium text-pretty"
+                      >
+                        {row.label}
+                      </p>
+                      <p
+                        role="cell"
+                        className="text-cnc-muted text-right font-mono text-sm tracking-[0.08em] uppercase tabular-nums"
+                      >
+                        {row.value}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-cnc-muted mt-6 max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-medium text-pretty">
+                  {t("note")}
+                </p>
+              </div>
             </div>
-          ) : null}
+          </div>
         </div>
       </div>
     </section>

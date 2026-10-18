@@ -1,6 +1,8 @@
 "use client";
 
 import {
+  createContext,
+  useContext,
   useEffect,
   useRef,
   useState,
@@ -10,6 +12,17 @@ import {
 import { createPortal } from "react-dom";
 import { motion, useDragControls, type PanInfo } from "motion/react";
 import { cn } from "@/lib/utils";
+
+type LeadSheetNestedContextValue = {
+  setNestedDialogOpen: (open: boolean) => void;
+};
+
+const LeadSheetNestedContext =
+  createContext<LeadSheetNestedContextValue | null>(null);
+
+export function useLeadSheetNested() {
+  return useContext(LeadSheetNestedContext);
+}
 
 const focusableSelector = [
   "a[href]",
@@ -40,17 +53,24 @@ export function LeadSheet({
   children: ReactNode;
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const nestedDialogOpenRef = useRef(false);
   const dragControls = useDragControls();
   const inset = useKeyboardInset(open && active);
   const trapped = open && active;
 
   useScrollLock(trapped);
-  useFocusTrap(trapped, panelRef, onClose);
+  useFocusTrap(trapped, panelRef, nestedDialogOpenRef, onClose);
 
   const isDesign = variant === "design";
 
   const sheet = (
-    <>
+    <LeadSheetNestedContext.Provider
+      value={{
+        setNestedDialogOpen: (next) => {
+          nestedDialogOpenRef.current = next;
+        },
+      }}
+    >
       {open ? (
         <button
           type="button"
@@ -92,7 +112,7 @@ export function LeadSheet({
             : "border-cnc-line bg-cnc-surface text-cnc-text border",
         )}
         onFocusCapture={(event) => {
-          if (!trapped) return;
+          if (!trapped || nestedDialogOpenRef.current) return;
           const target = event.target;
           if (!(target instanceof HTMLInputElement)) return;
           requestAnimationFrame(() => {
@@ -130,7 +150,7 @@ export function LeadSheet({
           {children}
         </div>
       </motion.div>
-    </>
+    </LeadSheetNestedContext.Provider>
   );
 
   if (active && typeof document !== "undefined") {
@@ -179,6 +199,7 @@ function useScrollLock(active: boolean) {
 function useFocusTrap(
   active: boolean,
   containerRef: RefObject<HTMLDivElement | null>,
+  nestedDialogOpenRef: RefObject<boolean>,
   onClose: () => void,
 ) {
   const onCloseRef = useRef(onClose);
@@ -199,6 +220,7 @@ function useFocusTrap(
     container.focus();
 
     function onKeyDown(event: KeyboardEvent) {
+      if (nestedDialogOpenRef.current) return;
       if (event.key === "Escape") {
         event.preventDefault();
         onCloseRef.current();
@@ -229,7 +251,7 @@ function useFocusTrap(
       document.removeEventListener("keydown", onKeyDown);
       previouslyFocused?.focus();
     };
-  }, [active, containerRef]);
+  }, [active, containerRef, nestedDialogOpenRef]);
 }
 
 function useKeyboardInset(active: boolean) {

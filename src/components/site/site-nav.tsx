@@ -3,6 +3,7 @@
 import {
   cloneElement,
   isValidElement,
+  useCallback,
   useEffect,
   useLayoutEffect,
   useRef,
@@ -48,6 +49,71 @@ const easeOut = [0.22, 1, 0.36, 1] as const;
 const morphTransition = { duration: 0.32, ease: easeOut };
 const SCROLL_DOWN = 64;
 const SCROLL_UP = 24;
+const NAV_LOCK_EVENT = "woodax:nav-lock";
+const NAV_LOCK_TIMEOUT_MS = 900;
+const NAV_FADE_OUT_MS = 180;
+const ACTIVE_LINE_RATIO = 0.35;
+const BOTTOM_TOLERANCE_PX = 24;
+
+const MANUAL_SCROLL_KEYS = new Set([
+  "ArrowUp",
+  "ArrowDown",
+  "PageUp",
+  "PageDown",
+  " ",
+  "Spacebar",
+  "Home",
+  "End",
+]);
+
+export function lockNavAnchor(id: string) {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new CustomEvent<string>(NAV_LOCK_EVENT, { detail: id }));
+}
+
+function decodeHash(raw: string): string {
+  try {
+    return decodeURIComponent(raw);
+  } catch {
+    return raw;
+  }
+}
+
+function readHashId(): string {
+  if (typeof window === "undefined") return "";
+  return decodeHash(window.location.hash.replace(/^#/, ""));
+}
+
+function computeActiveAnchorId(
+  elements: readonly HTMLElement[],
+): string | null {
+  if (elements.length === 0) return null;
+
+  const scrollY = window.scrollY;
+  const viewportHeight = window.innerHeight;
+  const docHeight = document.documentElement.scrollHeight;
+
+  if (
+    scrollY > 0 &&
+    viewportHeight + Math.ceil(scrollY) >= docHeight - BOTTOM_TOLERANCE_PX
+  ) {
+    return elements[elements.length - 1]!.id;
+  }
+
+  const thresholdY = viewportHeight * ACTIVE_LINE_RATIO;
+  let current: string | null = null;
+
+  for (let i = 0; i < elements.length; i++) {
+    const rect = elements[i]!.getBoundingClientRect();
+    if (rect.top <= thresholdY) {
+      current = elements[i]!.id;
+    } else {
+      break;
+    }
+  }
+
+  return current;
+}
 
 const openPad = {
   paddingTop: 16,
@@ -103,6 +169,13 @@ type SiteNavProps = {
 
 type Box = { open: number; shut: number };
 
+type PillState = {
+  activeId: string | null;
+  fadingId: string | null;
+  fromNull: boolean;
+  instant: boolean;
+};
+
 export function SiteNav({
   variant,
   links,
@@ -130,51 +203,279 @@ export function SiteNav({
       ? designIntro.status === "play"
       : cncIntro.status === "play";
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeId, setActiveId] = useState<string | null>(null);
+  const [pill, setPill] = useState<PillState>({
+    activeId: null,
+    fadingId: null,
+    fromNull: true,
+    instant: false,
+  });
   const pathname = usePathname();
   const anchorIds = links
     .flatMap((link) => (link.type === "anchor" ? [link.id] : []))
     .join("\0");
 
-  useEffect(() => {
-    const elements = anchorIds
-      .split("\0")
-      .filter(Boolean)
-      .map((id) => document.getElementById(id))
-      .filter((element): element is HTMLElement => element !== null);
+  const reduceRef = useRef(reduce);
+  useLayoutEffect(() => {
+    reduceRef.current = reduce;
+  }, [reduce]);
 
-    if (elements.length === 0) return;
+  const fadeTimerRef = useRef<number | null>(null);
+  const instantRafRef = useRef<number | null>(null);
+  const lockRef = useRef<{
+    targetId: string;
+    timerId: number;
+    startedAt: number;
+  } | null>(null);
 
-    const visible = new Map<string, number>();
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            visible.set(entry.target.id, entry.boundingClientRect.top);
-          } else {
-            visible.delete(entry.target.id);
-          }
+  const applyActiveId = useCallback(
+    (
+      nextId: string | null,
+      options?: { instant?: boolean; fadeInFromNull?: boolean },
+    ) => {
+      const instant = options?.instant ?? false;
+      const fadeInFromNull = options?.fadeInFromNull ?? true;
+
+      if (fadeTimerRef.current !== null) {
+        window.clearTimeout(fadeTimerRef.current);
+        fadeTimerRef.current = null;
+      }
+      if (instantRafRef.current !== null) {
+        window.cancelAnimationFrame(instantRafRef.current);
+        instantRafRef.current = null;
+      }
+
+      setPill((curr) => {
+        if (
+          curr.activeId === nextId &&
+          curr.fadingId === null &&
+          curr.instant === instant
+        ) {
+          return curr;
         }
 
-        const ranked = [...visible.entries()].sort((a, b) => a[1] - b[1]);
-        setActiveId(ranked[0]?.[0] ?? null);
-      },
-      { rootMargin: "-20% 0px -45% 0px", threshold: [0, 0.2, 0.5] },
-    );
+        const prevPillId = curr.activeId ?? curr.fadingId;
 
-    for (const element of elements) observer.observe(element);
-    return () => observer.disconnect();
-  }, [anchorIds]);
+        if (nextId === null) {
+          if (reduceRef.current || prevPillId === null) {
+            return {
+              activeId: null,
+              fadingId: null,
+              fromNull: true,
+              instant: false,
+            };
+          }
+          return {
+            activeId: null,
+            fadingId: prevPillId,
+            fromNull: false,
+            instant: false,
+          };
+        }
+
+        return {
+          activeId: nextId,
+          fadingId: null,
+          fromNull: prevPillId === null && fadeInFromNull && !instant,
+          instant,
+        };
+      });
+
+      if (nextId === null && !reduceRef.current) {
+        fadeTimerRef.current = window.setTimeout(() => {
+          fadeTimerRef.current = null;
+          setPill((curr) =>
+            curr.activeId === null && curr.fadingId !== null
+              ? {
+                  activeId: null,
+                  fadingId: null,
+                  fromNull: true,
+                  instant: false,
+                }
+              : curr,
+          );
+        }, NAV_FADE_OUT_MS);
+      } else if (instant && nextId !== null) {
+        instantRafRef.current = window.requestAnimationFrame(() => {
+          instantRafRef.current = null;
+          setPill((curr) =>
+            curr.instant ? { ...curr, instant: false, fromNull: false } : curr,
+          );
+        });
+      }
+    },
+    [],
+  );
+
+  useLayoutEffect(() => {
+    const ids = anchorIds.split("\0").filter(Boolean);
+    if (ids.length === 0) return;
+
+    const idSet = new Set(ids);
+    const getElements = () =>
+      ids
+        .map((id) => document.getElementById(id))
+        .filter((element): element is HTMLElement => element !== null);
+
+    let rafId = 0;
+
+    const clearLock = () => {
+      if (!lockRef.current) return;
+      window.clearTimeout(lockRef.current.timerId);
+      lockRef.current = null;
+    };
+
+    const startLock = (targetId: string, instant = false) => {
+      if (!idSet.has(targetId)) return;
+      clearLock();
+      const timerId = window.setTimeout(() => {
+        lockRef.current = null;
+      }, NAV_LOCK_TIMEOUT_MS);
+      lockRef.current = {
+        targetId,
+        timerId,
+        startedAt: performance.now(),
+      };
+      applyActiveId(targetId, { instant, fadeInFromNull: false });
+    };
+
+    const checkScroll = () => {
+      rafId = 0;
+      if (lockRef.current) return;
+      const elements = getElements();
+      if (elements.length === 0) return;
+      const nextId = computeActiveAnchorId(elements);
+      applyActiveId(nextId, { instant: false, fadeInFromNull: true });
+    };
+
+    const scheduleCheck = () => {
+      if (lockRef.current || rafId !== 0) return;
+      rafId = window.requestAnimationFrame(checkScroll);
+    };
+
+    const cancelLockOnManualInput = () => {
+      if (lockRef.current) {
+        if (performance.now() - lockRef.current.startedAt < 16) return;
+        clearLock();
+      }
+      scheduleCheck();
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (!MANUAL_SCROLL_KEYS.has(event.key)) return;
+      cancelLockOnManualInput();
+    };
+
+    const onScrollEnd = () => {
+      if (!lockRef.current) return;
+      if (performance.now() - lockRef.current.startedAt < 50) return;
+      clearLock();
+    };
+
+    const onHashChange = () => {
+      const hashId = readHashId();
+      if (hashId && idSet.has(hashId)) {
+        startLock(hashId, false);
+      } else {
+        clearLock();
+        scheduleCheck();
+      }
+    };
+
+    const onLockEvent = (event: Event) => {
+      const targetId = (event as CustomEvent<string>).detail;
+      if (typeof targetId === "string" && idSet.has(targetId)) {
+        startLock(targetId, false);
+      }
+    };
+
+    const onDocumentClick = (event: MouseEvent) => {
+      if (event.defaultPrevented) return;
+      if (
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
+        return;
+      }
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const anchor = target.closest("a[href]");
+      if (!anchor) return;
+      const href = anchor.getAttribute("href");
+      if (!href || !href.startsWith("#")) return;
+      const targetId = decodeHash(href.slice(1));
+      if (targetId && idSet.has(targetId)) {
+        startLock(targetId, false);
+      }
+    };
+
+    const initialHash = readHashId();
+    if (initialHash && idSet.has(initialHash)) {
+      startLock(initialHash, true);
+    } else {
+      const elements = getElements();
+      const initialActive = computeActiveAnchorId(elements);
+      if (initialActive !== null) {
+        applyActiveId(initialActive, { instant: true, fadeInFromNull: false });
+      }
+    }
+
+    window.addEventListener("scroll", scheduleCheck, { passive: true });
+    window.addEventListener("resize", scheduleCheck, { passive: true });
+    window.addEventListener("wheel", cancelLockOnManualInput, { passive: true });
+    window.addEventListener("touchstart", cancelLockOnManualInput, {
+      passive: true,
+    });
+    window.addEventListener("keydown", onKeyDown, { passive: true });
+    window.addEventListener("scrollend", onScrollEnd, { passive: true });
+    window.addEventListener("hashchange", onHashChange);
+    window.addEventListener(NAV_LOCK_EVENT, onLockEvent);
+    document.addEventListener("click", onDocumentClick);
+
+    return () => {
+      if (rafId !== 0) window.cancelAnimationFrame(rafId);
+      clearLock();
+      if (fadeTimerRef.current !== null) {
+        window.clearTimeout(fadeTimerRef.current);
+        fadeTimerRef.current = null;
+      }
+      if (instantRafRef.current !== null) {
+        window.cancelAnimationFrame(instantRafRef.current);
+        instantRafRef.current = null;
+      }
+      window.removeEventListener("scroll", scheduleCheck);
+      window.removeEventListener("resize", scheduleCheck);
+      window.removeEventListener("wheel", cancelLockOnManualInput);
+      window.removeEventListener("touchstart", cancelLockOnManualInput);
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("scrollend", onScrollEnd);
+      window.removeEventListener("hashchange", onHashChange);
+      window.removeEventListener(NAV_LOCK_EVENT, onLockEvent);
+      document.removeEventListener("click", onDocumentClick);
+    };
+  }, [anchorIds, applyActiveId]);
 
   const focusRing =
     variant === "design"
       ? "focus-visible:outline-woodax-charcoal"
       : "focus-visible:outline-cnc-white";
 
+  const activeId = pill.activeId;
+  const pillId = pill.activeId ?? pill.fadingId;
+  const pillVisible = pill.activeId !== null;
+  const pillAppearFade = pill.fromNull && !pill.instant;
+  const pillInstant = pill.instant;
+
   const barProps = {
     variant,
     links,
     activeId,
+    pillId,
+    pillVisible,
+    pillAppearFade,
+    pillInstant,
     pathname,
     homeLabel,
     logoLabel: logoLabel ?? homeLabel,
@@ -494,6 +795,10 @@ type BarContentProps = {
   variant: Variant;
   links: SiteNavLink[];
   activeId: string | null;
+  pillId: string | null;
+  pillVisible: boolean;
+  pillAppearFade: boolean;
+  pillInstant: boolean;
   pathname: string;
   homeLabel: string;
   logoLabel: string;
@@ -536,6 +841,10 @@ function BarContent({
         <NavLinks
           links={props.links}
           activeId={props.activeId}
+          pillId={props.pillId}
+          pillVisible={props.pillVisible}
+          pillAppearFade={props.pillAppearFade}
+          pillInstant={props.pillInstant}
           pathname={props.pathname}
           variant={props.variant}
           reduce={props.reduce || !showIndicator}
@@ -874,6 +1183,10 @@ function isLinkActive(
 function NavLinks({
   links,
   activeId,
+  pillId,
+  pillVisible,
+  pillAppearFade,
+  pillInstant,
   pathname,
   variant,
   reduce,
@@ -882,6 +1195,10 @@ function NavLinks({
 }: {
   links: SiteNavLink[];
   activeId: string | null;
+  pillId: string | null;
+  pillVisible: boolean;
+  pillAppearFade: boolean;
+  pillInstant: boolean;
   pathname: string;
   variant: Variant;
   reduce: boolean;
@@ -890,18 +1207,32 @@ function NavLinks({
 }) {
   return (
     <ul className="flex items-center">
-      {links.map((link) => (
-        <li key={itemKey(link)} className="shrink-0">
-          <SiteNavItem
-            link={link}
-            active={isLinkActive(link, activeId, pathname)}
-            variant={variant}
-            focusRing={focusRing}
-            showIndicator={showIndicator}
-            reduce={reduce}
-          />
-        </li>
-      ))}
+      {links.map((link) => {
+        const active = isLinkActive(link, activeId, pathname);
+        const hasPill =
+          link.type === "anchor" ? pillId === link.id : active;
+        const isPillVisible =
+          link.type === "anchor" ? pillVisible : active;
+        const appearFade = link.type === "anchor" ? pillAppearFade : false;
+        const instant = link.type === "anchor" ? pillInstant : false;
+
+        return (
+          <li key={itemKey(link)} className="shrink-0">
+            <SiteNavItem
+              link={link}
+              active={active}
+              hasPill={hasPill}
+              pillVisible={isPillVisible}
+              pillAppearFade={appearFade}
+              pillInstant={instant}
+              variant={variant}
+              focusRing={focusRing}
+              showIndicator={showIndicator}
+              reduce={reduce}
+            />
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -909,6 +1240,10 @@ function NavLinks({
 function SiteNavItem({
   link,
   active,
+  hasPill = active,
+  pillVisible = active,
+  pillAppearFade = false,
+  pillInstant = false,
   variant,
   focusRing,
   showIndicator = false,
@@ -918,6 +1253,10 @@ function SiteNavItem({
 }: {
   link: SiteNavLink;
   active: boolean;
+  hasPill?: boolean;
+  pillVisible?: boolean;
+  pillAppearFade?: boolean;
+  pillInstant?: boolean;
   variant: Variant;
   focusRing: string;
   showIndicator?: boolean;
@@ -938,24 +1277,36 @@ function SiteNavItem({
   );
   const content = (
     <>
-      {!menu && active ? (
-        showIndicator ? (
+      {!menu && hasPill ? (
+        showIndicator && !reduce ? (
           <motion.span
             layoutId="site-nav-indicator"
+            initial={pillAppearFade ? { opacity: 0 } : false}
+            animate={{ opacity: pillVisible ? 1 : 0 }}
+            style={{ borderRadius: 9999 }}
             className={cn(
               "absolute inset-0 rounded-full",
               variant === "design" ? "bg-woodax-cream" : "bg-cnc-line",
             )}
-            transition={{ duration: reduce ? 0 : 0.24, ease: easeOut }}
+            transition={{
+              layout: {
+                duration: pillInstant ? 0 : 0.24,
+                ease: easeOut,
+              },
+              opacity: {
+                duration: pillInstant ? 0 : 0.18,
+                ease: easeOut,
+              },
+            }}
           />
-        ) : (
+        ) : active ? (
           <span
             className={cn(
               "absolute inset-0 rounded-full",
               variant === "design" ? "bg-woodax-cream" : "bg-cnc-line",
             )}
           />
-        )
+        ) : null
       ) : null}
       <span className={menu ? undefined : "relative"}>{link.label}</span>
     </>
@@ -978,7 +1329,10 @@ function SiteNavItem({
     <a
       href={`#${link.id}`}
       aria-current={active ? current : undefined}
-      onClick={onNavigate}
+      onClick={() => {
+        lockNavAnchor(link.id);
+        onNavigate?.();
+      }}
       className={className}
     >
       {content}
@@ -1017,6 +1371,9 @@ function NavCta({
             locale: analyticsLocale(locale),
             location: "nav",
           });
+          if (href === "#contacto") {
+            lockNavAnchor("contacto");
+          }
         }}
         className={cn(
           "relative ml-2 h-11 min-h-11 shrink-0 gap-0 rounded-full px-0 focus-visible:outline-offset-[-2px]",

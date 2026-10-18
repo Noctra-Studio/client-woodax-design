@@ -130,6 +130,7 @@
         "city": "La ciudad debe tener entre 2 y 60 caracteres.",
         "details": "Elige al menos un detalle."
       },
+      "errorPrefix": "Error:",
       "close": "Cerrar",
       "mobileBar": "Cuéntanos tu proyecto"
     },
@@ -205,11 +206,6 @@
       "ideasTitle": "Ideas de lo que puedes hacer",
       "nextIdea": "Ver siguiente idea",
       "thicknessValue": "{min}–{max} mm",
-      "wood": "Madera · MDF, triplay y madera sólida",
-      "acrylic": "Acrílico",
-      "aluminum": "Aluminio delgado",
-      "maxThickness": "Espesor máx.",
-      "cuttingArea": "Área de corte",
       "groups": {
         "wood": {
           "name": "Madera, MDF, melamina, triplay",
@@ -229,7 +225,12 @@
           "example2": "Letra corpórea",
           "example3": "Pieza técnica con perforaciones"
         }
-      }
+      },
+      "wood": "Madera · MDF, triplay y madera sólida",
+      "acrylic": "Acrílico",
+      "aluminum": "Aluminio delgado",
+      "maxThickness": "Espesor máx.",
+      "cuttingArea": "Área de corte"
     },
     "audience": {
       "title": "Hecho para",
@@ -249,7 +250,10 @@
     },
     "form": {
       "title": "Cuéntanos qué necesitas producir",
+      "subtitle": "Te respondemos con una cotización y los siguientes pasos.",
+      "stepIndicator": "{current} / {total}",
       "step1": {
+        "label": "Material",
         "question": "¿En qué material?"
       },
       "materialOptions": {
@@ -259,6 +263,7 @@
         "other": "Otro"
       },
       "step1b": {
+        "label": "Tu proyecto",
         "question": "¿En qué punto está tu proyecto?"
       },
       "stateOptions": {
@@ -297,6 +302,7 @@
         "projectState": "Elige en qué punto está tu proyecto.",
         "details": "Elige una cantidad."
       },
+      "errorPrefix": "Error:",
       "close": "Cerrar",
       "mobileBar": "Cotizar mi proyecto"
     },

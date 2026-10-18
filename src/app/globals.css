@@ -214,58 +214,26 @@ html[data-cnc-intro="play"] .cnc-logo-stroke {
   transition: clip-path var(--duration-reveal) var(--ease-out);
 }
 
-@keyframes cnc-cut-stroke {
-  from {
-    stroke-dashoffset: 1;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
+.cnc-capabilities-mask-desktop {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 35%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 35%);
 }
 
-@keyframes cnc-toolhead-move {
-  from {
-    offset-distance: 0%;
-  }
-  to {
-    offset-distance: 100%;
-  }
-}
-
-.cnc-cut-bed {
-  background-image:
-    linear-gradient(to right, rgb(46 49 54 / 0.55) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(46 49 54 / 0.55) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-.cnc-cut-path {
-  fill: none;
-  stroke: var(--color-cnc-white);
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0;
-}
-
-.cnc-toolhead {
-  offset-rotate: 0deg;
-  offset-distance: 0%;
-}
-
-[data-cutting="true"] .cnc-cut-path {
-  stroke-dashoffset: 1;
-  animation: cnc-cut-stroke 1500ms var(--ease-out) forwards;
-}
-
-[data-cutting="true"] .cnc-toolhead {
-  animation: cnc-toolhead-move 1500ms var(--ease-out) forwards;
-}
-
-[data-in-view="false"] .cnc-cut-path,
-[data-in-view="false"] .cnc-toolhead {
-  animation-play-state: paused;
+.cnc-capabilities-mask-mobile {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 12%,
+    #000 58%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 12%,
+    #000 58%,
+    transparent 100%
+  );
 }
 
 .cnc-track {
@@ -307,12 +275,68 @@ html[data-cnc-intro="play"] .cnc-logo-stroke {
     opacity var(--duration-reveal) var(--ease-out);
 }
 
+@keyframes cnc-cut-stroke {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes cnc-toolhead-move {
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+
+.cnc-cut-bed {
+  background-image:
+    linear-gradient(to right, rgb(46 49 54 / 0.45) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(46 49 54 / 0.45) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.cnc-cut-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.cnc-toolhead {
+  offset-rotate: 0deg;
+  offset-distance: 0%;
+}
+
+[data-cutting="true"] .cnc-cut-path {
+  stroke-dashoffset: 1;
+  animation: cnc-cut-stroke 1500ms var(--ease-out) forwards;
+}
+
+[data-cutting="true"] .cnc-toolhead {
+  animation: cnc-toolhead-move 1500ms var(--ease-out) forwards;
+}
+
+[data-in-view="false"] .cnc-cut-path,
+[data-in-view="false"] .cnc-toolhead {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html[data-cnc-intro="play"] .cnc-hero-grid,
   html[data-cnc-intro="play"] .cnc-logo-stroke {
     animation: none;
     clip-path: none;
     stroke-dashoffset: 0;
+  }
+
+  [data-cutting="true"] .cnc-cut-path,
+  [data-cutting="true"] .cnc-toolhead {
+    animation: none;
+    stroke-dashoffset: 0;
+    offset-distance: 0%;
   }
 
   [data-draw="wait"] .cnc-track,
@@ -327,13 +351,6 @@ html[data-cnc-intro="play"] .cnc-logo-stroke {
   .cnc-plotter[data-plot="shown"] {
     clip-path: none;
     transition: none;
-  }
-
-  [data-cutting="true"] .cnc-cut-path,
-  [data-cutting="true"] .cnc-toolhead {
-    animation: none;
-    stroke-dashoffset: 0;
-    offset-distance: 0%;
   }
 
   [data-draw="wait"] .cnc-step,
@@ -415,6 +432,84 @@ html[data-cnc-intro="play"] .cnc-logo-stroke {
   .nav-sheet-panel[data-state="closed"],
   .nav-sheet-overlay[data-state="closed"] {
     animation-name: sheet-fade-out;
+  }
+}
+
+.privacy-dialog-overlay {
+  background-color: var(--nav-sheet-overlay);
+  animation: privacy-dialog-overlay-in 200ms var(--ease-out);
+}
+
+.privacy-dialog-overlay[data-state="closed"] {
+  animation: privacy-dialog-overlay-out 200ms var(--ease-out);
+}
+
+@media (min-width: 768px) {
+  .privacy-dialog-panel[data-state="open"] {
+    animation: privacy-dialog-panel-in-desktop 200ms var(--ease-out);
+  }
+
+  .privacy-dialog-panel[data-state="closed"] {
+    animation: privacy-dialog-panel-out-desktop 200ms var(--ease-out);
+  }
+}
+
+@media (max-width: 767px) {
+  .privacy-dialog-panel[data-state="open"] {
+    animation: privacy-dialog-overlay-in 200ms var(--ease-out);
+  }
+
+  .privacy-dialog-panel[data-state="closed"] {
+    animation: privacy-dialog-overlay-out 200ms var(--ease-out);
+  }
+}
+
+@keyframes privacy-dialog-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes privacy-dialog-overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes privacy-dialog-panel-in-desktop {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes privacy-dialog-panel-out-desktop {
+  from {
+    opacity: 1;
+    scale: 1;
+  }
+  to {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .privacy-dialog-overlay[data-state="open"],
+  .privacy-dialog-overlay[data-state="closed"],
+  .privacy-dialog-panel[data-state="open"],
+  .privacy-dialog-panel[data-state="closed"] {
+    animation: none;
   }
 }
 

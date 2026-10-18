@@ -1,6 +1,7 @@
 "use client";
 
 import type { InputHTMLAttributes } from "react";
+import { FieldErrorMessage } from "@/features/leads/components/option-group";
 import { cn } from "@/lib/utils";
 
 type TextFieldProps = {
@@ -12,6 +13,7 @@ type TextFieldProps = {
   variant: "design" | "cnc";
   error?: string;
   errorId: string;
+  errorPrefix?: string;
   autoComplete?: string;
   inputMode?: InputHTMLAttributes<HTMLInputElement>["inputMode"];
 };
@@ -25,11 +27,51 @@ export function TextField({
   variant,
   error,
   errorId,
+  errorPrefix,
   autoComplete,
   inputMode = "text",
 }: TextFieldProps) {
   const invalid = Boolean(error);
   const isDesign = variant === "design";
+
+  if (!isDesign) {
+    return (
+      <div>
+        <label
+          htmlFor={id}
+          className="text-cnc-muted mb-1.5 block font-mono text-xs tracking-[0.08em] uppercase"
+        >
+          {label}
+        </label>
+        <input
+          id={id}
+          name={name}
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          autoComplete={autoComplete}
+          inputMode={inputMode}
+          autoCapitalize={autoComplete === "name" ? "words" : "off"}
+          spellCheck={false}
+          aria-invalid={invalid || undefined}
+          aria-describedby={invalid ? errorId : undefined}
+          className={cn(
+            "duration-ui text-cnc-text focus-visible:outline-cnc-white h-11 w-full rounded-none border-0 border-b bg-transparent px-0 py-2 text-[16px] font-normal transition-colors ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4",
+            invalid
+              ? "border-cnc-white"
+              : "border-cnc-muted pointer-fine:hover:border-cnc-text focus:border-cnc-white",
+          )}
+        />
+        {error ? (
+          <FieldErrorMessage
+            id={errorId}
+            message={error}
+            prefix={errorPrefix}
+            variant={variant}
+          />
+        ) : null}
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -50,9 +92,7 @@ export function TextField({
             "peer h-14 w-full rounded-[var(--radius-control)] border px-4 pt-5 pb-1 text-[17px] font-normal outline-none",
             "duration-ui transition-[border-color] ease-out",
             "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
-            isDesign
-              ? "border-woodax-line bg-woodax-paper text-woodax-charcoal focus-visible:outline-woodax-charcoal"
-              : "border-cnc-line bg-cnc-bg text-cnc-text focus-visible:outline-cnc-white",
+            "border-woodax-line bg-woodax-paper text-woodax-charcoal focus-visible:outline-woodax-charcoal",
           )}
         />
         <label
@@ -62,16 +102,19 @@ export function TextField({
             "duration-ui transition-all ease-out",
             "peer-[:not(:placeholder-shown)]:top-2.5 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:text-[12px]",
             "peer-focus:top-2.5 peer-focus:translate-y-0 peer-focus:text-[12px]",
-            isDesign ? "text-woodax-charcoal/70" : "text-cnc-muted",
+            "text-woodax-charcoal/70",
           )}
         >
           {label}
         </label>
       </div>
       {error ? (
-        <p id={errorId} className="mt-2 text-[14px] leading-snug">
-          {error}
-        </p>
+        <FieldErrorMessage
+          id={errorId}
+          message={error}
+          prefix={errorPrefix}
+          variant={variant}
+        />
       ) : null}
     </div>
   );
