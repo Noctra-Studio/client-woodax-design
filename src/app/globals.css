@@ -292,7 +292,7 @@ html[data-cnc-intro="play"] .cnc-logo-stroke {
 
 .cnc-process-rail-y {
   top: var(--process-y1);
-  left: var(--process-x1);
+  left: var(--process-gutter);
   height: calc(var(--process-y3) - var(--process-y1));
 }
 

@@ -26,10 +26,12 @@ export function ProcessSection() {
     const updateGeometry = () => {
       const start = centerIn(root, first);
       const end = centerIn(root, last);
+      const gutter = Math.max(0, start.x - first.offsetWidth / 2 - 14);
       root.style.setProperty("--process-x1", `${start.x}px`);
       root.style.setProperty("--process-y1", `${start.y}px`);
       root.style.setProperty("--process-x3", `${end.x}px`);
       root.style.setProperty("--process-y3", `${end.y}px`);
+      root.style.setProperty("--process-gutter", `${gutter}px`);
     };
 
     updateGeometry();
@@ -103,6 +105,7 @@ export function ProcessSection() {
               "--process-y1": "0px",
               "--process-x3": "0px",
               "--process-y3": "0px",
+              "--process-gutter": "0px",
             } as CSSProperties
           }
         >
