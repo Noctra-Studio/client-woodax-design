@@ -685,7 +685,10 @@ function DesktopNav({
           data-variant={rest.variant}
           data-scrolled={morph ? "true" : "false"}
           className={cn(
-            "site-nav-bar pointer-events-auto mx-auto flex items-center gap-2 overflow-hidden",
+            "site-nav-bar pointer-events-auto mx-auto overflow-hidden",
+            morph
+              ? "flex items-center gap-2"
+              : "grid w-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center",
             rest.variant === "design"
               ? "text-woodax-charcoal"
               : "text-cnc-text",
@@ -763,10 +766,10 @@ function ReducedBars(props: BarContentProps & { scrolled: boolean }) {
           data-variant={bar.variant}
           data-scrolled={scrolled ? "true" : "false"}
           className={cn(
-            "site-nav-bar pointer-events-auto absolute top-0 flex items-center gap-2 overflow-hidden",
+            "site-nav-bar pointer-events-auto absolute top-0 overflow-hidden",
             scrolled
-              ? "inset-x-0 mx-auto h-14 w-max py-2 pr-2 pl-3"
-              : "inset-x-0 h-20 w-full py-4 pr-2 pl-5",
+              ? "inset-x-0 mx-auto flex h-14 w-max items-center gap-2 py-2 pr-2 pl-3"
+              : "inset-x-0 grid h-20 w-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center py-4 pr-2 pl-5",
             bar.variant === "design" ? "text-woodax-charcoal" : "text-cnc-text",
           )}
           style={{ borderRadius: "var(--radius-lg)" }}
@@ -819,19 +822,26 @@ function BarContent({
 }) {
   return (
     <>
-      <LogoSlot
-        homeLabel={props.logoLabel}
-        focusRing={props.focusRing}
-        compact={compact}
-        crossfade
-        tween={tween && !props.reduce}
-        trace={props.introPlaying && props.variant === "cnc"}
-        fade={props.variant === "design" && props.introPlaying}
-        logo={props.logo}
-        logoCompact={props.logoCompact}
-        logoTraceSrc={props.logoTraceSrc}
-      />
-      <div className="flex min-w-0 flex-1 items-center justify-center">
+      <div className={cn(!compact && "justify-self-start")}>
+        <LogoSlot
+          homeLabel={props.logoLabel}
+          focusRing={props.focusRing}
+          compact={compact}
+          crossfade
+          tween={tween && !props.reduce}
+          trace={props.introPlaying && props.variant === "cnc"}
+          fade={props.variant === "design" && props.introPlaying}
+          logo={props.logo}
+          logoCompact={props.logoCompact}
+          logoTraceSrc={props.logoTraceSrc}
+        />
+      </div>
+      <div
+        className={cn(
+          "flex min-w-0 items-center justify-center",
+          compact ? "flex-1" : "justify-self-center",
+        )}
+      >
         <NavLinks
           links={props.links}
           activeId={props.activeId}
@@ -846,7 +856,12 @@ function BarContent({
           showIndicator={showIndicator}
         />
       </div>
-      <div className="flex shrink-0 items-center">
+      <div
+        className={cn(
+          "flex shrink-0 items-center",
+          !compact && "justify-self-end",
+        )}
+      >
         <div
           className={cn(
             "site-nav-collapse grid min-w-0",
