@@ -3,69 +3,79 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { AnalyticsButton } from "@/components/analytics/tracked-link";
 import { MediaSlot } from "@/components/design/media-slot";
 import { Reveal } from "@/components/design/reveal";
-import { visibleSlots, type DesignMediaTag } from "@/content/design-media";
+import {
+  featuredProjectSlots,
+  type DesignMediaSlot,
+} from "@/content/design-media";
 import { routing } from "@/i18n/routing";
-import { cn } from "@/lib/utils";
-
-const mosaic = [
-  "md:col-span-7 md:row-span-2 md:min-h-[36rem]",
-  "md:col-span-5 md:min-h-[17rem]",
-  "md:col-span-5 md:min-h-[17rem]",
-  "md:col-span-4 md:min-h-[20rem]",
-  "md:col-span-8 md:min-h-[20rem]",
-  "md:col-span-7 md:min-h-[22rem]",
-];
 
 export async function ProjectsSection({
   instagramUrl,
 }: {
   instagramUrl?: string;
 }) {
-  const projects = visibleSlots("projects-");
+  const projects = featuredProjectSlots();
   if (projects.length === 0) return null;
 
   const t = await getTranslations("design.projects");
   const requested = await getLocale();
   const locale = hasLocale(routing.locales, requested) ? requested : "es";
+  const [lead, ...rest] = projects;
+  const beside = rest.slice(0, 2);
+  const below = rest.slice(2);
 
   return (
     <Reveal>
       <section
         id="proyectos"
         aria-labelledby="projects-title"
-        className="scroll-mt-24 py-16 md:py-24 lg:py-40"
+        className="scroll-mt-24 px-5 py-16 md:px-8 md:py-24 lg:py-40"
       >
         <div className="mx-auto w-full max-w-[1200px]">
           <h2
             id="projects-title"
-            className="px-5 font-serif text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.01em] text-balance md:px-8"
+            className="font-serif text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.01em] text-balance"
           >
             {t("title")}
           </h2>
-          <ul className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-5 pb-2 md:grid md:grid-cols-12 md:gap-5 md:overflow-visible md:px-8 md:pb-0">
-            {projects.map((item, index) => (
-              <li
-                key={item.id}
-                className={cn(
-                  "relative aspect-[4/5] w-[82vw] max-w-[28rem] shrink-0 snap-start overflow-hidden rounded-[var(--radius-media)] md:aspect-auto md:w-auto md:max-w-none",
-                  mosaic[index] ?? "md:col-span-6 md:min-h-[18rem]",
-                )}
-              >
-                <MediaSlot
-                  id={item.id}
-                  sizes="(min-width: 768px) 40vw, 82vw"
-                  fill
+          <div className="mt-10 grid grid-cols-1 gap-4 md:mt-14 md:grid-cols-12 md:gap-5">
+            {lead ? (
+              <div className="md:col-span-7">
+                <ProjectCard
+                  item={lead}
+                  label={lead.tag ? t(`tags.${lead.tag}`) : null}
+                  sizes="(min-width: 768px) 42rem, 100vw"
                 />
-                {item.tag ? (
-                  <p className="bg-woodax-cream text-woodax-charcoal absolute bottom-4 left-4 z-10 rounded-sm px-3 py-1 text-[12px] font-semibold tracking-[0.18em] uppercase">
-                    {t(`tags.${item.tag as DesignMediaTag}`)}
-                  </p>
-                ) : null}
-              </li>
-            ))}
-          </ul>
+              </div>
+            ) : null}
+            {beside.length > 0 ? (
+              <div className="grid grid-cols-1 gap-4 md:col-span-5 md:gap-5">
+                {beside.map((item) => (
+                  <ProjectCard
+                    key={item.id}
+                    item={item}
+                    label={item.tag ? t(`tags.${item.tag}`) : null}
+                    sizes="(min-width: 768px) 28rem, 100vw"
+                  />
+                ))}
+              </div>
+            ) : null}
+            {below.length > 0 ? (
+              <ul className="grid grid-cols-1 gap-4 md:col-span-12 md:grid-cols-3 md:gap-5">
+                {below.map((item) => (
+                  <li key={item.id}>
+                    <ProjectCard
+                      item={item}
+                      label={item.tag ? t(`tags.${item.tag}`) : null}
+                      sizes="(min-width: 768px) 24rem, 100vw"
+                    />
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
           {instagramUrl ? (
-            <div className="mt-8 px-5 md:px-8">
+            <div className="mt-8 md:mt-10">
               <AnalyticsButton
                 href={instagramUrl}
                 variant="design-secondary"
@@ -87,5 +97,26 @@ export async function ProjectsSection({
         </div>
       </section>
     </Reveal>
+  );
+}
+
+function ProjectCard({
+  item,
+  label,
+  sizes,
+}: {
+  item: DesignMediaSlot;
+  label: string | null;
+  sizes: string;
+}) {
+  return (
+    <article className="relative">
+      <MediaSlot id={item.id} sizes={sizes} />
+      {label ? (
+        <p className="border-woodax-charcoal/15 bg-woodax-cream text-woodax-charcoal absolute top-4 left-4 z-10 rounded-sm border px-3 py-1 text-[13px] font-semibold tracking-[0.18em] uppercase">
+          {label}
+        </p>
+      ) : null}
+    </article>
   );
 }

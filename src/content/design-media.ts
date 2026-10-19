@@ -193,6 +193,13 @@ export function visibleSlots(prefix: string): DesignMediaSlot[] {
   );
 }
 
+/** Preview shows every project placeholder. Production needs at least three real photos. */
+export function featuredProjectSlots(): DesignMediaSlot[] {
+  const slots = visibleSlots("projects-");
+  if (isProductionDeploy() && slots.length < 3) return [];
+  return slots;
+}
+
 export function hasAboutPhoto(): boolean {
   return designMedia.some(
     (slot) =>

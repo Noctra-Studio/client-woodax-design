@@ -1,4 +1,4 @@
-import { visibleSlots } from "@/content/design-media";
+import { featuredProjectSlots } from "@/content/design-media";
 import { isDesignRouteEnabled } from "@/content/design-publish";
 import type { Pathname } from "@/i18n/routing";
 
@@ -24,7 +24,7 @@ export const designNavKeys = ["about", "services", "clients"] as const;
 
 export function designSectionAnchors() {
   return [
-    ...(visibleSlots("projects-").length > 0
+    ...(featuredProjectSlots().length > 0
       ? [{ id: "proyectos", labelKey: "projects" as const }]
       : []),
     { id: "proceso", labelKey: "process" as const },

@@ -8,7 +8,11 @@ import { MediaSlot } from "@/components/design/media-slot";
 import { ProcessSection } from "@/components/design/process-section";
 import { ProjectsSection } from "@/components/design/projects-section";
 import { StatementSection } from "@/components/design/statement-section";
-import { getDesignMedia, hasMedia, visibleSlots } from "@/content/design-media";
+import {
+  featuredProjectSlots,
+  getDesignMedia,
+  hasMedia,
+} from "@/content/design-media";
 import {
   publishedSocialUrl,
   siteConfig,
@@ -71,7 +75,7 @@ export default async function DesignPage({
       />
       <HeroSection
         hasPoster={getDesignMedia("home-hero").src !== null}
-        showProjects={visibleSlots("projects-").length > 0}
+        showProjects={featuredProjectSlots().length > 0}
       >
         {hasMedia("home-hero") ? (
           <MediaSlot
