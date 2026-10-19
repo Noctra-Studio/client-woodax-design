@@ -11,26 +11,8 @@ import { Button } from "@/components/ui/button";
 import { siteConfig, type CncHero } from "@/content/site-config";
 import { useLeadUi } from "@/features/leads/components/lead-ui";
 import { analyticsLocale, track } from "@/lib/analytics";
-import { cn } from "@/lib/utils";
 
 const easeOut = [0.22, 1, 0.36, 1] as const;
-
-const corners = [
-  { place: "top-24 left-8 md:left-12", x: "0.000", y: "0.000" },
-  { place: "top-24 right-8 text-right md:right-12", x: "1.000", y: "0.000" },
-  {
-    place:
-      "bottom-[calc(5.5rem+env(safe-area-inset-bottom))] left-8 md:bottom-10 md:left-12",
-    x: "0.000",
-    y: "1.000",
-  },
-  {
-    place:
-      "right-8 bottom-[calc(8.75rem+env(safe-area-inset-bottom))] text-right md:right-12 md:bottom-24",
-    x: "1.000",
-    y: "1.000",
-  },
-] as const;
 
 export function HeroSection() {
   const t = useTranslations("cnc.hero");
@@ -66,20 +48,6 @@ export function HeroSection() {
           data-over-media={media ? "true" : undefined}
         />
         <RegistrationMarks className="top-20 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] md:bottom-6" />
-        {corners.map((corner) => (
-          <p
-            key={corner.place}
-            className={cn(
-              "absolute font-mono text-sm tracking-[0.08em] uppercase tabular-nums",
-              media ? "text-cnc-text" : "text-cnc-muted",
-              corner.place,
-            )}
-          >
-            {t("axisX")} {corner.x}
-            <br />
-            {t("axisY")} {corner.y}
-          </p>
-        ))}
       </div>
 
       <div className="relative z-10 flex min-h-[100svh] flex-col pt-24">
