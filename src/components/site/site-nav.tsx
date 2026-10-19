@@ -1464,6 +1464,16 @@ function NavCta({
   );
 }
 
+const TOOLTIP_GUTTER_PX = 8;
+
+function clampTooltipX(x: number, width: number) {
+  const half = width / 2;
+  const minX = TOOLTIP_GUTTER_PX + half;
+  const maxX = window.innerWidth - TOOLTIP_GUTTER_PX - half;
+  if (minX > maxX) return window.innerWidth / 2;
+  return Math.min(Math.max(x, minX), maxX);
+}
+
 function CtaTooltip({
   label,
   enabled,
@@ -1476,8 +1486,22 @@ function CtaTooltip({
   children: ReactNode;
 }) {
   const anchorRef = useRef<HTMLSpanElement>(null);
+  const tooltipRef = useRef<HTMLSpanElement>(null);
   const [shown, setShown] = useState(false);
   const [point, setPoint] = useState({ x: 0, y: 0 });
+
+  const syncPoint = useCallback(() => {
+    const anchor = anchorRef.current;
+    if (!anchor) return;
+    const rect = anchor.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const width = tooltipRef.current?.offsetWidth ?? 0;
+    const next = {
+      x: width > 0 ? clampTooltipX(x, width) : x,
+      y: rect.bottom,
+    };
+    setPoint((prev) => (prev.x === next.x && prev.y === next.y ? prev : next));
+  }, []);
 
   function show(fromPointer: boolean) {
     if (!enabled) return;
@@ -1490,9 +1514,28 @@ function CtaTooltip({
     const node = anchorRef.current;
     if (!node) return;
     const rect = node.getBoundingClientRect();
-    setPoint({ x: rect.left + rect.width / 2, y: rect.top });
+    setPoint({ x: rect.left + rect.width / 2, y: rect.bottom });
     setShown(true);
+    syncPoint();
   }
+
+  useLayoutEffect(() => {
+    if (!shown || !enabled) return;
+    syncPoint();
+  }, [shown, enabled, label, syncPoint]);
+
+  useEffect(() => {
+    if (!shown || !enabled) return;
+    window.addEventListener("scroll", syncPoint, {
+      passive: true,
+      capture: true,
+    });
+    window.addEventListener("resize", syncPoint);
+    return () => {
+      window.removeEventListener("scroll", syncPoint, true);
+      window.removeEventListener("resize", syncPoint);
+    };
+  }, [shown, enabled, syncPoint]);
 
   return (
     <span
@@ -1507,6 +1550,7 @@ function CtaTooltip({
       {shown && enabled
         ? createPortal(
             <span
+              ref={tooltipRef}
               role="tooltip"
               className={cn(
                 "site-nav-tooltip pointer-events-none fixed z-50 rounded-full px-3 py-1 text-sm whitespace-nowrap",
