@@ -20,6 +20,7 @@ export function HeroSection({
   showProjects: boolean;
 }) {
   const t = useTranslations("design.hero");
+  const home = useTranslations("design.home");
   const locale = useLocale();
   const leadUi = useLeadUi();
   const { status, skip } = useIntro();
@@ -46,7 +47,7 @@ export function HeroSection({
         )}
       >
         <p className="mt-auto text-[13px] font-semibold tracking-[0.18em] uppercase">
-          {t("eyebrow")}
+          {full ? home("eyebrow") : t("eyebrow")}
         </p>
         <h1
           id="hero-title"
