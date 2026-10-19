@@ -237,7 +237,7 @@
       "title": "Del archivo a la pieza",
       "step1": "01 Envíanos tu archivo o tu idea — {formats}, o un boceto con medidas.",
       "step1Output": "Archivo o boceto",
-      "step2": "02 Revisamos y cotizamos — Revisamos medidas, material y espesor, y te enviamos la cotización. Respuesta en {hours} h hábiles o menos.",
+      "step2": "02 Revisamos y cotizamos — Revisamos medidas, material y espesor, y te enviamos la cotización. Respuesta en {hours} horas hábiles o menos.",
       "step2Output": "Cotización",
       "step3": "03 Cortamos tus piezas — Las producimos con precisión repetible, de la primera a la última de la serie.",
       "step3Output": "Piezas"

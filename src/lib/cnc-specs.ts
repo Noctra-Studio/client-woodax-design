@@ -13,3 +13,19 @@ export function thicknessRangeForGroup(
 ): CncThicknessRange | undefined {
   return specs?.maxThicknessByMaterial.find((item) => item.group === group);
 }
+
+export function formatMmSize(
+  locale: string,
+  size: { widthMm: number; lengthMm: number } | undefined,
+): string {
+  if (!size || size.widthMm <= 0 || size.lengthMm <= 0) return "";
+  return `${formatSpecMm(locale, size.widthMm)} × ${formatSpecMm(locale, size.lengthMm)} mm`;
+}
+
+export function formatThicknessMm(
+  locale: string,
+  range: { minMm: number; maxMm: number } | undefined,
+): string {
+  if (!range || range.maxMm <= 0) return "";
+  return `${formatSpecMm(locale, range.minMm)}–${formatSpecMm(locale, range.maxMm)} mm`;
+}

@@ -129,15 +129,15 @@ Fuente única: `siteConfig.cncOffer`, `cncDelivery.smallProjectFromBusinessDays`
 - entrega — ES: Proyectos pequeños desde {lead}; proyectos grandes según volumen | EN: Small projects from {lead}; larger projects depend on volume. `{lead}` es `cncDelivery.smallProjectFromBusinessDays` (2) → «2 días hábiles» / «2 business days»
 - logística — ES: Recolección en taller o entrega | EN: Pick up at our shop or we deliver
 - ubicación — Corregidora, Querétaro. areaServed: Querétaro
-- franja (debajo del hero, JetBrains Mono, 2×2 en móvil) — ES: Cotización en {hours} h hábiles · Facturamos (CFDI) · Material tuyo o nuestro · Recolección o entrega | EN: Quote within {hours} business hours · CFDI invoices · Your material or ours · Pick up or delivery
-- correo interno, siguiente paso (el asunto `[CNC] Solicitud de cotización` no cambia; el material del asunto es `cncMaterialLabels`). file-ready: Pide el archivo ({formats}) y confirma material y espesor. Compromiso: cotizar en {hours} h hábiles. idea y needs-help conservan su texto y agregan el mismo compromiso al final.
+- franja (debajo del hero, JetBrains Mono, 2×2 en móvil; el CSS la pone en mayúsculas) — ES: Cotización en {hours} horas hábiles · Facturamos (CFDI) · Material tuyo o nuestro · Recolección o entrega | EN: Quote within {hours} business hours · CFDI invoices · Your material or ours · Pick up or delivery
+- correo interno, siguiente paso (el asunto `[CNC] Solicitud de cotización` no cambia; el material del asunto es `cncMaterialLabels`). file-ready: Pide el archivo ({formats}) y confirma material y espesor. Compromiso: cotizar en {hours} horas hábiles. idea y needs-help conservan su texto y agregan el mismo compromiso al final.
 
 ### Proceso ⚠︎ (pendiente Adrián)
 
 - title — ES: Del archivo a la pieza | EN: From file to finished part
 - step1 — Aprobado por Adrián 2026-10-18. `{formats}` sale de `siteConfig.cncFileFormats`. ES: 01 Envíanos tu archivo o tu idea — {formats}, o un boceto con medidas. | EN: 01 Send us your file or your idea — {formats}, or a sketch with dimensions.
 - step1Output ⚠︎ (pendiente Adrián) — ES: Archivo o boceto | EN: File or sketch
-- step2 — Aprobado por Adrián 2026-10-18. `{hours}` sale de `siteConfig.cncOffer.quoteBusinessHours` (48). ES: 02 Revisamos y cotizamos — Revisamos medidas, material y espesor, y te enviamos la cotización. Respuesta en {hours} h hábiles o menos. | EN: 02 We review and quote — We check dimensions, material and thickness, and send you a quote. Reply within {hours} business hours or less.
+- step2 — Aprobado por Adrián 2026-10-18. `{hours}` sale de `siteConfig.cncOffer.quoteBusinessHours` (48). ES: 02 Revisamos y cotizamos — Revisamos medidas, material y espesor, y te enviamos la cotización. Respuesta en {hours} horas hábiles o menos. | EN: 02 We review and quote — We check dimensions, material and thickness, and send you a quote. Reply within {hours} business hours or less.
 - step2Output ⚠︎ (pendiente Adrián) — ES: Cotización | EN: Quote
 - step3 ⚠︎ (el texto de este paso sigue pendiente; la logística ya está aprobada y vive en la franja, el FAQ y `llms.txt`, no en este paso) — ES: 03 Cortamos tus piezas — Las producimos con precisión repetible, de la primera a la última de la serie. | EN: 03 We cut your parts — We produce them with repeatable precision, from the first part to the last.
 - step3Output ⚠︎ (pendiente Adrián) — ES: Piezas | EN: Parts
@@ -157,7 +157,7 @@ Fuente única: `siteConfig.cncOffer`, `cncDelivery.smallProjectFromBusinessDays`
 - submit — ES: Solicitar cotización | EN: Request a quote
 - success.title — ES: Solicitud recibida | EN: Request received
 - success.quantityLegend — ES: ¿Cuántas piezas necesitas? | EN: How many parts do you need?
-- success.body — Aprobado por Adrián 2026-10-18. Sale de `siteConfig.cncOffer`, según `projectState`. `{formats}` y `{hours}` también. file-ready ES: Responde al correo que te enviaremos con tu archivo ({formats}). Te cotizamos en {hours} h hábiles o menos. | EN: Reply to the email we'll send you with your file ({formats}). We'll quote within {hours} business hours or less. needs-help e idea ES: Te contactamos en {hours} h hábiles o menos. Si tienes referencias o medidas, tenlas a la mano. | EN: We'll contact you within {hours} business hours or less. If you have references or dimensions, have them ready. El botón de WhatsApp se mantiene.
+- success.body — Aprobado por Adrián 2026-10-18. Sale de `siteConfig.cncOffer`, según `projectState`. `{formats}` y `{hours}` también. file-ready ES: Responde al correo que te enviaremos con tu archivo ({formats}). Te cotizamos en {hours} horas hábiles o menos. | EN: Reply to the email we'll send you with your file ({formats}). We'll quote within {hours} business hours or less. needs-help e idea ES: Te contactamos en {hours} horas hábiles o menos. Si tienes referencias o medidas, tenlas a la mano. | EN: We'll contact you within {hours} business hours or less. If you have references or dimensions, have them ready. El botón de WhatsApp se mantiene.
 - success.quantity — ES: 1–10 · 11–100 · Más de 100 | EN: 1–10 · 11–100 · 100+
 - success.whatsapp — ES: Continuar por WhatsApp | EN: Continue on WhatsApp
 - whatsapp — ES: WhatsApp | EN: WhatsApp (píldora flotante en desktop, después del hero y fuera de contacto y del footer; segundo botón de la barra móvil. Solo si el número de entorno es válido. El número no se muestra.)
@@ -287,6 +287,7 @@ Fuente única: `siteConfig.cncOffer`, `cncDelivery.smallProjectFromBusinessDays`
 - label — ES: Capacidades | EN: Capabilities
 - title — ES: Lo que puede hacer la máquina | EN: What the machine can do
 - area — ES: Área de trabajo (`{width} × {length} mm` → `1300 × 2500 mm` desde `siteConfig.cncSpecs.cuttingArea`) | EN: Work area (`{width} × {length} mm` → `1300 × 2500 mm`)
+- standardSheet — hojas que recibe el taller si el cliente trae el material (`siteConfig.cncSpecs.standardSheet`: `1220 × 2440 mm`). Solo se usa en el FAQ de material.
 - thicknessValue — ES: `{min}–{max} mm` | EN: `{min}–{max} mm` (desde `siteConfig.cncSpecs.maxThicknessByMaterial`; el nombre del grupo es `cncMaterialLabels`: Madera, MDF, Melamina y Triplay `3–40 mm`; Acrílico, Plástico y Corian `3–40 mm`; Aluminio `0.5–5 mm`)
 - note — ES: ¿Tu proyecto no encaja? Escríbenos y lo revisamos. | EN: Project doesn't fit? Write to us and we'll take a look.
 
@@ -297,16 +298,20 @@ Fuente única: `siteConfig.cncOffer`, `cncDelivery.smallProjectFromBusinessDays`
 
 ### Preguntas frecuentes — Aprobado por Adrián 2026-10-18
 
-Acordeón, un ítem a la vez. Preguntas y respuestas en `siteConfig.cncOffer` (la de volumen reutiliza `cnc.hero.subhead`). JSON-LD FAQPage usa el mismo texto. La pregunta de precios no se publica.
+Acordeón, un ítem a la vez. Preguntas y respuestas en `siteConfig.cncOffer` (la de volumen reutiliza `cnc.hero.subhead`). Cada respuesta cabe en 1–2 frases y contesta en la primera. `{area}`, `{sheet}`, `{wood}`, `{plastic}` y `{aluminum}` salen de `cncSpecs` (`cuttingArea`, `standardSheet`, grupos wood / acrylic / aluminum). JSON-LD FAQPage y `llms.txt` usan exactamente las mismas preguntas visibles.
+
+Orden: pricing (solo si `siteConfig.faqPricing` es true) · size · quote · order · material · files · logistics · volume · invoice.
 
 - title — ES: Preguntas frecuentes | EN: Frequently asked questions
-- material — ES: ¿Ustedes ponen el material? → Nosotros lo surtimos o tú lo traes | EN: Do you supply the material? → We can supply it, or you bring your own
-- invoice — ES: ¿Facturan? → Sí, emitimos CFDI. | EN: Do you issue invoices? → We issue CFDI invoices.
-- quote — ES: ¿Cuánto tardan en cotizar? → {hours} h hábiles o menos. | EN: How long does a quote take? → Within {hours} business hours or less.
+- pricing — detrás de `siteConfig.faqPricing: false` hasta que Adrián apruebe. No se publica. ES: ¿Cuánto cuesta? → Depende del material, espesor, tiempo de corte y cantidad. Te damos el precio exacto en la cotización, sin compromiso. | EN: How much does it cost? → It depends on the material, thickness, cutting time and quantity. We give you the exact price in the quote, with no obligation.
+- size — ES: ¿Qué tamaño máximo pueden cortar? → Hasta {area} por pieza, con espesores de {wood} en madera y derivados, {plastic} en acrílico y plásticos, y {aluminum} en aluminio. | EN: What is the largest size you can cut? → Up to {area} per part, with thicknesses of {wood} in wood and wood-based materials, {plastic} in acrylic and plastics, and {aluminum} in aluminum.
+- quote — ES: ¿Cuánto tardan en cotizar? → Te cotizamos en {hours} horas hábiles o menos. Para hacerlo rápido, mándanos tu archivo o medidas, el material, el espesor y la cantidad de piezas. | EN: How long does a quote take? → We quote within {hours} business hours or less. To keep it fast, send your file or dimensions, the material, the thickness and the number of parts.
 - order — ES: ¿Cuánto tarda mi pedido? → Proyectos pequeños desde {lead}; los grandes según volumen, te damos fecha en la cotización. | EN: How long does my order take? → Small projects from {lead}; larger projects depend on volume. We'll give you a date in the quote.
+- material — ES: ¿Ustedes ponen el material? → Las dos opciones. Si nosotros lo surtimos, va incluido en la cotización; si lo traes tú, recibimos hojas estándar de {sheet} (nuestra área de trabajo es de {area}). | EN: Do you supply the material? → Both options. If we supply it, it's included in the quote; if you bring it, we accept standard sheets of {sheet} (our work area is {area}).
 - files — ES: ¿Qué archivos aceptan? → {formats}. Si solo tienes la idea o un boceto, te ayudamos. | EN: Which files do you accept? → {formats}. If you only have the idea or a sketch, we'll help.
-- logistics — ES: ¿Recogen o entregan? → Puedes recoger en nuestro taller en Corregidora o lo entregamos. | EN: Do you pick up or deliver? → You can pick up at our shop in Corregidora, or we deliver.
+- logistics — ES: ¿Recogen o entregan? → Puedes recoger en nuestro taller en {locality} o lo entregamos; la zona y el costo de entrega se confirman en la cotización. | EN: Do you pick up or deliver? → You can pick up at our shop in {locality}, or we deliver; the delivery area and cost are confirmed in the quote.
 - volume — ES: ¿Hacen piezas sueltas o solo volumen? → el subhead del hero («desde una hasta miles») | EN: Do you make single parts or only volume? → the hero subhead («from a single piece to thousands»)
+- invoice — ES: ¿Facturan? → Sí, emitimos CFDI. | EN: Do you issue invoices? → We issue CFDI invoices.
 
 ### Formulario — detalles opcionales (estado de éxito)
 

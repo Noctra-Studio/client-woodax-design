@@ -1,3 +1,9 @@
+import {
+  formatMmSize,
+  formatThicknessMm,
+  thicknessRangeForGroup,
+} from "@/lib/cnc-specs";
+
 export const cncThicknessMaterials = [
   "wood",
   "mdf",
@@ -62,6 +68,8 @@ export type CncSpecsImage = {
 
 export type CncSpecs = {
   cuttingArea: { widthMm: number; lengthMm: number };
+  /** Sheets accepted when the client supplies the material. */
+  standardSheet?: { widthMm: number; lengthMm: number };
   maxThicknessByMaterial: readonly CncThicknessRange[];
   machineImage?: CncSpecsImage;
 };
@@ -97,6 +105,7 @@ export type CncOffer = {
   /** `{days}` is `cncDelivery.smallProjectFromBusinessDays`. */
   smallProjectLead: LocaleText;
   materialSupply: LocaleText;
+  materialAnswer: LocaleText;
   invoicing: LocaleText;
   quoteWithin: LocaleText;
   quoteShort: LocaleText;
@@ -104,6 +113,8 @@ export type CncOffer = {
   orderAnswer: LocaleText;
   filesAnswer: LocaleText;
   pickupAnswer: LocaleText;
+  sizeAnswer: LocaleText;
+  pricingAnswer: LocaleText;
   logistics: LocaleText;
   location: {
     addressLocality: string;
@@ -138,6 +149,8 @@ export type SiteConfig = {
   cncOffer: CncOffer;
   cncFileFormats: readonly CncFileFormat[];
   showFileFormats: boolean;
+  /** Pricing FAQ stays unpublished until Adrián approves the answer. */
+  faqPricing: boolean;
 };
 
 export const siteConfig: SiteConfig = {
@@ -178,6 +191,10 @@ export const siteConfig: SiteConfig = {
       es: "Nosotros lo surtimos o tú lo traes",
       en: "We can supply it, or you bring your own",
     },
+    materialAnswer: {
+      es: "Las dos opciones. Si nosotros lo surtimos, va incluido en la cotización; si lo traes tú, recibimos hojas estándar de {sheet} (nuestra área de trabajo es de {area}).",
+      en: "Both options. If we supply it, it's included in the quote; if you bring it, we accept standard sheets of {sheet} (our work area is {area}).",
+    },
     invoicing: {
       es: "Sí, emitimos CFDI.",
       en: "We issue CFDI invoices.",
@@ -187,8 +204,8 @@ export const siteConfig: SiteConfig = {
       en: "within {hours} business hours or less",
     },
     quoteShort: {
-      es: "{hours} h hábiles o menos.",
-      en: "Within {hours} business hours or less.",
+      es: "Te cotizamos en {hours} horas hábiles o menos. Para hacerlo rápido, mándanos tu archivo o medidas, el material, el espesor y la cantidad de piezas.",
+      en: "We quote within {hours} business hours or less. To keep it fast, send your file or dimensions, the material, the thickness and the number of parts.",
     },
     delivery: {
       es: "Proyectos pequeños desde {lead}; proyectos grandes según volumen",
@@ -203,8 +220,16 @@ export const siteConfig: SiteConfig = {
       en: "{formats}. If you only have the idea or a sketch, we'll help.",
     },
     pickupAnswer: {
-      es: "Puedes recoger en nuestro taller en {locality} o lo entregamos.",
-      en: "You can pick up at our shop in {locality}, or we deliver.",
+      es: "Puedes recoger en nuestro taller en {locality} o lo entregamos; la zona y el costo de entrega se confirman en la cotización.",
+      en: "You can pick up at our shop in {locality}, or we deliver; the delivery area and cost are confirmed in the quote.",
+    },
+    sizeAnswer: {
+      es: "Hasta {area} por pieza, con espesores de {wood} en madera y derivados, {plastic} en acrílico y plásticos, y {aluminum} en aluminio.",
+      en: "Up to {area} per part, with thicknesses of {wood} in wood and wood-based materials, {plastic} in acrylic and plastics, and {aluminum} in aluminum.",
+    },
+    pricingAnswer: {
+      es: "Depende del material, espesor, tiempo de corte y cantidad. Te damos el precio exacto en la cotización, sin compromiso.",
+      en: "It depends on the material, thickness, cutting time and quantity. We give you the exact price in the quote, with no obligation.",
     },
     logistics: {
       es: "Recolección en taller o entrega",
@@ -222,7 +247,7 @@ export const siteConfig: SiteConfig = {
     areaServed: "Querétaro",
     trust: [
       {
-        es: "Cotización en {hours} h hábiles",
+        es: "Cotización en {hours} horas hábiles",
         en: "Quote within {hours} business hours",
       },
       {
@@ -239,14 +264,14 @@ export const siteConfig: SiteConfig = {
       },
     ],
     successFileReady: {
-      es: "Responde al correo que te enviaremos con tu archivo ({formats}). Te cotizamos en {hours} h hábiles o menos.",
+      es: "Responde al correo que te enviaremos con tu archivo ({formats}). Te cotizamos en {hours} horas hábiles o menos.",
       en: "Reply to the email we'll send you with your file ({formats}). We'll quote within {hours} business hours or less.",
     },
     successFollowUp: {
-      es: "Te contactamos en {hours} h hábiles o menos. Si tienes referencias o medidas, tenlas a la mano.",
+      es: "Te contactamos en {hours} horas hábiles o menos. Si tienes referencias o medidas, tenlas a la mano.",
       en: "We'll contact you within {hours} business hours or less. If you have references or dimensions, have them ready.",
     },
-    emailCommitment: "Compromiso: cotizar en {hours} h hábiles.",
+    emailCommitment: "Compromiso: cotizar en {hours} horas hábiles.",
     emailNextStep: {
       "file-ready":
         "Pide el archivo ({formats}) y confirma material y espesor. {commitment}",
@@ -256,17 +281,17 @@ export const siteConfig: SiteConfig = {
     },
     faq: [
       {
-        id: "material",
+        id: "pricing",
         question: {
-          es: "¿Ustedes ponen el material?",
-          en: "Do you supply the material?",
+          es: "¿Cuánto cuesta?",
+          en: "How much does it cost?",
         },
       },
       {
-        id: "invoice",
+        id: "size",
         question: {
-          es: "¿Facturan?",
-          en: "Do you issue invoices?",
+          es: "¿Qué tamaño máximo pueden cortar?",
+          en: "What is the largest size you can cut?",
         },
       },
       {
@@ -281,6 +306,13 @@ export const siteConfig: SiteConfig = {
         question: {
           es: "¿Cuánto tarda mi pedido?",
           en: "How long does my order take?",
+        },
+      },
+      {
+        id: "material",
+        question: {
+          es: "¿Ustedes ponen el material?",
+          en: "Do you supply the material?",
         },
       },
       {
@@ -304,10 +336,18 @@ export const siteConfig: SiteConfig = {
           en: "Do you make single parts or only volume?",
         },
       },
+      {
+        id: "invoice",
+        question: {
+          es: "¿Facturan?",
+          en: "Do you issue invoices?",
+        },
+      },
     ],
   },
   cncFileFormats: ["DXF", "DWG", "SVG", "PDF"],
   showFileFormats: true,
+  faqPricing: false,
   cncHero: {
     type: "video",
     src: {
@@ -324,6 +364,7 @@ export const siteConfig: SiteConfig = {
   },
   cncSpecs: {
     cuttingArea: { widthMm: 1300, lengthMm: 2500 },
+    standardSheet: { widthMm: 1220, lengthMm: 2440 },
     maxThicknessByMaterial: [
       {
         group: "wood",
@@ -416,6 +457,15 @@ function fill(
   });
 }
 
+function filled(
+  template: string,
+  values: Record<string, string | number>,
+  required: readonly string[],
+): string {
+  if (required.some((key) => !values[key])) return "";
+  return fill(template, values);
+}
+
 export function cncSmallProjectLead(locale: string): string {
   const loc = cncLocale(locale);
   const days = siteConfig.cncDelivery.smallProjectFromBusinessDays;
@@ -481,14 +531,31 @@ export function cncFaqItems(
 ): CncFaqItem[] {
   const loc = cncLocale(locale);
   const offer = siteConfig.cncOffer;
+  const specs = siteConfig.cncSpecs;
   const values = {
     hours: offer.quoteBusinessHours,
     lead: cncSmallProjectLead(loc),
     formats: cncFileFormatList(loc),
     locality: offer.location.addressLocality,
+    area: formatMmSize(loc, specs?.cuttingArea),
+    sheet: formatMmSize(loc, specs?.standardSheet),
+    wood: formatThicknessMm(loc, thicknessRangeForGroup(specs, "wood")),
+    plastic: formatThicknessMm(loc, thicknessRangeForGroup(specs, "acrylic")),
+    aluminum: formatThicknessMm(loc, thicknessRangeForGroup(specs, "aluminum")),
   };
+  const materialAnswer = filled(offer.materialAnswer[loc], values, [
+    "sheet",
+    "area",
+  ]);
   const answers: Record<string, string> = {
-    material: offer.materialSupply[loc],
+    pricing: offer.pricingAnswer[loc],
+    size: filled(offer.sizeAnswer[loc], values, [
+      "area",
+      "wood",
+      "plastic",
+      "aluminum",
+    ]),
+    material: materialAnswer || offer.materialSupply[loc],
     invoice: offer.invoicing[loc],
     quote: fill(offer.quoteShort[loc], values),
     order: fill(offer.orderAnswer[loc], values),
@@ -497,11 +564,13 @@ export function cncFaqItems(
     volume: volumeAnswer,
   };
 
-  return offer.faq.map((item) => ({
-    id: item.id,
-    question: item.question[loc],
-    answer: answers[item.id] ?? "",
-  }));
+  return offer.faq.flatMap((item) => {
+    if (item.id === "pricing" && !siteConfig.faqPricing) return [];
+    const question = item.question[loc];
+    const answer = answers[item.id] ?? "";
+    if (!question || !answer) return [];
+    return [{ id: item.id, question, answer }];
+  });
 }
 
 export function cncSectionAnchors() {

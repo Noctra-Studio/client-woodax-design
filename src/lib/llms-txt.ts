@@ -1,5 +1,6 @@
 import {
   cncDeliveryText,
+  cncFaqItems,
   cncFileFormatList,
   cncMaterialLabel,
   cncQuoteWithin,
@@ -145,6 +146,20 @@ function cncLlmsTxt(): string {
     `- Logistics: ${offer.logistics.en}`,
     "",
   );
+
+  const faqEs = cncFaqItems("es", copy.hero.subhead);
+  const faqEn = cncFaqItems("en", copyEn.hero.subhead);
+  if (faqEs.length > 0) {
+    lines.push("## FAQ", "");
+    for (const item of faqEs) {
+      lines.push(`- ${item.question} ${item.answer}`);
+    }
+    lines.push("", "English:", "");
+    for (const item of faqEn) {
+      lines.push(`- ${item.question} ${item.answer}`);
+    }
+    lines.push("");
+  }
 
   lines.push(
     "## Links",
