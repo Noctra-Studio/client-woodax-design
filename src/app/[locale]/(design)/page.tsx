@@ -7,6 +7,7 @@ import { HomeCta } from "@/components/design/home-cta";
 import { MediaSlot } from "@/components/design/media-slot";
 import { ProcessSection } from "@/components/design/process-section";
 import { ProjectsSection } from "@/components/design/projects-section";
+import { StatementSection } from "@/components/design/statement-section";
 import { getDesignMedia, hasMedia, visibleSlots } from "@/content/design-media";
 import {
   publishedSocialUrl,
@@ -80,6 +81,7 @@ export default async function DesignPage({
           />
         ) : null}
       </HeroSection>
+      <StatementSection />
       <AudienceSection />
       <ProjectsSection
         instagramUrl={publishedSocialUrl(siteConfig.instagramUrl)}
