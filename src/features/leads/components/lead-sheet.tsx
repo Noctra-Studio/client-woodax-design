@@ -125,7 +125,7 @@ export function LeadSheet({
           className="flex cursor-grab touch-none justify-center pt-3 pb-1 md:hidden"
           onPointerDown={(event) => dragControls.start(event)}
         >
-          <span className="h-1 w-10 rounded-full bg-current opacity-30" />
+          <span className="h-1 w-10 rounded-sm bg-current opacity-30" />
         </div>
         <div className="flex items-start justify-between gap-4 px-5 pt-2 pb-1 md:hidden">
           <h2

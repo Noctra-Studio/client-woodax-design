@@ -99,7 +99,7 @@ export function HeroSection() {
         <button
           type="button"
           onClick={skip}
-          className="border-cnc-muted text-cnc-text focus-visible:outline-cnc-white pointer-fine:hover:border-cnc-text pointer-fine:hover:bg-cnc-surface bg-cnc-bg absolute right-4 bottom-[calc(4.75rem+env(safe-area-inset-bottom))] z-20 inline-flex min-h-11 items-center rounded-[4px] border px-4 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:right-8 md:bottom-8"
+          className="border-cnc-muted text-cnc-text focus-visible:outline-cnc-white pointer-fine:hover:border-cnc-text pointer-fine:hover:bg-cnc-surface bg-cnc-bg absolute right-4 bottom-[calc(4.75rem+env(safe-area-inset-bottom))] z-20 inline-flex min-h-11 items-center rounded-sm border px-4 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:right-8 md:bottom-8"
         >
           {t("skipIntro")}
         </button>

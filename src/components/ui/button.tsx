@@ -10,13 +10,13 @@ import { cn } from "@/lib/utils";
 
 const variants = {
   "design-primary":
-    "rounded-full bg-woodax-charcoal text-woodax-cream pointer-fine:hover:bg-woodax-charcoal/90 focus-visible:outline-woodax-cream",
+    "rounded-sm bg-woodax-charcoal text-woodax-cream pointer-fine:hover:bg-woodax-charcoal/90 focus-visible:outline-woodax-cream",
   "design-secondary":
-    "rounded-full border border-woodax-charcoal text-woodax-charcoal pointer-fine:hover:bg-woodax-cream focus-visible:outline-woodax-charcoal",
+    "rounded-sm border border-woodax-charcoal text-woodax-charcoal pointer-fine:hover:bg-woodax-cream focus-visible:outline-woodax-charcoal",
   "cnc-primary":
-    "rounded-[4px] bg-cnc-white text-cnc-bg pointer-fine:hover:bg-cnc-text focus-visible:outline-cnc-white",
+    "rounded-sm bg-cnc-white text-cnc-bg pointer-fine:hover:bg-cnc-text focus-visible:outline-cnc-white",
   "cnc-secondary":
-    "rounded-[4px] border border-cnc-muted text-cnc-text pointer-fine:hover:border-cnc-text pointer-fine:hover:bg-cnc-surface focus-visible:outline-cnc-white",
+    "rounded-sm border border-cnc-muted text-cnc-text pointer-fine:hover:border-cnc-text pointer-fine:hover:bg-cnc-surface focus-visible:outline-cnc-white",
 } as const;
 
 type CommonProps = {

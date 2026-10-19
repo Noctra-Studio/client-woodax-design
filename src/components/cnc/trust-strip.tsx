@@ -2,7 +2,7 @@ export function TrustStrip({ items }: { items: readonly string[] }) {
   if (items.length === 0) return null;
 
   return (
-    <section className="border-cnc-line border-y">
+    <section className="border-cnc-line overflow-hidden rounded-sm border-y">
       <ul className="mx-auto grid w-full max-w-[1200px] grid-cols-2 md:grid-cols-4">
         {items.map((item) => (
           <li

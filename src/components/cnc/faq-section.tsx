@@ -35,13 +35,13 @@ export function FaqSection({
         <Accordion
           type="single"
           collapsible
-          className="border-cnc-line mt-10 border-t md:mt-14"
+          className="border-cnc-line mt-10 overflow-hidden rounded-sm border md:mt-14"
         >
           {published.map((item) => (
             <AccordionItem
               key={item.id}
               value={item.id}
-              className="border-cnc-line border-b"
+              className="border-cnc-line border-b last:border-b-0"
             >
               <AccordionTrigger className="focus-visible:outline-cnc-white [&_svg]:text-cnc-muted text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.45] font-medium">
                 {item.question}

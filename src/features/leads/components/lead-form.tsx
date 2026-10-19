@@ -684,7 +684,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
                         className={cn(
                           isDesign
                             ? "size-5 accent-current"
-                            : "peer border-cnc-muted pointer-fine:hover:border-cnc-text checked:border-cnc-white checked:bg-cnc-white focus-visible:outline-cnc-white size-5 appearance-none rounded-[3px] border bg-transparent transition-colors duration-[var(--duration-ui)] ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+                            : "peer border-cnc-muted pointer-fine:hover:border-cnc-text checked:border-cnc-white checked:bg-cnc-white focus-visible:outline-cnc-white size-5 appearance-none rounded-sm border bg-transparent transition-colors duration-[var(--duration-ui)] ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
                         )}
                       />
                       {!isDesign ? (
@@ -766,7 +766,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
                       type="button"
                       onClick={goBackStep}
                       disabled={pending}
-                      className="text-cnc-muted pointer-fine:hover:text-cnc-text focus-visible:outline-cnc-white group inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-[4px] px-1 text-[15px] font-medium transition-colors duration-[var(--duration-press)] ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50"
+                      className="text-cnc-muted pointer-fine:hover:text-cnc-text focus-visible:outline-cnc-white group inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-sm px-1 text-[15px] font-medium transition-colors duration-[var(--duration-press)] ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50"
                     >
                       <ArrowLeft
                         aria-hidden="true"

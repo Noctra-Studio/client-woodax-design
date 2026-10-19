@@ -134,7 +134,7 @@ export function ProcessSection() {
               />
             </svg>
             <div className="cnc-track-head-rail">
-              <span className="cnc-track-head bg-cnc-white ring-cnc-white/25 size-2 rounded-full ring-4" />
+              <span className="cnc-track-head bg-cnc-white ring-cnc-white/25 size-2 rounded-sm ring-4" />
             </div>
           </div>
           <div
@@ -157,7 +157,7 @@ export function ProcessSection() {
               />
             </svg>
             <div className="cnc-track-head-rail-y">
-              <span className="cnc-track-head-y bg-cnc-white ring-cnc-white/25 size-2 rounded-full ring-4" />
+              <span className="cnc-track-head-y bg-cnc-white ring-cnc-white/25 size-2 rounded-sm ring-4" />
             </div>
           </div>
           <ol className="relative grid gap-10 md:grid-cols-3 md:gap-8">

@@ -124,7 +124,7 @@ export default async function CncPage({
       />
       <a
         href="#hero-title"
-        className="bg-cnc-bg text-cnc-text focus-visible:outline-cnc-white sr-only z-50 rounded-[4px] focus-visible:not-sr-only focus-visible:fixed focus-visible:top-[max(1rem,env(safe-area-inset-top))] focus-visible:left-4 focus-visible:inline-flex focus-visible:min-h-11 focus-visible:items-center focus-visible:px-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+        className="bg-cnc-bg text-cnc-text focus-visible:outline-cnc-white sr-only z-50 rounded-sm focus-visible:not-sr-only focus-visible:fixed focus-visible:top-[max(1rem,env(safe-area-inset-top))] focus-visible:left-4 focus-visible:inline-flex focus-visible:min-h-11 focus-visible:items-center focus-visible:px-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
       >
         {t("skipToContent")}
       </a>

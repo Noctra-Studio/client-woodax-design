@@ -493,7 +493,10 @@ export function SiteNav({
   return (
     <nav
       aria-label={homeLabel}
-      className="pointer-events-none fixed inset-x-0 top-0 z-40 flex justify-center px-3 pt-[max(0.75rem,env(safe-area-inset-top))] md:px-6"
+      className={cn(
+        "pointer-events-none fixed inset-x-0 top-0 z-40 flex justify-center px-3 pt-[max(0.75rem,calc(env(safe-area-inset-top)+0.5rem))] md:px-6",
+        menuOpen && "z-[60]",
+      )}
     >
       <DesktopNav scrolled={scrolled} {...barProps} />
       <MobileNav
@@ -684,7 +687,7 @@ function DesktopNav({
               ? "text-woodax-charcoal"
               : "text-cnc-text",
           )}
-          style={{ borderRadius: 9999 }}
+          style={{ borderRadius: "var(--radius-lg)" }}
         >
           <BarContent
             {...rest}
@@ -720,7 +723,7 @@ function MeasureRow({
       data-variant={variant}
       data-scrolled="false"
       className="site-nav-bar pointer-events-none invisible absolute top-0 left-0 flex w-max items-center gap-2 py-2 pr-2 pl-3"
-      style={{ borderRadius: 9999 }}
+      style={{ borderRadius: "var(--radius-lg)" }}
     >
       <span className="inline-flex h-8 items-center" aria-hidden>
         {cloneLogo(logoCompact, { measure: true })}
@@ -763,7 +766,7 @@ function ReducedBars(props: BarContentProps & { scrolled: boolean }) {
               : "inset-x-0 h-20 w-full py-4 pr-2 pl-5",
             bar.variant === "design" ? "text-woodax-charcoal" : "text-cnc-text",
           )}
-          style={{ borderRadius: 9999 }}
+          style={{ borderRadius: "var(--radius-lg)" }}
         >
           <BarContent
             {...bar}
@@ -913,16 +916,20 @@ function MobileNav({
   menuOpen: boolean;
   setMenuOpen: (open: boolean) => void;
 }) {
+  const activeLabel = links.find((link) =>
+    isLinkActive(link, activeId, pathname),
+  )?.label;
+
   return (
     <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
       <div
         data-variant={variant}
         data-scrolled={scrolled ? "true" : "false"}
         className={cn(
-          "site-nav-bar pointer-events-auto flex h-14 w-full items-center justify-between pr-1.5 pl-3 md:hidden",
+          "site-nav-bar pointer-events-auto relative flex h-14 w-full items-center justify-between px-2 md:hidden",
           variant === "design" ? "text-woodax-charcoal" : "text-cnc-text",
         )}
-        style={{ borderRadius: 9999 }}
+        style={{ borderRadius: "var(--radius-lg)" }}
       >
         <LogoSlot
           homeLabel={logoLabel}
@@ -936,15 +943,26 @@ function MobileNav({
           logoCompact={logoCompact}
           logoTraceSrc={logoTraceSrc}
         />
+        {activeLabel ? (
+          <p
+            className={cn(
+              "pointer-events-none absolute inset-x-14 truncate text-center text-[13px] leading-none",
+              variant === "design" ? "font-medium" : "font-normal",
+            )}
+          >
+            {activeLabel}
+          </p>
+        ) : null}
         <SheetTrigger asChild>
           <Button
             variant={
               variant === "design" ? "design-secondary" : "cnc-secondary"
             }
             className="size-11 shrink-0 px-0 focus-visible:outline-offset-[-2px]"
-            aria-label={menuLabel}
+            aria-label={menuOpen ? closeLabel : menuLabel}
+            aria-expanded={menuOpen}
           >
-            <Menu aria-hidden strokeWidth={1.5} className="size-5" />
+            <MenuGlyph open={menuOpen} />
           </Button>
         </SheetTrigger>
       </div>
@@ -952,22 +970,14 @@ function MobileNav({
         side="right"
         aria-describedby={undefined}
         className="gap-8 px-5 pt-[max(1.25rem,env(safe-area-inset-top))] pr-[max(1.25rem,env(safe-area-inset-right))] pb-[max(1.5rem,env(safe-area-inset-bottom))]"
+        style={{
+          top: "calc(3.5rem + max(0.75rem, env(safe-area-inset-top) + 0.5rem))",
+          height: "auto",
+          bottom: 0,
+        }}
       >
         <SheetHeader>
           <SheetTitle>{menuLabel}</SheetTitle>
-          <SheetClose asChild>
-            <button
-              type="button"
-              aria-label={closeLabel}
-              className={cn(
-                "inline-flex size-11 items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
-                focusRing,
-                variant === "design" ? "rounded-full" : "rounded-[4px]",
-              )}
-            >
-              <X aria-hidden strokeWidth={1.5} className="size-5" />
-            </button>
-          </SheetClose>
         </SheetHeader>
         <ul className="flex flex-col">
           {links.map((link) => (
@@ -1017,8 +1027,34 @@ function MobileNav({
           ) : null}
           <LocaleSlot variant={variant} label={languageLabel} size="menu" />
         </div>
+        <SheetClose className="sr-only">{closeLabel}</SheetClose>
       </SheetContent>
     </Sheet>
+  );
+}
+
+function MenuGlyph({ open }: { open: boolean }) {
+  const icon =
+    "absolute inset-0 size-5 transition-[opacity,rotate] duration-150 ease-[var(--ease-out)] motion-reduce:transition-none";
+  return (
+    <span className="relative size-5">
+      <Menu
+        aria-hidden
+        strokeWidth={1.5}
+        className={cn(
+          icon,
+          open ? "rotate-90 opacity-0" : "rotate-0 opacity-100",
+        )}
+      />
+      <X
+        aria-hidden
+        strokeWidth={1.5}
+        className={cn(
+          icon,
+          open ? "rotate-0 opacity-100" : "-rotate-90 opacity-0",
+        )}
+      />
+    </span>
   );
 }
 
@@ -1100,7 +1136,7 @@ function LogoSlot({
         href="/"
         aria-label={homeLabel}
         className={cn(
-          "relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px]",
+          "relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px]",
           focusRing,
         )}
       >
@@ -1326,11 +1362,11 @@ function SiteNavItem({
     focusRing,
     menu
       ? cn(
-          "inline-flex min-h-11 w-full items-center rounded-full px-3 text-[17px] focus-visible:outline-offset-2",
+          "inline-flex min-h-11 w-full items-center rounded-sm px-3 text-[17px] focus-visible:outline-offset-2",
           variant === "design" && "font-medium",
         )
       : cn(
-          "relative mx-1 inline-flex min-h-11 items-center rounded-full px-3 text-[15px] whitespace-nowrap focus-visible:outline-offset-[-2px]",
+          "relative mx-1 inline-flex min-h-11 items-center rounded-sm px-3 text-[15px] whitespace-nowrap focus-visible:outline-offset-[-2px]",
           variant === "design" ? "font-medium" : "font-normal",
         ),
     menu &&
@@ -1345,9 +1381,9 @@ function SiteNavItem({
             layoutId="site-nav-indicator"
             initial={pillAppearFade ? { opacity: 0 } : false}
             animate={{ opacity: pillVisible ? 1 : 0 }}
-            style={{ borderRadius: 9999 }}
+            style={{ borderRadius: "var(--radius-sm)" }}
             className={cn(
-              "absolute inset-0 rounded-full",
+              "absolute inset-0 rounded-sm",
               variant === "design" ? "bg-woodax-cream" : "bg-cnc-line",
             )}
             transition={{
@@ -1364,7 +1400,7 @@ function SiteNavItem({
         ) : active ? (
           <span
             className={cn(
-              "absolute inset-0 rounded-full",
+              "absolute inset-0 rounded-sm",
               variant === "design" ? "bg-woodax-cream" : "bg-cnc-line",
             )}
           />
@@ -1438,7 +1474,7 @@ function NavCta({
           }
         }}
         className={cn(
-          "relative ml-2 h-11 min-h-11 shrink-0 gap-0 rounded-full px-0 focus-visible:outline-offset-[-2px]",
+          "relative ml-2 h-11 min-h-11 min-w-11 shrink-0 gap-0 px-0 focus-visible:outline-offset-[-2px]",
           variant === "cnc" && "focus-visible:outline-cnc-bg",
         )}
       >
@@ -1562,7 +1598,7 @@ function CtaTooltip({
               ref={tooltipRef}
               role="tooltip"
               className={cn(
-                "site-nav-tooltip pointer-events-none fixed z-50 rounded-full px-3 py-1 text-sm whitespace-nowrap",
+                "site-nav-tooltip pointer-events-none fixed z-50 rounded-sm px-3 py-1 text-sm whitespace-nowrap",
                 variant === "design"
                   ? "bg-woodax-charcoal text-woodax-cream"
                   : "bg-cnc-white text-cnc-bg",

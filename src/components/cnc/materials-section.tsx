@@ -1046,7 +1046,7 @@ export function MaterialsSection() {
                       <span
                         key={dotIdx}
                         className={cn(
-                          "h-1.5 rounded-full transition-all duration-[var(--duration-ui)]",
+                          "h-1.5 rounded-sm transition-all duration-[var(--duration-ui)]",
                           dotIdx === activeIdx
                             ? "bg-cnc-white w-4"
                             : "bg-cnc-line group-hover:bg-cnc-muted/50 w-1.5",

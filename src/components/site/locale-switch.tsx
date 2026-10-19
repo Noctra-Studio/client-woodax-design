@@ -32,7 +32,7 @@ function LocaleFallback({ variant }: { variant: Variant }) {
       aria-hidden="true"
       className={cn(
         "h-11 w-[5.5rem]",
-        variant === "design" ? "rounded-full" : "rounded-[4px]",
+        "rounded-sm",
       )}
     />
   );
@@ -105,14 +105,14 @@ function LocaleSwitch({
       className={cn(
         "inline-flex items-center p-0.5 text-[13px]",
         variant === "design"
-          ? "text-woodax-charcoal rounded-full"
-          : "border-cnc-line rounded-[4px] border tracking-[0.08em]",
+          ? "text-woodax-charcoal rounded-sm"
+          : "border-cnc-line rounded-sm border tracking-[0.08em]",
       )}
     >
       {locales.map((code) => {
         const codeLabel = code.toUpperCase();
         const active = code === locale;
-        const shape = variant === "design" ? "rounded-full" : "rounded-[4px]";
+        const shape = "rounded-sm";
         if (active) {
           return (
             <span

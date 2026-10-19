@@ -55,14 +55,12 @@ export function TextField({
           aria-invalid={invalid || undefined}
           aria-describedby={invalid ? errorId : undefined}
           className={cn(
-            "text-cnc-text h-11 w-full rounded-none border-0 border-b bg-transparent px-0 py-2 text-[16px] font-normal",
+            "text-cnc-text h-11 w-full rounded-sm border bg-transparent px-3 py-2 text-[16px] font-normal",
             "outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
-            // 1px border stays put; the extra pixel is an inset shadow so focus does not shift the line.
-            "shadow-[inset_0_-1px_0_0_transparent]",
-            "transition-[border-color,box-shadow] duration-150 ease-[var(--ease-out)] motion-reduce:transition-none",
+            "transition-[border-color] duration-150 ease-[var(--ease-out)] motion-reduce:transition-none",
             invalid
-              ? "border-cnc-white focus:border-cnc-white focus-visible:border-cnc-white focus:shadow-[inset_0_-1px_0_0_var(--color-cnc-white)] focus-visible:shadow-[inset_0_-1px_0_0_var(--color-cnc-white)]"
-              : "border-cnc-muted pointer-fine:hover:border-cnc-text focus:border-cnc-text focus-visible:border-cnc-text focus:shadow-[inset_0_-1px_0_0_var(--color-cnc-text)] focus-visible:shadow-[inset_0_-1px_0_0_var(--color-cnc-text)]",
+              ? "border-cnc-white focus:border-cnc-white focus-visible:border-cnc-white"
+              : "border-cnc-muted pointer-fine:hover:border-cnc-text focus:border-cnc-text focus-visible:border-cnc-text",
           )}
         />
         {error ? (
@@ -93,7 +91,7 @@ export function TextField({
           aria-invalid={invalid || undefined}
           aria-describedby={invalid ? errorId : undefined}
           className={cn(
-            "peer h-14 w-full rounded-[var(--radius-control)] border px-4 pt-5 pb-1 text-[17px] font-medium outline-none",
+            "peer h-14 w-full rounded-sm border px-4 pt-5 pb-1 text-[17px] font-medium outline-none",
             "duration-ui transition-[border-color] ease-out",
             "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
             "border-woodax-line bg-woodax-paper text-woodax-charcoal focus-visible:outline-woodax-charcoal",

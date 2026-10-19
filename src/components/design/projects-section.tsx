@@ -58,7 +58,7 @@ export async function ProjectsSection({
                     sizes="(min-width: 768px) 40vw, 82vw"
                     className="object-cover"
                   />
-                  <p className="bg-woodax-cream text-woodax-charcoal absolute bottom-4 left-4 rounded-full px-3 py-1 text-[12px] font-semibold tracking-[0.18em] uppercase">
+                  <p className="bg-woodax-cream text-woodax-charcoal absolute bottom-4 left-4 rounded-sm px-3 py-1 text-[12px] font-semibold tracking-[0.18em] uppercase">
                     {t(`tags.${item.tag as DesignGalleryTag}`)}
                   </p>
                 </li>

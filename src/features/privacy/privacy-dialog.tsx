@@ -80,8 +80,8 @@ export function PrivacyDialog({
                 className={cn(
                   "-mr-2 inline-flex size-11 shrink-0 cursor-pointer items-center justify-center transition-colors duration-[var(--duration-press)] ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
                   isDesign
-                    ? "pointer-fine:hover:bg-woodax-cream/80 focus-visible:outline-woodax-charcoal rounded-full"
-                    : "text-cnc-muted pointer-fine:hover:bg-cnc-line/60 pointer-fine:hover:text-cnc-text focus-visible:outline-cnc-white rounded-[4px]",
+                    ? "pointer-fine:hover:bg-woodax-cream/80 focus-visible:outline-woodax-charcoal rounded-sm"
+                    : "text-cnc-muted pointer-fine:hover:bg-cnc-line/60 pointer-fine:hover:text-cnc-text focus-visible:outline-cnc-white rounded-sm",
                 )}
               >
                 <X aria-hidden="true" strokeWidth={1.5} className="size-5" />

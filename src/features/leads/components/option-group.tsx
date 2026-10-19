@@ -159,7 +159,7 @@ export function OptionGroup({
                 key={option.value}
                 data-selected={selected ? "true" : "false"}
                 className={cn(
-                  "duration-ui flex min-h-11 cursor-pointer flex-col justify-between gap-1.5 rounded-[6px] border p-3.5 text-left transition-[border-color,background-color] ease-out",
+                  "duration-ui flex min-h-11 cursor-pointer flex-col justify-between gap-1.5 rounded-sm border p-3.5 text-left transition-[border-color,background-color] ease-out",
                   "has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-cnc-white",
                   selected && "lead-card-settle",
                   selected
@@ -211,7 +211,7 @@ export function OptionGroup({
                 key={option.value}
                 data-selected={selected ? "true" : "false"}
                 className={cn(
-                  "duration-ui inline-flex h-11 min-h-11 cursor-pointer items-center gap-2 rounded-full border px-4 text-[15px] leading-none font-medium transition-[border-color,background-color] ease-out",
+                  "duration-ui inline-flex h-11 min-h-11 cursor-pointer items-center gap-2 rounded-sm border px-4 text-[15px] leading-none font-medium transition-[border-color,background-color] ease-out",
                   "has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-cnc-white",
                   selected && "lead-card-settle",
                   selected

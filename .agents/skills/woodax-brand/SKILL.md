@@ -55,7 +55,7 @@ Contrast facts (official colors — do not break):
 
 Layout language:
 - Alternate paper sections and full-bleed green blocks. Max 2 green blocks per page.
-- Radius echoes the logo's rounded square: --radius-card 24px, --radius-media 28px, --radius-control 14px, buttons fully rounded (9999px).
+- Radius echoes the logo's rounded square (~11% of the mark): --radius-sm 10px (buttons, inputs, chips, tooltip, active-nav indicator), --radius-md 12px (cards, form, accordion), --radius-lg 16px (navbar). Photos stay --radius-media 28px. No fully rounded controls.
 - Decorative motif (official): the thick flowing wave stripes from the guideline cover — 2–3 parallel S-curves, stroke ~ 2.5% of the viewport width, rounded caps, woodax-stripe at 18–25% opacity on paper or cream at 30% on green. Bleed off the section edges, never behind body text, max 2 appearances per page, aria-hidden inline SVG. They replace the logo-arc motif (removed).
 - Generous whitespace: section padding 96–160px desktop, 64–96px mobile. Content max-width 1200px; text max 62ch.
 - Photos: full-bleed or large rounded media, never small thumbnails in a dense grid.
@@ -76,7 +76,7 @@ Color tokens (exact) — NO accent color:
 
 Layout language:
 - Background: technical grid, 1px cnc-line every 24px, masked to fade toward edges. Corner registration marks (+) at section corners.
-- Radius: small and precise. --radius-card 6px, --radius-control 4px, buttons 4px.
+- Radius: straight and precise. --radius-sm 2px and --radius-md 2px (buttons, inputs, chips, cards, tooltip, active indicator), --radius-lg 4px (navbar only). No fully rounded controls.
 - Data in JetBrains Mono uppercase with letter-spacing .08em: labels, coordinates, spec values, step numbers ("01 / 03").
 - Specs shown as tables/rows, not marketing cards.
 - Logo: always the white SVG at public/brand/cnc-woodax-logo.svg. Never recreate it in code.
@@ -174,13 +174,13 @@ Variable mapping:
 | --border / --input | woodax-cream darkened ~10% (#D6D1BE) | cnc-line |
 | --ring | woodax-charcoal | cnc-white |
 | --destructive | #B42318 | #F97066 |
-| --radius | 14px | 4px |
+| --radius-sm / --radius-md / --radius-lg | 10px / 12px / 16px | 2px / 2px / 4px |
 
-## 10. Navigation bar — transparent → glass pill on scroll (both brands)
+## 10. Navigation bar — transparent → glass bar on scroll (both brands)
 
 States
-1. Top (scrollY < 24px): NO background, NO border, NO shadow. Full content width (max 1200px, side padding 24px), height 80px, top offset 12px. Logo (full) left · anchors center · ES/EN + CTA pill right. Sits directly over the page/hero.
-2. Scrolled (after crossing 64px going down): becomes a floating glass pill, centered, fit-content width, height 56px, top offset 12px, fully rounded. Content: mark (28px; logo folds into it, see recipe) · anchors · CTA as a 40px circle with arrow-up-right (aria-label = full CTA text, tooltip on hover/focus). ES/EN hidden in this state.
+1. Top (scrollY < 24px): NO background, NO border, NO shadow. Full content width (max 1200px, side padding 24px), height 80px, top offset max(12px, env(safe-area-inset-top) + 8px). Logo (full) left · anchors center · ES/EN + CTA right. Sits directly over the page/hero. Bar radius is --radius-lg even when transparent.
+2. Scrolled (after crossing 64px going down): becomes a floating glass bar, centered, fit-content width, height 56px, same top offset, radius --radius-lg (Design 16px, CNC 4px). Same blur, border and shadow as before. Content: mark (28px; logo folds into it, see recipe) · anchors · CTA as a 44×44 square with radius --radius-sm and arrow-up-right (aria-label = full CTA text, tooltip on hover/focus, tooltip radius --radius-sm). ES/EN hidden in this state. Active-section indicator is a rectangle at --radius-sm, not a pill.
 3. Back to Top state when scrolling up past 24px (hysteresis 64↓ / 24↑ to avoid flicker at the threshold).
 
 Glass (the ONLY place glass is allowed in this project)
@@ -189,20 +189,21 @@ Glass (the ONLY place glass is allowed in this project)
 - Fallbacks: @supports not (backdrop-filter: blur(1px)) and prefers-reduced-transparency → solid woodax-paper / cnc-surface. Text inside must keep AA over the worst-case content behind (test over the CNC hero video and the green blocks).
 
 Animation recipe (no distortion — this is mandatory)
-- Do NOT use motion `layout` / transform-scale on the container or on anything containing text. That is what stretches the labels and turns the pill into an ellipse.
-- Container: animate real `width` (motion `animate={{ width }}` with values measured by ResizeObserver for both states) + padding + height. 320ms, --ease-out. overflow: hidden, border-radius constant 9999px.
+- Do NOT use motion `layout` / transform-scale on the container or on anything containing text. That is what stretches the labels and turns the bar into an ellipse.
+- Container: animate real `width` (motion `animate={{ width }}` with values measured by ResizeObserver for both states) + padding + height. 320ms, --ease-out. overflow: hidden, border-radius constant var(--radius-lg) (never scaled, never 9999).
 - Background, border and blur: CSS transition 200ms on background-color, border-color, box-shadow, backdrop-filter. They start at the same time as the width.
-- Text never scales. Labels that leave (ES/EN, CTA text) fade out in 120ms BEFORE the width shrinks; labels that enter fade in 160ms AFTER the width grows. The CTA label collapses with the grid-template-columns 0fr↔1fr technique inside the button; the button height goes 40px both states, so the circle is just the label at 0fr.
+- Text never scales. Labels that leave (ES/EN, CTA text) fade out in 120ms BEFORE the width shrinks; labels that enter fade in 160ms AFTER the width grows. The CTA label collapses with the grid-template-columns 0fr↔1fr technique inside the button; the button stays 44×44 in the compact state (radius --radius-sm), so the square is just the label at 0fr.
 - Logo ↔ mark: the mark NEVER moves or scales. The logo is rendered as two SVGs side by side: {brand}-icon.svg + {brand}-wordmark.svg (brand = woodax-design | cnc-woodax) (the text part of the lockup). On collapse the wordmark retracts: its wrapper goes grid-template-columns 1fr → 0fr with opacity 1 → 0 (120ms, before the container width shrinks); on expand it reverses after the width grows. The mark stays pinned left, so it reads as "the logo folds into its symbol". If the split files don't exist, fall back to a cross-fade between the full logo and the mark.
 - Logo size: expanded state lockup height 44px desktop (the two-line lockup's sub-line must stay legible — never below 40px), collapsed mark 28px. Top-state nav height 80px to fit it. Mobile always mark only (28px).
-- Active-section pill behind anchors: the only element that may use motion layoutId, and it contains no text (it is a background shape).
+- Active-section indicator behind anchors: the only element that may use motion layoutId, and it contains no text (it is a background shape at --radius-sm).
 - Scroll handling: motion useScroll + useMotionValueEvent (rAF-batched); no setState on every scroll event beyond the state flip.
 - Interruptible: reversing direction mid-animation retargets smoothly from the current values.
 - prefers-reduced-motion: no width animation; the two states swap with a 120ms opacity crossfade.
 
 Mobile (< 768px)
-- Top state: transparent, mark + hamburger (44×44). Scrolled: same content in the glass pill (full width minus 12px insets, height 52px). No width animation, only the glass fade.
-- Hamburger opens a shadcn Sheet with anchors, sibling-brand link, Instagram, Facebook and ES/EN. CTA lives in the MobileCtaBar.
+- Top state: transparent, mark + hamburger (44×44, radius --radius-sm, same size as the desktop CTA square). Scrolled: same content in the glass bar (full width minus 12px insets, height 56px, radius --radius-lg). No width animation, only the glass fade. Nothing renders above the bar. The active section name, when there is one, sits inside the bar, centered and truncated.
+- viewport-fit=cover. Top offset is max(12px, env(safe-area-inset-top) + 8px).
+- Hamburger opens a shadcn Sheet (focus trapped, Esc and overlay tap close). The icon crossfades ☰ → ✕ in 150ms; prefers-reduced-motion drops the transition. The panel starts below the bar so the control stays visible. CTA lives in the MobileCtaBar.
 
 Language switch: ES · EN as a two-option segmented control; the active one in foreground weight 500, the other muted. aria-current on the active locale.
 
@@ -218,7 +219,7 @@ No italics anywhere (decision). Emphasis = weight and tone only.
 - Numbered row: 3 columns on desktop / stacked on mobile. Number in Fraunces 400 (design) / JetBrains Mono (cnc) at h3 size in muted tone ("01." "02." "03."), title below in body 500, one line of body 500. Used for "Así trabajamos" (design) and "Del archivo a la pieza" (cnc).
 - Statement paragraph: large text (h2 scale, weight 300) max 24ch per line on desktop; 2–3 emphasized phrases in weight 500 + full foreground color, the rest in muted tone. Emphasis is marked in messages with <b>…</b> and rendered via next-intl rich text. Left column on desktop may hold one small rounded photo (radius-card) — only a real photo, otherwise nothing.
 - Icon chip in headings: the brand mark inside a rounded square chip, inline with h1/h2 text, height 0.9em, vertically centered. Design: charcoal chip + cream mark. CNC: cnc-surface chip with cnc-line border + white mark. Max one chip per heading, aria-hidden, never in body text. Requires the mark SVG; if missing, render nothing.
-- Project cards: tall cards (aspect 3/4), radius-card, real photo full-bleed, tag pill top-left (eyebrow style, cream bg on design / cnc-surface on cnc), title bottom-left over a subtle bottom gradient (charcoal 0→45% / cnc-bg 0→60%). Mobile: horizontal scroll-snap with 16px peek of the next card. Desktop: 3–4 per row.
+- Project cards: tall cards (aspect 3/4), photo at --radius-media, real photo full-bleed, tag chip top-left (eyebrow style, radius --radius-sm, cream bg on design / cnc-surface on cnc), title bottom-left over a subtle bottom gradient (charcoal 0→45% / cnc-bg 0→60%). Mobile: horizontal scroll-snap with 16px peek of the next card. Desktop: 3–4 per row.
 - Footer: see section 13 (ultra-minimal). The dark closing block with giant wordmark is NOT used.
 
 ## 13. Footer
@@ -323,10 +324,10 @@ Routes (next-intl `pathnames`, localized, es unprefixed):
 
 Navigation (extends section 10; same glass recipe and animation rules):
 - Logo (full lockup, or mark when collapsed / on mobile) is always a link to home, aria-label from nav.design.homeAria. On home it scrolls to top smoothly (instant under reduced motion) instead of re-navigating.
-- Items: [Inicio — only off home] · Nosotros · Servicios · Clientes · and Contacto as the right-side pill (the CTA that collapses into the 40px circle). Contacto is NOT repeated as a text link.
+- Items: [Inicio — only off home] · Nosotros · Servicios · Clientes · and Contacto as the right-side CTA (collapses into the 44×44 square at --radius-sm). Contacto is NOT repeated as a text link.
 - "Inicio" (arrow-left 16px + label) is the first item, rendered only when pathname ≠ home. It enters/leaves with the same grid-template-columns 0fr↔1fr + opacity technique (160ms in after width grows, 120ms out before it shrinks). The nav lives in the Design layout so it persists across navigations and animates instead of remounting.
 - An item whose page is unpublished (see below) is not rendered at all.
-- Active state: aria-current="page" on the current route; the background shape behind it moves between items with the layoutId pill from section 10 (shape only, no text). On the contact page the pill CTA shows its active state.
+- Active state: aria-current="page" on the current route; the background shape behind it moves between items with the layoutId indicator from section 10 (shape only, no text, radius --radius-sm). On the contact page the square CTA shows its active state.
 - Mobile Sheet: Inicio (off home only) · Nosotros · Servicios · Clientes · Contacto · divider · sibling-brand link · social · ES/EN. Tapping a link closes the sheet before navigating.
 - MobileCtaBar is hidden on /contacto (the form is already on the page).
 
