@@ -10,6 +10,7 @@ import { lockNavAnchor } from "@/components/site/site-nav";
 import { Button } from "@/components/ui/button";
 import { siteConfig, type CncHero } from "@/content/site-config";
 import { useLeadUi } from "@/features/leads/components/lead-ui";
+import { CNC_HERO_CTA_ID } from "@/features/leads/mobile-cta";
 import { analyticsLocale, track } from "@/lib/analytics";
 
 const easeOut = [0.22, 1, 0.36, 1] as const;
@@ -35,10 +36,17 @@ export function HeroSection() {
             alt={media.alt}
             videoSrc={media.videoSrc}
           />
-          <div aria-hidden="true" className="bg-cnc-bg/60 absolute inset-0" />
           <div
             aria-hidden="true"
-            className="from-cnc-bg via-cnc-bg/65 md:via-cnc-bg/55 pointer-events-none absolute inset-0 bg-gradient-to-t to-transparent md:bg-gradient-to-r"
+            className="bg-cnc-bg/60 absolute inset-0 hidden md:block"
+          />
+          <div
+            aria-hidden="true"
+            className="from-cnc-bg/95 via-cnc-bg/60 pointer-events-none absolute inset-0 bg-gradient-to-t from-0% via-35% to-transparent to-60% md:hidden"
+          />
+          <div
+            aria-hidden="true"
+            className="from-cnc-bg via-cnc-bg/55 pointer-events-none absolute inset-0 hidden bg-gradient-to-r to-transparent md:block"
           />
         </div>
       ) : null}
@@ -47,12 +55,12 @@ export function HeroSection() {
           className="cnc-hero-grid absolute inset-0"
           data-over-media={media ? "true" : undefined}
         />
-        <RegistrationMarks className="top-20 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] md:bottom-6" />
+        <RegistrationMarks className="top-20 bottom-[max(1.25rem,env(safe-area-inset-bottom))] md:bottom-6" />
       </div>
 
       <div className="relative z-10 flex min-h-[100svh] flex-col pt-24">
         <div className="mt-auto w-full">
-          <div className="mx-auto w-full max-w-[1200px] px-5 pt-28 pb-[calc(10.5rem+env(safe-area-inset-bottom))] md:px-8 md:pt-32 md:pb-28">
+          <div className="mx-auto w-full max-w-[1200px] px-5 pt-28 pb-[calc(2.5rem+env(safe-area-inset-bottom))] md:px-8 md:pt-32 md:pb-28">
             <p className="text-cnc-text text-[13px] font-medium tracking-[0.18em] uppercase">
               {t("eyebrow")}
             </p>
@@ -68,6 +76,7 @@ export function HeroSection() {
             </p>
             <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap">
               <Button
+                id={CNC_HERO_CTA_ID}
                 href="#contacto"
                 variant="cnc-primary"
                 arrow
@@ -99,7 +108,7 @@ export function HeroSection() {
         <button
           type="button"
           onClick={skip}
-          className="border-cnc-muted text-cnc-text focus-visible:outline-cnc-white pointer-fine:hover:border-cnc-text pointer-fine:hover:bg-cnc-surface bg-cnc-bg absolute right-4 bottom-[calc(4.75rem+env(safe-area-inset-bottom))] z-20 inline-flex min-h-11 items-center rounded-sm border px-4 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:right-8 md:bottom-8"
+          className="border-cnc-muted text-cnc-text focus-visible:outline-cnc-white pointer-fine:hover:border-cnc-text pointer-fine:hover:bg-cnc-surface bg-cnc-bg absolute right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-20 inline-flex min-h-11 items-center rounded-sm border px-4 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 md:right-8 md:bottom-8"
         >
           {t("skipIntro")}
         </button>

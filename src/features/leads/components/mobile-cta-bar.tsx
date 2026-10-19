@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useLocale } from "next-intl";
 import { AnalyticsButton } from "@/components/analytics/tracked-link";
 import { lockNavAnchor } from "@/components/site/site-nav";
@@ -33,11 +33,12 @@ export function MobileCtaBar({
 
   return (
     <div
+      data-hidden={hidden ? "true" : undefined}
+      aria-hidden={hidden || undefined}
+      inert={hidden || undefined}
       className={cn(
-        "fixed inset-x-0 bottom-0 z-30 border-t px-4 pt-3 md:hidden",
+        "mobile-cta-bar fixed inset-x-0 bottom-0 z-30 border-t px-4 pt-3 md:hidden",
         "pb-[max(0.75rem,env(safe-area-inset-bottom))]",
-        "duration-ui transition-transform ease-out motion-reduce:transition-none",
-        hidden && "translate-y-full",
         isDesign
           ? "border-woodax-line bg-woodax-cream"
           : "border-cnc-line bg-cnc-bg",
@@ -103,4 +104,24 @@ export function useFormSectionInView(sectionId: string) {
   }, [sectionId]);
 
   return inView;
+}
+
+/** True while `elementId` intersects the viewport. Missing ids stay false. */
+export function useHeroCtaInView(elementId: string | null) {
+  const [inView, setInView] = useState(elementId !== null);
+
+  useLayoutEffect(() => {
+    if (!elementId) return;
+
+    const element = document.getElementById(elementId);
+    if (!element) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setInView(Boolean(entry?.isIntersecting));
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [elementId]);
+
+  return elementId ? inView : false;
 }

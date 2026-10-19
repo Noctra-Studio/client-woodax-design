@@ -13,7 +13,9 @@ import { useLeadUi } from "@/features/leads/components/lead-ui";
 import {
   MobileCtaBar,
   useFormSectionInView,
+  useHeroCtaInView,
 } from "@/features/leads/components/mobile-cta-bar";
+import { CNC_HERO_CTA_ID } from "@/features/leads/mobile-cta";
 import { fraunces } from "@/lib/font-design";
 import { isDesignFull } from "@/lib/seo";
 import { cn } from "@/lib/utils";
@@ -76,6 +78,9 @@ function SheetLeadCapture({ copy }: { copy: LeadCopy }) {
   const setOpen = leadUi?.setOpen ?? setLocalOpen;
   const isMobile = useIsMobile();
   const inView = useFormSectionInView("contacto");
+  const heroCtaInView = useHeroCtaInView(
+    copy.variant === "cnc" ? CNC_HERO_CTA_ID : null,
+  );
   const isDesign = copy.variant === "design";
   const sheetOpen = isMobile && open;
 
@@ -164,7 +169,7 @@ function SheetLeadCapture({ copy }: { copy: LeadCopy }) {
       <MobileCtaBar
         label={copy.mobileBar}
         variant={copy.variant}
-        hidden={sheetOpen || inView}
+        hidden={sheetOpen || inView || heroCtaInView}
         onOpen={() => setOpen(true)}
         whatsappHref={copy.variant === "cnc" ? copy.whatsappHref : null}
         whatsappLabel={copy.whatsappChannel}
