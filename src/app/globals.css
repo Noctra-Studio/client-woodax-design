@@ -80,6 +80,12 @@ html {
   scroll-padding-top: 5.5rem;
 }
 
+/* Scrolled/mobile pill: top inset + h-14 bar + 16px. Sections use this alone. */
+html:has(body[data-site="cnc"]) {
+  --nav-offset: calc(max(0.75rem, env(safe-area-inset-top)) + 3.5rem + 1rem);
+  scroll-padding-top: var(--nav-offset);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
@@ -250,12 +256,36 @@ html[data-cnc-intro="play"] .cnc-logo-stroke {
 
 .cnc-capabilities-mask-desktop {
   -webkit-mask-image:
-    linear-gradient(to right, transparent 0%, #000 35%, #000 88%, transparent 100%),
-    linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
+    linear-gradient(
+      to right,
+      transparent 0%,
+      #000 35%,
+      #000 88%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      #000 12%,
+      #000 88%,
+      transparent 100%
+    );
   -webkit-mask-composite: source-in;
   mask-image:
-    linear-gradient(to right, transparent 0%, #000 35%, #000 88%, transparent 100%),
-    linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
+    linear-gradient(
+      to right,
+      transparent 0%,
+      #000 35%,
+      #000 88%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      #000 12%,
+      #000 88%,
+      transparent 100%
+    );
   mask-composite: intersect;
 }
 
@@ -352,7 +382,8 @@ html[data-cnc-intro="play"] .cnc-logo-stroke {
 }
 
 [data-draw="shown"] .cnc-track-head-rail {
-  animation: cnc-track-head-travel var(--duration-reveal) var(--ease-out) forwards;
+  animation: cnc-track-head-travel var(--duration-reveal) var(--ease-out)
+    forwards;
 }
 
 [data-draw="wait"] .cnc-track-y {
@@ -793,7 +824,42 @@ html[data-cnc-intro="play"] .cnc-logo-stroke {
   }
 }
 
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+.accordion-content {
+  overflow: hidden;
+}
+
+.accordion-content[data-state="open"] {
+  animation: accordion-down var(--duration-ui) var(--ease-out);
+}
+
+.accordion-content[data-state="closed"] {
+  animation: accordion-up var(--duration-ui) var(--ease-out);
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .accordion-content[data-state="open"],
+  .accordion-content[data-state="closed"] {
+    animation: none;
+  }
+
   .site-nav-bar,
   .site-nav-label[data-show="true"] {
     transition-duration: 120ms;

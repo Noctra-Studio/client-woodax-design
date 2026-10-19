@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { RegistrationMarks } from "@/components/cnc/registration-marks";
-import { siteConfig } from "@/content/site-config";
+import { cncMaterialLabel, siteConfig } from "@/content/site-config";
 import { formatSpecMm } from "@/lib/cnc-specs";
 import { cn } from "@/lib/utils";
 
@@ -642,7 +642,7 @@ export function MaterialsSection() {
     <section
       id="materiales"
       aria-labelledby="materials-title"
-      className="relative scroll-mt-24 px-5 py-14 md:px-8 md:py-20 lg:py-24"
+      className="relative scroll-mt-[-3.5rem] px-5 py-14 md:scroll-mt-[-5rem] md:px-8 md:py-20 lg:scroll-mt-[-6rem] lg:py-24"
     >
       <RegistrationMarks edges="bottom" />
 
@@ -725,7 +725,7 @@ export function MaterialsSection() {
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <h2
             id="materials-title"
-            className="max-w-[16ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.02em] text-balance"
+            className="max-w-[16ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.02em] text-balance lg:max-w-[24ch]"
           >
             {t("title")}
           </h2>
@@ -811,7 +811,7 @@ export function MaterialsSection() {
                     ) : null}
                   </div>
                   <h3 className="text-cnc-text mt-3 text-[clamp(1.125rem,1.5vw,1.25rem)] leading-[1.3] font-medium text-pretty">
-                    {t(`groups.${group}.name`)}
+                    {cncMaterialLabel(group, locale)}
                   </h3>
                 </div>
 

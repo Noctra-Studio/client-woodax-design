@@ -217,19 +217,16 @@
       "thicknessValue": "{min}–{max} mm",
       "groups": {
         "wood": {
-          "name": "Wood, MDF, melamine, plywood",
           "example1": "Cabinet or drawer unit",
           "example2": "Decorative fretwork panel",
           "example3": "Joinery jig"
         },
         "acrylic": {
-          "name": "Acrylic, plastics, Corian",
           "example1": "Dimensional letter sign",
           "example2": "Retail display stand",
           "example3": "Corian countertop or part"
         },
         "aluminum": {
-          "name": "Aluminum",
           "example1": "Logo plate",
           "example2": "Dimensional letter",
           "example3": "Perforated technical part"
@@ -238,13 +235,12 @@
     },
     "process": {
       "title": "From file to finished part",
-      "step1": "01 Send us your file or your idea — Send your cut-ready vector, or a sketch with dimensions and material.",
+      "step1": "01 Send us your file or your idea — {formats}, or a sketch with dimensions.",
       "step1Output": "File or sketch",
-      "step2": "02 We review and quote — We check dimensions, material and thickness, and send you a quote.",
+      "step2": "02 We review and quote — We check dimensions, material and thickness, and send you a quote. Reply within {hours} business hours or less.",
       "step2Output": "Quote",
       "step3": "03 We cut your parts — We produce them with repeatable precision, from the first part to the last.",
-      "step3Output": "Parts",
-      "formats": "Formats: DXF, DWG, SVG, AI, PDF. You can send it later."
+      "step3Output": "Parts"
     },
     "work": {
       "title": "Recent parts"
@@ -256,12 +252,6 @@
       "step1": {
         "label": "Material",
         "question": "Which material?"
-      },
-      "materialOptions": {
-        "wood": "Wood, MDF, melamine or plywood",
-        "acrylic": "Acrylic, plastics or Corian",
-        "aluminum": "Aluminum",
-        "other": "Other"
       },
       "step1b": {
         "label": "Your project",
@@ -283,7 +273,7 @@
       "submit": "Request a quote",
       "success": {
         "title": "Request received",
-        "body": "We'll review your project and get back to you with next steps. How many parts do you need?",
+        "quantityLegend": "How many parts do you need?",
         "quantity": {
           "1-10": "1–10",
           "11-100": "11–100",
@@ -312,7 +302,6 @@
     },
     "footer": {
       "designLink": "Bespoke furniture and spaces → Woodax Design",
-      "location": "Querétaro, Mexico",
       "privacy": "Privacy notice",
       "description": "CNC cutting service for workshops, sign makers and industry.",
       "sibling": "Custom furniture and spaces",
@@ -324,17 +313,10 @@
       "area": "Work area",
       "areaValue": "{width} × {length} mm",
       "thicknessValue": "{min}–{max} mm",
-      "note": "Project doesn't fit? Write to us and we'll take a look.",
-      "materials": {
-        "wood": "Wood",
-        "mdf": "MDF",
-        "melamine": "melamine",
-        "plywood": "plywood",
-        "acrylic": "acrylic",
-        "plastic": "plastic",
-        "corian": "Corian",
-        "aluminum": "Aluminum"
-      }
+      "note": "Project doesn't fit? Write to us and we'll take a look."
+    },
+    "faq": {
+      "title": "Frequently asked questions"
     }
   },
   "contact": {

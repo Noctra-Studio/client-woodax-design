@@ -1,6 +1,11 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
-import { siteConfig, type CncSpecs } from "@/content/site-config";
+import {
+  cncMaterialLabel,
+  cncSuccessBody,
+  siteConfig,
+  type CncSpecs,
+} from "@/content/site-config";
 import { formatSpecMm, thicknessRangeForGroup } from "@/lib/cnc-specs";
 import { whatsappHref } from "@/lib/whatsapp";
 import { routing, type Locale } from "@/i18n/routing";
@@ -31,6 +36,12 @@ export type LeadCopy = {
   submit: string;
   successTitle: string;
   successBody: string;
+  successBodies?: {
+    "file-ready": string;
+    "needs-help": string;
+    idea: string;
+  };
+  quantityLegend?: string;
   stageQuestion?: string;
   stageOptions?: LeadOption[];
   timelineQuestion?: string;
@@ -154,20 +165,20 @@ export async function getLeadCopy(
     options: [
       {
         value: "wood",
-        label: form("materialOptions.wood"),
+        label: cncMaterialLabel("wood", locale),
         meta: resolveMaterialThickness(specs, "wood", locale, materials),
       },
       {
         value: "acrylic",
-        label: form("materialOptions.acrylic"),
+        label: cncMaterialLabel("acrylic", locale),
         meta: resolveMaterialThickness(specs, "acrylic", locale, materials),
       },
       {
         value: "aluminum",
-        label: form("materialOptions.aluminum"),
+        label: cncMaterialLabel("aluminum", locale),
         meta: resolveMaterialThickness(specs, "aluminum", locale, materials),
       },
-      { value: "other", label: form("materialOptions.other") },
+      { value: "other", label: cncMaterialLabel("other", locale) },
     ],
     step1bLabel: form("step1b.label"),
     step1bQuestion: form("step1b.question"),
@@ -184,7 +195,13 @@ export async function getLeadCopy(
     back: form("back"),
     submit: form("submit"),
     successTitle: form("success.title"),
-    successBody: form("success.body"),
+    successBody: cncSuccessBody("idea", locale),
+    successBodies: {
+      "file-ready": cncSuccessBody("file-ready", locale),
+      "needs-help": cncSuccessBody("needs-help", locale),
+      idea: cncSuccessBody("idea", locale),
+    },
+    quantityLegend: form("success.quantityLegend"),
     quantityOptions: [
       { value: "1-10", label: form("success.quantity.1-10") },
       { value: "11-100", label: form("success.quantity.11-100") },

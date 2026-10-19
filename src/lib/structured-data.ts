@@ -1,4 +1,10 @@
-import { sameAsUrls, siteConfig, siteEmail } from "@/content/site-config";
+import {
+  cncMaterialLabel,
+  isCncMaterialKey,
+  sameAsUrls,
+  siteConfig,
+  siteEmail,
+} from "@/content/site-config";
 import type { Locale } from "@/i18n/routing";
 import { formatSpecMm } from "@/lib/cnc-specs";
 import { siteBrandName, siteOrigin } from "@/lib/seo";
@@ -17,6 +23,17 @@ export function queretaroPostalAddress() {
   };
 }
 
+export function cncPostalAddress() {
+  const { addressLocality, addressRegion, addressCountry } =
+    siteConfig.cncOffer.location;
+  return {
+    "@type": "PostalAddress",
+    addressLocality,
+    addressRegion,
+    addressCountry,
+  };
+}
+
 export function jsonLdScript(data: unknown): string {
   return JSON.stringify(data).replace(/</g, "\\u003c");
 }
@@ -32,7 +49,6 @@ export function cncSpecPropertyValues(
     area: string;
     areaValue: string;
     thicknessValue: string;
-    groupNames: Record<string, string>;
   },
 ): Array<{ "@type": "PropertyValue"; name: string; value: string }> {
   const specs = siteConfig.cncSpecs;
@@ -57,8 +73,8 @@ export function cncSpecPropertyValues(
   }
 
   for (const range of specs.maxThicknessByMaterial) {
-    const name = labels.groupNames[range.group];
-    if (!name) continue;
+    if (!isCncMaterialKey(range.group) || range.group === "other") continue;
+    const name = cncMaterialLabel(range.group, locale);
     properties.push({
       "@type": "PropertyValue",
       name,
@@ -114,6 +130,7 @@ export function cncJsonLd({
   knowsAbout,
   services,
   specProperties,
+  faq,
 }: {
   name: string;
   description: string;
@@ -125,6 +142,7 @@ export function cncJsonLd({
     name: string;
     value: string;
   }>;
+  faq: Array<{ question: string; answer: string }>;
 }) {
   const origin = siteOrigin("cnc");
   const businessId = organizationId("cnc");
@@ -137,8 +155,8 @@ export function cncJsonLd({
     description,
     url: origin,
     email: siteEmail("cnc"),
-    address: queretaroPostalAddress(),
-    areaServed: "Querétaro",
+    address: cncPostalAddress(),
+    areaServed: siteConfig.cncOffer.areaServed,
     parentOrganization: {
       "@id": organizationId("design"),
     },
@@ -154,7 +172,7 @@ export function cncJsonLd({
     name: serviceType,
     description,
     serviceType,
-    areaServed: "Querétaro",
+    areaServed: siteConfig.cncOffer.areaServed,
     provider: { "@id": businessId },
   };
   if (specProperties.length > 0) {
@@ -166,16 +184,36 @@ export function cncJsonLd({
     name: service.name,
     description: service.description,
     serviceType,
-    areaServed: "Querétaro",
+    areaServed: siteConfig.cncOffer.areaServed,
     provider: { "@id": businessId },
     ...(specProperties.length > 0
       ? { additionalProperty: specProperties }
       : {}),
   }));
 
+  const faqPage =
+    faq.length > 0
+      ? {
+          "@type": "FAQPage",
+          mainEntity: faq.map((item) => ({
+            "@type": "Question",
+            name: item.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: item.answer,
+            },
+          })),
+        }
+      : null;
+
   return jsonLdScript({
     "@context": "https://schema.org",
-    "@graph": [business, cuttingService, ...serviceNodes],
+    "@graph": [
+      business,
+      cuttingService,
+      ...serviceNodes,
+      ...(faqPage ? [faqPage] : []),
+    ],
   });
 }
 

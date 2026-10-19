@@ -83,10 +83,10 @@ function SheetLeadCapture({ copy }: { copy: LeadCopy }) {
       id="contacto"
       aria-labelledby={`${copy.variant}-form-title`}
       className={cn(
-        "relative scroll-mt-24 px-5",
+        "relative px-5",
         isDesign
-          ? "bg-woodax-green text-woodax-charcoal py-16 md:px-8 md:py-24 lg:py-40"
-          : "py-14 md:px-8 md:py-20 lg:py-24",
+          ? "bg-woodax-green text-woodax-charcoal scroll-mt-24 py-16 md:px-8 md:py-24 lg:py-40"
+          : "scroll-mt-[-3.5rem] py-14 md:scroll-mt-[-5rem] md:px-8 md:py-20 lg:scroll-mt-[-6rem] lg:py-24",
       )}
     >
       {isDesign ? (
@@ -101,8 +101,10 @@ function SheetLeadCapture({ copy }: { copy: LeadCopy }) {
         <h2
           id={`${copy.variant}-form-title`}
           className={cn(
-            "max-w-[18ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal text-balance",
-            isDesign ? "font-serif tracking-[-0.01em]" : "tracking-[-0.02em]",
+            "text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal text-balance",
+            isDesign
+              ? "max-w-[18ch] font-serif tracking-[-0.01em]"
+              : "max-w-[18ch] tracking-[-0.02em] lg:max-w-[24ch]",
           )}
         >
           {copy.title}

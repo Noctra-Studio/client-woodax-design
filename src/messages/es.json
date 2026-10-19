@@ -217,19 +217,16 @@
       "thicknessValue": "{min}–{max} mm",
       "groups": {
         "wood": {
-          "name": "Madera, MDF, melamina, triplay",
           "example1": "Mueble o cajonera",
           "example2": "Panel decorativo calado",
           "example3": "Plantilla de ensamble"
         },
         "acrylic": {
-          "name": "Acrílico, plásticos, Corian",
           "example1": "Letrero con letras",
           "example2": "Display o exhibidor",
           "example3": "Cubierta o pieza de Corian"
         },
         "aluminum": {
-          "name": "Aluminio",
           "example1": "Placa con logo",
           "example2": "Letra corpórea",
           "example3": "Pieza técnica con perforaciones"
@@ -238,13 +235,12 @@
     },
     "process": {
       "title": "Del archivo a la pieza",
-      "step1": "01 Envíanos tu archivo o tu idea — Mándanos tu vector listo para corte, o un boceto con medidas y material.",
+      "step1": "01 Envíanos tu archivo o tu idea — {formats}, o un boceto con medidas.",
       "step1Output": "Archivo o boceto",
-      "step2": "02 Revisamos y cotizamos — Revisamos medidas, material y espesor, y te enviamos la cotización.",
+      "step2": "02 Revisamos y cotizamos — Revisamos medidas, material y espesor, y te enviamos la cotización. Respuesta en {hours} h hábiles o menos.",
       "step2Output": "Cotización",
       "step3": "03 Cortamos tus piezas — Las producimos con precisión repetible, de la primera a la última de la serie.",
-      "step3Output": "Piezas",
-      "formats": "Formatos: DXF, DWG, SVG, AI, PDF. Puedes enviarlo después."
+      "step3Output": "Piezas"
     },
     "work": {
       "title": "Piezas recientes"
@@ -256,12 +252,6 @@
       "step1": {
         "label": "Material",
         "question": "¿En qué material?"
-      },
-      "materialOptions": {
-        "wood": "Madera, MDF, melamina o triplay",
-        "acrylic": "Acrílico, plásticos o Corian",
-        "aluminum": "Aluminio",
-        "other": "Otro"
       },
       "step1b": {
         "label": "Tu proyecto",
@@ -283,7 +273,7 @@
       "submit": "Solicitar cotización",
       "success": {
         "title": "Solicitud recibida",
-        "body": "Revisaremos tu proyecto y te contactaremos con los siguientes pasos. ¿Cuántas piezas necesitas?",
+        "quantityLegend": "¿Cuántas piezas necesitas?",
         "quantity": {
           "1-10": "1–10",
           "11-100": "11–100",
@@ -312,7 +302,6 @@
     },
     "footer": {
       "designLink": "Muebles y espacios a medida → Woodax Design",
-      "location": "Querétaro, México",
       "privacy": "Aviso de privacidad",
       "description": "Servicio de corte CNC y maquila para talleres, rotulistas e industria.",
       "sibling": "Muebles y espacios a medida",
@@ -324,17 +313,10 @@
       "area": "Área de trabajo",
       "areaValue": "{width} × {length} mm",
       "thicknessValue": "{min}–{max} mm",
-      "note": "¿Tu proyecto no encaja? Escríbenos y lo revisamos.",
-      "materials": {
-        "wood": "Madera",
-        "mdf": "MDF",
-        "melamine": "melamina",
-        "plywood": "triplay",
-        "acrylic": "acrílico",
-        "plastic": "plástico",
-        "corian": "Corian",
-        "aluminum": "Aluminio"
-      }
+      "note": "¿Tu proyecto no encaja? Escríbenos y lo revisamos."
+    },
+    "faq": {
+      "title": "Preguntas frecuentes"
     }
   },
   "contact": {

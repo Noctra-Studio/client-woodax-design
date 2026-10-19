@@ -38,6 +38,14 @@ export function LeadSuccess({
   const formError = state.fieldErrors?.form ?? state.fieldErrors?.projectState;
   const isDesign = copy.variant === "design";
   const buttonVariant = isDesign ? "design-primary" : "cnc-primary";
+  const projectState = values.projectState;
+  const successBody =
+    copy.successBodies &&
+    (projectState === "file-ready" ||
+      projectState === "needs-help" ||
+      projectState === "idea")
+      ? copy.successBodies[projectState]
+      : copy.successBody;
 
   return (
     <motion.div
@@ -60,7 +68,7 @@ export function LeadSuccess({
             {copy.successTitle}
           </h3>
           <p className="mt-2 max-w-[62ch] text-[17px] leading-relaxed font-medium">
-            {copy.successBody}
+            {successBody}
           </p>
         </div>
       </div>
@@ -123,8 +131,8 @@ export function LeadSuccess({
             <OptionGroup
               name={`${copy.variant}-quantity-ui`}
               fieldId={`${copy.variant}-quantity`}
-              legend={copy.successBody}
-              legendClassName="sr-only"
+              legend={copy.quantityLegend ?? copy.successBody}
+              legendClassName={copy.quantityLegend ? undefined : "sr-only"}
               options={copy.quantityOptions}
               value={quantity}
               onChange={setQuantity}

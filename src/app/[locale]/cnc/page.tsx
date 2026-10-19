@@ -4,7 +4,9 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { BrandIcon } from "@/components/brand/brand-icon";
 import { CncLogo } from "@/components/brand/cnc-logo";
 import { CapabilitiesSection } from "@/components/cnc/capabilities-section";
+import { FaqSection } from "@/components/cnc/faq-section";
 import { HeroSection } from "@/components/cnc/hero-section";
+import { TrustStrip } from "@/components/cnc/trust-strip";
 import { WhatsappFloating } from "@/components/cnc/whatsapp-floating";
 import { IntroProvider } from "@/components/cnc/intro-provider";
 import { MaterialsSection } from "@/components/cnc/materials-section";
@@ -14,7 +16,10 @@ import { SiteFooter } from "@/components/site/site-footer";
 import { WaysSection } from "@/components/cnc/ways-section";
 import { WorkSection } from "@/components/cnc/work-section";
 import {
+  cncFaqItems,
+  cncMaterialLabel,
   cncSectionAnchors,
+  cncTrustItems,
   publishedSocialUrl,
   siteConfig,
 } from "@/content/site-config";
@@ -77,6 +82,7 @@ export default async function CncPage({
   const t = await getTranslations("cnc");
   const nav = await getTranslations("nav");
   const copy = await getLeadCopy("cnc");
+  const faqItems = cncFaqItems(locale, t("hero.subhead"));
   const jsonLd = cncJsonLd({
     name: t("title"),
     description: t("meta.description"),
@@ -85,9 +91,9 @@ export default async function CncPage({
       t("ways.serviceType"),
       t("ways.workshopTitle"),
       t("ways.volumeServiceTitle"),
-      t("materials.groups.wood.name"),
-      t("materials.groups.acrylic.name"),
-      t("materials.groups.aluminum.name"),
+      cncMaterialLabel("wood", locale),
+      cncMaterialLabel("acrylic", locale),
+      cncMaterialLabel("aluminum", locale),
     ],
     services: [
       {
@@ -105,12 +111,8 @@ export default async function CncPage({
       area: t("capabilities.area"),
       areaValue: t.raw("capabilities.areaValue"),
       thicknessValue: t.raw("capabilities.thicknessValue"),
-      groupNames: {
-        wood: t("materials.groups.wood.name"),
-        acrylic: t("materials.groups.acrylic.name"),
-        aluminum: t("materials.groups.aluminum.name"),
-      },
     }),
+    faq: faqItems,
   });
 
   return (
@@ -159,11 +161,13 @@ export default async function CncPage({
             )}
           >
             <HeroSection />
+            <TrustStrip items={cncTrustItems(locale)} />
             <WaysSection />
             <CapabilitiesSection />
             <MaterialsSection />
             <ProcessSection />
             <WorkSection />
+            <FaqSection title={t("faq.title")} items={faqItems} />
             <LeadCapture copy={copy} />
           </main>
         </IntroProvider>

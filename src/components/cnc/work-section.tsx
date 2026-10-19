@@ -14,17 +14,17 @@ export async function WorkSection() {
   const locale = hasLocale(routing.locales, requested) ? requested : "es";
 
   return (
-    <Reveal>
-      <section
-        id="trabajos"
-        aria-labelledby="cnc-work-title"
-        className="relative scroll-mt-24 px-5 py-14 md:px-8 md:py-20 lg:py-24"
-      >
+    <section
+      id="trabajos"
+      aria-labelledby="cnc-work-title"
+      className="relative scroll-mt-[-3.5rem] px-5 py-14 md:scroll-mt-[-5rem] md:px-8 md:py-20 lg:scroll-mt-[-6rem] lg:py-24"
+    >
+      <Reveal>
         <RegistrationMarks edges="bottom" />
         <div className="relative mx-auto w-full max-w-[1200px]">
           <h2
             id="cnc-work-title"
-            className="max-w-[16ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.02em] text-balance"
+            className="max-w-[16ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.02em] text-balance lg:max-w-[24ch]"
           >
             {t("title")}
           </h2>
@@ -45,7 +45,7 @@ export async function WorkSection() {
             ))}
           </ul>
         </div>
-      </section>
-    </Reveal>
+      </Reveal>
+    </section>
   );
 }

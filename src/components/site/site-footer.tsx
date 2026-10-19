@@ -33,6 +33,9 @@ export async function SiteFooter({ variant }: { variant: "design" | "cnc" }) {
     : routing.defaultLocale;
   const isDesign = variant === "design";
   const t = await getTranslations(isDesign ? "design.footer" : "cnc.footer");
+  const locationLabel = isDesign
+    ? (await getTranslations("design.footer"))("location")
+    : siteConfig.cncOffer.location.label[locale];
   const shared = await getTranslations("siteFooter");
   const nav = await getTranslations("nav");
   const year = new Date().getFullYear();
@@ -114,7 +117,7 @@ export async function SiteFooter({ variant }: { variant: "design" | "cnc" }) {
                 {email}
               </a>
               <p className="inline-flex min-h-11 items-center text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-medium">
-                {t("location")}
+                {locationLabel}
               </p>
               {siteConfig.instagramUrl || siteConfig.facebookUrl ? (
                 <ul className="flex items-center justify-center sm:justify-start">

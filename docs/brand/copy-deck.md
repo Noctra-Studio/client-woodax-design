@@ -113,29 +113,42 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - ideasTitle — ES: Ideas de lo que puedes hacer | EN: Ideas for what you can make
 - nextIdea — ES: Ver siguiente idea | EN: See next idea
 - thicknessValue — ES: {min}–{max} mm | EN: {min}–{max} mm (leído dinámicamente de `siteConfig.cncSpecs.maxThicknessByMaterial`: madera/MDF/melamina/triplay `3–40 mm`, acrílico/plásticos/Corian `3–40 mm`, aluminio `0.5–5 mm`)
-- groups:
-  - wood — ES: Madera, MDF, melamina, triplay | EN: Wood, MDF, melamine, plywood (`3–40 mm`)
-  - acrylic — ES: Acrílico, plásticos, Corian | EN: Acrylic, plastics, Corian (`3–40 mm`)
+- groups — nombres Aprobado por Adrián 2026-10-18, una sola vez en `siteConfig.cncMaterialLabels` (Capacidades, Materiales, tiles del formulario, FAQ, email, JSON-LD, llms.txt y OG). El espesor sigue en `cncSpecs`.
+  - wood — ES: Madera, MDF, Melamina y Triplay | EN: Wood, MDF, Melamine and Plywood (`3–40 mm`)
+  - acrylic — ES: Acrílico, Plástico y Corian | EN: Acrylic, Plastic and Corian (`3–40 mm`)
   - aluminum — ES: Aluminio | EN: Aluminum (`0.5–5 mm`)
+  - other (solo formulario) — ES: Otro | EN: Other
+
+### Datos de negocio — Aprobado por Adrián 2026-10-18
+
+Fuente única: `siteConfig.cncOffer`, `cncDelivery.smallProjectFromBusinessDays` y `cncFileFormats`. La UI, el correo interno, JSON-LD y `llms.txt` leen de ahí.
+
+- material — ES: Nosotros lo surtimos o tú lo traes | EN: We can supply it, or you bring your own
+- facturación — ES: Sí, emitimos CFDI. | EN: We issue CFDI invoices.
+- cotización — ES: en {hours} horas hábiles o menos (`quoteBusinessHours`: 48) | EN: within {hours} business hours or less
+- entrega — ES: Proyectos pequeños desde {lead}; proyectos grandes según volumen | EN: Small projects from {lead}; larger projects depend on volume. `{lead}` es `cncDelivery.smallProjectFromBusinessDays` (2) → «2 días hábiles» / «2 business days»
+- logística — ES: Recolección en taller o entrega | EN: Pick up at our shop or we deliver
+- ubicación — Corregidora, Querétaro. areaServed: Querétaro
+- franja (debajo del hero, JetBrains Mono, 2×2 en móvil) — ES: Cotización en {hours} h hábiles · Facturamos (CFDI) · Material tuyo o nuestro · Recolección o entrega | EN: Quote within {hours} business hours · CFDI invoices · Your material or ours · Pick up or delivery
+- correo interno, siguiente paso (el asunto `[CNC] Solicitud de cotización` no cambia; el material del asunto es `cncMaterialLabels`). file-ready: Pide el archivo ({formats}) y confirma material y espesor. Compromiso: cotizar en {hours} h hábiles. idea y needs-help conservan su texto y agregan el mismo compromiso al final.
 
 ### Proceso ⚠︎ (pendiente Adrián)
 
 - title — ES: Del archivo a la pieza | EN: From file to finished part
-- step1 ⚠︎ (pendiente Adrián) — ES: 01 Envíanos tu archivo o tu idea — Mándanos tu vector listo para corte, o un boceto con medidas y material. | EN: 01 Send us your file or your idea — Send your cut-ready vector, or a sketch with dimensions and material.
+- step1 — Aprobado por Adrián 2026-10-18. `{formats}` sale de `siteConfig.cncFileFormats`. ES: 01 Envíanos tu archivo o tu idea — {formats}, o un boceto con medidas. | EN: 01 Send us your file or your idea — {formats}, or a sketch with dimensions.
 - step1Output ⚠︎ (pendiente Adrián) — ES: Archivo o boceto | EN: File or sketch
-- step2 ⚠︎ (pendiente Adrián) — ES: 02 Revisamos y cotizamos — Revisamos medidas, material y espesor, y te enviamos la cotización. | EN: 02 We review and quote — We check dimensions, material and thickness, and send you a quote.
+- step2 — Aprobado por Adrián 2026-10-18. `{hours}` sale de `siteConfig.cncOffer.quoteBusinessHours` (48). ES: 02 Revisamos y cotizamos — Revisamos medidas, material y espesor, y te enviamos la cotización. Respuesta en {hours} h hábiles o menos. | EN: 02 We review and quote — We check dimensions, material and thickness, and send you a quote. Reply within {hours} business hours or less.
 - step2Output ⚠︎ (pendiente Adrián) — ES: Cotización | EN: Quote
-- step3 ⚠︎ (pendiente Adrián: no prometer entrega hasta confirmar modalidad de entrega / recolección en taller; NO incluir en `llms.txt` ni en JSON-LD) — ES: 03 Cortamos tus piezas — Las producimos con precisión repetible, de la primera a la última de la serie. | EN: 03 We cut your parts — We produce them with repeatable precision, from the first part to the last.
+- step3 ⚠︎ (el texto de este paso sigue pendiente; la logística ya está aprobada y vive en la franja, el FAQ y `llms.txt`, no en este paso) — ES: 03 Cortamos tus piezas — Las producimos con precisión repetible, de la primera a la última de la serie. | EN: 03 We cut your parts — We produce them with repeatable precision, from the first part to the last.
 - step3Output ⚠︎ (pendiente Adrián) — ES: Piezas | EN: Parts
-- formats ⚠︎ (pendiente Adrián: confirmar formatos aceptados; detrás de `siteConfig.showFileFormats: false`; NO incluir en `llms.txt` ni en JSON-LD) — ES: Formatos: DXF, DWG, SVG, AI, PDF. Puedes enviarlo después. | EN: Formats: DXF, DWG, SVG, AI, PDF. You can send it later.
-  - Aparece en: `docs/brand/copy-deck.md`, `src/messages/{es,en}.json` → `cnc.process.formats`, `siteConfig.cncFileFormats` (UI solo si `showFileFormats`).
-- pickup/delivery ⚠︎ (pendiente Adrián: «listas para recoger o entregar» / modalidad de entrega o recolección; NO incluir en `llms.txt` ni en JSON-LD). Hoy no está en la UI; el paso 3 habla solo de corte.
+- formats — Aprobado por Adrián 2026-10-18. `siteConfig.cncFileFormats`: DXF, DWG, SVG, PDF. `showFileFormats: true`. Chips en el paso 01 y en `llms.txt`. Sin AI.
+- pickup/delivery — Aprobado por Adrián 2026-10-18. `siteConfig.cncOffer.logistics`. ES: Recolección en taller o entrega | EN: Pick up at our shop or we deliver. También en la franja, el FAQ y `llms.txt`. El paso 3 sigue hablando solo de corte.
 
 ### Formulario
 
 - title — ES: Cuéntanos qué necesitas producir | EN: Tell us what you need to produce
 - step1.question — ES: ¿En qué material? | EN: Which material?
-- materialOptions — ES: Madera o MDF · Acrílico o plásticos · Aluminio o Alucobond · Otro | EN: Wood or MDF · Acrylic or plastics · Aluminum or Alucobond · Other
+- materialOptions — Aprobado por Adrián 2026-10-18. Mismos labels que `siteConfig.cncMaterialLabels` (no hay copia en messages). ES: Madera, MDF, Melamina y Triplay · Acrílico, Plástico y Corian · Aluminio · Otro | EN: Wood, MDF, Melamine and Plywood · Acrylic, Plastic and Corian · Aluminum · Other
 - step1b.question — ES: ¿En qué punto está tu proyecto? | EN: Where is your project at?
 - stateOptions — ES: Tengo el archivo listo · Necesito ayuda con el archivo · Solo tengo la idea | EN: My file is ready · I need help with the file · I only have the idea
 - step2.name — ES: Nombre o empresa | EN: Name or company
@@ -143,7 +156,8 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - consent — ES: Acepto que CNC by Woodax Design use estos datos para responder mi solicitud. Ver aviso de privacidad. | EN: I agree that CNC by Woodax Design may use this information to reply to my request. See privacy notice.
 - submit — ES: Solicitar cotización | EN: Request a quote
 - success.title — ES: Solicitud recibida | EN: Request received
-- success.body — ES: Revisaremos tu proyecto y te contactaremos con los siguientes pasos. ¿Cuántas piezas necesitas? | EN: We'll review your project and get back to you with next steps. How many parts do you need?
+- success.quantityLegend — ES: ¿Cuántas piezas necesitas? | EN: How many parts do you need?
+- success.body — Aprobado por Adrián 2026-10-18. Sale de `siteConfig.cncOffer`, según `projectState`. `{formats}` y `{hours}` también. file-ready ES: Responde al correo que te enviaremos con tu archivo ({formats}). Te cotizamos en {hours} h hábiles o menos. | EN: Reply to the email we'll send you with your file ({formats}). We'll quote within {hours} business hours or less. needs-help e idea ES: Te contactamos en {hours} h hábiles o menos. Si tienes referencias o medidas, tenlas a la mano. | EN: We'll contact you within {hours} business hours or less. If you have references or dimensions, have them ready. El botón de WhatsApp se mantiene.
 - success.quantity — ES: 1–10 · 11–100 · Más de 100 | EN: 1–10 · 11–100 · 100+
 - success.whatsapp — ES: Continuar por WhatsApp | EN: Continue on WhatsApp
 - whatsapp — ES: WhatsApp | EN: WhatsApp (píldora flotante en desktop, después del hero y fuera de contacto y del footer; segundo botón de la barra móvil. Solo si el número de entorno es válido. El número no se muestra.)
@@ -159,7 +173,7 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - sibling — ES: Muebles y espacios a medida | EN: Custom furniture and spaces
 - email — `siteConfig.cncEmail` (`cnc@woodax.design`)
 - copyright — ES: © {year} CNC by Woodax Design | EN: © {year} CNC by Woodax Design
-- location — ES: Querétaro, México | EN: Querétaro, Mexico
+- location — Aprobado por Adrián 2026-10-18. `siteConfig.cncOffer.location.label`: Corregidora, Querétaro (ES y EN). JSON-LD: addressLocality Corregidora, addressRegion Querétaro, addressCountry MX. areaServed Querétaro. Sin calle, geo ni horario. Design sigue en Querétaro, México.
 - privacy — ES: Aviso de privacidad | EN: Privacy notice
 
 ### Footer — descripción ⚠︎ (pendiente de aprobación de Adrián)
@@ -273,7 +287,7 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - label — ES: Capacidades | EN: Capabilities
 - title — ES: Lo que puede hacer la máquina | EN: What the machine can do
 - area — ES: Área de trabajo (`{width} × {length} mm` → `1300 × 2500 mm` desde `siteConfig.cncSpecs.cuttingArea`) | EN: Work area (`{width} × {length} mm` → `1300 × 2500 mm`)
-- thicknessValue — ES: `{min}–{max} mm` | EN: `{min}–{max} mm` (desde `siteConfig.cncSpecs.maxThicknessByMaterial`: Madera, MDF, melamina y triplay `3–40 mm`; Acrílico, plástico y Corian `3–40 mm`; Aluminio `0.5–5 mm`)
+- thicknessValue — ES: `{min}–{max} mm` | EN: `{min}–{max} mm` (desde `siteConfig.cncSpecs.maxThicknessByMaterial`; el nombre del grupo es `cncMaterialLabels`: Madera, MDF, Melamina y Triplay `3–40 mm`; Acrílico, Plástico y Corian `3–40 mm`; Aluminio `0.5–5 mm`)
 - note — ES: ¿Tu proyecto no encaja? Escríbenos y lo revisamos. | EN: Project doesn't fit? Write to us and we'll take a look.
 
 ### Trabajos
@@ -281,16 +295,18 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - label — ES: Trabajos | EN: Work
 - title — ES: Piezas recientes | EN: Recent parts
 
-### Preguntas frecuentes (solo se publican las que tengan respuesta aprobada por Adrián)
+### Preguntas frecuentes — Aprobado por Adrián 2026-10-18
 
-- label — ES: Preguntas | EN: FAQ
+Acordeón, un ítem a la vez. Preguntas y respuestas en `siteConfig.cncOffer` (la de volumen reutiliza `cnc.hero.subhead`). JSON-LD FAQPage usa el mismo texto. La pregunta de precios no se publica.
+
 - title — ES: Preguntas frecuentes | EN: Frequently asked questions
-- q1 — ES: ¿Qué archivos aceptan? | EN: Which file formats do you accept? — a1: TODO(adrian)
-- q2 — ES: ¿Puedo traer mi propio material? | EN: Can I bring my own material? — a2: TODO(adrian)
-- q3 — ES: ¿Cómo se cobra: por hora, por pieza o por proyecto? | EN: How is it priced: per hour, per part or per project? — a3: TODO(adrian)
-- q4 — ES: ¿Cuánto tarda un pedido? | EN: How long does an order take? — a4: TODO(adrian)
-- q5 — ES: ¿Me ayudan a preparar el archivo? | EN: Can you help me prepare the file? — a5: TODO(adrian)
-- q6 — ES: ¿Hacen entregas o se recoge en taller? | EN: Do you deliver or is it pick-up only? — a6: TODO(adrian)
+- material — ES: ¿Ustedes ponen el material? → Nosotros lo surtimos o tú lo traes | EN: Do you supply the material? → We can supply it, or you bring your own
+- invoice — ES: ¿Facturan? → Sí, emitimos CFDI. | EN: Do you issue invoices? → We issue CFDI invoices.
+- quote — ES: ¿Cuánto tardan en cotizar? → {hours} h hábiles o menos. | EN: How long does a quote take? → Within {hours} business hours or less.
+- order — ES: ¿Cuánto tarda mi pedido? → Proyectos pequeños desde {lead}; los grandes según volumen, te damos fecha en la cotización. | EN: How long does my order take? → Small projects from {lead}; larger projects depend on volume. We'll give you a date in the quote.
+- files — ES: ¿Qué archivos aceptan? → {formats}. Si solo tienes la idea o un boceto, te ayudamos. | EN: Which files do you accept? → {formats}. If you only have the idea or a sketch, we'll help.
+- logistics — ES: ¿Recogen o entregan? → Puedes recoger en nuestro taller en Corregidora o lo entregamos. | EN: Do you pick up or deliver? → You can pick up at our shop in Corregidora, or we deliver.
+- volume — ES: ¿Hacen piezas sueltas o solo volumen? → el subhead del hero («desde una hasta miles») | EN: Do you make single parts or only volume? → the hero subhead («from a single piece to thousands»)
 
 ### Formulario — detalles opcionales (estado de éxito)
 

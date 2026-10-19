@@ -185,7 +185,7 @@ export function OptionGroup({
                     {option.label}
                   </span>
                   {selected ? (
-                    <DrawnCheck className="text-cnc-white size-4" />
+                    <DrawnCheck className="text-cnc-white size-4 shrink-0" />
                   ) : (
                     <span className="size-4 shrink-0" aria-hidden="true" />
                   )}

@@ -4,7 +4,12 @@ import Image from "next/image";
 import { useLayoutEffect, useRef } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { RegistrationMarks } from "@/components/cnc/registration-marks";
-import { hasCncCapabilities, siteConfig } from "@/content/site-config";
+import {
+  cncMaterialLabel,
+  hasCncCapabilities,
+  isCncMaterialKey,
+  siteConfig,
+} from "@/content/site-config";
 import { formatSpecMm } from "@/lib/cnc-specs";
 import { cn } from "@/lib/utils";
 
@@ -64,7 +69,7 @@ export function CapabilitiesSection() {
       id="capacidades"
       aria-labelledby="capabilities-title"
       className={cn(
-        "relative scroll-mt-24 overflow-hidden lg:px-8",
+        "relative overflow-hidden lg:scroll-mt-[-6rem] lg:px-8",
         !machineImage && "px-5 py-14 md:px-8 md:py-20 lg:py-24",
       )}
     >
@@ -115,7 +120,7 @@ export function CapabilitiesSection() {
             <div className="lg:col-span-6">
               <h2
                 id="capabilities-title"
-                className="max-w-[16ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.02em] text-balance"
+                className="max-w-[16ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.02em] text-balance lg:max-w-[24ch]"
               >
                 {t("title")}
               </h2>
@@ -179,19 +184,11 @@ function capabilityRows(
     });
   }
 
-  const list = new Intl.ListFormat(locale === "en" ? "en" : "es-MX", {
-    type: "conjunction",
-    style: "long",
-  });
-
   for (const range of specs.maxThicknessByMaterial) {
-    if (range.materials.length === 0) continue;
-    const formatted = list.format(
-      range.materials.map((material) => t(`materials.${material}`)),
-    );
+    if (!isCncMaterialKey(range.group) || range.group === "other") continue;
     rows.push({
       key: range.group,
-      label: formatted.charAt(0).toUpperCase() + formatted.slice(1),
+      label: cncMaterialLabel(range.group, locale),
       value: t("thicknessValue", {
         min: formatSpecMm(locale, range.minMm),
         max: formatSpecMm(locale, range.maxMm),
@@ -201,4 +198,3 @@ function capabilityRows(
 
   return rows;
 }
-

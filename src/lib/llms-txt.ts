@@ -1,4 +1,13 @@
-import { hasCncCapabilities, siteConfig, siteEmail } from "@/content/site-config";
+import {
+  cncDeliveryText,
+  cncFileFormatList,
+  cncMaterialLabel,
+  cncQuoteWithin,
+  hasCncCapabilities,
+  isCncMaterialKey,
+  siteConfig,
+  siteEmail,
+} from "@/content/site-config";
 import { getPathname } from "@/i18n/navigation";
 import type { Locale, Pathname } from "@/i18n/routing";
 import { formatSpecMm } from "@/lib/cnc-specs";
@@ -76,7 +85,8 @@ function cncLlmsTxt(): string {
     `- Website: ${origin}/`,
     `- English: ${localizedHref("cnc", "en", "/")}`,
     `- Parent: ${siteBrandName("design")} (${siteOrigin("design")}/)`,
-    `- Location: ${copy.footer.location}`,
+    `- Location: ${siteConfig.cncOffer.location.label.es}`,
+    `- Area served: ${siteConfig.cncOffer.areaServed}`,
     `- Email: ${siteEmail("cnc")}`,
     ...(instagram ? [`- Instagram: ${instagram}`] : []),
     "",
@@ -100,20 +110,41 @@ function cncLlmsTxt(): string {
       );
     }
     for (const range of specs.maxThicknessByMaterial) {
-      const group =
-        copy.materials.groups[
-          range.group as keyof typeof copy.materials.groups
-        ];
-      if (!group) continue;
+      if (!isCncMaterialKey(range.group) || range.group === "other") continue;
       lines.push(
-        `- ${group.name}: ${fill(copy.capabilities.thicknessValue, {
-          min: formatSpecMm("es", range.minMm),
-          max: formatSpecMm("es", range.maxMm),
-        })}`,
+        `- ${cncMaterialLabel(range.group, "es")}: ${fill(
+          copy.capabilities.thicknessValue,
+          {
+            min: formatSpecMm("es", range.minMm),
+            max: formatSpecMm("es", range.maxMm),
+          },
+        )}`,
       );
     }
     lines.push("");
   }
+
+  const offer = siteConfig.cncOffer;
+  lines.push(
+    "## Practical details",
+    "",
+    `- Formats: ${cncFileFormatList("es")}`,
+    `- Material: ${offer.materialSupply.es}`,
+    `- Invoicing: ${offer.invoicing.es}`,
+    `- Quote: ${cncQuoteWithin("es")}`,
+    `- Delivery: ${cncDeliveryText("es")}`,
+    `- Logistics: ${offer.logistics.es}`,
+    "",
+    "English:",
+    "",
+    `- Formats: ${cncFileFormatList("en")}`,
+    `- Material: ${offer.materialSupply.en}`,
+    `- Invoicing: ${offer.invoicing.en}`,
+    `- Quote: ${cncQuoteWithin("en")}`,
+    `- Delivery: ${cncDeliveryText("en")}`,
+    `- Logistics: ${offer.logistics.en}`,
+    "",
+  );
 
   lines.push(
     "## Links",

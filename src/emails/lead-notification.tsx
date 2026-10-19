@@ -10,6 +10,7 @@ import {
   Section,
   Text,
 } from "@react-email/components";
+import { cncEmailNextStep, cncMaterialLabel } from "@/content/site-config";
 import {
   type Lead,
   type LeadDetails,
@@ -24,10 +25,10 @@ const projectTypeLabel = {
 } as const;
 
 const materialLabel = {
-  wood: "Madera, MDF, melamina o triplay",
-  acrylic: "Acrílico, plásticos o Corian",
-  aluminum: "Aluminio",
-  other: "Otro",
+  wood: cncMaterialLabel("wood", "es"),
+  acrylic: cncMaterialLabel("acrylic", "es"),
+  aluminum: cncMaterialLabel("aluminum", "es"),
+  other: cncMaterialLabel("other", "es"),
 } as const;
 
 const projectStateLabel = {
@@ -60,12 +61,6 @@ const localeLabel = {
 } as const;
 
 const nextStepCopy = {
-  cnc: {
-    idea: "Pide referencias, medidas aproximadas y cantidad.",
-    "needs-help":
-      "Ofrece apoyo para preparar el archivo; pide medidas y referencia.",
-    "file-ready": "Pide el archivo vectorial y confirma material y espesor.",
-  },
   design: "Agenda una llamada para levantar medidas y alcance.",
 } as const;
 
@@ -106,11 +101,11 @@ function replyLink(reply: LeadReply, subject: string) {
 
 function nextStepFor(
   site: "design" | "cnc",
-  projectState?: keyof typeof nextStepCopy.cnc,
+  projectState?: "file-ready" | "needs-help" | "idea",
 ) {
   if (site === "design") return nextStepCopy.design;
   if (!projectState) return undefined;
-  return nextStepCopy.cnc[projectState];
+  return cncEmailNextStep(projectState);
 }
 
 function brandName(site: "design" | "cnc") {

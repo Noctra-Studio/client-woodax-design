@@ -21,16 +21,16 @@ export async function WaysSection() {
   const t = await getTranslations("cnc.ways");
 
   return (
-    <Reveal>
-      <section
-        id="servicio"
-        aria-labelledby="ways-title"
-        className="relative scroll-mt-24 px-5 py-14 md:px-8 md:py-20 lg:py-24"
-      >
+    <section
+      id="servicio"
+      aria-labelledby="ways-title"
+      className="relative scroll-mt-[-3.5rem] px-5 py-14 md:scroll-mt-[-5rem] md:px-8 md:py-20 lg:scroll-mt-[-6rem] lg:py-24"
+    >
+      <Reveal>
         <div className="relative mx-auto w-full max-w-[1200px]">
           <h2
             id="ways-title"
-            className="max-w-[16ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.02em] text-balance"
+            className="max-w-[16ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.02em] text-balance lg:max-w-[24ch]"
           >
             {t("title")}
           </h2>
@@ -74,7 +74,7 @@ export async function WaysSection() {
             ))}
           </div>
         </div>
-      </section>
-    </Reveal>
+      </Reveal>
+    </section>
   );
 }

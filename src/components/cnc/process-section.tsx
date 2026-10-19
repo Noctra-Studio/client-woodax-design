@@ -1,9 +1,9 @@
 "use client";
 
 import { useLayoutEffect, useRef, type CSSProperties } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { RegistrationMarks } from "@/components/cnc/registration-marks";
-import { siteConfig } from "@/content/site-config";
+import { cncFileFormatList, siteConfig } from "@/content/site-config";
 
 const steps = [
   { key: "step1", outputKey: "step1Output" },
@@ -13,6 +13,9 @@ const steps = [
 
 export function ProcessSection() {
   const t = useTranslations("cnc.process");
+  const locale = useLocale();
+  const formats = cncFileFormatList(locale);
+  const hours = siteConfig.cncOffer.quoteBusinessHours;
   const trailRef = useRef<HTMLDivElement>(null);
   const firstMarkRef = useRef<HTMLParagraphElement>(null);
   const lastMarkRef = useRef<HTMLParagraphElement>(null);
@@ -41,7 +44,9 @@ export function ProcessSection() {
     observer.observe(last);
     window.addEventListener("resize", updateGeometry, { passive: true });
 
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     if (reduce) {
       return () => {
         observer.disconnect();
@@ -86,13 +91,13 @@ export function ProcessSection() {
     <section
       id="proceso"
       aria-labelledby="cnc-process-title"
-      className="relative scroll-mt-24 px-5 py-14 md:px-8 md:py-20 lg:py-24"
+      className="relative scroll-mt-[-3.5rem] px-5 py-14 md:scroll-mt-[-5rem] md:px-8 md:py-20 lg:scroll-mt-[-6rem] lg:py-24"
     >
       <RegistrationMarks edges="bottom" />
       <div className="relative mx-auto w-full max-w-[1200px]">
         <h2
           id="cnc-process-title"
-          className="max-w-[18ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.02em] text-balance"
+          className="max-w-[18ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.02em] text-balance lg:max-w-[24ch]"
         >
           {t("title")}
         </h2>
@@ -157,7 +162,12 @@ export function ProcessSection() {
           </div>
           <ol className="relative grid gap-10 md:grid-cols-3 md:gap-8">
             {steps.map(({ key, outputKey }, index) => {
-              const raw = t(key);
+              const raw =
+                key === "step1"
+                  ? t("step1", { formats })
+                  : key === "step2"
+                    ? t("step2", { hours })
+                    : t(key);
               const [headPart = raw, bodyPart] = raw.split(" — ");
               const splitAt = headPart.indexOf(" ");
               const number =
