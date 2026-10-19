@@ -93,7 +93,8 @@ export default async function DesignPage({
       />
       <ServicesTeaser />
       <ProcessSection />
-      {copy ? <LeadCapture copy={copy} /> : <HomeCta />}
+      {full ? <HomeCta /> : null}
+      {!full && copy ? <LeadCapture copy={copy} /> : null}
     </main>
   );
 }
