@@ -148,6 +148,7 @@ export default async function CncPage({
             instagramLabel={nav("instagram")}
             facebookUrl={publishedSocialUrl(siteConfig.facebookUrl)}
             facebookLabel={nav("facebook")}
+            facebookAria={nav("facebookAria")}
             logo={
               <CncLogo variant="nav" alt={t("title")} className="h-11 w-auto" />
             }

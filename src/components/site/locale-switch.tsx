@@ -14,6 +14,7 @@ type Variant = "design" | "cnc";
 export function LocaleSlot({
   variant,
   label,
+  size,
 }: {
   variant: Variant;
   label: string;
@@ -21,7 +22,7 @@ export function LocaleSlot({
 }) {
   return (
     <Suspense fallback={<LocaleFallback variant={variant} />}>
-      <LocaleSwitch variant={variant} label={label} />
+      <LocaleSwitch variant={variant} label={label} size={size} />
     </Suspense>
   );
 }
@@ -41,9 +42,11 @@ function LocaleFallback({ variant }: { variant: Variant }) {
 function LocaleSwitch({
   variant,
   label,
+  size,
 }: {
   variant: Variant;
   label: string;
+  size: "bar" | "menu";
 }) {
   const locale = useLocale();
   const pathname = usePathname();
@@ -53,7 +56,7 @@ function LocaleSwitch({
     variant === "design"
       ? "focus-visible:outline-woodax-charcoal"
       : "focus-visible:outline-cnc-white";
-  const hit = "min-h-11 min-w-11";
+  const hit = "min-h-11 w-11 min-w-11 px-2";
 
   useLayoutEffect(() => {
     let raw: string | null = null;
@@ -104,6 +107,7 @@ function LocaleSwitch({
       aria-label={label}
       className={cn(
         "inline-flex items-center p-0.5 text-[13px]",
+        size === "menu" && "w-fit self-start",
         variant === "design"
           ? "text-woodax-charcoal rounded-sm"
           : "border-cnc-line rounded-sm border tracking-[0.08em]",
@@ -120,7 +124,7 @@ function LocaleSwitch({
               aria-current="true"
               lang={code}
               className={cn(
-                "inline-flex items-center justify-center px-2 font-medium",
+                "inline-flex items-center justify-center font-medium",
                 hit,
                 shape,
                 variant === "design"
@@ -140,7 +144,7 @@ function LocaleSwitch({
             lang={code}
             onClick={() => selectLocale(code)}
             className={cn(
-              "inline-flex items-center justify-center px-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+              "inline-flex items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
               variant === "design" ? "font-medium" : "font-normal",
               hit,
               shape,
