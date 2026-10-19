@@ -90,6 +90,7 @@ export default async function DesignLayout({
             instagramLabel={nav("instagram")}
             facebookUrl={publishedSocialUrl(siteConfig.facebookUrl)}
             facebookLabel={nav("facebook")}
+            facebookAria={nav("facebookAria")}
             logo={<WoodaxLogo alt={t("title")} className="h-11 w-auto" />}
             logoCompact={<BrandIcon variant="design" className="h-8 w-auto" />}
           />

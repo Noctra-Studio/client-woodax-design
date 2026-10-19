@@ -162,6 +162,7 @@ type SiteNavProps = {
   instagramLabel: string;
   facebookUrl?: string;
   facebookLabel: string;
+  facebookAria: string;
   logo: ReactNode;
   logoCompact: ReactNode;
   logoTraceSrc?: string;
@@ -191,6 +192,7 @@ export function SiteNav({
   instagramLabel,
   facebookUrl,
   facebookLabel,
+  facebookAria,
   logo,
   logoCompact,
   logoTraceSrc,
@@ -509,6 +511,7 @@ export function SiteNav({
         instagramLabel={instagramLabel}
         facebookUrl={facebookUrl}
         facebookLabel={facebookLabel}
+        facebookAria={facebookAria}
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
         {...barProps}
@@ -892,6 +895,7 @@ function MobileNav({
   instagramLabel,
   facebookUrl,
   facebookLabel,
+  facebookAria,
   menuOpen,
   setMenuOpen,
   links,
@@ -913,6 +917,7 @@ function MobileNav({
   instagramLabel: string;
   facebookUrl?: string;
   facebookLabel: string;
+  facebookAria: string;
   menuOpen: boolean;
   setMenuOpen: (open: boolean) => void;
 }) {
@@ -1017,6 +1022,7 @@ function MobileNav({
           {facebookUrl ? (
             <a
               href={facebookUrl}
+              aria-label={facebookAria}
               className={cn(
                 "inline-flex min-h-11 items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
                 focusRing,
@@ -1362,7 +1368,7 @@ function SiteNavItem({
     focusRing,
     menu
       ? cn(
-          "inline-flex min-h-11 w-full items-center rounded-sm px-3 text-[17px] focus-visible:outline-offset-2",
+          "-mx-3 inline-flex min-h-11 w-[calc(100%+1.5rem)] items-center rounded-sm px-3 text-[17px] focus-visible:outline-offset-2",
           variant === "design" && "font-medium",
         )
       : cn(
