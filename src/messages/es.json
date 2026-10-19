@@ -59,7 +59,11 @@
       "skipIntro": "Saltar"
     },
     "home": {
-      "eyebrow": "Carpintería a medida · Querétaro"
+      "eyebrow": "Carpintería a medida · Querétaro",
+      "servicesTeaser": {
+        "title": "Lo que hacemos",
+        "cta": "Ver servicios"
+      }
     },
     "statement": {
       "label": "Nosotros",

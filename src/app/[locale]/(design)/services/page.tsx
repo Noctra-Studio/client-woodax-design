@@ -91,7 +91,9 @@ export default async function ServicesPage({
               return (
                 <li
                   key={key}
+                  id={key}
                   className={cn(
+                    "scroll-mt-28",
                     "grid items-start gap-8",
                     showMedia &&
                       "md:grid-cols-[minmax(0,1fr)_minmax(16rem,24rem)] md:gap-12",

@@ -59,7 +59,11 @@
       "skipIntro": "Skip"
     },
     "home": {
-      "eyebrow": "Bespoke carpentry · Querétaro"
+      "eyebrow": "Bespoke carpentry · Querétaro",
+      "servicesTeaser": {
+        "title": "What we do",
+        "cta": "See services"
+      }
     },
     "statement": {
       "label": "About us",

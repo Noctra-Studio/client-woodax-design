@@ -7,6 +7,7 @@ import { HomeCta } from "@/components/design/home-cta";
 import { MediaSlot } from "@/components/design/media-slot";
 import { ProcessSection } from "@/components/design/process-section";
 import { ProjectsSection } from "@/components/design/projects-section";
+import { ServicesTeaser } from "@/components/design/services-teaser";
 import { StatementSection } from "@/components/design/statement-section";
 import {
   featuredProjectSlots,
@@ -90,6 +91,7 @@ export default async function DesignPage({
       <ProjectsSection
         instagramUrl={publishedSocialUrl(siteConfig.instagramUrl)}
       />
+      <ServicesTeaser />
       <ProcessSection />
       {copy ? <LeadCapture copy={copy} /> : <HomeCta />}
     </main>
