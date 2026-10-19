@@ -55,10 +55,14 @@ export function TextField({
           aria-invalid={invalid || undefined}
           aria-describedby={invalid ? errorId : undefined}
           className={cn(
-            "duration-ui text-cnc-text focus-visible:outline-cnc-white h-11 w-full rounded-none border-0 border-b bg-transparent px-0 py-2 text-[16px] font-normal transition-colors ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4",
+            "text-cnc-text h-11 w-full rounded-none border-0 border-b bg-transparent px-0 py-2 text-[16px] font-normal",
+            "outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
+            // 1px border stays put; the extra pixel is an inset shadow so focus does not shift the line.
+            "shadow-[inset_0_-1px_0_0_transparent]",
+            "transition-[border-color,box-shadow] duration-150 ease-[var(--ease-out)] motion-reduce:transition-none",
             invalid
-              ? "border-cnc-white"
-              : "border-cnc-muted pointer-fine:hover:border-cnc-text focus:border-cnc-white",
+              ? "border-cnc-white focus:border-cnc-white focus-visible:border-cnc-white focus:shadow-[inset_0_-1px_0_0_var(--color-cnc-white)] focus-visible:shadow-[inset_0_-1px_0_0_var(--color-cnc-white)]"
+              : "border-cnc-muted pointer-fine:hover:border-cnc-text focus:border-cnc-text focus-visible:border-cnc-text focus:shadow-[inset_0_-1px_0_0_var(--color-cnc-text)] focus-visible:shadow-[inset_0_-1px_0_0_var(--color-cnc-text)]",
           )}
         />
         {error ? (
