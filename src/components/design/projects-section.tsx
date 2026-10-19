@@ -25,19 +25,21 @@ export async function ProjectsSection({
   const below = rest.slice(2);
 
   return (
-    <Reveal>
       <section
         id="proyectos"
         aria-labelledby="projects-title"
         className="home-section scroll-mt-24 px-5 md:px-8"
       >
         <div className="mx-auto w-full max-w-[1200px]">
-          <h2
-            id="projects-title"
-            className="font-serif text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.01em] text-balance"
-          >
-            {t("title")}
-          </h2>
+          <Reveal stagger>
+            <h2
+              id="projects-title"
+              className="font-serif text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.01em] text-balance"
+            >
+              {t("title")}
+            </h2>
+          </Reveal>
+          <Reveal>
           <div className="mt-10 grid grid-cols-1 gap-4 md:mt-14 md:grid-cols-12 md:gap-5">
             {lead ? (
               <div className="md:col-span-7">
@@ -94,9 +96,9 @@ export async function ProjectsSection({
               </AnalyticsButton>
             </div>
           ) : null}
+          </Reveal>
         </div>
       </section>
-    </Reveal>
   );
 }
 

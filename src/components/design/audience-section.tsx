@@ -7,19 +7,21 @@ export async function AudienceSection() {
   const t = await getTranslations("design.audience");
 
   return (
-    <Reveal>
       <section
         aria-labelledby="audience-title"
         className="home-section bg-woodax-green text-woodax-charcoal relative scroll-mt-24 overflow-hidden"
       >
         <ArcMotif className="absolute -right-16 -bottom-20 h-72 w-72 md:h-96 md:w-96" />
         <div className="relative mx-auto w-full max-w-[1200px] px-5 md:px-8">
-          <h2
-            id="audience-title"
-            className="max-w-[16ch] font-serif text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.01em] text-balance"
-          >
-            {t("title")}
-          </h2>
+          <Reveal stagger>
+            <h2
+              id="audience-title"
+              className="max-w-[16ch] font-serif text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.01em] text-balance"
+            >
+              {t("title")}
+            </h2>
+          </Reveal>
+          <Reveal>
           <div className="mt-12 grid gap-12 md:mt-16 md:grid-cols-2 md:gap-16">
             <article className="max-w-[62ch]">
               <House aria-hidden="true" strokeWidth={1.5} className="size-7" />
@@ -44,8 +46,8 @@ export async function AudienceSection() {
               </p>
             </article>
           </div>
+          </Reveal>
         </div>
       </section>
-    </Reveal>
   );
 }

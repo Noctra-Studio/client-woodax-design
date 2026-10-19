@@ -2,6 +2,7 @@ import { hasLocale } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
 import { AnalyticsButton } from "@/components/analytics/tracked-link";
 import { MediaSlot } from "@/components/design/media-slot";
+import { Reveal } from "@/components/design/reveal";
 import { hasMedia, type DesignMediaId } from "@/content/design-media";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
@@ -29,12 +30,15 @@ export async function ServicesTeaser() {
       className="home-section px-5 md:px-8"
     >
       <div className="mx-auto w-full max-w-[1200px]">
-        <h2
-          id="services-teaser-title"
-          className="max-w-[16ch] font-serif text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.01em] text-balance"
-        >
-          {home("title")}
-        </h2>
+        <Reveal stagger>
+          <h2
+            id="services-teaser-title"
+            className="max-w-[16ch] font-serif text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.01em] text-balance"
+          >
+            {home("title")}
+          </h2>
+        </Reveal>
+        <Reveal>
         <ul className="mt-12 grid gap-12 md:mt-16 md:grid-cols-2 md:gap-x-10 md:gap-y-16">
           {services.map((service, index) => {
             const [title, body] = servicesCopy(service.key).split(" — ");
@@ -73,6 +77,7 @@ export async function ServicesTeaser() {
             );
           })}
         </ul>
+        </Reveal>
         <div className="mt-12 md:mt-16">
           <AnalyticsButton
             href="/services"

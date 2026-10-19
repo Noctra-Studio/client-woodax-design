@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { Reveal } from "@/components/design/reveal";
 
 export async function StatementSection() {
   const t = await getTranslations("design.statement");
@@ -8,7 +9,7 @@ export async function StatementSection() {
       aria-labelledby="statement-title"
       className="home-section px-5 md:px-8"
     >
-      <div className="mx-auto w-full max-w-[1200px]">
+      <Reveal stagger className="mx-auto w-full max-w-[1200px]">
         <p className="flex items-center gap-2 text-[13px] font-semibold tracking-[0.18em] uppercase">
           <span
             aria-hidden="true"
@@ -28,7 +29,7 @@ export async function StatementSection() {
             ),
           })}
         </p>
-      </div>
+      </Reveal>
     </section>
   );
 }

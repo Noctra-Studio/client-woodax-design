@@ -7,19 +7,21 @@ export async function ProcessSection() {
   const t = await getTranslations("design.process");
 
   return (
-    <Reveal>
       <section
         id="proceso"
         aria-labelledby="process-title"
         className="home-section scroll-mt-24 px-5 md:px-8"
       >
         <div className="mx-auto w-full max-w-[1200px]">
-          <h2
-            id="process-title"
-            className="max-w-[16ch] font-serif text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.01em] text-balance"
-          >
-            {t("title")}
-          </h2>
+          <Reveal stagger>
+            <h2
+              id="process-title"
+              className="max-w-[16ch] font-serif text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.01em] text-balance"
+            >
+              {t("title")}
+            </h2>
+          </Reveal>
+          <Reveal>
           <ol className="mt-12 grid gap-12 md:mt-16 md:grid-cols-3 md:gap-10">
             {steps.map((key, index) => {
               const [title, body] = t(key).split(" — ");
@@ -40,8 +42,8 @@ export async function ProcessSection() {
               );
             })}
           </ol>
+          </Reveal>
         </div>
       </section>
-    </Reveal>
   );
 }

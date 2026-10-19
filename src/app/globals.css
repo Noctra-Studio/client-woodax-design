@@ -222,9 +222,54 @@ body[data-site="cnc"] {
     opacity var(--duration-reveal) var(--ease-out);
 }
 
+.design-stagger[data-reveal="hidden"] > * {
+  transform: translateY(16px);
+  opacity: 0;
+}
+
+.design-stagger[data-reveal="shown"] > * {
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    transform var(--duration-reveal) var(--ease-out),
+    opacity var(--duration-reveal) var(--ease-out);
+}
+
+.design-stagger[data-reveal="shown"] > :nth-child(2) {
+  transition-delay: 70ms;
+}
+
+.design-stagger[data-reveal="shown"] > :nth-child(3) {
+  transition-delay: 140ms;
+}
+
+.design-stagger[data-reveal="shown"] > :nth-child(4) {
+  transition-delay: 210ms;
+}
+
+@keyframes design-headline-rise {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-intro="play"] .design-headline-line {
+    animation: design-headline-rise var(--duration-reveal) var(--ease-out) both;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .design-reveal[data-reveal="hidden"],
-  .design-reveal[data-reveal="shown"] {
+  .design-reveal[data-reveal="shown"],
+  .design-stagger[data-reveal="hidden"] > *,
+  .design-stagger[data-reveal="shown"] > * {
     transform: none;
     opacity: 1;
     transition: none;

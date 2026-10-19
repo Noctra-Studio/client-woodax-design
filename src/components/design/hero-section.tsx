@@ -31,8 +31,14 @@ export function HeroSection({
     <section className="relative overflow-hidden" aria-labelledby="hero-title">
       <div className="mx-auto flex min-h-[100svh] w-full max-w-[1200px] flex-col px-5 pt-24 pb-[max(var(--home-section-y),calc(6.5rem+env(safe-area-inset-bottom)))] md:px-8 md:pb-[var(--home-section-y)]">
         <div className="mt-auto grid items-end gap-10 md:grid-cols-12 md:gap-8">
-          <div className="text-woodax-charcoal relative z-10 md:col-span-6 md:pb-6">
-            <p className="text-[13px] font-semibold tracking-[0.18em] uppercase">
+          <div
+            data-intro={status}
+            className="text-woodax-charcoal relative z-10 md:col-span-6 md:pb-6"
+          >
+            <p
+              className="design-headline-line text-[13px] font-semibold tracking-[0.18em] uppercase"
+              style={{ animationDelay: "0ms" }}
+            >
               {full ? home("eyebrow") : t("eyebrow")}
             </p>
             <h1
@@ -40,8 +46,12 @@ export function HeroSection({
               tabIndex={-1}
               className="mt-4 scroll-mt-24 font-serif text-[clamp(2.5rem,5.5vw,4.75rem)] leading-[1.05] font-light tracking-[-0.01em] text-balance focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
             >
-              <span className="block">{t("headlineLead")}</span>
-              <span className="block">{t("headlineTail")}</span>
+              <span className="design-headline-line block" style={{ animationDelay: "70ms" }}>
+                {t("headlineLead")}
+              </span>
+              <span className="design-headline-line block" style={{ animationDelay: "140ms" }}>
+                {t("headlineTail")}
+              </span>
             </h1>
             <p className="mt-5 max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.65] font-medium text-pretty">
               {t("subhead")}
