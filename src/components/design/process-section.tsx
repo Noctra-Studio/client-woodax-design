@@ -11,7 +11,7 @@ export async function ProcessSection() {
       <section
         id="proceso"
         aria-labelledby="process-title"
-        className="scroll-mt-24 px-5 py-16 md:px-8 md:py-24 lg:py-40"
+        className="home-section scroll-mt-24 px-5 md:px-8"
       >
         <div className="mx-auto w-full max-w-[1200px]">
           <h2

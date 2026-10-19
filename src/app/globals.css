@@ -106,6 +106,26 @@ body {
   touch-action: manipulation;
 }
 
+:root {
+  --home-section-y: 4rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --home-section-y: 6rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --home-section-y: 10rem;
+  }
+}
+
+.home-section {
+  padding-block: var(--home-section-y);
+}
+
 body[data-site="design"] {
   background-color: var(--color-woodax-paper);
   color: var(--color-woodax-charcoal);

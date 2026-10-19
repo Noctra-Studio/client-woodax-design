@@ -29,7 +29,7 @@ export function HeroSection({
 
   return (
     <section className="relative overflow-hidden" aria-labelledby="hero-title">
-      <div className="mx-auto flex min-h-[100svh] w-full max-w-[1200px] flex-col px-5 pt-24 pb-[calc(7.5rem+env(safe-area-inset-bottom))] md:px-8 md:pb-20">
+      <div className="mx-auto flex min-h-[100svh] w-full max-w-[1200px] flex-col px-5 pt-24 pb-[max(var(--home-section-y),calc(6.5rem+env(safe-area-inset-bottom)))] md:px-8 md:pb-[var(--home-section-y)]">
         <div className="mt-auto grid items-end gap-10 md:grid-cols-12 md:gap-8">
           <div className="text-woodax-charcoal relative z-10 md:col-span-6 md:pb-6">
             <p className="text-[13px] font-semibold tracking-[0.18em] uppercase">

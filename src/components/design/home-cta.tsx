@@ -12,7 +12,7 @@ export async function HomeCta() {
   return (
     <section
       aria-labelledby="home-cta-title"
-      className="scroll-mt-24 px-5 py-16 md:px-8 md:py-24"
+      className="home-section scroll-mt-24 px-5 md:px-8"
     >
       <div className="mx-auto flex w-full max-w-[1200px] flex-col items-start gap-5">
         <h2

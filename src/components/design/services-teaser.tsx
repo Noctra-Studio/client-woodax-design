@@ -24,8 +24,11 @@ export async function ServicesTeaser() {
   const locale = hasLocale(routing.locales, requested) ? requested : "es";
 
   return (
-    <section aria-labelledby="services-teaser-title" className="px-5 md:px-8">
-      <div className="mx-auto w-full max-w-[1200px] py-16 md:py-24 lg:py-40">
+    <section
+      aria-labelledby="services-teaser-title"
+      className="home-section px-5 md:px-8"
+    >
+      <div className="mx-auto w-full max-w-[1200px]">
         <h2
           id="services-teaser-title"
           className="max-w-[16ch] font-serif text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.01em] text-balance"

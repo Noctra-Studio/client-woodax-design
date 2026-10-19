@@ -10,7 +10,7 @@ export async function AudienceSection() {
     <Reveal>
       <section
         aria-labelledby="audience-title"
-        className="bg-woodax-green text-woodax-charcoal relative scroll-mt-24 overflow-hidden py-16 md:py-24 lg:py-40"
+        className="home-section bg-woodax-green text-woodax-charcoal relative scroll-mt-24 overflow-hidden"
       >
         <ArcMotif className="absolute -right-16 -bottom-20 h-72 w-72 md:h-96 md:w-96" />
         <div className="relative mx-auto w-full max-w-[1200px] px-5 md:px-8">
