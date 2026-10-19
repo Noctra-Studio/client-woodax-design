@@ -97,7 +97,7 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - forLabel ⚠︎ — ES: Para: | EN: For:
 - workshop.label — 01
 - workshop.title ⚠︎ — ES: Maquila CNC para talleres | EN: CNC cutting for workshops
-- workshop.body ⚠︎ — ES: Para carpinterías y talleres de fabricación que necesitan cortes CNC sin tener la máquina. Nos mandas tu archivo y nosotros producimos las piezas: sin invertir en equipo, operador ni mantenimiento. | EN: For carpentry and fabrication shops that need CNC cuts without owning the machine. Send us your file and we produce the parts, with no equipment, operator or maintenance to invest in.
+- workshop.body — Aprobado por Adrián 2026-10-18. `{days}` sale de `siteConfig.cncDelivery.smallProjectFromBusinessDays` (2). ES: Para carpinterías y talleres de fabricación que necesitan cortes CNC. Nos mandas tu archivo y producimos tus piezas con precisión y entrega desde {days} días hábiles. | EN: For carpentry and fabrication shops that need CNC cutting. Send us your file and we produce your pieces with precision, delivered in as little as {days} business days.
 - workshop.tag1 ⚠︎ — ES: Talleres de carpintería | EN: Woodworking shops
 - workshop.tag2 ⚠︎ — ES: Talleres de fabricación | EN: Fabrication shops
 - volume.label — 02

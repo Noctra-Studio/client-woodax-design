@@ -200,7 +200,7 @@
       "forLabel": "For:",
       "workshopLabel": "01",
       "workshopTitle": "CNC cutting for workshops",
-      "workshopBody": "For carpentry and fabrication shops that need CNC cuts without owning the machine. Send us your file and we produce the parts, with no equipment, operator or maintenance to invest in.",
+      "workshopBody": "For carpentry and fabrication shops that need CNC cutting. Send us your file and we produce your pieces with precision, delivered in as little as {days, plural, one {# business day} other {# business days}}.",
       "workshopTag1": "Woodworking shops",
       "workshopTag2": "Fabrication shops",
       "volumeLabel": "02",

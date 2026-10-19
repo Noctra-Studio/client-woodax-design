@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { Reveal } from "@/components/design/reveal";
+import { siteConfig } from "@/content/site-config";
 
 const panels = [
   {
@@ -47,7 +48,12 @@ export async function WaysSection() {
                     {t(panel.title)}
                   </h3>
                   <p className="mt-3 max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-medium text-pretty">
-                    {t(panel.body)}
+                    {panel.body === "workshopBody"
+                      ? t("workshopBody", {
+                          days: siteConfig.cncDelivery
+                            .smallProjectFromBusinessDays,
+                        })
+                      : t(panel.body)}
                   </p>
                 </div>
 

@@ -68,6 +68,11 @@ export type CncSpecs = {
 
 export type CncFileFormat = "DXF" | "DWG" | "SVG" | "AI" | "PDF";
 
+/** Small-project turnaround. Approved by Adrián 2026-10-18. */
+export type CncDelivery = {
+  smallProjectFromBusinessDays: number;
+};
+
 export type SiteConfig = {
   privacyEmail: string;
   designEmail: string;
@@ -77,6 +82,7 @@ export type SiteConfig = {
   facebookUrl?: string;
   cncHero: CncHero;
   cncSpecs?: CncSpecs;
+  cncDelivery: CncDelivery;
   cncFileFormats: readonly CncFileFormat[];
   showFileFormats: boolean;
 };
@@ -88,6 +94,9 @@ export const siteConfig: SiteConfig = {
   // Launch blocker: instagramUrl and facebookUrl cannot stay "#" in production.
   instagramUrl: "https://www.instagram.com/woodaxdesign",
   facebookUrl: "https://www.facebook.com/share/1AkP7NEJno/",
+  cncDelivery: {
+    smallProjectFromBusinessDays: 2,
+  },
   cncFileFormats: ["DXF", "DWG", "SVG", "AI", "PDF"],
   // Pending Adrián's confirmation on accepted file formats before showing in UI.
   showFileFormats: false,

@@ -200,7 +200,7 @@
       "forLabel": "Para:",
       "workshopLabel": "01",
       "workshopTitle": "Maquila CNC para talleres",
-      "workshopBody": "Para carpinterías y talleres de fabricación que necesitan cortes CNC sin tener la máquina. Nos mandas tu archivo y nosotros producimos las piezas: sin invertir en equipo, operador ni mantenimiento.",
+      "workshopBody": "Para carpinterías y talleres de fabricación que necesitan cortes CNC. Nos mandas tu archivo y producimos tus piezas con precisión y entrega desde {days, plural, one {# día hábil} other {# días hábiles}}.",
       "workshopTag1": "Talleres de carpintería",
       "workshopTag2": "Talleres de fabricación",
       "volumeLabel": "02",

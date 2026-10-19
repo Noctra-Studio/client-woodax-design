@@ -92,7 +92,9 @@ export default async function CncPage({
     services: [
       {
         name: t("ways.workshopTitle"),
-        description: t("ways.workshopBody"),
+        description: t("ways.workshopBody", {
+          days: siteConfig.cncDelivery.smallProjectFromBusinessDays,
+        }),
       },
       {
         name: t("ways.volumeServiceTitle"),
