@@ -688,7 +688,7 @@ function DesktopNav({
             "site-nav-bar pointer-events-auto mx-auto overflow-hidden",
             morph
               ? "flex items-center gap-2"
-              : "grid w-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center",
+              : "grid w-full items-center md:grid-cols-[auto_minmax(0,1fr)_auto] lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]",
             rest.variant === "design"
               ? "text-woodax-charcoal"
               : "text-cnc-text",
@@ -769,7 +769,7 @@ function ReducedBars(props: BarContentProps & { scrolled: boolean }) {
             "site-nav-bar pointer-events-auto absolute top-0 overflow-hidden",
             scrolled
               ? "inset-x-0 mx-auto flex h-14 w-max items-center gap-2 py-2 pr-2 pl-3"
-              : "inset-x-0 grid h-20 w-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center py-4 pr-2 pl-5",
+              : "inset-x-0 grid h-20 w-full items-center py-4 pr-2 pl-5 md:grid-cols-[auto_minmax(0,1fr)_auto] lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]",
             bar.variant === "design" ? "text-woodax-charcoal" : "text-cnc-text",
           )}
           style={{ borderRadius: "var(--radius-lg)" }}
