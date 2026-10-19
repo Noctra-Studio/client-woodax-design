@@ -5,7 +5,7 @@
 @theme inline {
   --font-sans: var(--font-quicksand), ui-sans-serif, system-ui, sans-serif;
   --font-serif:
-    var(--font-playfair), ui-serif, Georgia, "Times New Roman", serif;
+    var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
 
@@ -101,10 +101,16 @@ body[data-site="design"] {
   background-color: var(--color-woodax-paper);
   color: var(--color-woodax-charcoal);
   color-scheme: light;
+  font-weight: 500;
   --nav-sheet-bg: var(--color-woodax-paper);
   --nav-sheet-fg: var(--color-woodax-charcoal);
   --nav-sheet-border: var(--color-woodax-line);
   --nav-sheet-overlay: rgb(72 61 60 / 0.45);
+}
+
+body[data-site="design"] .font-serif {
+  font-variation-settings: "SOFT" 50;
+  letter-spacing: -0.01em;
 }
 
 body[data-site="cnc"] {

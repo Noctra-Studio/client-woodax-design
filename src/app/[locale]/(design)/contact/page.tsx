@@ -69,7 +69,7 @@ export default async function ContactPage({
         <div className="mx-auto w-full max-w-[1200px]">
           <h1
             id="contact-title"
-            className="max-w-[16ch] font-serif text-[clamp(2.5rem,5.5vw,4.75rem)] leading-[1.05] font-normal tracking-[-0.01em] text-balance"
+            className="max-w-[16ch] font-serif text-[clamp(2.5rem,5.5vw,4.75rem)] leading-[1.05] font-light tracking-[-0.01em] text-balance"
           >
             {t("title")}
           </h1>

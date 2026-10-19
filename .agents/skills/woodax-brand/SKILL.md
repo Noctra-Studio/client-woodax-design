@@ -84,14 +84,15 @@ Layout language:
 ## 4. Typography (from the brand guideline)
 
 Woodax Design
-- Headings (display, h1, h2, h3, statement paragraph): Playfair Display 400 and 700 (official brand font), next/font/google, variable `--font-serif`. Real italics exist but are NOT used (decision: no italics).
-- Body, UI, nav, buttons, forms, eyebrows, numbers: Quicksand 400/500/600 (official logo font), variable `--font-sans`. Body uses 500 (Quicksand 400 is too light at small sizes); never below 15px.
-- Scale (clamp, mobile→desktop): display 40→76px Playfair 400 / tracking -0.01em / leading 1.05; h2 30→48px Playfair 400; h3 20→24px Playfair 700; statement 26→40px Playfair 400 with <b> in 700; body 17→18px Quicksand 500 / leading 1.65; small 14px Quicksand 500.
+- Headings (display, h1, h2, h3, statement paragraph), numbered-row indexes and the footer description: Fraunces via next/font/google. Variable file, subsets latin, display swap, axes `opsz` and `SOFT` (the weight axis stays `variable` because extra axes cannot be combined with a discrete weight list). CSS variable `--font-fraunces`, consumed as `--font-serif`. Loaded on the Design layout and on Design surfaces that portal outside it (privacy, lead sheet, lead success, lead capture). Real italics exist but are NOT used (decision: no italics).
+- Titles: `font-variation-settings: "SOFT" 50`, letter-spacing -0.01em. H1 weight 300. H2 and H3 weight 400. Numbered-row indexes and the footer description stay Fraunces 400.
+- Body, UI, nav, buttons, forms, eyebrows: Quicksand 500/600 (official logo font), variable `--font-sans`. Body and nav use 500; eyebrows and emphasis use 600. Never Quicksand 400 on Design, never below 15px.
+- Scale (clamp, mobile→desktop): display 40→76px Fraunces 300 / tracking -0.01em / leading 1.05; h2 30→48px Fraunces 400; h3 20→24px Fraunces 400; statement 26→40px Fraunces 400; body 17→18px Quicksand 500 / leading 1.65; small 14px Quicksand 500.
 - Eyebrows: Quicksand 600, 12–13px, uppercase, tracking .18em (mirrors the "DESIGN" lockup).
-- Numbered row numbers: Playfair 400 at h3 size in muted charcoal.
+- Numbered row numbers: Fraunces 400 at h3 size in muted charcoal.
 
 CNC by Woodax Design
-- Quicksand 400/500/600 for everything (headings 500–600, body 500). NO Playfair on CNC: a classic serif fights the technical drawing language, and the approved CNC look stays.
+- Quicksand 400/500/600 for everything (headings 500–600, body 500). CNC does not load Fraunces.
 - JetBrains Mono 400/500 for data only (labels, coordinates, specs, step numbers). Never on Woodax.
 - Same size scale as Woodax, with Quicksand headings at weight 500 and tracking -0.01em.
 
@@ -214,7 +215,7 @@ Accessibility: <nav aria-label>, real anchors to section ids, aria-current on th
 No italics anywhere (decision). Emphasis = weight and tone only.
 
 - Section label: small rounded dot (6px, currentColor) + eyebrow text (section 4 eyebrow style), top-left of each section.
-- Numbered row: 3 columns on desktop / stacked on mobile. Number in Playfair 400 (design) / JetBrains Mono (cnc) at h3 size in muted tone ("01." "02." "03."), title below in body 500, one line of body 300. Used for "Así trabajamos" (design) and "Del archivo a la pieza" (cnc).
+- Numbered row: 3 columns on desktop / stacked on mobile. Number in Fraunces 400 (design) / JetBrains Mono (cnc) at h3 size in muted tone ("01." "02." "03."), title below in body 500, one line of body 500. Used for "Así trabajamos" (design) and "Del archivo a la pieza" (cnc).
 - Statement paragraph: large text (h2 scale, weight 300) max 24ch per line on desktop; 2–3 emphasized phrases in weight 500 + full foreground color, the rest in muted tone. Emphasis is marked in messages with <b>…</b> and rendered via next-intl rich text. Left column on desktop may hold one small rounded photo (radius-card) — only a real photo, otherwise nothing.
 - Icon chip in headings: the brand mark inside a rounded square chip, inline with h1/h2 text, height 0.9em, vertically centered. Design: charcoal chip + cream mark. CNC: cnc-surface chip with cnc-line border + white mark. Max one chip per heading, aria-hidden, never in body text. Requires the mark SVG; if missing, render nothing.
 - Project cards: tall cards (aspect 3/4), radius-card, real photo full-bleed, tag pill top-left (eyebrow style, cream bg on design / cnc-surface on cnc), title bottom-left over a subtle bottom gradient (charcoal 0→45% / cnc-bg 0→60%). Mobile: horizontal scroll-snap with 16px peek of the next card. Desktop: 3–4 per row.
@@ -227,7 +228,7 @@ One component, `src/components/site/site-footer.tsx`, with variant `design | cnc
 - Design mounts it in `(design)/layout.tsx`, so it stays put while navigating. CNC mounts it inside the CNC page. Privacy pages have no footer.
 - Desktop is four columns, aligned to the start of each column. On mobile they stack, centered, in this order: brand, navigation, contact, sibling site, bottom bar. Alignment returns to the start from `sm` up.
 - Background is the page background (Design `#F3F1EA`, CNC `#16171A`). Neither footer changes with the system color scheme. No dark closing block and no giant wordmark.
-- Design uses Playfair for the description line and Quicksand everywhere else, on the woodax palette. CNC uses Quicksand and the `cnc-*` tokens for the whole footer.
+- Design uses Fraunces for the description line and Quicksand everywhere else, on the woodax palette. CNC uses Quicksand and the `cnc-*` tokens for the whole footer.
 
 Brand: the site logo and one description line from messages (`design.footer.description` / `cnc.footer.description`). Those two lines are pending Adrián's approval. The Design lockup in the footer is 56px tall. `woodax-design-logo.svg` viewBox is cropped to the artwork, so that height is the ink, not the old empty artboard.
 

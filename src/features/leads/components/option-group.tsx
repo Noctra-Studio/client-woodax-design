@@ -139,7 +139,7 @@ export function OptionGroup({
         id={legendId}
         className={cn(
           isDesign
-            ? "mb-3 text-[17px] leading-snug font-normal"
+            ? "mb-3 text-[17px] leading-snug font-medium"
             : "text-cnc-muted mb-3 block font-mono text-xs tracking-[0.08em] uppercase",
           legendClassName,
         )}

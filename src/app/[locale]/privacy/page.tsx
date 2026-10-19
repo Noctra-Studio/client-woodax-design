@@ -3,7 +3,7 @@ import {
   generatePrivacyMetadata,
   PrivacyNotice,
 } from "@/features/privacy/privacy-notice";
-import { playfair } from "@/lib/font-design";
+import { fraunces } from "@/lib/font-design";
 
 export { generatePrivacyMetadata as generateMetadata };
 
@@ -15,7 +15,7 @@ export default async function DesignPrivacyPage({
   return (
     <div
       data-site-font-root
-      className={`${playfair.variable} flex flex-1 flex-col`}
+      className={`${fraunces.variable} flex flex-1 flex-col`}
     >
       <PrivacyNotice params={params} />
       <SiteFooter variant="design" />

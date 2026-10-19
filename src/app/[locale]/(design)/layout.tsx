@@ -15,7 +15,7 @@ import {
 import { publishedSocialUrl, siteConfig } from "@/content/site-config";
 import { LeadUiProvider } from "@/features/leads/components/lead-ui";
 import { routing, type Locale } from "@/i18n/routing";
-import { playfair } from "@/lib/font-design";
+import { fraunces } from "@/lib/font-design";
 import { requestCncHomeUrl } from "@/lib/request-site";
 import { isDesignFull } from "@/lib/seo";
 
@@ -65,7 +65,7 @@ export default async function DesignLayout({
   return (
     <div
       data-site-font-root
-      className={`${playfair.variable} flex flex-1 flex-col`}
+      className={`${fraunces.variable} flex flex-1 flex-col`}
     >
       <LeadUiProvider>
         <IntroProvider>

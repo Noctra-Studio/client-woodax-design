@@ -11,6 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { PrivacyNoticeBody } from "@/features/privacy/privacy-notice-body";
+import { fraunces } from "@/lib/font-design";
 import { cn } from "@/lib/utils";
 
 export function PrivacyDialog({
@@ -48,7 +49,7 @@ export function PrivacyDialog({
         className={cn(
           "overflow-hidden md:border",
           isDesign
-            ? "bg-woodax-paper text-woodax-charcoal md:border-woodax-line"
+            ? `${fraunces.variable} bg-woodax-paper text-woodax-charcoal md:border-woodax-line`
             : "bg-cnc-surface text-cnc-text md:border-cnc-line",
         )}
       >

@@ -28,7 +28,7 @@ export async function ProcessSection() {
                   <p className="text-woodax-charcoal/75 font-serif text-[clamp(1.25rem,2vw,1.5rem)] leading-none font-normal tracking-[-0.01em] tabular-nums">
                     {String(index + 1).padStart(2, "0")}
                   </p>
-                  <h3 className="mt-4 font-serif text-[clamp(1.25rem,2vw,1.5rem)] font-bold text-balance">
+                  <h3 className="mt-4 font-serif text-[clamp(1.25rem,2vw,1.5rem)] font-normal tracking-[-0.01em] text-balance">
                     {title}
                   </h3>
                   {body ? (

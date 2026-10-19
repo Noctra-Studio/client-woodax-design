@@ -11,6 +11,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { motion, useDragControls, type PanInfo } from "motion/react";
+import { fraunces } from "@/lib/font-design";
 import { cn } from "@/lib/utils";
 
 type LeadSheetNestedContextValue = {
@@ -108,7 +109,7 @@ export function LeadSheet({
           active && !open && "max-md:translate-y-full",
           "md:relative md:max-h-none md:rounded-[var(--radius-card)]",
           isDesign
-            ? "bg-woodax-cream text-woodax-charcoal"
+            ? `${fraunces.variable} bg-woodax-cream text-woodax-charcoal`
             : "border-cnc-line bg-cnc-surface text-cnc-text border",
         )}
         onFocusCapture={(event) => {

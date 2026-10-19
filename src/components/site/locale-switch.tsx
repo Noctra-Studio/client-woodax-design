@@ -140,7 +140,8 @@ function LocaleSwitch({
             lang={code}
             onClick={() => selectLocale(code)}
             className={cn(
-              "inline-flex items-center justify-center px-2 font-normal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+              "inline-flex items-center justify-center px-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+              variant === "design" ? "font-medium" : "font-normal",
               hit,
               shape,
               focusRing,

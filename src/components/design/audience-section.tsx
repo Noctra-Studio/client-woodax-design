@@ -23,7 +23,7 @@ export async function AudienceSection() {
           <div className="mt-12 grid gap-12 md:mt-16 md:grid-cols-2 md:gap-16">
             <article className="max-w-[62ch]">
               <House aria-hidden="true" strokeWidth={1.5} className="size-7" />
-              <h3 className="mt-4 font-serif text-[clamp(1.25rem,2vw,1.5rem)] font-bold text-balance">
+              <h3 className="mt-4 font-serif text-[clamp(1.25rem,2vw,1.5rem)] font-normal tracking-[-0.01em] text-balance">
                 {t("homeTitle")}
               </h3>
               <p className="bg-woodax-cream mt-5 rounded-[var(--radius-card)] px-6 py-5 text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.65] font-medium text-pretty">
@@ -36,7 +36,7 @@ export async function AudienceSection() {
                 strokeWidth={1.5}
                 className="size-7"
               />
-              <h3 className="mt-4 font-serif text-[clamp(1.25rem,2vw,1.5rem)] font-bold text-balance">
+              <h3 className="mt-4 font-serif text-[clamp(1.25rem,2vw,1.5rem)] font-normal tracking-[-0.01em] text-balance">
                 {t("businessTitle")}
               </h3>
               <p className="bg-woodax-cream mt-5 rounded-[var(--radius-card)] px-6 py-5 text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.65] font-medium text-pretty">

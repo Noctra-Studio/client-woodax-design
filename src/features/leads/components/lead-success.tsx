@@ -12,6 +12,7 @@ import {
   OptionGroup,
 } from "@/features/leads/components/option-group";
 import { PendingSpinner } from "@/features/leads/components/pending-spinner";
+import { fraunces } from "@/lib/font-design";
 import { cn } from "@/lib/utils";
 
 const easeOut = [0.22, 1, 0.36, 1] as const;
@@ -52,7 +53,7 @@ export function LeadSuccess({
       initial={reduceMotion ? false : { y: 16, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: reduceMotion ? 0 : 0.24, ease: easeOut }}
-      className="flex flex-col gap-6"
+      className={cn("flex flex-col gap-6", isDesign && fraunces.variable)}
     >
       <div className="flex items-start gap-3">
         <DrawnCheck className="mt-1 size-8" />
@@ -61,7 +62,7 @@ export function LeadSuccess({
             className={cn(
               "text-[clamp(1.25rem,2vw,1.5rem)]",
               isDesign
-                ? "font-serif font-bold tracking-[-0.01em]"
+                ? "font-serif font-normal tracking-[-0.01em]"
                 : "font-medium tracking-[-0.02em]",
             )}
           >

@@ -93,7 +93,7 @@ export function TextField({
           aria-invalid={invalid || undefined}
           aria-describedby={invalid ? errorId : undefined}
           className={cn(
-            "peer h-14 w-full rounded-[var(--radius-control)] border px-4 pt-5 pb-1 text-[17px] font-normal outline-none",
+            "peer h-14 w-full rounded-[var(--radius-control)] border px-4 pt-5 pb-1 text-[17px] font-medium outline-none",
             "duration-ui transition-[border-color] ease-out",
             "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
             "border-woodax-line bg-woodax-paper text-woodax-charcoal focus-visible:outline-woodax-charcoal",
@@ -102,7 +102,7 @@ export function TextField({
         <label
           htmlFor={id}
           className={cn(
-            "pointer-events-none absolute top-1/2 left-4 origin-left -translate-y-1/2 text-[17px] font-normal",
+            "pointer-events-none absolute top-1/2 left-4 origin-left -translate-y-1/2 text-[17px] font-medium",
             "duration-ui transition-all ease-out",
             "peer-[:not(:placeholder-shown)]:top-2.5 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:text-[12px]",
             "peer-focus:top-2.5 peer-focus:translate-y-0 peer-focus:text-[12px]",

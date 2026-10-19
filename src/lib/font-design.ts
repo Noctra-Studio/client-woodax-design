@@ -1,8 +1,11 @@
-import { Playfair_Display } from "next/font/google";
+import { Fraunces } from "next/font/google";
 
-export const playfair = Playfair_Display({
+// Extra axes require the variable file (weight omitted → "variable").
+// Design applies 300 on h1 and 400 on h2/h3.
+export const fraunces = Fraunces({
   subsets: ["latin"],
   style: "normal",
-  variable: "--font-playfair",
   display: "swap",
+  axes: ["opsz", "SOFT"],
+  variable: "--font-fraunces",
 });

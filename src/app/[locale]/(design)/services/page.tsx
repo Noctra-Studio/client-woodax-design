@@ -66,7 +66,7 @@ export default async function ServicesPage({
         <div className="mx-auto w-full max-w-[1200px]">
           <h1
             id="services-title"
-            className="max-w-[16ch] font-serif text-[clamp(2.5rem,5.5vw,4.75rem)] leading-[1.05] font-normal tracking-[-0.01em] text-balance"
+            className="max-w-[16ch] font-serif text-[clamp(2.5rem,5.5vw,4.75rem)] leading-[1.05] font-light tracking-[-0.01em] text-balance"
           >
             {t("title")}
           </h1>
@@ -85,7 +85,7 @@ export default async function ServicesPage({
                     {String(index + 1).padStart(2, "0")}
                   </p>
                   <div>
-                    <h2 className="font-serif text-[clamp(1.25rem,2vw,1.5rem)] font-bold text-balance">
+                    <h2 className="font-serif text-[clamp(1.25rem,2vw,1.5rem)] font-normal tracking-[-0.01em] text-balance">
                       {title}
                     </h2>
                     {body ? (

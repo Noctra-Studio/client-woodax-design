@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { fraunces } from "@/lib/font-design";
 import { requestSite } from "@/lib/request-site";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +17,7 @@ export default async function NotFound() {
       className={cn(
         "mx-auto flex w-full max-w-[62ch] flex-1 flex-col items-start justify-center gap-6 px-5 py-24",
         isDesign
-          ? "bg-woodax-paper text-woodax-charcoal"
+          ? `${fraunces.variable} bg-woodax-paper text-woodax-charcoal`
           : "bg-cnc-bg text-cnc-text",
       )}
     >
@@ -30,8 +31,10 @@ export default async function NotFound() {
       </p>
       <h1
         className={cn(
-          "text-[clamp(1.875rem,4vw,3rem)] leading-[1.05] font-normal text-balance",
-          isDesign ? "tracking-[-0.01em]" : "tracking-[-0.02em]",
+          "text-[clamp(1.875rem,4vw,3rem)] leading-[1.05] text-balance",
+          isDesign
+            ? "font-serif font-light tracking-[-0.01em]"
+            : "font-normal tracking-[-0.02em]",
         )}
       >
         {t("notFoundTitle")}

@@ -50,7 +50,7 @@ export function HeroSection() {
         <h1
           id="hero-title"
           tabIndex={-1}
-          className="mt-4 scroll-mt-24 font-serif text-[clamp(2.5rem,5.5vw,4.75rem)] leading-[1.05] font-normal tracking-[-0.01em] text-balance focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+          className="mt-4 scroll-mt-24 font-serif text-[clamp(2.5rem,5.5vw,4.75rem)] leading-[1.05] font-light tracking-[-0.01em] text-balance focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
         >
           <span className="block">{t("headlineLead")}</span>
           <span className="block">{t("headlineTail")}</span>

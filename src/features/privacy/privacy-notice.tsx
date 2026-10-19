@@ -54,8 +54,10 @@ export async function PrivacyNotice({
     <main className="mx-auto flex w-full max-w-[62ch] flex-1 flex-col gap-6 px-5 py-16 md:py-28">
       <h1
         className={cn(
-          "text-[clamp(1.875rem,4vw,3rem)] leading-[1.05] font-normal",
-          isDesign ? "font-serif tracking-[-0.01em]" : "tracking-[-0.02em]",
+          "text-[clamp(1.875rem,4vw,3rem)] leading-[1.05]",
+          isDesign
+            ? "font-serif font-light tracking-[-0.01em]"
+            : "font-normal tracking-[-0.02em]",
         )}
       >
         {t("title")}

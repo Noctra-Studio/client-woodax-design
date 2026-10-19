@@ -14,6 +14,7 @@ import {
   MobileCtaBar,
   useFormSectionInView,
 } from "@/features/leads/components/mobile-cta-bar";
+import { fraunces } from "@/lib/font-design";
 import { isDesignFull } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
@@ -47,7 +48,7 @@ function DesignLeadCapture({ copy }: { copy: LeadCopy }) {
       <section
         id="contacto"
         aria-label={copy.title}
-        className="bg-woodax-green text-woodax-charcoal relative scroll-mt-24 px-5 py-16 md:px-8 md:py-24 lg:py-40"
+        className={`${fraunces.variable} bg-woodax-green text-woodax-charcoal relative scroll-mt-24 px-5 py-16 md:px-8 md:py-24 lg:py-40`}
       >
         <div
           aria-hidden="true"
@@ -85,7 +86,7 @@ function SheetLeadCapture({ copy }: { copy: LeadCopy }) {
       className={cn(
         "relative px-5",
         isDesign
-          ? "bg-woodax-green text-woodax-charcoal scroll-mt-24 py-16 md:px-8 md:py-24 lg:py-40"
+          ? `${fraunces.variable} bg-woodax-green text-woodax-charcoal scroll-mt-24 py-16 md:px-8 md:py-24 lg:py-40`
           : "scroll-mt-[-3.5rem] py-14 md:scroll-mt-[-5rem] md:px-8 md:py-20 lg:scroll-mt-[-6rem] lg:py-24",
       )}
     >

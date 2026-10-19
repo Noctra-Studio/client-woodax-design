@@ -729,7 +729,10 @@ function MeasureRow({
         {links.map((link) => (
           <li
             key={itemKey(link)}
-            className="mx-1 inline-flex min-h-11 items-center px-3 text-[15px] font-normal whitespace-nowrap"
+            className={cn(
+              "mx-1 inline-flex min-h-11 items-center px-3 text-[15px] whitespace-nowrap",
+              variant === "design" ? "font-medium" : "font-normal",
+            )}
           >
             {link.label}
           </li>
@@ -1322,8 +1325,14 @@ function SiteNavItem({
     "focus-visible:outline focus-visible:outline-2",
     focusRing,
     menu
-      ? "inline-flex min-h-11 w-full items-center rounded-full px-3 text-[17px] focus-visible:outline-offset-2"
-      : "relative mx-1 inline-flex min-h-11 items-center rounded-full px-3 text-[15px] font-normal whitespace-nowrap focus-visible:outline-offset-[-2px]",
+      ? cn(
+          "inline-flex min-h-11 w-full items-center rounded-full px-3 text-[17px] focus-visible:outline-offset-2",
+          variant === "design" && "font-medium",
+        )
+      : cn(
+          "relative mx-1 inline-flex min-h-11 items-center rounded-full px-3 text-[15px] whitespace-nowrap focus-visible:outline-offset-[-2px]",
+          variant === "design" ? "font-medium" : "font-normal",
+        ),
     menu &&
       active &&
       (variant === "design" ? "bg-woodax-cream" : "bg-cnc-line"),
