@@ -3,8 +3,10 @@ import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { AnalyticsAnchor } from "@/components/analytics/tracked-link";
+import { MediaSlot } from "@/components/design/media-slot";
 import { LeadCapture } from "@/features/leads/components/lead-capture";
 import { getLeadCopy } from "@/features/leads/copy";
+import { hasMedia } from "@/content/design-media";
 import { designPages } from "@/content/design-pages";
 import { publishedSocialUrl, siteConfig } from "@/content/site-config";
 import { routing, type Locale } from "@/i18n/routing";
@@ -66,16 +68,24 @@ export default async function ContactPage({
         aria-labelledby="contact-title"
         className="px-5 pt-28 pb-4 md:px-8 md:pt-32"
       >
-        <div className="mx-auto w-full max-w-[1200px]">
-          <h1
-            id="contact-title"
-            className="max-w-[16ch] font-serif text-[clamp(2.5rem,5.5vw,4.75rem)] leading-[1.05] font-light tracking-[-0.01em] text-balance"
-          >
-            {t("title")}
-          </h1>
-          <p className="mt-5 max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.65] font-medium text-pretty">
-            {t("intro")}
-          </p>
+        <div className="mx-auto grid w-full max-w-[1200px] items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(16rem,22rem)]">
+          <div>
+            <h1
+              id="contact-title"
+              className="max-w-[16ch] font-serif text-[clamp(2.5rem,5.5vw,4.75rem)] leading-[1.05] font-light tracking-[-0.01em] text-balance"
+            >
+              {t("title")}
+            </h1>
+            <p className="mt-5 max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.65] font-medium text-pretty">
+              {t("intro")}
+            </p>
+          </div>
+          {hasMedia("contact-side") ? (
+            <MediaSlot
+              id="contact-side"
+              sizes="(min-width: 1024px) 22rem, 100vw"
+            />
+          ) : null}
         </div>
       </section>
       <LeadCapture copy={copy} />

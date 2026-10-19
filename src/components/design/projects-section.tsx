@@ -1,9 +1,9 @@
-import Image from "next/image";
-import { getLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
+import { getLocale, getTranslations } from "next-intl/server";
 import { AnalyticsButton } from "@/components/analytics/tracked-link";
+import { MediaSlot } from "@/components/design/media-slot";
 import { Reveal } from "@/components/design/reveal";
-import { designGallery, type DesignGalleryTag } from "@/content/design-gallery";
+import { visibleSlots, type DesignMediaTag } from "@/content/design-media";
 import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 
@@ -21,7 +21,8 @@ export async function ProjectsSection({
 }: {
   instagramUrl?: string;
 }) {
-  if (designGallery.length === 0) return null;
+  const projects = visibleSlots("projects-");
+  if (projects.length === 0) return null;
 
   const t = await getTranslations("design.projects");
   const requested = await getLocale();
@@ -41,30 +42,28 @@ export async function ProjectsSection({
           >
             {t("title")}
           </h2>
-          {designGallery.length > 0 ? (
-            <ul className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-5 pb-2 md:grid md:grid-cols-12 md:gap-5 md:overflow-visible md:px-8 md:pb-0">
-              {designGallery.map((item, index) => (
-                <li
-                  key={item.src}
-                  className={cn(
-                    "relative aspect-[4/5] w-[82vw] max-w-[28rem] shrink-0 snap-start overflow-hidden rounded-[var(--radius-media)] md:aspect-auto md:w-auto md:max-w-none",
-                    mosaic[index] ?? "md:col-span-6 md:min-h-[18rem]",
-                  )}
-                >
-                  <Image
-                    src={item.src}
-                    alt={item.alt[locale]}
-                    fill
-                    sizes="(min-width: 768px) 40vw, 82vw"
-                    className="object-cover"
-                  />
-                  <p className="bg-woodax-cream text-woodax-charcoal absolute bottom-4 left-4 rounded-sm px-3 py-1 text-[12px] font-semibold tracking-[0.18em] uppercase">
-                    {t(`tags.${item.tag as DesignGalleryTag}`)}
+          <ul className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-5 pb-2 md:grid md:grid-cols-12 md:gap-5 md:overflow-visible md:px-8 md:pb-0">
+            {projects.map((item, index) => (
+              <li
+                key={item.id}
+                className={cn(
+                  "relative aspect-[4/5] w-[82vw] max-w-[28rem] shrink-0 snap-start overflow-hidden rounded-[var(--radius-media)] md:aspect-auto md:w-auto md:max-w-none",
+                  mosaic[index] ?? "md:col-span-6 md:min-h-[18rem]",
+                )}
+              >
+                <MediaSlot
+                  id={item.id}
+                  sizes="(min-width: 768px) 40vw, 82vw"
+                  fill
+                />
+                {item.tag ? (
+                  <p className="bg-woodax-cream text-woodax-charcoal absolute bottom-4 left-4 z-10 rounded-sm px-3 py-1 text-[12px] font-semibold tracking-[0.18em] uppercase">
+                    {t(`tags.${item.tag as DesignMediaTag}`)}
                   </p>
-                </li>
-              ))}
-            </ul>
-          ) : null}
+                ) : null}
+              </li>
+            ))}
+          </ul>
           {instagramUrl ? (
             <div className="mt-8 px-5 md:px-8">
               <AnalyticsButton

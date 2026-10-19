@@ -176,6 +176,23 @@
         "whatsappAria": "Message us on WhatsApp",
         "social": "Follow us"
       }
+    },
+    "about": {
+      "meta": {
+        "title": "About · Woodax Design"
+      },
+      "title": "Who we are"
+    },
+    "clients": {
+      "meta": {
+        "title": "Clients · Woodax Design",
+        "description": "Bespoke carpentry projects for homes and businesses in Querétaro."
+      },
+      "title": "Who we've worked with",
+      "intro": "Homes and businesses that trusted us with their space."
+    },
+    "mediaSlot": {
+      "label": "Photo · {id}"
     }
   },
   "cnc": {

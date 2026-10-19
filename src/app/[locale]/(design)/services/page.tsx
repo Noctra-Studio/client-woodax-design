@@ -3,14 +3,24 @@ import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { AnalyticsAnchor } from "@/components/analytics/tracked-link";
+import { MediaSlot } from "@/components/design/media-slot";
 import { ProcessSection } from "@/components/design/process-section";
 import { Button } from "@/components/ui/button";
+import { hasMedia, type DesignMediaId } from "@/content/design-media";
 import { designPages } from "@/content/design-pages";
 import { routing, type Locale } from "@/i18n/routing";
 import { requestCncHomeUrl } from "@/lib/request-site";
 import { localizedMetadata } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 const serviceKeys = ["kitchens", "closets", "custom", "commercial"] as const;
+
+const serviceMedia = {
+  kitchens: "services-kitchens",
+  closets: "services-closets",
+  custom: "services-custom",
+  commercial: "services-commercial",
+} as const satisfies Record<(typeof serviceKeys)[number], DesignMediaId>;
 
 export async function generateMetadata({
   params,
@@ -76,24 +86,38 @@ export default async function ServicesPage({
           <ol className="mt-16 grid gap-12 md:mt-20">
             {serviceKeys.map((key, index) => {
               const [title, body] = t(key).split(" — ");
+              const mediaId = serviceMedia[key];
+              const showMedia = hasMedia(mediaId);
               return (
                 <li
                   key={key}
-                  className="grid max-w-[62ch] gap-3 md:grid-cols-[4.5rem_1fr] md:gap-8"
+                  className={cn(
+                    "grid items-start gap-8",
+                    showMedia &&
+                      "md:grid-cols-[minmax(0,1fr)_minmax(16rem,24rem)] md:gap-12",
+                  )}
                 >
-                  <p className="text-woodax-charcoal/75 font-serif text-[clamp(1.25rem,2vw,1.5rem)] leading-none font-normal tracking-[-0.01em] tabular-nums">
-                    {String(index + 1).padStart(2, "0")}
-                  </p>
-                  <div>
-                    <h2 className="font-serif text-[clamp(1.25rem,2vw,1.5rem)] font-normal tracking-[-0.01em] text-balance">
-                      {title}
-                    </h2>
-                    {body ? (
-                      <p className="mt-3 text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.65] font-medium text-pretty">
-                        {body}
-                      </p>
-                    ) : null}
+                  <div className="grid max-w-[62ch] gap-3 md:grid-cols-[4.5rem_1fr] md:gap-8">
+                    <p className="text-woodax-charcoal/75 font-serif text-[clamp(1.25rem,2vw,1.5rem)] leading-none font-normal tracking-[-0.01em] tabular-nums">
+                      {String(index + 1).padStart(2, "0")}
+                    </p>
+                    <div>
+                      <h2 className="font-serif text-[clamp(1.25rem,2vw,1.5rem)] font-normal tracking-[-0.01em] text-balance">
+                        {title}
+                      </h2>
+                      {body ? (
+                        <p className="mt-3 text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.65] font-medium text-pretty">
+                          {body}
+                        </p>
+                      ) : null}
+                    </div>
                   </div>
+                  {showMedia ? (
+                    <MediaSlot
+                      id={mediaId}
+                      sizes="(min-width: 768px) 24rem, 100vw"
+                    />
+                  ) : null}
                 </li>
               );
             })}

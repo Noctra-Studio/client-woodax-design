@@ -1,20 +1,13 @@
-import { designAbout, isDesignAboutPublished } from "@/content/design-about";
-import { designClients } from "@/content/design-clients";
-import { designGallery } from "@/content/design-gallery";
+import { visibleSlots } from "@/content/design-media";
+import { isDesignRouteEnabled } from "@/content/design-publish";
 import type { Pathname } from "@/i18n/routing";
-import { isDesignFull } from "@/lib/seo";
-
-const full = isDesignFull();
 
 export const designPages = {
   home: { href: "/", enabled: true },
-  about: {
-    href: "/about",
-    enabled: full && isDesignAboutPublished(designAbout),
-  },
-  services: { href: "/services", enabled: full },
-  clients: { href: "/clients", enabled: full && designClients.length > 0 },
-  contact: { href: "/contact", enabled: full },
+  about: { href: "/about", enabled: isDesignRouteEnabled("about") },
+  services: { href: "/services", enabled: isDesignRouteEnabled("services") },
+  clients: { href: "/clients", enabled: isDesignRouteEnabled("clients") },
+  contact: { href: "/contact", enabled: isDesignRouteEnabled("contact") },
 } as const satisfies Record<string, { href: Pathname; enabled: boolean }>;
 
 export type DesignPageKey = keyof typeof designPages;
@@ -31,7 +24,7 @@ export const designNavKeys = ["about", "services", "clients"] as const;
 
 export function designSectionAnchors() {
   return [
-    ...(designGallery.length > 0
+    ...(visibleSlots("projects-").length > 0
       ? [{ id: "proyectos", labelKey: "projects" as const }]
       : []),
     { id: "proceso", labelKey: "process" as const },

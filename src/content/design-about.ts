@@ -1,23 +1,27 @@
-export type DesignAboutPhoto = {
-  src: string;
-  width: number;
-  height: number;
-  alt: { es: string; en: string };
-};
+import { hasAboutPhoto } from "@/content/design-media";
+import { isProductionDeploy } from "@/lib/deploy-env";
 
 export type DesignAbout = {
+  placeholder: boolean;
   story: { es: string; en: string } | null;
-  photos: DesignAboutPhoto[];
 };
 
 export const designAbout: DesignAbout = {
-  story: null,
-  photos: [],
+  placeholder: true,
+  story: {
+    es: "[PENDIENTE: historia de Adrián]",
+    en: "[PENDIENTE: historia de Adrián]",
+  },
 };
 
 export function isDesignAboutPublished(about: DesignAbout): boolean {
+  if (about.placeholder) return !isProductionDeploy();
+
   const story = about.story;
   if (!story) return false;
-  if (story.es.trim().length === 0 || story.en.trim().length === 0) return false;
-  return about.photos.length > 0;
+  if (story.es.trim().length === 0 || story.en.trim().length === 0) {
+    return false;
+  }
+
+  return hasAboutPhoto();
 }

@@ -1,47 +1,48 @@
 "use client";
 
-import type { MouseEvent } from "react";
+import type { MouseEvent, ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Button } from "@/components/ui/button";
-import { HeroMedia } from "@/components/design/hero-media";
 import { useIntro } from "@/components/design/intro-provider";
 import { lockNavAnchor } from "@/components/site/site-nav";
-import { designGallery } from "@/content/design-gallery";
+import { Button } from "@/components/ui/button";
 import { useLeadUi } from "@/features/leads/components/lead-ui";
 import { analyticsLocale, track } from "@/lib/analytics";
 import { isDesignFull } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
-export function HeroSection() {
+export function HeroSection({
+  children,
+  hasPoster,
+  showProjects,
+}: {
+  children?: ReactNode;
+  hasPoster: boolean;
+  showProjects: boolean;
+}) {
   const t = useTranslations("design.hero");
   const locale = useLocale();
   const leadUi = useLeadUi();
   const { status, skip } = useIntro();
-  const poster = designGallery[0];
-  const onPhoto = Boolean(poster);
   const full = isDesignFull();
 
   return (
     <section className="relative min-h-[100svh]" aria-labelledby="hero-title">
-      <div className="absolute inset-0 overflow-hidden rounded-[var(--radius-media)]">
-        {poster ? (
-          <HeroMedia
-            poster={poster.src}
-            alt={poster.alt[locale === "en" ? "en" : "es"]}
-          />
-        ) : null}
-        {onPhoto ? (
-          <div
-            aria-hidden="true"
-            className="from-woodax-charcoal/35 pointer-events-none absolute inset-0 bg-gradient-to-t to-transparent"
-          />
-        ) : null}
-      </div>
+      {children ? (
+        <div className="absolute inset-0 overflow-hidden rounded-[var(--radius-media)]">
+          {children}
+          {hasPoster ? (
+            <div
+              aria-hidden="true"
+              className="from-woodax-charcoal/35 pointer-events-none absolute inset-0 bg-gradient-to-t to-transparent"
+            />
+          ) : null}
+        </div>
+      ) : null}
 
       <div
         className={cn(
           "relative z-10 mx-auto flex min-h-[100svh] w-full max-w-[1200px] flex-col px-5 pt-24 pb-[calc(7.5rem+env(safe-area-inset-bottom))] md:px-8 md:pb-20",
-          onPhoto ? "text-woodax-cream" : "text-woodax-charcoal",
+          hasPoster ? "text-woodax-cream" : "text-woodax-charcoal",
         )}
       >
         <p className="mt-auto text-[13px] font-semibold tracking-[0.18em] uppercase">
@@ -81,15 +82,15 @@ export function HeroSection() {
             >
               {t("ctaPrimary")}
             </Button>
-            {designGallery.length > 0 ? (
+            {showProjects ? (
               <Button
                 href="#proyectos"
-                variant={onPhoto ? "design-primary" : "design-secondary"}
+                variant={hasPoster ? "design-primary" : "design-secondary"}
                 onClick={() => {
                   lockNavAnchor("proyectos");
                 }}
                 className={
-                  onPhoto
+                  hasPoster
                     ? "bg-woodax-cream text-woodax-charcoal pointer-fine:hover:bg-woodax-cream focus-visible:outline-woodax-charcoal"
                     : undefined
                 }

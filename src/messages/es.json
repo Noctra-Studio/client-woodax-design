@@ -176,6 +176,23 @@
         "whatsappAria": "Escribir por WhatsApp",
         "social": "Síguenos"
       }
+    },
+    "about": {
+      "meta": {
+        "title": "Nosotros · Woodax Design"
+      },
+      "title": "Quiénes somos"
+    },
+    "clients": {
+      "meta": {
+        "title": "Clientes · Woodax Design",
+        "description": "Proyectos de carpintería a medida para hogares y negocios en Querétaro."
+      },
+      "title": "Con quién hemos trabajado",
+      "intro": "Hogares y negocios que nos confiaron su espacio."
+    },
+    "mediaSlot": {
+      "label": "Foto · {id}"
     }
   },
   "cnc": {

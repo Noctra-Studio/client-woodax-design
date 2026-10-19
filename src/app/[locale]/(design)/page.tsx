@@ -4,8 +4,10 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { AudienceSection } from "@/components/design/audience-section";
 import { HeroSection } from "@/components/design/hero-section";
 import { HomeCta } from "@/components/design/home-cta";
+import { MediaSlot } from "@/components/design/media-slot";
 import { ProcessSection } from "@/components/design/process-section";
 import { ProjectsSection } from "@/components/design/projects-section";
+import { getDesignMedia, hasMedia, visibleSlots } from "@/content/design-media";
 import {
   publishedSocialUrl,
   siteConfig,
@@ -66,7 +68,20 @@ export default async function DesignPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLd }}
       />
-      <HeroSection />
+      <HeroSection
+        hasPoster={getDesignMedia("home-hero").src !== null}
+        showProjects={visibleSlots("projects-").length > 0}
+      >
+        {hasMedia("home-hero") ? (
+          <MediaSlot
+            id="home-hero"
+            sizes="100vw"
+            priority
+            fill
+            labelPosition="top"
+          />
+        ) : null}
+      </HeroSection>
       <AudienceSection />
       <ProjectsSection
         instagramUrl={publishedSocialUrl(siteConfig.instagramUrl)}
