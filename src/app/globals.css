@@ -226,7 +226,37 @@ body[data-site="cnc"] {
 }
 
 .cnc-hero-grid[data-over-media="true"] {
-  opacity: 0.6;
+  opacity: 0.3;
+}
+
+@media (min-width: 768px) {
+  .cnc-hero-grid[data-over-media="true"] {
+    opacity: 0.6;
+  }
+}
+
+.mobile-cta-bar {
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    transform var(--duration-ui) var(--ease-out),
+    opacity var(--duration-ui) var(--ease-out);
+}
+
+.mobile-cta-bar[data-hidden="true"] {
+  pointer-events: none;
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-cta-bar {
+    transition: opacity var(--duration-press) var(--ease-out);
+  }
+
+  .mobile-cta-bar[data-hidden="true"] {
+    transform: none;
+  }
 }
 
 @keyframes cnc-grid-draw {
