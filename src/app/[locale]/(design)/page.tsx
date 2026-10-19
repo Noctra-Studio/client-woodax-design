@@ -75,10 +75,8 @@ export default async function DesignPage({
         {hasMedia("home-hero") ? (
           <MediaSlot
             id="home-hero"
-            sizes="100vw"
+            sizes="(min-width: 768px) 34rem, 100vw"
             priority
-            fill
-            labelPosition="top"
           />
         ) : null}
       </HeroSection>
