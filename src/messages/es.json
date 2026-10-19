@@ -5,25 +5,339 @@
     "notFoundDescription": "La página que buscas no existe.",
     "backHome": "Volver al inicio"
   },
+  "nav": {
+    "menu": "Menú",
+    "close": "Cerrar",
+    "design": {
+      "home": "Inicio",
+      "homeAria": "Woodax Design, ir al inicio",
+      "about": "Nosotros",
+      "services": "Servicios",
+      "clients": "Clientes",
+      "projects": "Proyectos",
+      "process": "Proceso",
+      "contact": "Contacto",
+      "cta": "Cuéntanos tu proyecto"
+    },
+    "cnc": {
+      "how": "Servicio",
+      "capabilities": "Capacidades",
+      "materials": "Materiales",
+      "contact": "Contacto",
+      "cta": "Cotizar"
+    },
+    "sibling": {
+      "toCnc": "CNC by Woodax Design",
+      "toDesign": "Woodax Design"
+    },
+    "instagram": "Instagram",
+    "facebook": "Woodax en Facebook",
+    "language": "Idioma"
+  },
+  "siteFooter": {
+    "navAria": "Navegación",
+    "developedBy": "Desarrollado por",
+    "developedByAria": "Desarrollado por Noctra Studio",
+    "instagramAria": "Instagram de Woodax",
+    "facebookAria": "Facebook de Woodax"
+  },
   "design": {
     "title": "Woodax Design",
-    "headline": "El inicio de una pieza a medida"
+    "meta": {
+      "title": "Woodax Design · Carpintería a medida en Querétaro",
+      "description": "Cocinas, clósets, piezas únicas y mobiliario para negocios, diseñados contigo y hechos a la medida de tu espacio."
+    },
+    "skipToContent": "Saltar al contenido",
+    "hero": {
+      "eyebrow": "Nuevo sitio en camino · Abiertos a proyectos",
+      "headlineLead": "Diseñamos y fabricamos lo que tu espacio necesita.",
+      "headlineTail": "Pieza por pieza.",
+      "subhead": "Carpintería a medida para hogares y negocios en Querétaro, de la primera idea a la instalación.",
+      "ctaPrimary": "Cuéntanos tu proyecto",
+      "ctaSecondary": "Ver proyectos",
+      "skipIntro": "Saltar"
+    },
+    "audience": {
+      "title": "Para tu hogar y para tu negocio",
+      "homeTitle": "Tu hogar",
+      "homeBody": "Cocinas, clósets, vestidores y piezas únicas pensadas para la forma en que vives.",
+      "businessTitle": "Tu negocio",
+      "businessBody": "Mobiliario para oficinas, despachos, cafeterías y coworkings que refleja tu marca desde la entrada."
+    },
+    "projects": {
+      "title": "Proyectos recientes",
+      "instagramCta": "Más proyectos en Instagram",
+      "tags": {
+        "kitchen": "Cocina",
+        "closet": "Clóset",
+        "custom-piece": "Pieza a medida",
+        "commercial-space": "Espacio comercial"
+      }
+    },
+    "process": {
+      "title": "Así trabajamos",
+      "step1": "Escuchamos — Conocemos tu espacio, tomamos medidas y entendemos lo que necesitas.",
+      "step2": "Diseñamos — Te presentamos una propuesta y la ajustamos contigo hasta que quede exacta.",
+      "step3": "Fabricamos e instalamos — Construimos cada pieza a medida y la entregamos lista para usarse."
+    },
+    "form": {
+      "title": "Empecemos por tu espacio",
+      "step1": {
+        "question": "¿Qué te gustaría transformar?"
+      },
+      "options": {
+        "kitchen": "Cocina",
+        "closet": "Clóset",
+        "custom-piece": "Pieza a medida",
+        "commercial-space": "Espacio comercial"
+      },
+      "step2": {
+        "name": "Tu nombre",
+        "contact": "WhatsApp o email",
+        "city": "Ciudad (opcional)"
+      },
+      "consentBefore": "Acepto que Woodax Design use estos datos para responder mi solicitud.",
+      "consentLink": "Ver aviso de privacidad.",
+      "next": "Continuar",
+      "back": "Atrás",
+      "submit": "Enviar mi proyecto",
+      "success": {
+        "title": "Recibimos tu proyecto",
+        "body": "Te contactaremos pronto para platicar los detalles. Si quieres adelantar, cuéntanos un poco más:",
+        "stageQuestion": "¿En qué etapa estás?",
+        "stage": {
+          "idea": "Idea",
+          "measurements": "Ya tengo medidas",
+          "ready-to-quote": "Listo para cotizar"
+        },
+        "timelineQuestion": "¿Cuándo te gustaría empezar?",
+        "timeline": {
+          "now": "Ya",
+          "1-3-months": "En 1–3 meses",
+          "later": "Más adelante"
+        },
+        "whatsapp": "Continuar por WhatsApp",
+        "detailsSubmit": "Enviar detalles"
+      },
+      "error": {
+        "generic": "No pudimos enviar tu mensaje. Inténtalo de nuevo en un momento."
+      },
+      "errors": {
+        "name": "Escribe tu nombre, con al menos 2 caracteres.",
+        "contact": "Escribe un email válido o un WhatsApp de 10 a 15 dígitos.",
+        "consent": "Acepta el aviso para que podamos responderte.",
+        "projectType": "Elige qué te gustaría transformar.",
+        "city": "La ciudad debe tener entre 2 y 60 caracteres.",
+        "details": "Elige al menos un detalle."
+      },
+      "errorPrefix": "Error:",
+      "close": "Cerrar",
+      "whatsappAria": "Escribir por WhatsApp",
+      "mobileBar": "Cuéntanos tu proyecto"
+    },
+    "footer": {
+      "cncLink": "¿Necesitas corte CNC? Conoce CNC by Woodax Design",
+      "location": "Querétaro, México",
+      "privacy": "Aviso de privacidad",
+      "description": "Carpintería a medida para espacios y piezas únicas, en Querétaro.",
+      "sibling": "CNC by Woodax Design",
+      "email": "hello@woodax.design",
+      "copyright": "© {year} Woodax Design"
+    },
+    "homeCta": {
+      "title": "¿Tienes un proyecto en mente?",
+      "body": "Cuéntanos qué necesitas y te respondemos con los siguientes pasos."
+    },
+    "services": {
+      "meta": {
+        "title": "Servicios · Woodax Design",
+        "description": "Cocinas, clósets y vestidores, piezas a medida y mobiliario para negocios en Querétaro, del diseño a la instalación."
+      },
+      "title": "Lo que diseñamos y fabricamos",
+      "intro": "Cada proyecto se diseña contigo y se fabrica a la medida de tu espacio.",
+      "kitchens": "Cocinas — Pensadas para cómo cocinas y convives, con el espacio de guardado justo donde lo necesitas.",
+      "closets": "Clósets y vestidores — Orden a la medida de lo que guardas, aprovechando cada centímetro.",
+      "custom": "Piezas a medida — Muebles únicos para un rincón, una pared o una idea que no encuentras en tienda.",
+      "commercial": "Espacios comerciales — Mobiliario para oficinas, despachos, cafeterías y coworkings que refleja tu marca.",
+      "cta": "Cuéntanos tu proyecto"
+    },
+    "contact": {
+      "meta": {
+        "title": "Contacto · Woodax Design",
+        "description": "Cuéntanos tu proyecto de carpintería a medida en Querétaro y te contactamos para platicar los detalles."
+      },
+      "title": "Hablemos de tu espacio",
+      "intro": "Cuéntanos qué tienes en mente y te contactamos para platicar los detalles.",
+      "channels": {
+        "title": "Otras formas de contactarnos",
+        "email": "Correo",
+        "whatsapp": "WhatsApp",
+        "whatsappAria": "Escribir por WhatsApp",
+        "social": "Síguenos"
+      }
+    }
   },
   "cnc": {
     "title": "CNC by Woodax Design",
-    "headline": "Tu proyecto ya empezó"
+    "skipToContent": "Saltar al contenido",
+    "meta": {
+      "title": "Corte CNC en Querétaro | CNC by Woodax Design",
+      "description": "Maquila y servicio de corte CNC en madera, acrílico y aluminio para carpinterías, talleres, empresas y rotulistas en Querétaro. Cotiza tu proyecto."
+    },
+    "hero": {
+      "eyebrow": "Capacidad disponible · Cotizaciones abiertas",
+      "headline": "Precisión CNC, sin invertir en la máquina.",
+      "subhead": "Servicio de corte CNC y maquila para carpinterías, talleres y empresas en Querétaro: envíanos tu archivo y producimos tus piezas, desde una hasta miles.",
+      "ctaPrimary": "Cotizar mi proyecto",
+      "ctaSecondary": "Cómo funciona",
+      "skipIntro": "Saltar",
+      "axisX": "X",
+      "axisY": "Y"
+    },
+    "ways": {
+      "title": "Dos formas de trabajar con nosotros",
+      "serviceType": "Corte CNC",
+      "forLabel": "Para:",
+      "workshopLabel": "01",
+      "workshopTitle": "Maquila CNC para talleres",
+      "workshopBody": "Para carpinterías y talleres de fabricación que necesitan cortes CNC. Nos mandas tu archivo y producimos tus piezas con precisión y entrega desde {days, plural, one {# día hábil} other {# días hábiles}}.",
+      "workshopTag1": "Talleres de carpintería",
+      "workshopTag2": "Talleres de fabricación",
+      "volumeLabel": "02",
+      "volumeTitle": "Producción para empresas",
+      "volumeServiceTitle": "Producción CNC para empresas",
+      "volumeBody": "Piezas en volumen para empresas, rotulistas e industria: componentes en serie, letras, señalética y piezas técnicas en madera, acrílico y aluminio, con cortes consistentes en toda la serie.",
+      "volumeTag1": "Empresas e industria",
+      "volumeTag2": "Rotulistas"
+    },
+    "materials": {
+      "title": "Materiales",
+      "ideasTitle": "Ideas de lo que puedes hacer",
+      "nextIdea": "Ver siguiente idea",
+      "thicknessValue": "{min}–{max} mm",
+      "groups": {
+        "wood": {
+          "example1": "Mueble o cajonera",
+          "example2": "Panel decorativo calado",
+          "example3": "Plantilla de ensamble"
+        },
+        "acrylic": {
+          "example1": "Letrero con letras",
+          "example2": "Display o exhibidor",
+          "example3": "Cubierta o pieza de Corian"
+        },
+        "aluminum": {
+          "example1": "Placa con logo",
+          "example2": "Letra corpórea",
+          "example3": "Pieza técnica con perforaciones"
+        }
+      }
+    },
+    "process": {
+      "title": "Del archivo a la pieza",
+      "step1": "01 Envíanos tu archivo o tu idea — {formats}, o un boceto con medidas.",
+      "step1Output": "Archivo o boceto",
+      "step2": "02 Revisamos y cotizamos — Revisamos medidas, material y espesor, y te enviamos la cotización. Respuesta en {hours} horas hábiles o menos.",
+      "step2Output": "Cotización",
+      "step3": "03 Cortamos tus piezas — Las producimos con precisión repetible, de la primera a la última de la serie.",
+      "step3Output": "Piezas"
+    },
+    "work": {
+      "title": "Piezas recientes"
+    },
+    "form": {
+      "title": "Cuéntanos qué necesitas producir",
+      "subtitle": "Te respondemos con una cotización y los siguientes pasos.",
+      "stepIndicator": "{current} / {total}",
+      "step1": {
+        "label": "Material",
+        "question": "¿En qué material?"
+      },
+      "step1b": {
+        "label": "Tu proyecto",
+        "question": "¿En qué punto está tu proyecto?"
+      },
+      "stateOptions": {
+        "file-ready": "Tengo el archivo listo",
+        "needs-help": "Necesito ayuda con el archivo",
+        "idea": "Solo tengo la idea"
+      },
+      "step2": {
+        "name": "Nombre o empresa",
+        "contact": "WhatsApp o email"
+      },
+      "consentBefore": "Acepto que CNC by Woodax Design use estos datos para responder mi solicitud.",
+      "consentLink": "Ver aviso de privacidad.",
+      "next": "Continuar",
+      "back": "Atrás",
+      "submit": "Solicitar cotización",
+      "success": {
+        "title": "Solicitud recibida",
+        "quantityLegend": "¿Cuántas piezas necesitas?",
+        "quantity": {
+          "1-10": "1–10",
+          "11-100": "11–100",
+          "100+": "Más de 100"
+        },
+        "whatsapp": "Continuar por WhatsApp",
+        "detailsSubmit": "Enviar detalles"
+      },
+      "error": {
+        "generic": "No pudimos enviar tu solicitud. Inténtalo de nuevo en un momento."
+      },
+      "errors": {
+        "name": "Escribe tu nombre o el de tu empresa, con al menos 2 caracteres.",
+        "contact": "Escribe un email válido o un WhatsApp de 10 a 15 dígitos.",
+        "consent": "Acepta el aviso para que podamos responderte.",
+        "material": "Elige un material.",
+        "projectState": "Elige en qué punto está tu proyecto.",
+        "details": "Elige una cantidad."
+      },
+      "errorPrefix": "Error:",
+      "close": "Cerrar",
+      "whatsapp": "WhatsApp",
+      "whatsappPrefer": "¿Prefieres WhatsApp? Escríbenos",
+      "whatsappAria": "Escribir por WhatsApp",
+      "mobileBar": "Cotizar mi proyecto"
+    },
+    "footer": {
+      "designLink": "Muebles y espacios a medida → Woodax Design",
+      "privacy": "Aviso de privacidad",
+      "description": "Servicio de corte CNC y maquila para talleres, rotulistas e industria.",
+      "sibling": "Muebles y espacios a medida",
+      "email": "cnc@woodax.design",
+      "copyright": "© {year} CNC by Woodax Design"
+    },
+    "capabilities": {
+      "title": "Lo que puede hacer la máquina",
+      "area": "Área de trabajo",
+      "areaValue": "{width} × {length} mm",
+      "thicknessValue": "{min}–{max} mm",
+      "note": "¿Tu proyecto no encaja? Escríbenos y lo revisamos."
+    },
+    "faq": {
+      "title": "Preguntas frecuentes"
+    }
   },
   "contact": {
     "title": "Contacto"
   },
+  "privacy": {
+    "title": "Aviso de privacidad",
+    "intro": "Cuando envías el formulario, Woodax Design y CNC by Woodax Design reciben tu nombre, tu WhatsApp o email, y los datos del proyecto que nos compartes.",
+    "purpose": "Usamos esa información únicamente para responder tu solicitud y dar seguimiento al proyecto.",
+    "sale": "No vendemos estos datos ni los compartimos con terceros para publicidad.",
+    "analytics": "Usamos Google Analytics para medir, de forma agregada, cuántas personas visitan el sitio y qué páginas abren. No enviamos a Google Analytics el nombre, el email, el teléfono ni el texto del formulario. Puedes desactivar esta medición con el <optOut>complemento de inhabilitación de Google Analytics</optOut>.",
+    "contact": "Si quieres preguntar por tu información, escribe a {email}."
+  },
   "metadata": {
     "design": {
-      "title": "Woodax Design",
-      "description": "Muebles y espacios a medida. Pronto, el nuevo sitio de Woodax Design."
+      "title": "Woodax Design · Carpintería a medida en Querétaro",
+      "description": "Cocinas, clósets, piezas únicas y mobiliario para negocios, diseñados contigo y hechos a la medida de tu espacio."
     },
     "cnc": {
-      "title": "CNC by Woodax Design",
-      "description": "Producción CNC de precisión. Pronto, el nuevo sitio de CNC by Woodax Design."
+      "title": "Corte CNC en Querétaro | CNC by Woodax Design",
+      "description": "Maquila y servicio de corte CNC en madera, acrílico y aluminio para carpinterías, talleres, empresas y rotulistas en Querétaro. Cotiza tu proyecto."
     }
   }
 }

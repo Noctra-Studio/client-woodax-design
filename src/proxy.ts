@@ -1,8 +1,17 @@
 import createMiddleware from "next-intl/middleware";
 import { NextResponse, type NextRequest } from "next/server";
 import { routing, type Locale } from "@/i18n/routing";
-import { clientEnv } from "@/lib/env";
-import { getSite } from "@/lib/site";
+import {
+  allowsPreviewSiteOverride,
+  cncRedirectUrl,
+  hostFromHeaders,
+  parseSite,
+  PREVIEW_SITE_COOKIE,
+  PREVIEW_SITE_HEADER,
+  publicOrigin,
+  resolveSite,
+  type Site,
+} from "@/lib/site";
 
 const handleI18nRouting = createMiddleware(routing);
 
@@ -11,32 +20,53 @@ const cncPathPattern = new RegExp(
 );
 
 export function proxy(request: NextRequest) {
-  const host =
-    request.headers.get("x-forwarded-host") ??
-    request.headers.get("host") ??
-    "";
+  const host = hostFromHeaders(request.headers);
+  const requestedSite = parseSite(request.nextUrl.searchParams.get("site"));
+  const storedSite = parseSite(request.cookies.get(PREVIEW_SITE_COOKIE)?.value);
+  const previewAllowed = allowsPreviewSiteOverride(host);
+  const previewSite = previewAllowed ? (requestedSite ?? storedSite) : null;
 
-  if (getSite(host) === "cnc") {
-    return rewriteCnc(request, handleI18nRouting(request));
+  request.headers.delete(PREVIEW_SITE_HEADER);
+  if (previewSite) {
+    request.headers.set(PREVIEW_SITE_HEADER, previewSite);
   }
 
-  const cncRedirect = redirectDesignCncPath(request);
-  if (cncRedirect) return cncRedirect;
+  const response = responseForSite(request, resolveSite(host, previewSite));
 
-  return handleI18nRouting(request);
+  if (previewAllowed && requestedSite) {
+    response.cookies.set(PREVIEW_SITE_COOKIE, requestedSite, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "lax",
+      secure: true,
+    });
+  }
+
+  return response;
 }
 
 export const config = {
-  matcher: "/((?!api|_next|_vercel|.*\\..*).*)",
+  matcher: "/((?!api|_next|icon|apple-icon|.*\\..*).*)",
 };
+
+function responseForSite(request: NextRequest, site: Site) {
+  if (site === "cnc") {
+    return rewriteCnc(request, handleI18nRouting(request));
+  }
+
+  return redirectDesignCncPath(request) ?? handleI18nRouting(request);
+}
 
 function redirectDesignCncPath(request: NextRequest) {
   const destinationPath = cncPublicPath(request.nextUrl.pathname);
   if (!destinationPath) return null;
 
-  const destination = new URL(destinationPath, clientEnv.NEXT_PUBLIC_CNC_URL);
-  destination.search = request.nextUrl.search;
-  return NextResponse.redirect(destination, 301);
+  const host = hostFromHeaders(request.headers);
+  const origin = publicOrigin(request.headers) || request.nextUrl.origin;
+  return NextResponse.redirect(
+    cncRedirectUrl(host, origin, destinationPath, request.nextUrl.search),
+    301,
+  );
 }
 
 function cncPublicPath(pathname: string): string | null {

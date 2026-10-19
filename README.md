@@ -14,6 +14,8 @@ Two focused, bilingual coming-soon pages designed to attract attention, qualify 
 
 These pages are intentionally not miniature landing pages. Each one presents a single idea, asks the visitor to make one meaningful choice, and turns that choice into the first step of a real project.
 
+> **Scope:** The progressive form, micro-decisions, and qualification questions described below belong to the final websites, not to the current coming-soon pages. The coming-soon phase ships a single contact form. Pending work for the final websites is tracked in [`BACKLOG.md`](./BACKLOG.md).
+
 ## Project Goals
 
 - Create interest without revealing the full future website.
@@ -96,10 +98,9 @@ The visual direction is industrial and kinetic: a dark or technical neutral back
 
 The visitor first identifies the material:
 
-- MDF
-- Plywood
-- Solid wood
-- Other material
+- Wood (MDF, plywood, solid wood)
+- Acrylic
+- Thin aluminum
 
 The next micro-decision determines the state of the project:
 
@@ -199,6 +200,6 @@ The priority is not collecting the largest possible number of email addresses. I
 
 ## Technology
 
-The project is built with Next.js, React, TypeScript, Tailwind CSS, Framer Motion, `next-intl`, Supabase, and Resend.
+The project is built with Next.js, React, TypeScript, Tailwind CSS v4, next-intl, motion, Resend + React Email, zod, and Vercel.
 
 The bilingual coming-soon pages should reuse the existing localization and lead-management infrastructure while keeping the two visual experiences independent.

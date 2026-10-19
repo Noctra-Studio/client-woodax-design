@@ -5,25 +5,339 @@
     "notFoundDescription": "The page you are looking for does not exist.",
     "backHome": "Back to home"
   },
+  "nav": {
+    "menu": "Menu",
+    "close": "Close",
+    "design": {
+      "home": "Home",
+      "homeAria": "Woodax Design, go to home",
+      "about": "About",
+      "services": "Services",
+      "clients": "Clients",
+      "projects": "Projects",
+      "process": "Process",
+      "contact": "Contact",
+      "cta": "Tell us about your project"
+    },
+    "cnc": {
+      "how": "Service",
+      "capabilities": "Capabilities",
+      "materials": "Materials",
+      "contact": "Contact",
+      "cta": "Get a quote"
+    },
+    "sibling": {
+      "toCnc": "CNC by Woodax Design",
+      "toDesign": "Woodax Design"
+    },
+    "instagram": "Instagram",
+    "facebook": "Woodax on Facebook",
+    "language": "Language"
+  },
+  "siteFooter": {
+    "navAria": "Navigation",
+    "developedBy": "Developed by",
+    "developedByAria": "Developed by Noctra Studio",
+    "instagramAria": "Woodax on Instagram",
+    "facebookAria": "Woodax on Facebook"
+  },
   "design": {
     "title": "Woodax Design",
-    "headline": "The beginning of a bespoke piece"
+    "meta": {
+      "title": "Woodax Design · Bespoke carpentry in Querétaro",
+      "description": "Kitchens, closets, one-of-a-kind pieces and furniture for businesses, designed with you and made to fit your space."
+    },
+    "skipToContent": "Skip to content",
+    "hero": {
+      "eyebrow": "New site on the way · Open for projects",
+      "headlineLead": "We design and build what your space needs.",
+      "headlineTail": "Piece by piece.",
+      "subhead": "Bespoke carpentry for homes and businesses in Querétaro, from first idea to installation.",
+      "ctaPrimary": "Tell us about your project",
+      "ctaSecondary": "See our work",
+      "skipIntro": "Skip"
+    },
+    "audience": {
+      "title": "For your home and your business",
+      "homeTitle": "Your home",
+      "homeBody": "Kitchens, closets, walk-ins and one-of-a-kind pieces designed around the way you live.",
+      "businessTitle": "Your business",
+      "businessBody": "Furniture for offices, firms, cafés and coworking spaces that shows your brand from the moment people walk in."
+    },
+    "projects": {
+      "title": "Recent projects",
+      "instagramCta": "More projects on Instagram",
+      "tags": {
+        "kitchen": "Kitchen",
+        "closet": "Closet",
+        "custom-piece": "Custom piece",
+        "commercial-space": "Commercial space"
+      }
+    },
+    "process": {
+      "title": "How we work",
+      "step1": "We listen — We get to know your space, take measurements and understand what you need.",
+      "step2": "We design — We present a proposal and refine it with you until it's exactly right.",
+      "step3": "We build and install — We make every piece to measure and deliver it ready to use."
+    },
+    "form": {
+      "title": "Let's start with your space",
+      "step1": {
+        "question": "What would you like to transform?"
+      },
+      "options": {
+        "kitchen": "Kitchen",
+        "closet": "Closet",
+        "custom-piece": "Custom piece",
+        "commercial-space": "Commercial space"
+      },
+      "step2": {
+        "name": "Your name",
+        "contact": "WhatsApp or email",
+        "city": "City (optional)"
+      },
+      "consentBefore": "I agree that Woodax Design may use this information to reply to my request.",
+      "consentLink": "See privacy notice.",
+      "next": "Continue",
+      "back": "Back",
+      "submit": "Send my project",
+      "success": {
+        "title": "We've got your project",
+        "body": "We'll be in touch soon to talk through the details. Want to get a head start? Tell us a bit more:",
+        "stageQuestion": "Where are you at?",
+        "stage": {
+          "idea": "Just an idea",
+          "measurements": "I have measurements",
+          "ready-to-quote": "Ready for a quote"
+        },
+        "timelineQuestion": "When would you like to start?",
+        "timeline": {
+          "now": "Now",
+          "1-3-months": "In 1–3 months",
+          "later": "Later"
+        },
+        "whatsapp": "Continue on WhatsApp",
+        "detailsSubmit": "Send details"
+      },
+      "error": {
+        "generic": "We couldn't send your message. Please try again in a moment."
+      },
+      "errors": {
+        "name": "Enter your name, at least 2 characters.",
+        "contact": "Enter a valid email or a WhatsApp number with 10 to 15 digits.",
+        "consent": "Accept the notice so we can reply.",
+        "projectType": "Choose what you would like to transform.",
+        "city": "City must be between 2 and 60 characters.",
+        "details": "Choose at least one detail."
+      },
+      "errorPrefix": "Error:",
+      "close": "Close",
+      "whatsappAria": "Message us on WhatsApp",
+      "mobileBar": "Tell us about your project"
+    },
+    "footer": {
+      "cncLink": "Need CNC cutting? Meet CNC by Woodax Design",
+      "location": "Querétaro, Mexico",
+      "privacy": "Privacy notice",
+      "description": "Custom carpentry for spaces and one-of-a-kind pieces, in Querétaro.",
+      "sibling": "CNC by Woodax Design",
+      "email": "hello@woodax.design",
+      "copyright": "© {year} Woodax Design"
+    },
+    "homeCta": {
+      "title": "Got a project in mind?",
+      "body": "Tell us what you need and we'll get back to you with next steps."
+    },
+    "services": {
+      "meta": {
+        "title": "Services · Woodax Design",
+        "description": "Kitchens, closets and walk-ins, custom pieces and furniture for businesses in Querétaro, from design to installation."
+      },
+      "title": "What we design and build",
+      "intro": "Every project is designed with you and built to fit your space.",
+      "kitchens": "Kitchens — Designed around how you cook and gather, with storage exactly where you need it.",
+      "closets": "Closets and walk-ins — Storage built around what you keep, making the most of every inch.",
+      "custom": "Custom pieces — One-of-a-kind furniture for a corner, a wall or an idea you can't find in stores.",
+      "commercial": "Commercial spaces — Furniture for offices, firms, cafés and coworking spaces that reflects your brand.",
+      "cta": "Tell us about your project"
+    },
+    "contact": {
+      "meta": {
+        "title": "Contact · Woodax Design",
+        "description": "Tell us about your bespoke carpentry project in Querétaro and we'll reach out to talk through the details."
+      },
+      "title": "Let's talk about your space",
+      "intro": "Tell us what you have in mind and we'll reach out to talk through the details.",
+      "channels": {
+        "title": "Other ways to reach us",
+        "email": "Email",
+        "whatsapp": "WhatsApp",
+        "whatsappAria": "Message us on WhatsApp",
+        "social": "Follow us"
+      }
+    }
   },
   "cnc": {
     "title": "CNC by Woodax Design",
-    "headline": "Your project has already started"
+    "skipToContent": "Skip to content",
+    "meta": {
+      "title": "CNC Cutting in Querétaro | CNC by Woodax Design",
+      "description": "CNC cutting service and volume production in wood, acrylic and aluminum for workshops, businesses and sign makers in Querétaro. Send your file or idea."
+    },
+    "hero": {
+      "eyebrow": "Capacity available · Now quoting",
+      "headline": "CNC precision, without buying the machine.",
+      "subhead": "CNC cutting service for workshops and businesses in Querétaro: send us your file and we produce your parts, from a single piece to thousands.",
+      "ctaPrimary": "Get a quote",
+      "ctaSecondary": "How it works",
+      "skipIntro": "Skip",
+      "axisX": "X",
+      "axisY": "Y"
+    },
+    "ways": {
+      "title": "Two ways to work with us",
+      "serviceType": "CNC cutting",
+      "forLabel": "For:",
+      "workshopLabel": "01",
+      "workshopTitle": "CNC cutting for workshops",
+      "workshopBody": "For carpentry and fabrication shops that need CNC cutting. Send us your file and we produce your pieces with precision, delivered in as little as {days, plural, one {# business day} other {# business days}}.",
+      "workshopTag1": "Woodworking shops",
+      "workshopTag2": "Fabrication shops",
+      "volumeLabel": "02",
+      "volumeTitle": "Production for businesses",
+      "volumeServiceTitle": "CNC production for businesses",
+      "volumeBody": "Volume parts for businesses, sign makers and industry: serial components, letters, signage and technical parts in wood, acrylic and aluminum, with consistent cuts across the whole run.",
+      "volumeTag1": "Companies and industry",
+      "volumeTag2": "Sign makers"
+    },
+    "materials": {
+      "title": "Materials",
+      "ideasTitle": "Ideas for what you can make",
+      "nextIdea": "See next idea",
+      "thicknessValue": "{min}–{max} mm",
+      "groups": {
+        "wood": {
+          "example1": "Cabinet or drawer unit",
+          "example2": "Decorative fretwork panel",
+          "example3": "Joinery jig"
+        },
+        "acrylic": {
+          "example1": "Dimensional letter sign",
+          "example2": "Retail display stand",
+          "example3": "Corian countertop or part"
+        },
+        "aluminum": {
+          "example1": "Logo plate",
+          "example2": "Dimensional letter",
+          "example3": "Perforated technical part"
+        }
+      }
+    },
+    "process": {
+      "title": "From file to finished part",
+      "step1": "01 Send us your file or your idea — {formats}, or a sketch with dimensions.",
+      "step1Output": "File or sketch",
+      "step2": "02 We review and quote — We check dimensions, material and thickness, and send you a quote. Reply within {hours} business hours or less.",
+      "step2Output": "Quote",
+      "step3": "03 We cut your parts — We produce them with repeatable precision, from the first part to the last.",
+      "step3Output": "Parts"
+    },
+    "work": {
+      "title": "Recent parts"
+    },
+    "form": {
+      "title": "Tell us what you need to produce",
+      "subtitle": "We'll reply with a quote and next steps.",
+      "stepIndicator": "{current} / {total}",
+      "step1": {
+        "label": "Material",
+        "question": "Which material?"
+      },
+      "step1b": {
+        "label": "Your project",
+        "question": "Where is your project at?"
+      },
+      "stateOptions": {
+        "file-ready": "My file is ready",
+        "needs-help": "I need help with the file",
+        "idea": "I only have the idea"
+      },
+      "step2": {
+        "name": "Name or company",
+        "contact": "WhatsApp or email"
+      },
+      "consentBefore": "I agree that CNC by Woodax Design may use this information to reply to my request.",
+      "consentLink": "See privacy notice.",
+      "next": "Continue",
+      "back": "Back",
+      "submit": "Request a quote",
+      "success": {
+        "title": "Request received",
+        "quantityLegend": "How many parts do you need?",
+        "quantity": {
+          "1-10": "1–10",
+          "11-100": "11–100",
+          "100+": "100+"
+        },
+        "whatsapp": "Continue on WhatsApp",
+        "detailsSubmit": "Send details"
+      },
+      "error": {
+        "generic": "We couldn't send your request. Please try again in a moment."
+      },
+      "errors": {
+        "name": "Enter your name or company, at least 2 characters.",
+        "contact": "Enter a valid email or a WhatsApp number with 10 to 15 digits.",
+        "consent": "Accept the notice so we can reply.",
+        "material": "Choose a material.",
+        "projectState": "Choose where your project is at.",
+        "details": "Choose a quantity."
+      },
+      "errorPrefix": "Error:",
+      "close": "Close",
+      "whatsapp": "WhatsApp",
+      "whatsappPrefer": "Prefer WhatsApp? Message us",
+      "whatsappAria": "Message us on WhatsApp",
+      "mobileBar": "Get a quote"
+    },
+    "footer": {
+      "designLink": "Bespoke furniture and spaces → Woodax Design",
+      "privacy": "Privacy notice",
+      "description": "CNC cutting service for workshops, sign makers and industry.",
+      "sibling": "Custom furniture and spaces",
+      "email": "cnc@woodax.design",
+      "copyright": "© {year} CNC by Woodax Design"
+    },
+    "capabilities": {
+      "title": "What the machine can do",
+      "area": "Work area",
+      "areaValue": "{width} × {length} mm",
+      "thicknessValue": "{min}–{max} mm",
+      "note": "Project doesn't fit? Write to us and we'll take a look."
+    },
+    "faq": {
+      "title": "Frequently asked questions"
+    }
   },
   "contact": {
     "title": "Contact"
   },
+  "privacy": {
+    "title": "Privacy notice",
+    "intro": "When you send the form, Woodax Design and CNC by Woodax Design receive your name, your WhatsApp or email, and the project details you share.",
+    "purpose": "We use that information only to reply to your request and follow up on the project.",
+    "sale": "We do not sell this information or share it with third parties for advertising.",
+    "analytics": "We use Google Analytics to measure, in aggregate, how many people visit the site and which pages they open. We do not send your name, email, phone, or form text to Google Analytics. You can turn this measurement off with the <optOut>Google Analytics Opt-out Browser Add-on</optOut>.",
+    "contact": "To ask about your information, write to {email}."
+  },
   "metadata": {
     "design": {
-      "title": "Woodax Design",
-      "description": "Custom furniture and made-to-measure spaces. The new Woodax Design site is on its way."
+      "title": "Woodax Design · Bespoke carpentry in Querétaro",
+      "description": "Kitchens, closets, one-of-a-kind pieces and furniture for businesses, designed with you and made to fit your space."
     },
     "cnc": {
-      "title": "CNC by Woodax Design",
-      "description": "Precision CNC production. The new CNC by Woodax Design site is on its way."
+      "title": "CNC Cutting in Querétaro | CNC by Woodax Design",
+      "description": "CNC cutting service and volume production in wood, acrylic and aluminum for workshops, businesses and sign makers in Querétaro. Send your file or idea."
     }
   }
 }

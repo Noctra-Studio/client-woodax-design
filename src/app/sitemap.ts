@@ -1,24 +1,38 @@
 import type { MetadataRoute } from "next";
-import { headers } from "next/headers";
-import { clientEnv } from "@/lib/env";
-import { languageAlternates } from "@/lib/seo";
-import { getSite } from "@/lib/site";
+import { designPageKeys, designPages } from "@/content/design-pages";
+import type { Pathname } from "@/i18n/routing";
+import { requestSite } from "@/lib/request-site";
+import { isDesignFull, isIndexingAllowed, languageAlternates } from "@/lib/seo";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  if (clientEnv.NEXT_PUBLIC_APP_ENV !== "production") {
+  if (!isIndexingAllowed()) {
     return [];
   }
 
-  const headerStore = await headers();
-  const host =
-    headerStore.get("x-forwarded-host") ?? headerStore.get("host") ?? "";
-  const site = getSite(host);
-  const languages = languageAlternates(site);
+  const site = await requestSite();
 
-  return [
-    {
-      url: languages["x-default"],
-      alternates: { languages },
-    },
-  ];
+  if (site === "design") {
+    if (!isDesignFull()) {
+      return [...sitemapEntries(site, "/"), ...sitemapEntries(site, "/privacy")];
+    }
+
+    return designPageKeys
+      .filter((key) => designPages[key].enabled)
+      .flatMap((key) => sitemapEntries(site, designPages[key].href))
+      .concat(sitemapEntries(site, "/privacy"));
+  }
+
+  return [...sitemapEntries(site, "/"), ...sitemapEntries(site, "/privacy")];
+}
+
+function sitemapEntries(
+  site: "design" | "cnc",
+  href: Pathname,
+): MetadataRoute.Sitemap {
+  const languages = languageAlternates(site, href);
+
+  return [languages["es-MX"], languages.en].map((url) => ({
+    url,
+    alternates: { languages },
+  }));
 }

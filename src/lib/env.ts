@@ -21,6 +21,22 @@ function emptyAsUndefined(value: unknown): unknown {
   return trimmed === "" ? undefined : trimmed;
 }
 
+const whatsappNumberPattern = /^52\d{10,11}$/;
+
+function readWhatsappNumber(value: unknown): string | undefined {
+  const trimmed = emptyAsUndefined(value);
+  if (typeof trimmed !== "string") return undefined;
+  if (whatsappNumberPattern.test(trimmed)) return trimmed;
+
+  if (typeof window === "undefined") {
+    console.warn(
+      "NEXT_PUBLIC_WHATSAPP_NUMBER is invalid and will be ignored. Expected 12–13 digits starting with 52.",
+    );
+  }
+
+  return undefined;
+}
+
 function required(invalid: string) {
   return (issue: { input?: unknown }) =>
     issue.input === undefined ? "Required" : invalid;
@@ -73,6 +89,30 @@ const clientSchema = defineClientSchema({
       error: required("Expected development, staging, or production"),
     }),
   ),
+  NEXT_PUBLIC_DESIGN_MODE: z.preprocess(
+    emptyAsUndefined,
+    z
+      .enum(["coming-soon", "full"], {
+        error: "Expected coming-soon or full",
+      })
+      .default("coming-soon"),
+  ),
+  NEXT_PUBLIC_ALLOW_INDEXING: z.preprocess(
+    emptyAsUndefined,
+    z
+      .enum(["true", "false"], {
+        error: "Expected true or false",
+      })
+      .default("false"),
+  ),
+  // Optional. The GA4 script loads only when this is set and APP_ENV is production.
+  NEXT_PUBLIC_GA_ID: z.preprocess(
+    emptyAsUndefined,
+    z
+      .string()
+      .regex(/^G-[A-Za-z0-9]+$/, "Expected a GA4 measurement ID (G-XXXXXXXX)")
+      .optional(),
+  ),
   NEXT_PUBLIC_DESIGN_URL: z.preprocess(
     emptyAsUndefined,
     z.url({ error: required("Must be a valid URL") }),
@@ -81,16 +121,10 @@ const clientSchema = defineClientSchema({
     emptyAsUndefined,
     z.url({ error: required("Must be a valid URL") }),
   ),
-  // Optional until the client confirms the number; WhatsApp CTAs stay hidden without it.
+  // Optional. 12–13 digits starting with 52. Invalid values are ignored so the build still succeeds.
   NEXT_PUBLIC_WHATSAPP_NUMBER: z.preprocess(
-    emptyAsUndefined,
-    z
-      .string()
-      .regex(
-        /^\d{8,15}$/,
-        "International format without + or spaces, for example 5214421234567",
-      )
-      .optional(),
+    readWhatsappNumber,
+    z.string().optional(),
   ),
 });
 
@@ -103,6 +137,10 @@ const serverSchema = defineServerSchema({
     emptyAsUndefined,
     z.email({ error: required("Must be a valid email address") }),
   ),
+  CONTACT_TO_EMAIL_CNC: z.preprocess(
+    emptyAsUndefined,
+    z.email({ error: required("Must be a valid email address") }),
+  ),
   CONTACT_FROM_EMAIL: contactFromEmail,
 });
 
@@ -112,6 +150,9 @@ type ServerEnv = z.infer<typeof serverSchema>;
 function readClientInput(): { [K in keyof ClientEnv]: string | undefined } {
   return {
     NEXT_PUBLIC_APP_ENV: process.env.NEXT_PUBLIC_APP_ENV,
+    NEXT_PUBLIC_DESIGN_MODE: process.env.NEXT_PUBLIC_DESIGN_MODE,
+    NEXT_PUBLIC_ALLOW_INDEXING: process.env.NEXT_PUBLIC_ALLOW_INDEXING,
+    NEXT_PUBLIC_GA_ID: process.env.NEXT_PUBLIC_GA_ID,
     NEXT_PUBLIC_DESIGN_URL: process.env.NEXT_PUBLIC_DESIGN_URL,
     NEXT_PUBLIC_CNC_URL: process.env.NEXT_PUBLIC_CNC_URL,
     NEXT_PUBLIC_WHATSAPP_NUMBER: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER,
@@ -122,6 +163,7 @@ function readServerInput(): { [K in keyof ServerEnv]: string | undefined } {
   return {
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     CONTACT_TO_EMAIL: process.env.CONTACT_TO_EMAIL,
+    CONTACT_TO_EMAIL_CNC: process.env.CONTACT_TO_EMAIL_CNC,
     CONTACT_FROM_EMAIL: process.env.CONTACT_FROM_EMAIL,
   };
 }

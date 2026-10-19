@@ -1,26 +1,902 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant pointer-fine (@media (pointer: fine));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-quicksand), ui-sans-serif, system-ui, sans-serif;
+  --font-serif:
+    var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme {
+  --color-woodax-green: #8baf64;
+  --color-woodax-lime: #a7cb5f;
+  --color-woodax-charcoal: #483d3c;
+  --color-woodax-cream: #e5e1d1;
+  --color-woodax-paper: #f3f1ea;
+  --color-woodax-line: #d6d1be;
+
+  --color-cnc-bg: #16171a;
+  --color-cnc-surface: #1f2125;
+  --color-cnc-line: #2e3136;
+  --color-cnc-muted: #9a9fa6;
+  --color-cnc-text: #ecedee;
+  --color-cnc-white: #ffffff;
+
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-card: var(--radius-md);
+  --radius-media: 28px;
+  --radius-control: var(--radius-sm);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --duration-press: 120ms;
+  --duration-ui: 240ms;
+  --duration-reveal: 700ms;
+  --duration-intro: 1800ms;
+}
+
+[data-site="cnc"] {
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 4px;
+  --radius-card: var(--radius-sm);
+  --radius-control: var(--radius-sm);
+
+  /* Material illustration tokens (low saturation, ≥3:1 base luminance vs cnc-surface) */
+  --cnc-mat-shadow: rgb(0 0 0 / 0.68);
+  --cnc-mat-pocket: rgb(22 23 26 / 0.52);
+
+  /* 01 · Wood, MDF, melamine, plywood */
+  --cnc-mat-wood-hi: #b8a58b;
+  --cnc-mat-wood-base: #a28c71;
+  --cnc-mat-wood-lo: #86735c;
+  --cnc-mat-wood-grain: rgb(60 45 30 / 0.25);
+  --cnc-mat-wood-edge: #cbbba2;
+  --cnc-mat-mdf-edge: #a8977d;
+
+  /* 02 · Acrylic (translucent) & Corian (matte white) */
+  --cnc-mat-acrylic-fill: rgb(206 218 230 / 0.35);
+  --cnc-mat-acrylic-layer: rgb(222 232 242 / 0.34);
+  --cnc-mat-acrylic-canto: rgb(168 186 204 / 0.32);
+  --cnc-mat-acrylic-sheen: rgb(255 255 255 / 0.26);
+  --cnc-mat-acrylic-edge: rgb(236 242 248 / 0.72);
+
+  --cnc-mat-corian-hi: #d8d9dd;
+  --cnc-mat-corian-base: #c6c8cd;
+  --cnc-mat-corian-basin: #aeb1b8;
+  --cnc-mat-corian-groove: rgb(70 74 82 / 0.3);
+  --cnc-mat-corian-edge: #e6e7eb;
+
+  /* 03 · Brushed aluminum */
+  --cnc-mat-alu-hi: #a7adb5;
+  --cnc-mat-alu-mid: #8a9099;
+  --cnc-mat-alu-lo: #6d737c;
+  --cnc-mat-alu-brush: rgb(255 255 255 / 0.1);
+  --cnc-mat-alu-highlight: rgb(255 255 255 / 0.45);
+  --cnc-mat-alu-engraved: rgb(30 33 38 / 0.48);
+  --cnc-mat-alu-edge: #c4cad2;
+}
+
+html {
+  scroll-padding-top: 5.5rem;
+}
+
+/* Scrolled/mobile pill: top inset + h-14 bar + 16px. Sections use this alone. */
+html:has(body[data-site="cnc"]) {
+  --nav-offset: calc(max(0.75rem, env(safe-area-inset-top)) + 3.5rem + 1rem);
+  scroll-padding-top: var(--nav-offset);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+body[data-site="design"] {
+  background-color: var(--color-woodax-paper);
+  color: var(--color-woodax-charcoal);
+  color-scheme: light;
+  font-weight: 500;
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-card: var(--radius-md);
+  --radius-media: 28px;
+  --radius-control: var(--radius-sm);
+  --nav-sheet-bg: var(--color-woodax-paper);
+  --nav-sheet-fg: var(--color-woodax-charcoal);
+  --nav-sheet-border: var(--color-woodax-line);
+  --nav-sheet-overlay: rgb(72 61 60 / 0.45);
+}
+
+body[data-site="design"] .font-serif {
+  font-variation-settings: "SOFT" 50;
+  letter-spacing: -0.01em;
+}
+
+body[data-site="cnc"] {
+  background-color: var(--color-cnc-bg);
+  color: var(--color-cnc-text);
+  color-scheme: dark;
+  --nav-sheet-bg: var(--color-cnc-surface);
+  --nav-sheet-fg: var(--color-cnc-text);
+  --nav-sheet-border: var(--color-cnc-line);
+  --nav-sheet-overlay: rgb(0 0 0 / 0.62);
+}
+
+@keyframes lead-draw-check {
+  from {
+    stroke-dashoffset: 24;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes lead-card-settle {
+  from {
+    transform: scale(0.98);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.lead-check-draw {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 0;
+  animation: lead-draw-check var(--duration-ui) var(--ease-out) forwards;
+}
+
+.lead-card-settle {
+  animation: lead-card-settle var(--duration-ui) var(--ease-out);
+}
+
+@media (min-width: 768px) {
+  .lead-sheet {
+    transform: none !important;
+  }
+}
+
+@keyframes arc-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.arc-motif[data-arcs="wait"] path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.arc-motif[data-arcs="draw"] path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: arc-draw 1.2s var(--ease-out) forwards;
+}
+
+.design-reveal[data-reveal="hidden"] {
+  transform: translateY(16px);
+  opacity: 0;
+}
+
+.design-reveal[data-reveal="shown"] {
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    transform var(--duration-reveal) var(--ease-out),
+    opacity var(--duration-reveal) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .design-reveal[data-reveal="hidden"],
+  .design-reveal[data-reveal="shown"] {
+    transform: none;
+    opacity: 1;
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lead-check-draw,
+  .lead-card-settle,
+  .arc-motif[data-arcs="draw"] path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+.cnc-hero-grid {
+  background-image:
+    linear-gradient(to right, var(--color-cnc-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-cnc-line) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(ellipse at center, #000 32%, transparent 78%);
+}
+
+.cnc-hero-grid[data-over-media="true"] {
+  opacity: 0.6;
+}
+
+@keyframes cnc-grid-draw {
+  from {
+    clip-path: inset(0 100% 100% 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+
+html[data-cnc-intro="play"] .cnc-hero-grid {
+  animation: cnc-grid-draw 600ms var(--ease-out) both;
+}
+
+@keyframes cnc-stroke-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.cnc-logo-stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+html[data-cnc-intro="play"] .cnc-logo-stroke {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: cnc-stroke-draw 900ms var(--ease-out) forwards;
+}
+
+.cnc-plotter[data-plot="hidden"] {
+  clip-path: inset(0 100% 0 0);
+}
+
+.cnc-plotter[data-plot="shown"] {
+  clip-path: inset(0);
+  transition: clip-path var(--duration-reveal) var(--ease-out);
+}
+
+.cnc-capabilities-mask-desktop {
+  -webkit-mask-image:
+    linear-gradient(
+      to right,
+      transparent 0%,
+      #000 35%,
+      #000 88%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      #000 12%,
+      #000 88%,
+      transparent 100%
+    );
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(
+      to right,
+      transparent 0%,
+      #000 35%,
+      #000 88%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      #000 12%,
+      #000 88%,
+      transparent 100%
+    );
+  mask-composite: intersect;
+}
+
+.cnc-capabilities-mask-mobile {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 12%,
+    #000 58%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 12%,
+    #000 58%,
+    transparent 100%
+  );
+}
+
+.cnc-track {
+  transform-origin: left center;
+}
+
+.cnc-track-y {
+  transform-origin: center top;
+}
+
+.cnc-process-rail {
+  top: var(--process-y1);
+  left: var(--process-x1);
+  width: calc(var(--process-x3) - var(--process-x1));
+}
+
+.cnc-process-rail-y {
+  top: var(--process-y1);
+  left: var(--process-gutter);
+  height: calc(var(--process-y3) - var(--process-y1));
+}
+
+.cnc-track-head-rail,
+.cnc-track-head-rail-y {
+  position: absolute;
+  inset: 0;
+}
+
+.cnc-track-head,
+.cnc-track-head-y {
+  position: absolute;
+  opacity: 0;
+}
+
+.cnc-track-head {
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+
+.cnc-track-head-y {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes cnc-track-head-travel {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes cnc-track-head-y-travel {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+[data-draw="wait"] .cnc-track {
+  transform: scaleX(0);
+}
+
+[data-draw="shown"] .cnc-track {
+  transform: scaleX(1);
+  transition: transform var(--duration-reveal) var(--ease-out);
+}
+
+[data-draw="shown"] .cnc-track-head {
+  opacity: 1;
+}
+
+[data-draw="shown"] .cnc-track-head-rail {
+  animation: cnc-track-head-travel var(--duration-reveal) var(--ease-out)
+    forwards;
+}
+
+[data-draw="wait"] .cnc-track-y {
+  transform: scaleY(0);
+}
+
+[data-draw="shown"] .cnc-track-y {
+  transform: scaleY(1);
+  transition: transform var(--duration-reveal) var(--ease-out);
+}
+
+[data-draw="shown"] .cnc-track-head-y {
+  opacity: 1;
+}
+
+[data-draw="shown"] .cnc-track-head-rail-y {
+  animation: cnc-track-head-y-travel var(--duration-reveal) var(--ease-out)
+    forwards;
+}
+
+[data-draw="wait"] .cnc-step {
+  transform: translateY(16px);
+  opacity: 0;
+}
+
+[data-draw="shown"] .cnc-step {
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    transform var(--duration-reveal) var(--ease-out),
+    opacity var(--duration-reveal) var(--ease-out);
+}
+
+@keyframes cnc-cut-stroke {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes cnc-cut-settle {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.28;
+  }
+}
+
+@keyframes cnc-toolhead-move {
+  0% {
+    offset-distance: 0%;
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes cnc-finish-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cnc-guide-dim {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.25;
+  }
+}
+
+.cnc-cut-bed {
+  background-image:
+    linear-gradient(to right, rgb(46 49 54 / 0.45) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(46 49 54 / 0.45) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.cnc-cut-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.cnc-toolhead {
+  offset-rotate: 0deg;
+  offset-distance: 0%;
+  opacity: 0;
+}
+
+.cnc-finished-layer {
+  opacity: 0;
+}
+
+.cnc-guide-layer {
+  opacity: 1;
+}
+
+[data-cutting="true"] .cnc-cut-path {
+  stroke-dashoffset: 1;
+  animation:
+    cnc-cut-stroke 1400ms var(--ease-out) forwards,
+    cnc-cut-settle 400ms var(--ease-out) 1400ms forwards;
+}
+
+[data-cutting="true"] .cnc-toolhead {
+  animation: cnc-toolhead-move 1400ms var(--ease-out) forwards;
+}
+
+[data-cutting="true"] .cnc-finished-layer {
+  animation: cnc-finish-fade-in 400ms var(--ease-out) 1400ms forwards;
+}
+
+[data-cutting="true"] .cnc-guide-layer {
+  animation: cnc-guide-dim 400ms var(--ease-out) 1400ms forwards;
+}
+
+[data-in-view="false"] .cnc-cut-path,
+[data-in-view="false"] .cnc-toolhead,
+[data-in-view="false"] .cnc-finished-layer,
+[data-in-view="false"] .cnc-guide-layer {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-cnc-intro="play"] .cnc-hero-grid,
+  html[data-cnc-intro="play"] .cnc-logo-stroke {
+    animation: none;
+    clip-path: none;
+    stroke-dashoffset: 0;
+  }
+
+  .cnc-cut-path,
+  [data-cutting="true"] .cnc-cut-path {
+    animation: none;
+    stroke-dashoffset: 0;
+    opacity: 0.28;
+  }
+
+  .cnc-toolhead,
+  [data-cutting="true"] .cnc-toolhead {
+    animation: none;
+    offset-distance: 0%;
+    opacity: 0;
+  }
+
+  .cnc-finished-layer,
+  [data-cutting="true"] .cnc-finished-layer {
+    animation: none;
+    opacity: 1;
+  }
+
+  .cnc-guide-layer,
+  [data-cutting="true"] .cnc-guide-layer {
+    animation: none;
+    opacity: 0.25;
+  }
+
+  [data-draw="wait"] .cnc-track,
+  [data-draw="shown"] .cnc-track,
+  [data-draw="wait"] .cnc-track-y,
+  [data-draw="shown"] .cnc-track-y {
+    transform: none;
+    transition: none;
+  }
+
+  .cnc-track-head,
+  [data-draw="shown"] .cnc-track-head,
+  .cnc-track-head-y,
+  [data-draw="shown"] .cnc-track-head-y,
+  .cnc-track-head-rail,
+  [data-draw="shown"] .cnc-track-head-rail,
+  .cnc-track-head-rail-y,
+  [data-draw="shown"] .cnc-track-head-rail-y {
+    animation: none;
+    opacity: 0;
+  }
+
+  .cnc-plotter[data-plot="hidden"],
+  .cnc-plotter[data-plot="shown"] {
+    clip-path: none;
+    transition: none;
+  }
+
+  [data-draw="wait"] .cnc-step,
+  [data-draw="shown"] .cnc-step {
+    transform: none;
+    opacity: 1;
+    transition: none;
+  }
+}
+
+.nav-sheet-overlay {
+  background-color: var(--nav-sheet-overlay);
+  animation: sheet-fade-in 240ms var(--ease-out);
+  top: calc(3.5rem + max(0.75rem, env(safe-area-inset-top) + 0.5rem));
+}
+
+.nav-sheet-overlay[data-state="closed"] {
+  animation: sheet-fade-out 200ms var(--ease-out);
+}
+
+.nav-sheet-panel {
+  background-color: var(--nav-sheet-bg);
+  color: var(--nav-sheet-fg);
+  border-color: var(--nav-sheet-border);
+}
+
+.nav-sheet-panel[data-state="open"] {
+  animation: sheet-in-right 240ms var(--ease-out);
+}
+
+.nav-sheet-panel[data-state="closed"] {
+  animation: sheet-out-right 200ms var(--ease-out);
+}
+
+@keyframes sheet-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sheet-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes sheet-in-right {
+  from {
+    transform: translate3d(100%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes sheet-out-right {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-sheet-panel[data-state="open"],
+  .nav-sheet-panel[data-state="closed"],
+  .nav-sheet-overlay[data-state="open"],
+  .nav-sheet-overlay[data-state="closed"] {
+    animation-name: sheet-fade-in;
+    animation-duration: 120ms;
+  }
+
+  .nav-sheet-panel[data-state="closed"],
+  .nav-sheet-overlay[data-state="closed"] {
+    animation-name: sheet-fade-out;
+  }
+}
+
+.privacy-dialog-overlay {
+  background-color: var(--nav-sheet-overlay);
+  animation: privacy-dialog-overlay-in 200ms var(--ease-out);
+}
+
+.privacy-dialog-overlay[data-state="closed"] {
+  animation: privacy-dialog-overlay-out 200ms var(--ease-out);
+}
+
+@media (min-width: 768px) {
+  .privacy-dialog-panel[data-state="open"] {
+    animation: privacy-dialog-panel-in-desktop 200ms var(--ease-out);
+  }
+
+  .privacy-dialog-panel[data-state="closed"] {
+    animation: privacy-dialog-panel-out-desktop 200ms var(--ease-out);
+  }
+}
+
+@media (max-width: 767px) {
+  .privacy-dialog-panel[data-state="open"] {
+    animation: privacy-dialog-overlay-in 200ms var(--ease-out);
+  }
+
+  .privacy-dialog-panel[data-state="closed"] {
+    animation: privacy-dialog-overlay-out 200ms var(--ease-out);
+  }
+}
+
+@keyframes privacy-dialog-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes privacy-dialog-overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes privacy-dialog-panel-in-desktop {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes privacy-dialog-panel-out-desktop {
+  from {
+    opacity: 1;
+    scale: 1;
+  }
+  to {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .privacy-dialog-overlay[data-state="open"],
+  .privacy-dialog-overlay[data-state="closed"],
+  .privacy-dialog-panel[data-state="open"],
+  .privacy-dialog-panel[data-state="closed"] {
+    animation: none;
+  }
+}
+
+.site-nav-bar {
+  border: 1px solid transparent;
+  background-color: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  transition:
+    background-color 200ms var(--ease-out),
+    border-color 200ms var(--ease-out),
+    box-shadow 200ms var(--ease-out),
+    backdrop-filter 200ms var(--ease-out),
+    -webkit-backdrop-filter 200ms var(--ease-out);
+}
+
+.site-nav-bar[data-scrolled="true"][data-variant="design"] {
+  background-color: rgb(243 241 234 / 0.72);
+  border-color: rgb(214 209 190 / 0.9);
+  box-shadow: 0 8px 24px -12px rgb(72 61 60 / 0.18);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+}
+
+.site-nav-bar[data-scrolled="true"][data-variant="cnc"] {
+  background-color: rgb(22 23 26 / 0.62);
+  border-color: rgb(46 49 54 / 0.9);
+  box-shadow: 0 8px 24px -12px rgb(0 0 0 / 0.5);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  backdrop-filter: blur(16px) saturate(120%);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .site-nav-bar[data-scrolled="true"][data-variant="design"] {
+    background-color: #f3f1ea;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .site-nav-bar[data-scrolled="true"][data-variant="cnc"] {
+    background-color: #1f2125;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .site-nav-bar[data-scrolled="true"][data-variant="design"] {
+    background-color: #f3f1ea;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .site-nav-bar[data-scrolled="true"][data-variant="cnc"] {
+    background-color: #1f2125;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+.site-nav-collapse {
+  transition: grid-template-columns 320ms var(--ease-out);
+}
+
+.site-nav-label {
+  transition: opacity 120ms var(--ease-out);
+}
+
+.site-nav-label[data-show="true"] {
+  transition-duration: 160ms;
+}
+
+.site-nav-tooltip {
+  opacity: 1;
+  transform: translate(-50%, 8px);
+  transition:
+    opacity 150ms var(--ease-out),
+    transform 150ms var(--ease-out);
+}
+
+@starting-style {
+  .site-nav-tooltip {
+    opacity: 0;
+    transform: translate(-50%, 4px);
+  }
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+.accordion-content {
+  overflow: hidden;
+}
+
+.accordion-content[data-state="open"] {
+  animation: accordion-down var(--duration-ui) var(--ease-out);
+}
+
+.accordion-content[data-state="closed"] {
+  animation: accordion-up var(--duration-ui) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accordion-content[data-state="open"],
+  .accordion-content[data-state="closed"] {
+    animation: none;
+  }
+
+  .site-nav-bar,
+  .site-nav-label[data-show="true"] {
+    transition-duration: 120ms;
+  }
+
+  .site-nav-collapse {
+    transition: none;
+  }
+
+  .site-nav-tooltip {
+    transform: translate(-50%, 8px);
+    transition: opacity 120ms var(--ease-out);
+  }
+
+  @starting-style {
+    .site-nav-tooltip {
+      opacity: 0;
+      transform: translate(-50%, 4px);
+    }
+  }
 }
