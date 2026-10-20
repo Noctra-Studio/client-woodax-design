@@ -2,7 +2,11 @@ import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { designAbout } from "../src/content/design-about";
 import { designClients } from "../src/content/design-clients";
-import { designMedia, designMediaPage } from "../src/content/design-media";
+import {
+  designMedia,
+  designMediaPage,
+  slotIsOptionalEmpty,
+} from "../src/content/design-media";
 import { isDesignRouteEnabled } from "../src/content/design-publish";
 
 function parseEnvValue(raw: string): string {
@@ -27,7 +31,10 @@ function readEnvFile(file: string): Array<[string, string]> {
     if (!trimmed || trimmed.startsWith("#")) continue;
     const eq = trimmed.indexOf("=");
     if (eq <= 0) continue;
-    pairs.push([trimmed.slice(0, eq).trim(), parseEnvValue(trimmed.slice(eq + 1))]);
+    pairs.push([
+      trimmed.slice(0, eq).trim(),
+      parseEnvValue(trimmed.slice(eq + 1)),
+    ]);
   }
   return pairs;
 }
@@ -52,7 +59,10 @@ if (process.env.VERCEL_ENV !== "production") {
 }
 
 const pendingSlots = designMedia.filter(
-  (slot) => slot.src === null && isDesignRouteEnabled(designMediaPage(slot.id)),
+  (slot) =>
+    slot.src === null &&
+    !slotIsOptionalEmpty(slot.id) &&
+    isDesignRouteEnabled(designMediaPage(slot.id)),
 );
 
 console.log(`Slots pendientes: ${pendingSlots.length}`);
@@ -62,7 +72,11 @@ for (const slot of pendingSlots) {
 
 const pendingTexts: string[] = [];
 
-if (isDesignRouteEnabled("about") && designAbout.placeholder && designAbout.story) {
+if (
+  isDesignRouteEnabled("about") &&
+  designAbout.placeholder &&
+  designAbout.story
+) {
   pendingTexts.push(`about.story: ${designAbout.story.es.join(" ")}`);
 }
 
@@ -75,4 +89,8 @@ if (isDesignRouteEnabled("clients")) {
 console.log(`Textos pendientes: ${pendingTexts.length}`);
 for (const line of pendingTexts) {
   console.log(line);
+}
+
+if (pendingSlots.length > 0 || pendingTexts.length > 0) {
+  process.exit(1);
 }

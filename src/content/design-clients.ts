@@ -34,12 +34,9 @@ export const designClients: DesignClient[] = [
 ];
 
 export function isDesignClientsPublished(clients: DesignClient[]): boolean {
-  const named = clients.filter((client) => client.name.trim().length > 0);
-  if (named.length === 0) return false;
-  if (isProductionDeploy()) {
-    return named.some((client) => !client.placeholder);
-  }
-  return true;
+  return clients.some(
+    (client) => client.name.trim().length > 0 && !client.placeholder,
+  );
 }
 
 export function visibleDesignClients(clients: DesignClient[]): DesignClient[] {

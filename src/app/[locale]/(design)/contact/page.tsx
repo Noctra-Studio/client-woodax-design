@@ -9,8 +9,10 @@ import { getLeadCopy } from "@/features/leads/copy";
 import { hasMedia } from "@/content/design-media";
 import { designPages } from "@/content/design-pages";
 import { publishedSocialUrl, siteConfig } from "@/content/site-config";
+import { getPathname } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
-import { localizedMetadata } from "@/lib/seo";
+import { absoluteUrl, localizedMetadata } from "@/lib/seo";
+import { designContactJsonLd } from "@/lib/structured-data";
 import { whatsappHref } from "@/lib/whatsapp";
 
 const contactEmail = siteConfig.designEmail;
@@ -57,13 +59,33 @@ export default async function ContactPage({
   if (!designPages.contact.enabled) notFound();
 
   const t = await getTranslations("design.contact");
-  const footer = await getTranslations("design.footer");
   const nav = await getTranslations("nav");
+  const footer = await getTranslations("design.footer");
   const copy = await getLeadCopy("design");
   const designWhatsappHref = whatsappHref("design", locale);
+  const pageUrl = absoluteUrl(
+    "design",
+    getPathname({ href: "/contact", locale }),
+  );
+  const jsonLd = designContactJsonLd({
+    name: t("meta.title"),
+    description: t("meta.description"),
+    url: pageUrl,
+    breadcrumbs: [
+      {
+        name: nav("design.home"),
+        url: absoluteUrl("design", getPathname({ href: "/", locale })),
+      },
+      { name: nav("design.contact"), url: pageUrl },
+    ],
+  });
 
   return (
     <main className="flex flex-1 flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd }}
+      />
       <section
         aria-labelledby="contact-title"
         className="bg-woodax-bg px-5 pt-28 pb-4 md:px-8 md:pt-32"

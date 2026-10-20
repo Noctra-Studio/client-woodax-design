@@ -8,9 +8,11 @@ import { ProcessSection } from "@/components/design/process-section";
 import { Button } from "@/components/ui/button";
 import { hasMedia, type DesignMediaId } from "@/content/design-media";
 import { designPages } from "@/content/design-pages";
+import { getPathname } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { requestCncHomeUrl } from "@/lib/request-site";
-import { localizedMetadata } from "@/lib/seo";
+import { absoluteUrl, localizedMetadata } from "@/lib/seo";
+import { designServicesJsonLd } from "@/lib/structured-data";
 import { cn } from "@/lib/utils";
 
 const serviceKeys = ["kitchens", "closets", "custom", "commercial"] as const;
@@ -64,11 +66,40 @@ export default async function ServicesPage({
   if (!designPages.services.enabled) notFound();
 
   const t = await getTranslations("design.services");
+  const nav = await getTranslations("nav.design");
   const footer = await getTranslations("design.footer");
   const cncUrl = await requestCncHomeUrl(locale);
+  const pageUrl = absoluteUrl(
+    "design",
+    getPathname({ href: "/services", locale }),
+  );
+  const jsonLd = designServicesJsonLd({
+    pageUrl,
+    services: serviceKeys.map((key) => {
+      const value = t(key);
+      const mark = " — ";
+      const index = value.indexOf(mark);
+      return {
+        id: key,
+        name: index === -1 ? value : value.slice(0, index),
+        description: index === -1 ? value : value.slice(index + mark.length),
+      };
+    }),
+    breadcrumbs: [
+      {
+        name: nav("home"),
+        url: absoluteUrl("design", getPathname({ href: "/", locale })),
+      },
+      { name: nav("services"), url: pageUrl },
+    ],
+  });
 
   return (
     <main className="flex flex-1 flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd }}
+      />
       <section
         aria-labelledby="services-title"
         className="bg-woodax-bg px-5 pt-28 pb-[var(--home-section-y)] md:px-8 md:pt-32"

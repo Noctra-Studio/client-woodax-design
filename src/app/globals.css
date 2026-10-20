@@ -276,7 +276,27 @@ body[data-site="cnc"] {
   }
 }
 
+@keyframes design-route-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+[data-route-enter] {
+  animation: design-route-enter var(--duration-ui) var(--ease-out);
+}
+
 @media (prefers-reduced-motion: reduce) {
+  [data-route-enter] {
+    animation: none;
+  }
+
   .design-reveal[data-reveal="hidden"],
   .design-reveal[data-reveal="shown"],
   .design-stagger[data-reveal="hidden"] > *,

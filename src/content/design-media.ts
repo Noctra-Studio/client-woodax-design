@@ -322,6 +322,15 @@ export function slotWillRender(slot: DesignMediaSlot): boolean {
   return !isProductionDeploy();
 }
 
+/** Empty slots the published page omits, so they are not launch blockers. */
+export function slotIsOptionalEmpty(id: DesignMediaId): boolean {
+  return (
+    id === "about-portrait" ||
+    id === "about-workshop-4" ||
+    id.startsWith("clients-logo-")
+  );
+}
+
 export function hasMedia(id: DesignMediaId): boolean {
   return slotWillRender(getDesignMedia(id));
 }

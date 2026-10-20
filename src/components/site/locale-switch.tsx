@@ -4,6 +4,7 @@ import { Suspense, useLayoutEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import { markLocaleSwitch } from "@/lib/route-transition";
 import { cn } from "@/lib/utils";
 
 const locales = ["es", "en"] as const;
@@ -36,13 +37,7 @@ export function LocaleSlot({
 
 function LocaleFallback({ variant }: { variant: Variant }) {
   return (
-    <div
-      aria-hidden="true"
-      className={cn(
-        "h-11 w-[5.5rem]",
-        "rounded-sm",
-      )}
-    />
+    <div aria-hidden="true" className={cn("h-11 w-[5.5rem]", "rounded-sm")} />
   );
 }
 
@@ -94,6 +89,7 @@ function LocaleSwitch({
 
   function selectLocale(code: (typeof locales)[number]) {
     if (code === locale) return;
+    markLocaleSwitch();
     try {
       sessionStorage.setItem(
         LOCALE_SCROLL_KEY,

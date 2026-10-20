@@ -55,14 +55,26 @@ export default async function AboutPage({
   if (!designPages.about.enabled) notFound();
 
   const t = await getTranslations("design.about");
+  const nav = await getTranslations("nav.design");
   const story = designAbout.story?.[locale] ?? [];
   const audience = designAbout.audience[locale];
   const workshop = visibleSlots("about-workshop-");
   const showPortrait = hasMedia("about-portrait");
+  const pageUrl = absoluteUrl(
+    "design",
+    getPathname({ href: "/about", locale }),
+  );
   const jsonLd = designAboutJsonLd({
     name: t("meta.title"),
     description: t("meta.description"),
-    url: absoluteUrl("design", getPathname({ href: "/about", locale })),
+    url: pageUrl,
+    breadcrumbs: [
+      {
+        name: nav("home"),
+        url: absoluteUrl("design", getPathname({ href: "/", locale })),
+      },
+      { name: nav("about"), url: pageUrl },
+    ],
   });
 
   return (

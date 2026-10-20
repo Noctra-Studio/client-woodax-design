@@ -3,14 +3,13 @@ import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { MediaSlot } from "@/components/design/media-slot";
-import {
-  designClients,
-  visibleDesignClients,
-} from "@/content/design-clients";
+import { designClients, visibleDesignClients } from "@/content/design-clients";
 import { visibleSlots } from "@/content/design-media";
 import { designPages } from "@/content/design-pages";
+import { getPathname } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
-import { localizedMetadata } from "@/lib/seo";
+import { absoluteUrl, localizedMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd } from "@/lib/structured-data";
 
 export async function generateMetadata({
   params,
@@ -40,6 +39,9 @@ export default async function ClientsPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale: requested } = await params;
+  const locale: Locale = hasLocale(routing.locales, requested)
+    ? requested
+    : routing.defaultLocale;
 
   if (hasLocale(routing.locales, requested)) {
     setRequestLocale(requested);
@@ -48,11 +50,27 @@ export default async function ClientsPage({
   if (!designPages.clients.enabled) notFound();
 
   const t = await getTranslations("design.clients");
+  const nav = await getTranslations("nav.design");
   const clients = visibleDesignClients(designClients);
   const logos = visibleSlots("clients-logo-");
+  const pageUrl = absoluteUrl(
+    "design",
+    getPathname({ href: "/clients", locale }),
+  );
+  const jsonLd = breadcrumbJsonLd([
+    {
+      name: nav("home"),
+      url: absoluteUrl("design", getPathname({ href: "/", locale })),
+    },
+    { name: nav("clients"), url: pageUrl },
+  ]);
 
   return (
     <main className="flex flex-1 flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd }}
+      />
       <section
         aria-labelledby="clients-title"
         className="px-5 pt-28 pb-16 md:px-8 md:pt-32 md:pb-24"

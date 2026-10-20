@@ -10,6 +10,7 @@ const immutableAssetHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  ...(process.env.QA_DIST_DIR ? { distDir: process.env.QA_DIST_DIR } : {}),
   headers() {
     const assetRules = [
       {
