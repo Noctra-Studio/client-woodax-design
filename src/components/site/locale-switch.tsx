@@ -15,14 +15,21 @@ export function LocaleSlot({
   variant,
   label,
   size,
+  onChange,
 }: {
   variant: Variant;
   label: string;
   size: "bar" | "menu";
+  onChange?: () => void;
 }) {
   return (
     <Suspense fallback={<LocaleFallback variant={variant} />}>
-      <LocaleSwitch variant={variant} label={label} size={size} />
+      <LocaleSwitch
+        variant={variant}
+        label={label}
+        size={size}
+        onChange={onChange}
+      />
     </Suspense>
   );
 }
@@ -43,10 +50,12 @@ function LocaleSwitch({
   variant,
   label,
   size,
+  onChange,
 }: {
   variant: Variant;
   label: string;
   size: "bar" | "menu";
+  onChange?: () => void;
 }) {
   const locale = useLocale();
   const pathname = usePathname();
@@ -142,7 +151,10 @@ function LocaleSwitch({
             key={code}
             type="button"
             lang={code}
-            onClick={() => selectLocale(code)}
+            onClick={() => {
+              onChange?.();
+              selectLocale(code);
+            }}
             className={cn(
               "inline-flex items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
               variant === "design" ? "font-medium" : "font-normal",

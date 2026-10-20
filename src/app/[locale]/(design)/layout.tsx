@@ -80,6 +80,8 @@ export default async function DesignLayout({
             homeLabel={t("title")}
             logoLabel={nav("design.homeAria")}
             links={links}
+            routeHomeLabel={full ? nav("design.home") : undefined}
+            sheetContactLabel={full ? nav("design.contact") : undefined}
             ctaLabel={nav("design.cta")}
             menuLabel={nav("menu")}
             closeLabel={nav("close")}
