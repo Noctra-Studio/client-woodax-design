@@ -10,8 +10,11 @@ import {
   type DesignMediaSlot,
 } from "@/content/design-media";
 import { designPages } from "@/content/design-pages";
+import { getPathname } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
-import { localizedMetadata } from "@/lib/seo";
+import { absoluteUrl, localizedMetadata } from "@/lib/seo";
+import { designAboutJsonLd } from "@/lib/structured-data";
+import { cn } from "@/lib/utils";
 
 export async function generateMetadata({
   params,
@@ -24,14 +27,13 @@ export async function generateMetadata({
   const locale: Locale = hasLocale(routing.locales, requested)
     ? requested
     : routing.defaultLocale;
-  const t = await getTranslations({ locale, namespace: "design.about" });
-  const lead = designAbout.story?.[locale]?.[0]?.trim();
+  const t = await getTranslations({ locale, namespace: "design.about.meta" });
 
   return localizedMetadata({
     site: "design",
     locale,
-    title: t("meta.title"),
-    description: lead && lead.length > 0 ? lead : t("title"),
+    title: t("title"),
+    description: t("description"),
     href: "/about",
   });
 }
@@ -57,14 +59,29 @@ export default async function AboutPage({
   const audience = designAbout.audience[locale];
   const workshop = visibleSlots("about-workshop-");
   const showPortrait = hasMedia("about-portrait");
+  const jsonLd = designAboutJsonLd({
+    name: t("meta.title"),
+    description: t("meta.description"),
+    url: absoluteUrl("design", getPathname({ href: "/about", locale })),
+  });
 
   return (
     <main className="flex flex-1 flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd }}
+      />
       <section
         aria-labelledby="about-title"
         className="bg-woodax-bg px-5 pt-28 pb-[var(--home-section-y)] md:px-8 md:pt-32"
       >
-        <div className="mx-auto grid w-full max-w-[1200px] items-start gap-12 lg:grid-cols-[minmax(0,60ch)_minmax(16rem,22rem)] lg:justify-between lg:gap-16">
+        <div
+          className={cn(
+            "mx-auto w-full max-w-[1200px]",
+            showPortrait &&
+              "grid items-start gap-12 lg:grid-cols-[minmax(0,60ch)_minmax(16rem,22rem)] lg:justify-between lg:gap-16",
+          )}
+        >
           <div className="max-w-[60ch]">
             <h1
               id="about-title"

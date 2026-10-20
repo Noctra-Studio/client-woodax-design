@@ -357,17 +357,17 @@ Bloqueo de lanzamiento: instagramUrl y facebookUrl no pueden ser "#" en producci
 - (Reutiliza "Así trabajamos" y footer.cncLink en esta página.)
 - cta — ES: Cuéntanos tu proyecto | EN: Tell us about your project
 
-### Nosotros ⚠︎ pendiente aprobación Adrián
+### Nosotros
 
-Preview únicamente. En Production la ruta no existe hasta que Adrián apruebe el texto y haya fotos reales (about-portrait o about-workshop).
+Historia aprobada por Adrián. Con las fotos reales del taller (about-workshop-1..3) la ruta se publica cuando `DESIGN_MODE=full` (nav, sitemap, JSON-LD AboutPage). `about-portrait` sigue vacío y no abre hueco.
 
 - meta.title — ES: Nosotros · Woodax Design | EN: About · Woodax Design
-- meta.description — primer párrafo de story
+- meta.description ⚠︎ — ES: Carpintería a medida desde 2024: piezas de calidad superior para familias, negocios, constructoras y diseñadores de interiores. | EN: Bespoke carpentry since 2024: higher-quality pieces for families, businesses, construction companies and interior designers.
 - title (h1) — ES: Quiénes somos | EN: Who we are
-- story ⚠︎ pendiente aprobación Adrián — ES: Adrián creció rodeado de madera. Originario de Hungría, se involucró en la carpintería desde muy joven, y desde entonces la madera ha sido su oficio. / Woodax Design nace de una idea clara: hacer en Querétaro piezas de una calidad superior a la que ofrece el mercado. / Hoy trabajamos con constructoras, diseñadores de interiores, negocios y familias. Cambia la escala del proyecto; el cuidado en cada pieza es el mismo. | EN: Adrián grew up surrounded by wood. Originally from Hungary, he got into carpentry at a very young age, and wood has been his craft ever since. / Woodax Design was born from a clear idea: to make pieces in Querétaro of a higher quality than the market offers. / Today we work with construction companies, interior designers, businesses and families. The scale of the project changes; the care in every piece stays the same.
-- audience ⚠︎ pendiente aprobación Adrián — ES: Con quién trabajamos | EN: Who we work with
-- audience.chips ⚠︎ pendiente aprobación Adrián — ES: Constructoras · Diseñadores de interiores · Negocios · Familias | EN: Construction companies · Interior designers · Businesses · Families
-- workshop — fotos reales del taller (about-workshop-1..4). Sin foto real el slot es placeholder en Preview y no existe en Production.
+- story — ES: Adrián creció rodeado de madera. Originario de Hungría, se involucró en la carpintería desde muy joven, y desde entonces la madera ha sido su oficio. / Woodax Design nació en 2024 con una idea clara: responder a lo que cada cliente necesita y desea, con piezas de una calidad superior a la que ofrece el mercado. / Hoy trabajamos con constructoras, diseñadores de interiores, negocios y familias. | EN: Adrián grew up surrounded by wood. Originally from Hungary, he got into carpentry at a very young age, and wood has been his craft ever since. / Woodax Design started in 2024 with a clear idea: to meet each client's needs and wishes with pieces of a higher quality than the market offers. / Today we work with construction companies, interior designers, businesses and families.
+- audience — ES: Con quién trabajamos | EN: Who we work with
+- audience.chips — ES: Constructoras · Diseñadores de interiores · Negocios · Familias | EN: Construction companies · Interior designers · Businesses · Families
+- workshop — fotos reales del taller (about-workshop-1..3). about-workshop-4 pendiente. Sin foto real el slot es placeholder en Preview y no existe en Production.
 
 ### Clientes (solo se publica con datos reales y permiso de cada cliente)
 

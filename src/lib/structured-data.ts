@@ -123,6 +123,25 @@ export function designJsonLd({
   return jsonLdScript(data);
 }
 
+export function designAboutJsonLd({
+  name,
+  description,
+  url,
+}: {
+  name: string;
+  description: string;
+  url: string;
+}) {
+  return jsonLdScript({
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name,
+    description,
+    url,
+    about: { "@id": organizationId("design") },
+  });
+}
+
 export function cncJsonLd({
   name,
   description,
