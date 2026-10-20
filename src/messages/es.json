@@ -79,6 +79,10 @@
     "projects": {
       "title": "Proyectos recientes",
       "instagramCta": "Más proyectos en Instagram",
+      "statement": {
+        "title": "Hecho una sola vez.",
+        "body": "Ninguna pieza sale de un catálogo: cada una se diseña y se fabrica para un solo espacio."
+      },
       "tags": {
         "kitchen": "Cocina",
         "closet": "Clóset",

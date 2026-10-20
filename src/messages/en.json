@@ -79,6 +79,10 @@
     "projects": {
       "title": "Recent projects",
       "instagramCta": "More projects on Instagram",
+      "statement": {
+        "title": "Made once.",
+        "body": "No piece comes from a catalog: each one is designed and built for a single space."
+      },
       "tags": {
         "kitchen": "Kitchen",
         "closet": "Closet",

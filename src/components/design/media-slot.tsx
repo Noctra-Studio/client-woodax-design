@@ -93,9 +93,16 @@ export async function MediaSlot({
           : radius === "card" || !slot.src
             ? "rounded-[var(--radius-card)]"
             : "rounded-[var(--radius-media)]",
+        fill ? undefined : "aspect-(--slot-ratio)",
         className,
       )}
-      style={fill ? undefined : { aspectRatio: slot.ratio.replace("/", " / ") }}
+      style={
+        fill
+          ? undefined
+          : ({
+              "--slot-ratio": slot.ratio.replace("/", " / "),
+            } as React.CSSProperties)
+      }
     >
       {slot.src ? (
         <Image

@@ -34,6 +34,8 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - title — ES: Proyectos recientes | EN: Recent projects
 - instagramCta — ES: Más proyectos en Instagram | EN: More projects on Instagram
 - tags — ES: Cocina · Clóset · Pieza a medida · Espacio comercial | EN: Kitchen · Closet · Custom piece · Commercial space
+- home.projects.statement.title ⚠︎ pendiente aprobación Adrián — ES: Hecho una sola vez. | EN: Made once.
+- home.projects.statement.body ⚠︎ pendiente aprobación Adrián — ES: Ninguna pieza sale de un catálogo: cada una se diseña y se fabrica para un solo espacio. | EN: No piece comes from a catalog: each one is designed and built for a single space.
 
 ### Así trabajamos ⚠︎
 

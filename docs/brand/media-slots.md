@@ -13,8 +13,8 @@ El tamaño sale de la proporción × 400 (4/5 → 1600×2000). Un logo 1/1 va a 
 | projects-2             | Inicio / proyectos · clóset            | 4/5   | 1600×2000               | public/images/design/projects-2-v1.jpg             | ✅        |
 | projects-3             | Inicio / proyectos · pieza a medida    | 4/5   | 1600×2000               | public/images/design/projects-3-v1.jpg             | ✅        |
 | projects-4             | Inicio / proyectos · espacio comercial | 4/5   | 1600×2000               | public/images/design/projects-4-v1.jpg             | ✅        |
-| projects-5             | Inicio / proyectos · cocina            | 4/5   | 1600×2000               | public/images/design/projects-5-v1.jpg             | ✅        |
-| projects-6             | Inicio / proyectos · clóset            | 4/5   | 1600×2000               | public/images/design/projects-6-v1.jpg             | ✅        |
+| projects-5             | Inicio / proyectos · clóset            | 4/5   | 1600×2000               | public/images/design/projects-5-v1.jpg             | ✅        |
+| projects-6             | Inicio / proyectos · pieza a medida    | 4/5   | 1600×2000               | public/images/design/projects-6-v1.jpg             | ✅        |
 | services-kitchens      | Servicios / cocinas                    | 4/3   | 1600×1200               | public/images/design/services-kitchens-v1.jpg      | ✅        |
 | services-closets       | Servicios / clósets                    | 4/3   | 1600×1200               | public/images/design/services-closets-v1.jpg       | ✅        |
 | services-custom        | Servicios / piezas a medida            | 4/3   | 1600×1200               | public/images/design/services-custom-v1.jpg        | ✅        |

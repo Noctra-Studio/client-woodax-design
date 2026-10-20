@@ -151,7 +151,7 @@ export const designMedia: readonly DesignMediaSlot[] = [
       es: "Recámara con clóset de celosía de madera",
       en: "Bedroom with a wooden lattice wardrobe",
     },
-    tag: "kitchen",
+    tag: "closet",
   },
   {
     id: "projects-6",
@@ -163,7 +163,7 @@ export const designMedia: readonly DesignMediaSlot[] = [
       es: "Nicho de madera con repisas iluminadas",
       en: "Wooden niche with lit shelves",
     },
-    tag: "closet",
+    tag: "custom-piece",
   },
   {
     id: "services-kitchens",
