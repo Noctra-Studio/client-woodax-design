@@ -123,6 +123,106 @@ export function designJsonLd({
   return jsonLdScript(data);
 }
 
+export type BreadcrumbItem = {
+  name: string;
+  url: string;
+};
+
+export function breadcrumbList(items: readonly BreadcrumbItem[]) {
+  return {
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}
+
+export function breadcrumbJsonLd(items: readonly BreadcrumbItem[]): string {
+  return jsonLdScript({
+    "@context": "https://schema.org",
+    ...breadcrumbList(items),
+  });
+}
+
+function graphJsonLd(nodes: readonly Record<string, unknown>[]): string {
+  return jsonLdScript({
+    "@context": "https://schema.org",
+    "@graph": nodes,
+  });
+}
+
+export function designAboutJsonLd({
+  name,
+  description,
+  url,
+  breadcrumbs,
+}: {
+  name: string;
+  description: string;
+  url: string;
+  breadcrumbs: readonly BreadcrumbItem[];
+}) {
+  return graphJsonLd([
+    {
+      "@type": "AboutPage",
+      name,
+      description,
+      url,
+      about: { "@id": organizationId("design") },
+    },
+    breadcrumbList(breadcrumbs),
+  ]);
+}
+
+export function designServicesJsonLd({
+  pageUrl,
+  services,
+  breadcrumbs,
+}: {
+  pageUrl: string;
+  services: readonly { id: string; name: string; description: string }[];
+  breadcrumbs: readonly BreadcrumbItem[];
+}) {
+  return graphJsonLd([
+    ...services.map((service) => ({
+      "@type": "Service",
+      "@id": `${pageUrl}#${service.id}`,
+      name: service.name,
+      description: service.description,
+      url: `${pageUrl}#${service.id}`,
+      areaServed: "Querétaro",
+      provider: { "@id": organizationId("design") },
+    })),
+    breadcrumbList(breadcrumbs),
+  ]);
+}
+
+export function designContactJsonLd({
+  name,
+  description,
+  url,
+  breadcrumbs,
+}: {
+  name: string;
+  description: string;
+  url: string;
+  breadcrumbs: readonly BreadcrumbItem[];
+}) {
+  return graphJsonLd([
+    {
+      "@type": "ContactPage",
+      name,
+      description,
+      url,
+      about: { "@id": organizationId("design") },
+    },
+    breadcrumbList(breadcrumbs),
+  ]);
+}
+
 export function cncJsonLd({
   name,
   description,

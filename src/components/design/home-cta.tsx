@@ -1,6 +1,7 @@
 import { hasLocale } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
 import { AnalyticsButton } from "@/components/analytics/tracked-link";
+import { Reveal } from "@/components/design/reveal";
 import { routing } from "@/i18n/routing";
 
 export async function HomeCta() {
@@ -12,9 +13,12 @@ export async function HomeCta() {
   return (
     <section
       aria-labelledby="home-cta-title"
-      className="scroll-mt-24 px-5 py-16 md:px-8 md:py-24"
+      className="home-section bg-woodax-sand scroll-mt-24 px-5 md:px-8"
     >
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col items-start gap-5">
+      <Reveal
+        stagger
+        className="mx-auto flex w-full max-w-[1200px] flex-col items-start gap-5"
+      >
         <h2
           id="home-cta-title"
           className="max-w-[16ch] font-serif text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.01em] text-balance"
@@ -35,7 +39,7 @@ export async function HomeCta() {
         >
           {hero("ctaPrimary")}
         </AnalyticsButton>
-      </div>
+      </Reveal>
     </section>
   );
 }

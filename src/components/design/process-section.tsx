@@ -7,25 +7,27 @@ export async function ProcessSection() {
   const t = await getTranslations("design.process");
 
   return (
-    <Reveal>
       <section
         id="proceso"
         aria-labelledby="process-title"
-        className="scroll-mt-24 px-5 py-16 md:px-8 md:py-24 lg:py-40"
+        className="home-section bg-woodax-ink-surface text-woodax-cream scroll-mt-24 px-5 md:px-8"
       >
         <div className="mx-auto w-full max-w-[1200px]">
-          <h2
-            id="process-title"
-            className="max-w-[16ch] font-serif text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.01em] text-balance"
-          >
-            {t("title")}
-          </h2>
+          <Reveal stagger>
+            <h2
+              id="process-title"
+              className="max-w-[16ch] font-serif text-[clamp(1.875rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.01em] text-balance"
+            >
+              {t("title")}
+            </h2>
+          </Reveal>
+          <Reveal>
           <ol className="mt-12 grid gap-12 md:mt-16 md:grid-cols-3 md:gap-10">
             {steps.map((key, index) => {
               const [title, body] = t(key).split(" — ");
               return (
                 <li key={key} className="max-w-[62ch]">
-                  <p className="text-woodax-charcoal/75 font-serif text-[clamp(1.25rem,2vw,1.5rem)] leading-none font-normal tracking-[-0.01em] tabular-nums">
+                  <p className="text-woodax-green font-serif text-[1.5rem] leading-none font-normal tracking-[-0.01em] tabular-nums">
                     {String(index + 1).padStart(2, "0")}
                   </p>
                   <h3 className="mt-4 font-serif text-[clamp(1.25rem,2vw,1.5rem)] font-normal tracking-[-0.01em] text-balance">
@@ -40,8 +42,8 @@ export async function ProcessSection() {
               );
             })}
           </ol>
+          </Reveal>
         </div>
       </section>
-    </Reveal>
   );
 }

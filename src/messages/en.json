@@ -58,6 +58,17 @@
       "ctaSecondary": "See our work",
       "skipIntro": "Skip"
     },
+    "home": {
+      "eyebrow": "Bespoke carpentry · Querétaro",
+      "servicesTeaser": {
+        "title": "What we do",
+        "cta": "See services"
+      }
+    },
+    "statement": {
+      "label": "About us",
+      "body": "Every piece starts with a conversation: <b>how you use your space</b>, what you need to store and <b>how you want it to feel</b>. From there, we design it and <b>build it to measure</b>."
+    },
     "audience": {
       "title": "For your home and your business",
       "homeTitle": "Your home",
@@ -68,6 +79,10 @@
     "projects": {
       "title": "Recent projects",
       "instagramCta": "More projects on Instagram",
+      "statement": {
+        "title": "Made once.",
+        "body": "No piece comes from a catalog: each one is designed and built for a single space."
+      },
       "tags": {
         "kitchen": "Kitchen",
         "closet": "Closet",
@@ -176,6 +191,25 @@
         "whatsappAria": "Message us on WhatsApp",
         "social": "Follow us"
       }
+    },
+    "about": {
+      "meta": {
+        "title": "About · Woodax Design",
+        "description": "Bespoke carpentry since 2024: higher-quality pieces for families, businesses, construction companies and interior designers."
+      },
+      "title": "Who we are",
+      "audience": "Who we work with"
+    },
+    "clients": {
+      "meta": {
+        "title": "Clients · Woodax Design",
+        "description": "Bespoke carpentry projects for homes and businesses in Querétaro."
+      },
+      "title": "Who we've worked with",
+      "intro": "Homes and businesses that trusted us with their space."
+    },
+    "mediaSlot": {
+      "label": "Photo · {id}"
     }
   },
   "cnc": {

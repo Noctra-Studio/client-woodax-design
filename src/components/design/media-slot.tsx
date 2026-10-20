@@ -1,0 +1,150 @@
+import { hasLocale } from "next-intl";
+import { getLocale, getTranslations } from "next-intl/server";
+import Image from "next/image";
+import {
+  formatPixels,
+  getDesignMedia,
+  recommendedPixels,
+  slotWillRender,
+  type DesignMediaId,
+  type DesignMediaRatio,
+} from "@/content/design-media";
+import { routing } from "@/i18n/routing";
+import { cn } from "@/lib/utils";
+
+type MediaSlotProps = {
+  id: DesignMediaId;
+  sizes: string;
+  priority?: boolean;
+  /** Crop a photo into another frame. Placeholders keep the slot ratio. */
+  ratio?: DesignMediaRatio;
+  /** Stretch to a positioned parent. The label still shows the file ratio. */
+  fill?: boolean;
+  /** Full-bleed frames keep the label in the top band, clear of the headline. */
+  labelPosition?: "center" | "top";
+  /** Real photos default to --radius-media. Placeholders stay --radius-card. */
+  radius?: "card" | "media";
+  /** On sand, the placeholder uses the page cream so it stays visible. */
+  surface?: "default" | "sand";
+  className?: string;
+};
+
+function SlotTexture({ patternId }: { patternId: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      className="text-woodax-charcoal/25 pointer-events-none absolute inset-0 h-full w-full"
+    >
+      <defs>
+        <pattern
+          id={patternId}
+          width="180"
+          height="180"
+          patternUnits="userSpaceOnUse"
+        >
+          <path
+            d="M28 156C28 84 84 28 156 28"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+          <path
+            d="M44 172C44 100 100 44 172 44"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill={`url(#${patternId})`} />
+    </svg>
+  );
+}
+
+export async function MediaSlot({
+  id,
+  sizes,
+  priority = false,
+  ratio: frameRatio,
+  fill = false,
+  labelPosition = "center",
+  radius,
+  surface = "default",
+  className,
+}: MediaSlotProps) {
+  const slot = getDesignMedia(id);
+  if (!slotWillRender(slot)) return null;
+
+  const requested = await getLocale();
+  const locale = hasLocale(routing.locales, requested) ? requested : "es";
+  const ratio = frameRatio ?? slot.ratio;
+  const pixels = recommendedPixels(ratio);
+  const t = await getTranslations("design.mediaSlot");
+
+  return (
+    <div
+      className={cn(
+        "relative overflow-hidden",
+        fill ? "absolute inset-0 h-full w-full" : "w-full",
+        slot.src
+          ? undefined
+          : surface === "sand"
+            ? "border-woodax-charcoal/70 bg-woodax-bg border border-dashed"
+            : "border-woodax-charcoal/55 bg-woodax-surface border border-dashed",
+        fill
+          ? undefined
+          : radius === "card" || !slot.src
+            ? "rounded-[var(--radius-card)]"
+            : "rounded-[var(--radius-media)]",
+        fill ? undefined : "aspect-(--slot-ratio)",
+        className,
+      )}
+      style={
+        fill
+          ? undefined
+          : ({
+              "--slot-ratio": ratio.replace("/", " / "),
+            } as React.CSSProperties)
+      }
+    >
+      {slot.src ? (
+        <Image
+          src={slot.src}
+          alt={slot.alt[locale]}
+          fill
+          sizes={sizes}
+          preload={priority || undefined}
+          fetchPriority={priority ? "high" : undefined}
+          decoding={priority ? "sync" : "async"}
+          loading={priority ? undefined : "lazy"}
+          className="object-cover"
+          style={slot.focal ? { objectPosition: slot.focal } : undefined}
+        />
+      ) : (
+        <>
+          <SlotTexture patternId={`arc-${slot.id}`} />
+          <p
+            className={cn(
+              "text-woodax-charcoal relative z-10 flex items-center px-4 text-center text-[15px] leading-snug font-medium",
+              labelPosition === "top"
+                ? "justify-center pt-28"
+                : "h-full flex-col justify-center gap-1",
+            )}
+          >
+            <span className="block max-w-full break-words">
+              {t("label", { id: slot.id })}
+            </span>
+            <span className={labelPosition === "top" ? "ml-2" : "block"}>
+              {slot.ratio}
+            </span>
+            <span className={labelPosition === "top" ? "ml-2" : "block"}>
+              {formatPixels(pixels)}
+            </span>
+          </p>
+        </>
+      )}
+    </div>
+  );
+}

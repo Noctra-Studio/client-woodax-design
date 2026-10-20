@@ -4,12 +4,18 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { AudienceSection } from "@/components/design/audience-section";
 import { HeroSection } from "@/components/design/hero-section";
 import { HomeCta } from "@/components/design/home-cta";
+import { MediaSlot } from "@/components/design/media-slot";
 import { ProcessSection } from "@/components/design/process-section";
 import { ProjectsSection } from "@/components/design/projects-section";
+import { ServicesDiptych } from "@/components/design/services-diptych";
+import { ServicesTeaser } from "@/components/design/services-teaser";
+import { StatementSection } from "@/components/design/statement-section";
 import {
-  publishedSocialUrl,
-  siteConfig,
-} from "@/content/site-config";
+  featuredProjectSlots,
+  getDesignMedia,
+  hasMedia,
+} from "@/content/design-media";
+import { publishedSocialUrl, siteConfig } from "@/content/site-config";
 import { LeadCapture } from "@/features/leads/components/lead-capture";
 import { getLeadCopy } from "@/features/leads/copy";
 import { routing, type Locale } from "@/i18n/routing";
@@ -66,13 +72,27 @@ export default async function DesignPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLd }}
       />
-      <HeroSection />
-      <AudienceSection />
+      <HeroSection
+        hasPoster={getDesignMedia("home-hero").src !== null}
+        showProjects={featuredProjectSlots().length > 0}
+      >
+        {hasMedia("home-hero") ? (
+          <MediaSlot
+            id="home-hero"
+            sizes="(min-width: 1280px) 29rem, (min-width: 768px) 36vw, calc(100vw - 2.5rem)"
+            priority
+          />
+        ) : null}
+      </HeroSection>
+      <StatementSection />
+      {full ? null : <AudienceSection />}
       <ProjectsSection
         instagramUrl={publishedSocialUrl(siteConfig.instagramUrl)}
       />
+      {full ? <ServicesDiptych /> : <ServicesTeaser />}
       <ProcessSection />
-      {copy ? <LeadCapture copy={copy} /> : <HomeCta />}
+      {full ? <HomeCta /> : null}
+      {!full && copy ? <LeadCapture copy={copy} /> : null}
     </main>
   );
 }

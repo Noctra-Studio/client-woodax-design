@@ -58,6 +58,17 @@
       "ctaSecondary": "Ver proyectos",
       "skipIntro": "Saltar"
     },
+    "home": {
+      "eyebrow": "Carpintería a medida · Querétaro",
+      "servicesTeaser": {
+        "title": "Lo que hacemos",
+        "cta": "Ver servicios"
+      }
+    },
+    "statement": {
+      "label": "Nosotros",
+      "body": "Cada pieza empieza con una conversación: <b>cómo usas tu espacio</b>, qué necesitas guardar y <b>qué quieres sentir al entrar</b>. Desde ahí la diseñamos y la <b>fabricamos a la medida</b>."
+    },
     "audience": {
       "title": "Para tu hogar y para tu negocio",
       "homeTitle": "Tu hogar",
@@ -68,6 +79,10 @@
     "projects": {
       "title": "Proyectos recientes",
       "instagramCta": "Más proyectos en Instagram",
+      "statement": {
+        "title": "Hecho una sola vez.",
+        "body": "Ninguna pieza sale de un catálogo: cada una se diseña y se fabrica para un solo espacio."
+      },
       "tags": {
         "kitchen": "Cocina",
         "closet": "Clóset",
@@ -176,6 +191,25 @@
         "whatsappAria": "Escribir por WhatsApp",
         "social": "Síguenos"
       }
+    },
+    "about": {
+      "meta": {
+        "title": "Nosotros · Woodax Design",
+        "description": "Carpintería a medida desde 2024: piezas de calidad superior para familias, negocios, constructoras y diseñadores de interiores."
+      },
+      "title": "Quiénes somos",
+      "audience": "Con quién trabajamos"
+    },
+    "clients": {
+      "meta": {
+        "title": "Clientes · Woodax Design",
+        "description": "Proyectos de carpintería a medida para hogares y negocios en Querétaro."
+      },
+      "title": "Con quién hemos trabajado",
+      "intro": "Hogares y negocios que nos confiaron su espacio."
+    },
+    "mediaSlot": {
+      "label": "Foto · {id}"
     }
   },
   "cnc": {

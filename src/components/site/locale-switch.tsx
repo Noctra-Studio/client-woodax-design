@@ -4,6 +4,7 @@ import { Suspense, useLayoutEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import { markLocaleSwitch } from "@/lib/route-transition";
 import { cn } from "@/lib/utils";
 
 const locales = ["es", "en"] as const;
@@ -15,27 +16,28 @@ export function LocaleSlot({
   variant,
   label,
   size,
+  onChange,
 }: {
   variant: Variant;
   label: string;
   size: "bar" | "menu";
+  onChange?: () => void;
 }) {
   return (
     <Suspense fallback={<LocaleFallback variant={variant} />}>
-      <LocaleSwitch variant={variant} label={label} size={size} />
+      <LocaleSwitch
+        variant={variant}
+        label={label}
+        size={size}
+        onChange={onChange}
+      />
     </Suspense>
   );
 }
 
 function LocaleFallback({ variant }: { variant: Variant }) {
   return (
-    <div
-      aria-hidden="true"
-      className={cn(
-        "h-11 w-[5.5rem]",
-        "rounded-sm",
-      )}
-    />
+    <div aria-hidden="true" className={cn("h-11 w-[5.5rem]", "rounded-sm")} />
   );
 }
 
@@ -43,10 +45,12 @@ function LocaleSwitch({
   variant,
   label,
   size,
+  onChange,
 }: {
   variant: Variant;
   label: string;
   size: "bar" | "menu";
+  onChange?: () => void;
 }) {
   const locale = useLocale();
   const pathname = usePathname();
@@ -85,6 +89,7 @@ function LocaleSwitch({
 
   function selectLocale(code: (typeof locales)[number]) {
     if (code === locale) return;
+    markLocaleSwitch();
     try {
       sessionStorage.setItem(
         LOCALE_SCROLL_KEY,
@@ -142,7 +147,10 @@ function LocaleSwitch({
             key={code}
             type="button"
             lang={code}
-            onClick={() => selectLocale(code)}
+            onClick={() => {
+              onChange?.();
+              selectLocale(code);
+            }}
             className={cn(
               "inline-flex items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
               variant === "design" ? "font-medium" : "font-normal",

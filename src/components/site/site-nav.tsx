@@ -13,7 +13,7 @@ import {
   type RefObject,
 } from "react";
 import { createPortal } from "react-dom";
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Menu, X } from "lucide-react";
 import {
   AnimatePresence,
   motion,
@@ -37,7 +37,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Link, usePathname } from "@/i18n/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import type { Pathname } from "@/i18n/routing";
 import { isDesignFull } from "@/lib/seo";
 import { cn } from "@/lib/utils";
@@ -51,6 +51,10 @@ const LOGO_COMPACT_PX = 32;
 const NAV_LOCK_EVENT = "woodax:nav-lock";
 const NAV_LOCK_TIMEOUT_MS = 900;
 const NAV_FADE_OUT_MS = 180;
+const HOME_GROW_MS = 320;
+const HOME_FADE_OUT_MS = 120;
+const SHEET_CLOSE_MS = 200;
+const SHEET_CLOSE_REDUCED_MS = 120;
 const ACTIVE_LINE_RATIO = 0.35;
 const BOTTOM_TOLERANCE_PX = 24;
 
@@ -145,12 +149,84 @@ function itemKey(link: SiteNavLink) {
   return link.type === "anchor" ? link.id : link.href;
 }
 
+function isPlainClick(event: {
+  button: number;
+  metaKey: boolean;
+  ctrlKey: boolean;
+  shiftKey: boolean;
+  altKey: boolean;
+}) {
+  return (
+    event.button === 0 &&
+    !event.metaKey &&
+    !event.ctrlKey &&
+    !event.shiftKey &&
+    !event.altKey
+  );
+}
+
+type HomeReveal = { grid: boolean; shown: boolean };
+
+function useGridReveal(open: boolean, reduce: boolean): HomeReveal {
+  const [phase, setPhase] = useState({
+    open,
+    reduce,
+    grid: open,
+    shown: open,
+  });
+
+  if (phase.reduce !== reduce || phase.open !== open) {
+    if (reduce) {
+      setPhase({ open, reduce, grid: open, shown: open });
+    } else if (open) {
+      setPhase({ open: true, reduce: false, grid: true, shown: false });
+    } else {
+      setPhase({
+        open: false,
+        reduce: false,
+        grid: phase.grid,
+        shown: false,
+      });
+    }
+  }
+
+  useEffect(() => {
+    if (reduce || !open || !phase.grid || phase.shown) return;
+    const id = window.setTimeout(() => {
+      setPhase((current) =>
+        current.open && current.grid && !current.shown
+          ? { ...current, shown: true }
+          : current,
+      );
+    }, HOME_GROW_MS);
+    return () => window.clearTimeout(id);
+  }, [open, phase.grid, phase.shown, reduce]);
+
+  useEffect(() => {
+    if (reduce || open || phase.shown || !phase.grid) return;
+    const id = window.setTimeout(() => {
+      setPhase((current) =>
+        !current.open && !current.shown && current.grid
+          ? { ...current, grid: false }
+          : current,
+      );
+    }, HOME_FADE_OUT_MS);
+    return () => window.clearTimeout(id);
+  }, [open, phase.grid, phase.shown, reduce]);
+
+  return { grid: phase.grid, shown: phase.shown };
+}
+
 type Variant = "design" | "cnc";
 
 type SiteNavProps = {
   variant: Variant;
   links: SiteNavLink[];
   homeLabel: string;
+  /** "Inicio" — design full site only. Collapses on the home route. */
+  routeHomeLabel?: string;
+  /** Sheet entry for Contacto. Desktop keeps it as the square CTA. */
+  sheetContactLabel?: string;
   logoLabel?: string;
   ctaLabel: string;
   menuLabel: string;
@@ -181,6 +257,8 @@ export function SiteNav({
   variant,
   links,
   homeLabel,
+  routeHomeLabel,
+  sheetContactLabel,
   logoLabel,
   ctaLabel,
   menuLabel,
@@ -213,6 +291,10 @@ export function SiteNav({
     instant: false,
   });
   const pathname = usePathname();
+  const homeReveal = useGridReveal(
+    Boolean(routeHomeLabel) && pathname !== "/",
+    reduce,
+  );
   const anchorIds = links
     .flatMap((link) => (link.type === "anchor" ? [link.id] : []))
     .join("\0");
@@ -481,6 +563,10 @@ export function SiteNav({
     pillInstant,
     pathname,
     homeLabel,
+    routeHomeLabel,
+    homeGrid: homeReveal.grid,
+    homeShown: homeReveal.shown,
+    sheetContactLabel,
     logoLabel: logoLabel ?? homeLabel,
     ctaLabel,
     focusRing,
@@ -618,6 +704,9 @@ function DesktopNav({
   reduce,
   links,
   logoCompact,
+  routeHomeLabel,
+  homeGrid,
+  homeShown,
   ...rest
 }: {
   scrolled: boolean;
@@ -629,7 +718,9 @@ function DesktopNav({
   const shellRef = useRef<HTMLDivElement>(null);
   const measureRef = useRef<HTMLDivElement>(null);
   const [box, setBox] = useState<Box | null>(null);
-  const linkKey = links.map((link) => link.label).join("\0");
+  const [contentTween, setContentTween] = useState(false);
+  const shutRef = useRef<number | null>(null);
+  const linkKey = `${links.map((link) => link.label).join("\0")}\0${routeHomeLabel ?? ""}\0${homeGrid ? "1" : "0"}`;
 
   useLayoutEffect(() => {
     const shell = shellRef.current;
@@ -654,6 +745,21 @@ function DesktopNav({
     return () => observer.disconnect();
   }, [linkKey, logoCompact]);
 
+  useLayoutEffect(() => {
+    if (!box) return;
+    const previous = shutRef.current;
+    shutRef.current = box.shut;
+    if (previous !== null && previous !== box.shut && morph) {
+      setContentTween(true);
+    }
+  }, [box, morph]);
+
+  useEffect(() => {
+    if (!contentTween) return;
+    const id = window.setTimeout(() => setContentTween(false), HOME_GROW_MS);
+    return () => window.clearTimeout(id);
+  }, [contentTween]);
+
   return (
     <div
       ref={shellRef}
@@ -664,6 +770,7 @@ function DesktopNav({
         links={links}
         logoCompact={logoCompact}
         variant={rest.variant}
+        routeHomeLabel={homeGrid ? routeHomeLabel : undefined}
       />
       {reduce ? (
         <ReducedBars
@@ -672,6 +779,9 @@ function DesktopNav({
           links={links}
           logoCompact={logoCompact}
           {...rest}
+          routeHomeLabel={routeHomeLabel}
+          homeGrid={homeGrid}
+          homeShown={homeShown}
         />
       ) : (
         <motion.div
@@ -681,11 +791,16 @@ function DesktopNav({
             height: morph ? 56 : 80,
             ...(morph ? shutPad : openPad),
           }}
-          transition={tween ? morphTransition : { duration: 0 }}
+          transition={
+            tween || contentTween ? morphTransition : { duration: 0 }
+          }
           data-variant={rest.variant}
           data-scrolled={morph ? "true" : "false"}
           className={cn(
-            "site-nav-bar pointer-events-auto mx-auto flex items-center gap-2 overflow-hidden",
+            "site-nav-bar pointer-events-auto mx-auto overflow-hidden",
+            morph
+              ? "flex items-center gap-2"
+              : "grid w-full items-center md:grid-cols-[auto_minmax(0,1fr)_auto] lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]",
             rest.variant === "design"
               ? "text-woodax-charcoal"
               : "text-cnc-text",
@@ -701,6 +816,9 @@ function DesktopNav({
             labelsOn={labelsOn}
             tween={tween}
             showIndicator
+            routeHomeLabel={routeHomeLabel}
+            homeGrid={homeGrid}
+            homeShown={homeShown}
           />
         </motion.div>
       )}
@@ -713,11 +831,13 @@ function MeasureRow({
   links,
   logoCompact,
   variant,
+  routeHomeLabel,
 }: {
   measureRef: RefObject<HTMLDivElement | null>;
   links: SiteNavLink[];
   logoCompact: ReactNode;
   variant: Variant;
+  routeHomeLabel?: string;
 }) {
   return (
     <div
@@ -732,6 +852,17 @@ function MeasureRow({
         {cloneLogo(logoCompact, { measure: true })}
       </span>
       <ul className="flex items-center">
+        {routeHomeLabel ? (
+          <li
+            className={cn(
+              "mx-1 inline-flex min-h-11 items-center gap-2 px-3 text-[15px] whitespace-nowrap",
+              variant === "design" ? "font-medium" : "font-normal",
+            )}
+          >
+            <ArrowLeft aria-hidden strokeWidth={1.5} className="size-4" />
+            {routeHomeLabel}
+          </li>
+        ) : null}
         {links.map((link) => (
           <li
             key={itemKey(link)}
@@ -763,10 +894,10 @@ function ReducedBars(props: BarContentProps & { scrolled: boolean }) {
           data-variant={bar.variant}
           data-scrolled={scrolled ? "true" : "false"}
           className={cn(
-            "site-nav-bar pointer-events-auto absolute top-0 flex items-center gap-2 overflow-hidden",
+            "site-nav-bar pointer-events-auto absolute top-0 overflow-hidden",
             scrolled
-              ? "inset-x-0 mx-auto h-14 w-max py-2 pr-2 pl-3"
-              : "inset-x-0 h-20 w-full py-4 pr-2 pl-5",
+              ? "inset-x-0 mx-auto flex h-14 w-max items-center gap-2 py-2 pr-2 pl-3"
+              : "inset-x-0 grid h-20 w-full items-center py-4 pr-2 pl-5 md:grid-cols-[auto_minmax(0,1fr)_auto] lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]",
             bar.variant === "design" ? "text-woodax-charcoal" : "text-cnc-text",
           )}
           style={{ borderRadius: "var(--radius-lg)" }}
@@ -777,6 +908,9 @@ function ReducedBars(props: BarContentProps & { scrolled: boolean }) {
             labelsOn={!scrolled}
             tween={false}
             showIndicator={false}
+            routeHomeLabel={bar.routeHomeLabel}
+            homeGrid={bar.homeGrid}
+            homeShown={bar.homeShown}
           />
         </motion.div>
       </AnimatePresence>
@@ -794,6 +928,10 @@ type BarContentProps = {
   pillInstant: boolean;
   pathname: string;
   homeLabel: string;
+  routeHomeLabel?: string;
+  homeGrid: boolean;
+  homeShown: boolean;
+  sheetContactLabel?: string;
   logoLabel: string;
   ctaLabel: string;
   focusRing: string;
@@ -819,19 +957,26 @@ function BarContent({
 }) {
   return (
     <>
-      <LogoSlot
-        homeLabel={props.logoLabel}
-        focusRing={props.focusRing}
-        compact={compact}
-        crossfade
-        tween={tween && !props.reduce}
-        trace={props.introPlaying && props.variant === "cnc"}
-        fade={props.variant === "design" && props.introPlaying}
-        logo={props.logo}
-        logoCompact={props.logoCompact}
-        logoTraceSrc={props.logoTraceSrc}
-      />
-      <div className="flex min-w-0 flex-1 items-center justify-center">
+      <div className={cn(!compact && "justify-self-start")}>
+        <LogoSlot
+          homeLabel={props.logoLabel}
+          focusRing={props.focusRing}
+          compact={compact}
+          crossfade
+          tween={tween && !props.reduce}
+          trace={props.introPlaying && props.variant === "cnc"}
+          fade={props.variant === "design" && props.introPlaying}
+          logo={props.logo}
+          logoCompact={props.logoCompact}
+          logoTraceSrc={props.logoTraceSrc}
+        />
+      </div>
+      <div
+        className={cn(
+          "flex min-w-0 items-center justify-center",
+          compact ? "flex-1" : "justify-self-center",
+        )}
+      >
         <NavLinks
           links={props.links}
           activeId={props.activeId}
@@ -844,9 +989,17 @@ function BarContent({
           reduce={props.reduce || !showIndicator}
           focusRing={props.focusRing}
           showIndicator={showIndicator}
+          routeHomeLabel={props.routeHomeLabel}
+          homeGrid={props.homeGrid}
+          homeShown={props.homeShown}
         />
       </div>
-      <div className="flex shrink-0 items-center">
+      <div
+        className={cn(
+          "flex shrink-0 items-center",
+          !compact && "justify-self-end",
+        )}
+      >
         <div
           className={cn(
             "site-nav-collapse grid min-w-0",
@@ -901,6 +1054,9 @@ function MobileNav({
   links,
   activeId,
   pathname,
+  routeHomeLabel,
+  sheetContactLabel,
+  reduce,
   logoLabel,
   focusRing,
   logo,
@@ -921,9 +1077,51 @@ function MobileNav({
   menuOpen: boolean;
   setMenuOpen: (open: boolean) => void;
 }) {
+  const router = useRouter();
+  const pendingNav = useRef<number | null>(null);
   const activeLabel = links.find((link) =>
     isLinkActive(link, activeId, pathname),
   )?.label;
+  const showSheetHome = Boolean(routeHomeLabel) && pathname !== "/";
+  const sheetLinkClass = cn(
+    "-mx-3 inline-flex min-h-11 w-[calc(100%+1.5rem)] items-center gap-2 rounded-sm px-3 text-[17px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+    variant === "design" && "font-medium",
+    focusRing,
+  );
+
+  useEffect(() => {
+    return () => {
+      if (pendingNav.current !== null) window.clearTimeout(pendingNav.current);
+    };
+  }, []);
+
+  function closeThen(run: () => void) {
+    setMenuOpen(false);
+    if (pendingNav.current !== null) window.clearTimeout(pendingNav.current);
+    pendingNav.current = window.setTimeout(() => {
+      pendingNav.current = null;
+      run();
+    }, reduce ? SHEET_CLOSE_REDUCED_MS : SHEET_CLOSE_MS);
+  }
+
+  function activateLink(link: SiteNavLink) {
+    closeThen(() => {
+      if (link.type === "route") {
+        router.push(link.href);
+        return;
+      }
+      lockNavAnchor(link.id);
+      document.getElementById(link.id)?.scrollIntoView({
+        behavior: reduce ? "auto" : "smooth",
+      });
+    });
+  }
+
+  function activateHref(href: string) {
+    closeThen(() => {
+      window.location.assign(href);
+    });
+  }
 
   return (
     <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
@@ -985,6 +1183,26 @@ function MobileNav({
           <SheetTitle>{menuLabel}</SheetTitle>
         </SheetHeader>
         <ul className="flex flex-col">
+          {showSheetHome && routeHomeLabel ? (
+            <li>
+              <Link
+                href="/"
+                onClick={(event) => {
+                  if (!isPlainClick(event)) return;
+                  event.preventDefault();
+                  closeThen(() => router.push("/"));
+                }}
+                className={sheetLinkClass}
+              >
+                <ArrowLeft
+                  aria-hidden
+                  strokeWidth={1.5}
+                  className="size-4 shrink-0"
+                />
+                {routeHomeLabel}
+              </Link>
+            </li>
+          ) : null}
           {links.map((link) => (
             <li key={itemKey(link)}>
               <SiteNavItem
@@ -993,14 +1211,42 @@ function MobileNav({
                 variant={variant}
                 focusRing={focusRing}
                 menu
-                onNavigate={() => setMenuOpen(false)}
+                onNavigate={() => activateLink(link)}
               />
             </li>
           ))}
+          {sheetContactLabel ? (
+            <li>
+              <Link
+                href="/contact"
+                aria-current={pathname === "/contact" ? "page" : undefined}
+                onClick={(event) => {
+                  if (!isPlainClick(event)) return;
+                  event.preventDefault();
+                  closeThen(() => router.push("/contact"));
+                }}
+                className={cn(
+                  sheetLinkClass,
+                  pathname === "/contact" &&
+                    (variant === "design" ? "bg-woodax-cream" : "bg-cnc-line"),
+                )}
+              >
+                {sheetContactLabel}
+              </Link>
+            </li>
+          ) : null}
         </ul>
         <div className="mt-auto flex flex-col gap-1">
+          {routeHomeLabel ? (
+            <hr className="border-woodax-line my-2 border-0 border-t" />
+          ) : null}
           <a
             href={siblingHref}
+            onClick={(event) => {
+              if (!isPlainClick(event)) return;
+              event.preventDefault();
+              activateHref(siblingHref);
+            }}
             className={cn(
               "inline-flex min-h-11 items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
               focusRing,
@@ -1011,6 +1257,11 @@ function MobileNav({
           {instagramUrl ? (
             <a
               href={instagramUrl}
+              onClick={(event) => {
+                if (!isPlainClick(event)) return;
+                event.preventDefault();
+                activateHref(instagramUrl);
+              }}
               className={cn(
                 "inline-flex min-h-11 items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
                 focusRing,
@@ -1023,6 +1274,11 @@ function MobileNav({
             <a
               href={facebookUrl}
               aria-label={facebookAria}
+              onClick={(event) => {
+                if (!isPlainClick(event)) return;
+                event.preventDefault();
+                activateHref(facebookUrl);
+              }}
               className={cn(
                 "inline-flex min-h-11 items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
                 focusRing,
@@ -1031,7 +1287,12 @@ function MobileNav({
               {facebookLabel}
             </a>
           ) : null}
-          <LocaleSlot variant={variant} label={languageLabel} size="menu" />
+          <LocaleSlot
+            variant={variant}
+            label={languageLabel}
+            size="menu"
+            onChange={() => setMenuOpen(false)}
+          />
         </div>
         <SheetClose className="sr-only">{closeLabel}</SheetClose>
       </SheetContent>
@@ -1087,6 +1348,8 @@ function LogoSlot({
   logoCompact: ReactNode;
   logoTraceSrc?: string;
 }) {
+  const pathname = usePathname();
+  const reduce = useReducedMotion() === true;
   const fullRef = useRef<HTMLSpanElement>(null);
   const markRef = useRef<HTMLSpanElement>(null);
   const [widths, setWidths] = useState<{ full: number; mark: number } | null>(
@@ -1141,6 +1404,14 @@ function LogoSlot({
       <Link
         href="/"
         aria-label={homeLabel}
+        onClick={(event) => {
+          if (!isPlainClick(event) || pathname !== "/") return;
+          event.preventDefault();
+          window.scrollTo({
+            top: 0,
+            behavior: reduce ? "auto" : "smooth",
+          });
+        }}
         className={cn(
           "relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px]",
           focusRing,
@@ -1290,6 +1561,9 @@ function NavLinks({
   reduce,
   focusRing,
   showIndicator,
+  routeHomeLabel,
+  homeGrid,
+  homeShown,
 }: {
   links: SiteNavLink[];
   activeId: string | null;
@@ -1302,9 +1576,20 @@ function NavLinks({
   reduce: boolean;
   focusRing: string;
   showIndicator: boolean;
+  routeHomeLabel?: string;
+  homeGrid: boolean;
+  homeShown: boolean;
 }) {
   return (
     <ul className="flex items-center">
+      {routeHomeLabel ? (
+        <HomeNavItem
+          label={routeHomeLabel}
+          grid={homeGrid}
+          shown={homeShown}
+          focusRing={focusRing}
+        />
+      ) : null}
       {links.map((link) => {
         const active = isLinkActive(link, activeId, pathname);
         const hasPill =
@@ -1332,6 +1617,45 @@ function NavLinks({
         );
       })}
     </ul>
+  );
+}
+
+function HomeNavItem({
+  label,
+  grid,
+  shown,
+  focusRing,
+}: {
+  label: string;
+  grid: boolean;
+  shown: boolean;
+  focusRing: string;
+}) {
+  return (
+    <li
+      className={cn(
+        "site-nav-collapse grid shrink-0",
+        grid ? "grid-cols-[1fr]" : "grid-cols-[0fr]",
+      )}
+      inert={!shown ? true : undefined}
+      aria-hidden={!shown ? true : undefined}
+    >
+      <div className="min-w-0 overflow-hidden">
+        <Link
+          href="/"
+          data-show={shown ? "true" : "false"}
+          tabIndex={shown ? undefined : -1}
+          className={cn(
+            "site-nav-label relative mx-1 inline-flex min-h-11 items-center gap-2 rounded-sm px-3 text-[15px] font-medium whitespace-nowrap focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px]",
+            focusRing,
+            shown ? "opacity-100" : "opacity-0",
+          )}
+        >
+          <ArrowLeft aria-hidden strokeWidth={1.5} className="size-4 shrink-0" />
+          {label}
+        </Link>
+      </div>
+    </li>
   );
 }
 
@@ -1421,7 +1745,12 @@ function SiteNavItem({
       <Link
         href={link.href}
         aria-current={active ? current : undefined}
-        onClick={onNavigate}
+        onClick={(event) => {
+          if (!menu) return;
+          if (!isPlainClick(event)) return;
+          event.preventDefault();
+          onNavigate?.();
+        }}
         className={className}
       >
         {content}
@@ -1433,7 +1762,13 @@ function SiteNavItem({
     <a
       href={`#${link.id}`}
       aria-current={active ? current : undefined}
-      onClick={() => {
+      onClick={(event) => {
+        if (menu) {
+          if (!isPlainClick(event)) return;
+          event.preventDefault();
+          onNavigate?.();
+          return;
+        }
         lockNavAnchor(link.id);
         onNavigate?.();
       }}

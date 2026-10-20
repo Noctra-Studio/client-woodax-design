@@ -34,6 +34,8 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - title — ES: Proyectos recientes | EN: Recent projects
 - instagramCta — ES: Más proyectos en Instagram | EN: More projects on Instagram
 - tags — ES: Cocina · Clóset · Pieza a medida · Espacio comercial | EN: Kitchen · Closet · Custom piece · Commercial space
+- home.projects.statement.title — ES: Hecho una sola vez. | EN: Made once.
+- home.projects.statement.body — ES: Ninguna pieza sale de un catálogo: cada una se diseña y se fabrica para un solo espacio. | EN: No piece comes from a catalog: each one is designed and built for a single space.
 
 ### Así trabajamos ⚠︎
 
@@ -339,9 +341,10 @@ Al lanzar el multipágina se elimina `hero.eyebrow` ("Nuevo sitio en camino"): q
 - homeCta.title — ES: ¿Tienes un proyecto en mente? | EN: Got a project in mind?
 - homeCta.body — ES: Cuéntanos qué necesitas y te respondemos con los siguientes pasos. | EN: Tell us what you need and we'll get back to you with next steps.
 
-### Servicios ⚠︎ (descripciones pendientes de aprobación de Adrián)
+### Servicios
 
-Bloqueo de lanzamiento: kitchens, closets, custom y commercial se ven en staging. No se publican en producción hasta que Adrián las apruebe.
+Descripciones de Cocinas, Clósets y vestidores, Piezas a medida y Espacios comerciales aprobadas por Adrián. Con `designPages.services.approved` la ruta se publica cuando `DESIGN_MODE=full` (nav, sitemap, JSON-LD Service).
+
 Bloqueo de lanzamiento: instagramUrl y facebookUrl no pueden ser "#" en producción.
 
 - meta.title — ES: Servicios · Woodax Design | EN: Services · Woodax Design
@@ -355,14 +358,17 @@ Bloqueo de lanzamiento: instagramUrl y facebookUrl no pueden ser "#" en producci
 - (Reutiliza "Así trabajamos" y footer.cncLink en esta página.)
 - cta — ES: Cuéntanos tu proyecto | EN: Tell us about your project
 
-### Nosotros (solo se publica cuando Adrián entregue historia y fotos reales)
+### Nosotros
+
+Historia aprobada por Adrián. Con las fotos reales del taller (about-workshop-1..3) la ruta se publica cuando `DESIGN_MODE=full` (nav, sitemap, JSON-LD AboutPage). `about-portrait` sigue vacío: la columna usa `about-workshop-2` recortada a 4/5 y esa foto no se repite en la galería.
 
 - meta.title — ES: Nosotros · Woodax Design | EN: About · Woodax Design
-- meta.description — TODO(adrian) a partir de la historia
+- meta.description ⚠︎ — ES: Carpintería a medida desde 2024: piezas de calidad superior para familias, negocios, constructoras y diseñadores de interiores. | EN: Bespoke carpentry since 2024: higher-quality pieces for families, businesses, construction companies and interior designers.
 - title (h1) — ES: Quiénes somos | EN: Who we are
-- statement — reutiliza el Statement de Woodax
-- story — TODO(adrian): cómo empezó Woodax, quién está detrás, desde cuándo, cómo es el taller
-- workshop — fotos reales del taller y del equipo (sin fotos, el bloque no existe)
+- story — ES: Adrián creció rodeado de madera. Originario de Hungría, se involucró en la carpintería desde muy joven, y desde entonces la madera ha sido su oficio. / Woodax Design nació en 2024 con una idea clara: responder a lo que cada cliente necesita y desea, con piezas de una calidad superior a la que ofrece el mercado. / Hoy trabajamos con constructoras, diseñadores de interiores, negocios y familias. | EN: Adrián grew up surrounded by wood. Originally from Hungary, he got into carpentry at a very young age, and wood has been his craft ever since. / Woodax Design started in 2024 with a clear idea: to meet each client's needs and wishes with pieces of a higher quality than the market offers. / Today we work with construction companies, interior designers, businesses and families.
+- audience — ES: Con quién trabajamos | EN: Who we work with
+- audience.chips — ES: Constructoras · Diseñadores de interiores · Negocios · Familias | EN: Construction companies · Interior designers · Businesses · Families
+- workshop — fotos reales del taller (about-workshop-1..3). about-workshop-4 pendiente. Sin foto real el slot es placeholder en Preview y no existe en Production.
 
 ### Clientes (solo se publica con datos reales y permiso de cada cliente)
 

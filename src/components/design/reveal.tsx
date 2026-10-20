@@ -6,9 +6,11 @@ import { cn } from "@/lib/utils";
 export function Reveal({
   children,
   className,
+  stagger = false,
 }: {
   children: ReactNode;
   className?: string;
+  stagger?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -44,7 +46,10 @@ export function Reveal({
   }, []);
 
   return (
-    <div ref={ref} className={cn("design-reveal", className)}>
+    <div
+      ref={ref}
+      className={cn(stagger ? "design-stagger" : "design-reveal", className)}
+    >
       {children}
     </div>
   );
