@@ -355,14 +355,17 @@ Bloqueo de lanzamiento: instagramUrl y facebookUrl no pueden ser "#" en producci
 - (Reutiliza "Así trabajamos" y footer.cncLink en esta página.)
 - cta — ES: Cuéntanos tu proyecto | EN: Tell us about your project
 
-### Nosotros (solo se publica cuando Adrián entregue historia y fotos reales)
+### Nosotros ⚠︎ pendiente aprobación Adrián
+
+Preview únicamente. En Production la ruta no existe hasta que Adrián apruebe el texto y haya fotos reales (about-portrait o about-workshop).
 
 - meta.title — ES: Nosotros · Woodax Design | EN: About · Woodax Design
-- meta.description — TODO(adrian) a partir de la historia
+- meta.description — primer párrafo de story
 - title (h1) — ES: Quiénes somos | EN: Who we are
-- statement — reutiliza el Statement de Woodax
-- story — TODO(adrian): cómo empezó Woodax, quién está detrás, desde cuándo, cómo es el taller
-- workshop — fotos reales del taller y del equipo (sin fotos, el bloque no existe)
+- story ⚠︎ pendiente aprobación Adrián — ES: Adrián creció rodeado de madera. Originario de Hungría, se involucró en la carpintería desde muy joven, y desde entonces la madera ha sido su oficio. / Woodax Design nace de una idea clara: hacer en Querétaro piezas de una calidad superior a la que ofrece el mercado. / Hoy trabajamos con constructoras, diseñadores de interiores, negocios y familias. Cambia la escala del proyecto; el cuidado en cada pieza es el mismo. | EN: Adrián grew up surrounded by wood. Originally from Hungary, he got into carpentry at a very young age, and wood has been his craft ever since. / Woodax Design was born from a clear idea: to make pieces in Querétaro of a higher quality than the market offers. / Today we work with construction companies, interior designers, businesses and families. The scale of the project changes; the care in every piece stays the same.
+- audience ⚠︎ pendiente aprobación Adrián — ES: Con quién trabajamos | EN: Who we work with
+- audience.chips ⚠︎ pendiente aprobación Adrián — ES: Constructoras · Diseñadores de interiores · Negocios · Familias | EN: Construction companies · Interior designers · Businesses · Families
+- workshop — fotos reales del taller (about-workshop-1..4). Sin foto real el slot es placeholder en Preview y no existe en Production.
 
 ### Clientes (solo se publica con datos reales y permiso de cada cliente)
 

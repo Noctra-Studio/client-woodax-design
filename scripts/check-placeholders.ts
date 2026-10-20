@@ -63,7 +63,7 @@ for (const slot of pendingSlots) {
 const pendingTexts: string[] = [];
 
 if (isDesignRouteEnabled("about") && designAbout.placeholder && designAbout.story) {
-  pendingTexts.push(`about.story: ${designAbout.story.es}`);
+  pendingTexts.push(`about.story: ${designAbout.story.es.join(" ")}`);
 }
 
 if (isDesignRouteEnabled("clients")) {
