@@ -1,14 +1,24 @@
 import { featuredProjectSlots } from "@/content/design-media";
-import { isDesignRouteEnabled } from "@/content/design-publish";
+import {
+  designServicesApproved,
+  isDesignRouteEnabled,
+} from "@/content/design-publish";
 import type { Pathname } from "@/i18n/routing";
 
 export const designPages = {
   home: { href: "/", enabled: true },
   about: { href: "/about", enabled: isDesignRouteEnabled("about") },
-  services: { href: "/services", enabled: isDesignRouteEnabled("services") },
+  services: {
+    href: "/services",
+    approved: designServicesApproved,
+    enabled: isDesignRouteEnabled("services"),
+  },
   clients: { href: "/clients", enabled: isDesignRouteEnabled("clients") },
   contact: { href: "/contact", enabled: isDesignRouteEnabled("contact") },
-} as const satisfies Record<string, { href: Pathname; enabled: boolean }>;
+} as const satisfies Record<
+  string,
+  { href: Pathname; enabled: boolean; approved?: boolean }
+>;
 
 export type DesignPageKey = keyof typeof designPages;
 

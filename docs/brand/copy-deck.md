@@ -34,8 +34,8 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - title — ES: Proyectos recientes | EN: Recent projects
 - instagramCta — ES: Más proyectos en Instagram | EN: More projects on Instagram
 - tags — ES: Cocina · Clóset · Pieza a medida · Espacio comercial | EN: Kitchen · Closet · Custom piece · Commercial space
-- home.projects.statement.title ⚠︎ pendiente aprobación Adrián — ES: Hecho una sola vez. | EN: Made once.
-- home.projects.statement.body ⚠︎ pendiente aprobación Adrián — ES: Ninguna pieza sale de un catálogo: cada una se diseña y se fabrica para un solo espacio. | EN: No piece comes from a catalog: each one is designed and built for a single space.
+- home.projects.statement.title — ES: Hecho una sola vez. | EN: Made once.
+- home.projects.statement.body — ES: Ninguna pieza sale de un catálogo: cada una se diseña y se fabrica para un solo espacio. | EN: No piece comes from a catalog: each one is designed and built for a single space.
 
 ### Así trabajamos ⚠︎
 
@@ -341,9 +341,10 @@ Al lanzar el multipágina se elimina `hero.eyebrow` ("Nuevo sitio en camino"): q
 - homeCta.title — ES: ¿Tienes un proyecto en mente? | EN: Got a project in mind?
 - homeCta.body — ES: Cuéntanos qué necesitas y te respondemos con los siguientes pasos. | EN: Tell us what you need and we'll get back to you with next steps.
 
-### Servicios ⚠︎ (descripciones pendientes de aprobación de Adrián)
+### Servicios
 
-Bloqueo de lanzamiento: kitchens, closets, custom y commercial se ven en staging. No se publican en producción hasta que Adrián las apruebe.
+Descripciones de Cocinas, Clósets y vestidores, Piezas a medida y Espacios comerciales aprobadas por Adrián. Con `designPages.services.approved` la ruta se publica cuando `DESIGN_MODE=full` (nav, sitemap, JSON-LD Service).
+
 Bloqueo de lanzamiento: instagramUrl y facebookUrl no pueden ser "#" en producción.
 
 - meta.title — ES: Servicios · Woodax Design | EN: Services · Woodax Design
