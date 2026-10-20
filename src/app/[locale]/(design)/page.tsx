@@ -7,6 +7,7 @@ import { HomeCta } from "@/components/design/home-cta";
 import { MediaSlot } from "@/components/design/media-slot";
 import { ProcessSection } from "@/components/design/process-section";
 import { ProjectsSection } from "@/components/design/projects-section";
+import { ServicesDiptych } from "@/components/design/services-diptych";
 import { ServicesTeaser } from "@/components/design/services-teaser";
 import { StatementSection } from "@/components/design/statement-section";
 import {
@@ -14,10 +15,7 @@ import {
   getDesignMedia,
   hasMedia,
 } from "@/content/design-media";
-import {
-  publishedSocialUrl,
-  siteConfig,
-} from "@/content/site-config";
+import { publishedSocialUrl, siteConfig } from "@/content/site-config";
 import { LeadCapture } from "@/features/leads/components/lead-capture";
 import { getLeadCopy } from "@/features/leads/copy";
 import { routing, type Locale } from "@/i18n/routing";
@@ -87,11 +85,11 @@ export default async function DesignPage({
         ) : null}
       </HeroSection>
       <StatementSection />
-      <AudienceSection />
+      {full ? null : <AudienceSection />}
       <ProjectsSection
         instagramUrl={publishedSocialUrl(siteConfig.instagramUrl)}
       />
-      <ServicesTeaser />
+      {full ? <ServicesDiptych /> : <ServicesTeaser />}
       <ProcessSection />
       {full ? <HomeCta /> : null}
       {!full && copy ? <LeadCapture copy={copy} /> : null}

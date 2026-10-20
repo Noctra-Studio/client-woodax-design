@@ -19,6 +19,8 @@ type MediaSlotProps = {
   fill?: boolean;
   /** Full-bleed frames keep the label in the top band, clear of the headline. */
   labelPosition?: "center" | "top";
+  /** Real photos default to --radius-media. Placeholders stay --radius-card. */
+  radius?: "card" | "media";
   className?: string;
 };
 
@@ -26,7 +28,7 @@ function SlotTexture({ patternId }: { patternId: string }) {
   return (
     <svg
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 h-full w-full text-woodax-charcoal/25"
+      className="text-woodax-charcoal/25 pointer-events-none absolute inset-0 h-full w-full"
     >
       <defs>
         <pattern
@@ -62,6 +64,7 @@ export async function MediaSlot({
   priority = false,
   fill = false,
   labelPosition = "center",
+  radius,
   className,
 }: MediaSlotProps) {
   const slot = getDesignMedia(id);
@@ -78,13 +81,13 @@ export async function MediaSlot({
         "relative overflow-hidden",
         fill ? "absolute inset-0 h-full w-full" : "w-full",
         slot.src
-          ? fill
-            ? undefined
-            : "rounded-[var(--radius-media)]"
-          : cn(
-              "border-woodax-charcoal/55 bg-woodax-surface border border-dashed",
-              fill ? undefined : "rounded-[var(--radius-card)]",
-            ),
+          ? undefined
+          : "border-woodax-charcoal/55 bg-woodax-surface border border-dashed",
+        fill
+          ? undefined
+          : radius === "card" || !slot.src
+            ? "rounded-[var(--radius-card)]"
+            : "rounded-[var(--radius-media)]",
         className,
       )}
       style={fill ? undefined : { aspectRatio: slot.ratio.replace("/", " / ") }}

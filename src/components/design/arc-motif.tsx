@@ -10,7 +10,13 @@ const paths = [
   "M44 28C116 28 172 84 172 156",
 ];
 
-export function ArcMotif({ className }: { className?: string }) {
+export function ArcMotif({
+  className,
+  strokeWidth = 1.5,
+}: {
+  className?: string;
+  strokeWidth?: number;
+}) {
   const ref = useRef<SVGSVGElement>(null);
 
   useLayoutEffect(() => {
@@ -48,7 +54,7 @@ export function ArcMotif({ className }: { className?: string }) {
           pathLength={1}
           fill="none"
           stroke="currentColor"
-          strokeWidth={1.5}
+          strokeWidth={strokeWidth}
           vectorEffect="non-scaling-stroke"
           strokeLinecap="round"
         />

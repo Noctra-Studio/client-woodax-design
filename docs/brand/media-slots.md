@@ -4,31 +4,33 @@ Cada espacio de foto del sitio multipágina está en `src/content/design-media.t
 
 El tamaño sale de la proporción × 400 (4/5 → 1600×2000). Un logo 1/1 va a 1600×1600.
 
-| id | página / sección | ratio | tamaño recomendado (px) | archivo esperado |
-|---|---|---|---|---|
-| home-hero | Inicio / hero | 4/5 | 1600×2000 | public/images/design/home-hero-v1.jpg |
-| projects-1 | Inicio / proyectos · cocina | 4/5 | 1600×2000 | public/images/design/projects-1-v1.jpg |
-| projects-2 | Inicio / proyectos · clóset | 4/5 | 1600×2000 | public/images/design/projects-2-v1.jpg |
-| projects-3 | Inicio / proyectos · pieza a medida | 4/5 | 1600×2000 | public/images/design/projects-3-v1.jpg |
-| projects-4 | Inicio / proyectos · espacio comercial | 4/5 | 1600×2000 | public/images/design/projects-4-v1.jpg |
-| projects-5 | Inicio / proyectos · cocina | 4/5 | 1600×2000 | public/images/design/projects-5-v1.jpg |
-| projects-6 | Inicio / proyectos · clóset | 4/5 | 1600×2000 | public/images/design/projects-6-v1.jpg |
-| services-kitchens | Servicios / cocinas | 4/3 | 1600×1200 | public/images/design/services-kitchens-v1.jpg |
-| services-closets | Servicios / clósets | 4/3 | 1600×1200 | public/images/design/services-closets-v1.jpg |
-| services-custom | Servicios / piezas a medida | 4/3 | 1600×1200 | public/images/design/services-custom-v1.jpg |
-| services-commercial | Servicios / espacios comerciales | 4/3 | 1600×1200 | public/images/design/services-commercial-v1.jpg |
-| about-workshop-1 | Nosotros / taller | 4/3 | 1600×1200 | public/images/design/about-workshop-1-v1.jpg |
-| about-workshop-2 | Nosotros / taller | 4/3 | 1600×1200 | public/images/design/about-workshop-2-v1.jpg |
-| about-workshop-3 | Nosotros / taller | 4/3 | 1600×1200 | public/images/design/about-workshop-3-v1.jpg |
-| about-workshop-4 | Nosotros / taller | 4/3 | 1600×1200 | public/images/design/about-workshop-4-v1.jpg |
-| about-portrait | Nosotros / retrato | 4/5 | 1600×2000 | public/images/design/about-portrait-v1.jpg |
-| clients-logo-1 | Clientes / logos | 1/1 | 1600×1600 | public/images/design/clients-logo-1-v1.jpg |
-| clients-logo-2 | Clientes / logos | 1/1 | 1600×1600 | public/images/design/clients-logo-2-v1.jpg |
-| clients-logo-3 | Clientes / logos | 1/1 | 1600×1600 | public/images/design/clients-logo-3-v1.jpg |
-| clients-logo-4 | Clientes / logos | 1/1 | 1600×1600 | public/images/design/clients-logo-4-v1.jpg |
-| clients-logo-5 | Clientes / logos | 1/1 | 1600×1600 | public/images/design/clients-logo-5-v1.jpg |
-| clients-logo-6 | Clientes / logos | 1/1 | 1600×1600 | public/images/design/clients-logo-6-v1.jpg |
-| contact-side | Contacto / lateral | 3/4 | 1200×1600 | public/images/design/contact-side-v1.jpg |
+| id                     | página / sección                       | ratio | tamaño recomendado (px) | archivo esperado                                   |
+| ---------------------- | -------------------------------------- | ----- | ----------------------- | -------------------------------------------------- |
+| home-hero              | Inicio / hero                          | 4/5   | 1600×2000               | public/images/design/home-hero-v1.jpg              |
+| home-audience-home     | Inicio / Lo que hacemos · hogar        | 4/5   | 1600×2000               | public/images/design/home-audience-home-v1.jpg     |
+| home-audience-business | Inicio / Lo que hacemos · negocio      | 4/5   | 1600×2000               | public/images/design/home-audience-business-v1.jpg |
+| projects-1             | Inicio / proyectos · cocina            | 4/5   | 1600×2000               | public/images/design/projects-1-v1.jpg             |
+| projects-2             | Inicio / proyectos · clóset            | 4/5   | 1600×2000               | public/images/design/projects-2-v1.jpg             |
+| projects-3             | Inicio / proyectos · pieza a medida    | 4/5   | 1600×2000               | public/images/design/projects-3-v1.jpg             |
+| projects-4             | Inicio / proyectos · espacio comercial | 4/5   | 1600×2000               | public/images/design/projects-4-v1.jpg             |
+| projects-5             | Inicio / proyectos · cocina            | 4/5   | 1600×2000               | public/images/design/projects-5-v1.jpg             |
+| projects-6             | Inicio / proyectos · clóset            | 4/5   | 1600×2000               | public/images/design/projects-6-v1.jpg             |
+| services-kitchens      | Servicios / cocinas                    | 4/3   | 1600×1200               | public/images/design/services-kitchens-v1.jpg      |
+| services-closets       | Servicios / clósets                    | 4/3   | 1600×1200               | public/images/design/services-closets-v1.jpg       |
+| services-custom        | Servicios / piezas a medida            | 4/3   | 1600×1200               | public/images/design/services-custom-v1.jpg        |
+| services-commercial    | Servicios / espacios comerciales       | 4/3   | 1600×1200               | public/images/design/services-commercial-v1.jpg    |
+| about-workshop-1       | Nosotros / taller                      | 4/3   | 1600×1200               | public/images/design/about-workshop-1-v1.jpg       |
+| about-workshop-2       | Nosotros / taller                      | 4/3   | 1600×1200               | public/images/design/about-workshop-2-v1.jpg       |
+| about-workshop-3       | Nosotros / taller                      | 4/3   | 1600×1200               | public/images/design/about-workshop-3-v1.jpg       |
+| about-workshop-4       | Nosotros / taller                      | 4/3   | 1600×1200               | public/images/design/about-workshop-4-v1.jpg       |
+| about-portrait         | Nosotros / retrato                     | 4/5   | 1600×2000               | public/images/design/about-portrait-v1.jpg         |
+| clients-logo-1         | Clientes / logos                       | 1/1   | 1600×1600               | public/images/design/clients-logo-1-v1.jpg         |
+| clients-logo-2         | Clientes / logos                       | 1/1   | 1600×1600               | public/images/design/clients-logo-2-v1.jpg         |
+| clients-logo-3         | Clientes / logos                       | 1/1   | 1600×1600               | public/images/design/clients-logo-3-v1.jpg         |
+| clients-logo-4         | Clientes / logos                       | 1/1   | 1600×1600               | public/images/design/clients-logo-4-v1.jpg         |
+| clients-logo-5         | Clientes / logos                       | 1/1   | 1600×1600               | public/images/design/clients-logo-5-v1.jpg         |
+| clients-logo-6         | Clientes / logos                       | 1/1   | 1600×1600               | public/images/design/clients-logo-6-v1.jpg         |
+| contact-side           | Contacto / lateral                     | 3/4   | 1200×1600               | public/images/design/contact-side-v1.jpg           |
 
 Los alt arrancan en `TODO(copy)`. No se muestran en el marco; solo los lee la foto real.
 

@@ -247,6 +247,10 @@ body[data-site="cnc"] {
   transition-delay: 210ms;
 }
 
+.design-diptych-stagger[data-reveal="shown"] > :nth-child(2) {
+  transition-delay: 80ms;
+}
+
 @keyframes design-headline-rise {
   from {
     transform: translateY(24px);

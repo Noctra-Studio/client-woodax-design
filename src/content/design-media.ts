@@ -8,6 +8,8 @@ import { isProductionDeploy } from "@/lib/deploy-env";
 
 export const designMediaIds = [
   "home-hero",
+  "home-audience-home",
+  "home-audience-business",
   "projects-1",
   "projects-2",
   "projects-3",
@@ -37,17 +39,10 @@ export type DesignMediaId = (typeof designMediaIds)[number];
 export type DesignMediaRatio = "4/5" | "4/3" | "3/4" | "1/1";
 
 export type DesignMediaTag =
-  | "kitchen"
-  | "closet"
-  | "custom-piece"
-  | "commercial-space";
+  "kitchen" | "closet" | "custom-piece" | "commercial-space";
 
 export type DesignMediaPage =
-  | "home"
-  | "about"
-  | "services"
-  | "clients"
-  | "contact";
+  "home" | "about" | "services" | "clients" | "contact";
 
 type DesignMediaBase = {
   id: DesignMediaId;
@@ -64,6 +59,13 @@ const pendingAlt = { es: "TODO(copy)", en: "TODO(copy)" };
 
 export const designMedia: readonly DesignMediaSlot[] = [
   { id: "home-hero", ratio: "4/5", src: null, alt: pendingAlt },
+  { id: "home-audience-home", ratio: "4/5", src: null, alt: pendingAlt },
+  {
+    id: "home-audience-business",
+    ratio: "4/5",
+    src: null,
+    alt: pendingAlt,
+  },
   {
     id: "projects-1",
     ratio: "4/5",
@@ -170,7 +172,7 @@ export function designMediaFile(id: DesignMediaId, version = 1): string {
 }
 
 export function designMediaPage(id: DesignMediaId): DesignMediaPage {
-  if (id === "home-hero" || id.startsWith("projects-")) return "home";
+  if (id.startsWith("home-") || id.startsWith("projects-")) return "home";
   if (id.startsWith("services-")) return "services";
   if (id.startsWith("about-")) return "about";
   if (id.startsWith("clients-")) return "clients";
