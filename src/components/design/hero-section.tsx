@@ -28,7 +28,7 @@ export function HeroSection({
   const full = isDesignFull();
 
   return (
-    <section className="relative overflow-hidden" aria-labelledby="hero-title">
+    <section className="bg-woodax-bg relative overflow-hidden" aria-labelledby="hero-title">
       <div className="mx-auto flex min-h-[100svh] w-full max-w-[1200px] flex-col px-5 pt-24 pb-[max(var(--home-section-y),calc(6.5rem+env(safe-area-inset-bottom)))] md:px-8 md:pb-[var(--home-section-y)]">
         <div className="mt-auto grid items-end gap-10 md:grid-cols-12 md:gap-8">
           <div

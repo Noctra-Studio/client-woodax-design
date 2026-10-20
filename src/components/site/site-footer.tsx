@@ -59,7 +59,9 @@ export async function SiteFooter({ variant }: { variant: "design" | "cnc" }) {
       <footer
         className={cn(
           "px-5 pt-16 pb-8 md:px-8 md:pt-24",
-          isDesign ? "border-woodax-line border-t" : "border-cnc-line border-t",
+          isDesign
+            ? "border-woodax-line bg-woodax-bg border-t"
+            : "border-cnc-line border-t",
         )}
       >
         <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-12">

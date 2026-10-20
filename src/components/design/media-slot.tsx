@@ -21,6 +21,8 @@ type MediaSlotProps = {
   labelPosition?: "center" | "top";
   /** Real photos default to --radius-media. Placeholders stay --radius-card. */
   radius?: "card" | "media";
+  /** On sand, the placeholder uses the page cream so it stays visible. */
+  surface?: "default" | "sand";
   className?: string;
 };
 
@@ -65,6 +67,7 @@ export async function MediaSlot({
   fill = false,
   labelPosition = "center",
   radius,
+  surface = "default",
   className,
 }: MediaSlotProps) {
   const slot = getDesignMedia(id);
@@ -82,7 +85,9 @@ export async function MediaSlot({
         fill ? "absolute inset-0 h-full w-full" : "w-full",
         slot.src
           ? undefined
-          : "border-woodax-charcoal/55 bg-woodax-surface border border-dashed",
+          : surface === "sand"
+            ? "border-woodax-charcoal/70 bg-woodax-bg border border-dashed"
+            : "border-woodax-charcoal/55 bg-woodax-surface border border-dashed",
         fill
           ? undefined
           : radius === "card" || !slot.src

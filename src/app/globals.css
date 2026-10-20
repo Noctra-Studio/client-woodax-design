@@ -15,6 +15,10 @@
   --color-woodax-charcoal: #483d3c;
   --color-woodax-cream: #e5e1d1;
   --color-woodax-paper: #f3f1ea;
+  /* Page rhythm. bg is the current paper cream; sand is the official cream, one step deeper; ink-surface is the text charcoal. */
+  --color-woodax-bg: #f3f1ea;
+  --color-woodax-sand: #e5e1d1;
+  --color-woodax-ink-surface: #483d3c;
   /* Alias of woodax-cream: card and media-slot surface. */
   --color-woodax-surface: #e5e1d1;
   --color-woodax-line: #d6d1be;
@@ -127,7 +131,10 @@ body {
 }
 
 body[data-site="design"] {
-  background-color: var(--color-woodax-paper);
+  --woodax-bg: var(--color-woodax-bg);
+  --woodax-sand: var(--color-woodax-sand);
+  --woodax-ink-surface: var(--color-woodax-ink-surface);
+  background-color: var(--woodax-bg);
   color: var(--color-woodax-charcoal);
   color-scheme: light;
   font-weight: 500;

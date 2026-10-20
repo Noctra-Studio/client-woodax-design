@@ -45,7 +45,7 @@ export async function ServicesDiptych() {
   return (
     <section
       aria-labelledby="services-teaser-title"
-      className="home-section scroll-mt-24 px-5 md:px-8"
+      className="home-section bg-woodax-bg scroll-mt-24 px-5 md:px-8"
     >
       <div className="mx-auto w-full max-w-[1200px]">
         <Reveal>

@@ -66,7 +66,7 @@ export default async function ContactPage({
     <main className="flex flex-1 flex-col">
       <section
         aria-labelledby="contact-title"
-        className="px-5 pt-28 pb-4 md:px-8 md:pt-32"
+        className="bg-woodax-bg px-5 pt-28 pb-4 md:px-8 md:pt-32"
       >
         <div className="mx-auto grid w-full max-w-[1200px] items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(16rem,22rem)]">
           <div>
@@ -91,7 +91,7 @@ export default async function ContactPage({
       <LeadCapture copy={copy} />
       <section
         aria-labelledby="contact-channels-title"
-        className="px-5 py-16 md:px-8 md:py-24"
+        className="home-section bg-woodax-sand px-5 md:px-8"
       >
         <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-8">
           <h2

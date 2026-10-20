@@ -13,7 +13,7 @@ export async function HomeCta() {
   return (
     <section
       aria-labelledby="home-cta-title"
-      className="home-section scroll-mt-24 px-5 md:px-8"
+      className="home-section bg-woodax-sand scroll-mt-24 px-5 md:px-8"
     >
       <Reveal
         stagger

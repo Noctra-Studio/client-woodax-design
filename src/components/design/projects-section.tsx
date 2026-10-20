@@ -28,7 +28,7 @@ export async function ProjectsSection({
       <section
         id="proyectos"
         aria-labelledby="projects-title"
-        className="home-section scroll-mt-24 px-5 md:px-8"
+        className="home-section bg-woodax-sand scroll-mt-24 px-5 md:px-8"
       >
         <div className="mx-auto w-full max-w-[1200px]">
           <Reveal stagger>
@@ -113,7 +113,7 @@ function ProjectCard({
 }) {
   return (
     <article className="relative">
-      <MediaSlot id={item.id} sizes={sizes} />
+      <MediaSlot id={item.id} sizes={sizes} surface="sand" />
       {label ? (
         <p className="border-woodax-charcoal/15 bg-woodax-cream text-woodax-charcoal absolute top-4 left-4 z-10 rounded-sm border px-3 py-1 text-[13px] font-semibold tracking-[0.18em] uppercase">
           {label}

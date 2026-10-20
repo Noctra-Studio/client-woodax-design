@@ -71,7 +71,7 @@ export default async function ServicesPage({
     <main className="flex flex-1 flex-col">
       <section
         aria-labelledby="services-title"
-        className="px-5 pt-28 pb-16 md:px-8 md:pt-32 md:pb-24"
+        className="bg-woodax-bg px-5 pt-28 pb-[var(--home-section-y)] md:px-8 md:pt-32"
       >
         <div className="mx-auto w-full max-w-[1200px]">
           <h1
@@ -83,7 +83,14 @@ export default async function ServicesPage({
           <p className="mt-5 max-w-[62ch] text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.65] font-medium text-pretty">
             {t("intro")}
           </p>
-          <ol className="mt-16 grid gap-12 md:mt-20">
+        </div>
+      </section>
+      <section
+        aria-labelledby="services-title"
+        className="home-section bg-woodax-sand px-5 md:px-8"
+      >
+        <div className="mx-auto w-full max-w-[1200px]">
+          <ol className="grid gap-12 md:gap-20">
             {serviceKeys.map((key, index) => {
               const [title, body] = t(key).split(" — ");
               const mediaId = serviceMedia[key];
@@ -100,7 +107,7 @@ export default async function ServicesPage({
                   )}
                 >
                   <div className="grid max-w-[62ch] gap-3 md:grid-cols-[4.5rem_1fr] md:gap-8">
-                    <p className="text-woodax-charcoal/75 font-serif text-[clamp(1.25rem,2vw,1.5rem)] leading-none font-normal tracking-[-0.01em] tabular-nums">
+                    <p className="text-woodax-charcoal/80 font-serif text-[clamp(1.25rem,2vw,1.5rem)] leading-none font-normal tracking-[-0.01em] tabular-nums">
                       {String(index + 1).padStart(2, "0")}
                     </p>
                     <div>
@@ -118,6 +125,7 @@ export default async function ServicesPage({
                     <MediaSlot
                       id={mediaId}
                       sizes="(min-width: 768px) 24rem, 100vw"
+                      surface="sand"
                     />
                   ) : null}
                 </li>
@@ -127,7 +135,7 @@ export default async function ServicesPage({
         </div>
       </section>
       <ProcessSection />
-      <section className="px-5 pb-16 md:px-8 md:pb-24">
+      <section className="home-section bg-woodax-bg px-5 md:px-8">
         <div className="mx-auto flex w-full max-w-[1200px] flex-col items-start gap-6">
           <AnalyticsAnchor
             href={cncUrl}
