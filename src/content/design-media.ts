@@ -49,6 +49,8 @@ type DesignMediaBase = {
   ratio: DesignMediaRatio;
   alt: { es: string; en: string };
   tag?: DesignMediaTag;
+  /** object-position when the frame crops the photo. Omit to keep center. */
+  focal?: string;
 };
 
 export type DesignMediaSlot =
@@ -58,60 +60,155 @@ export type DesignMediaSlot =
 const pendingAlt = { es: "TODO(copy)", en: "TODO(copy)" };
 
 export const designMedia: readonly DesignMediaSlot[] = [
-  { id: "home-hero", ratio: "4/5", src: null, alt: pendingAlt },
-  { id: "home-audience-home", ratio: "4/5", src: null, alt: pendingAlt },
+  {
+    id: "home-hero",
+    ratio: "4/5",
+    src: designMediaFile("home-hero"),
+    width: 1600,
+    height: 2000,
+    alt: {
+      es: "Cocina con isla de concreto, barra de madera y bancos tapizados",
+      en: "Kitchen with a concrete island, wooden bar and upholstered stools",
+    },
+  },
+  {
+    id: "home-audience-home",
+    ratio: "4/5",
+    src: designMediaFile("home-audience-home"),
+    width: 1600,
+    height: 2000,
+    alt: {
+      es: "Cocina con gabinetes de madera y repisas abiertas",
+      en: "Kitchen with wooden cabinets and open shelving",
+    },
+  },
   {
     id: "home-audience-business",
     ratio: "4/5",
-    src: null,
-    alt: pendingAlt,
+    src: designMediaFile("home-audience-business"),
+    width: 1600,
+    height: 2000,
+    alt: {
+      es: "Dulcería con estantería roja iluminada y exhibidores de latón",
+      en: "Candy shop with lit red shelving and brass display stands",
+    },
   },
   {
     id: "projects-1",
     ratio: "4/5",
-    src: null,
-    alt: pendingAlt,
+    src: designMediaFile("projects-1"),
+    width: 1600,
+    height: 2000,
+    alt: {
+      es: "Cocina con muro de madera integrado al refrigerador",
+      en: "Kitchen with a wooden wall built around the refrigerator",
+    },
     tag: "kitchen",
   },
   {
     id: "projects-2",
     ratio: "4/5",
-    src: null,
-    alt: pendingAlt,
+    src: designMediaFile("projects-2"),
+    width: 1600,
+    height: 2000,
+    alt: {
+      es: "Clóset de madera con paneles de rejilla",
+      en: "Wooden wardrobe with cane panels",
+    },
     tag: "closet",
   },
   {
     id: "projects-3",
     ratio: "4/5",
-    src: null,
-    alt: pendingAlt,
+    src: designMediaFile("projects-3"),
+    width: 1600,
+    height: 2000,
+    alt: {
+      es: "Escalera flotante con escalones de madera",
+      en: "Floating staircase with wooden treads",
+    },
     tag: "custom-piece",
   },
   {
     id: "projects-4",
     ratio: "4/5",
-    src: null,
-    alt: pendingAlt,
+    src: designMediaFile("projects-4"),
+    width: 1600,
+    height: 2000,
+    alt: {
+      es: "Interior de dulcería con mobiliario a medida",
+      en: "Candy shop interior with custom furniture",
+    },
     tag: "commercial-space",
   },
   {
     id: "projects-5",
     ratio: "4/5",
-    src: null,
-    alt: pendingAlt,
+    src: designMediaFile("projects-5"),
+    width: 1600,
+    height: 2000,
+    alt: {
+      es: "Recámara con clóset de celosía de madera",
+      en: "Bedroom with a wooden lattice wardrobe",
+    },
     tag: "kitchen",
   },
   {
     id: "projects-6",
     ratio: "4/5",
-    src: null,
-    alt: pendingAlt,
+    src: designMediaFile("projects-6"),
+    width: 1600,
+    height: 2000,
+    alt: {
+      es: "Nicho de madera con repisas iluminadas",
+      en: "Wooden niche with lit shelves",
+    },
     tag: "closet",
   },
-  { id: "services-kitchens", ratio: "4/3", src: null, alt: pendingAlt },
-  { id: "services-closets", ratio: "4/3", src: null, alt: pendingAlt },
-  { id: "services-custom", ratio: "4/3", src: null, alt: pendingAlt },
-  { id: "services-commercial", ratio: "4/3", src: null, alt: pendingAlt },
+  {
+    id: "services-kitchens",
+    ratio: "4/3",
+    src: designMediaFile("services-kitchens"),
+    width: 1600,
+    height: 1200,
+    alt: {
+      es: "Cocina con repisa iluminada y cubierta de concreto",
+      en: "Kitchen with a lit shelf and concrete countertop",
+    },
+  },
+  {
+    id: "services-closets",
+    ratio: "4/3",
+    src: designMediaFile("services-closets"),
+    width: 1600,
+    height: 1200,
+    alt: {
+      es: "Clóset de madera con rejilla junto a un baño",
+      en: "Wooden cane-panel wardrobe beside a bathroom",
+    },
+  },
+  {
+    id: "services-custom",
+    ratio: "4/3",
+    src: designMediaFile("services-custom"),
+    width: 1600,
+    height: 1200,
+    alt: {
+      es: "Detalle de unión entre madera y cubierta de piedra",
+      en: "Detail of a wood and stone countertop joint",
+    },
+  },
+  {
+    id: "services-commercial",
+    ratio: "4/3",
+    src: designMediaFile("services-commercial"),
+    width: 1600,
+    height: 1200,
+    alt: {
+      es: "Estantería de dulcería con iluminación cálida",
+      en: "Candy shop shelving with warm lighting",
+    },
+  },
   { id: "about-workshop-1", ratio: "4/3", src: null, alt: pendingAlt },
   { id: "about-workshop-2", ratio: "4/3", src: null, alt: pendingAlt },
   { id: "about-workshop-3", ratio: "4/3", src: null, alt: pendingAlt },
@@ -123,7 +220,17 @@ export const designMedia: readonly DesignMediaSlot[] = [
   { id: "clients-logo-4", ratio: "1/1", src: null, alt: pendingAlt },
   { id: "clients-logo-5", ratio: "1/1", src: null, alt: pendingAlt },
   { id: "clients-logo-6", ratio: "1/1", src: null, alt: pendingAlt },
-  { id: "contact-side", ratio: "3/4", src: null, alt: pendingAlt },
+  {
+    id: "contact-side",
+    ratio: "3/4",
+    src: designMediaFile("contact-side"),
+    width: 1200,
+    height: 1600,
+    alt: {
+      es: "Puerta de madera de encino con jaladera negra",
+      en: "Oak door with a black handle",
+    },
+  },
 ];
 
 const designMediaById = new Map<DesignMediaId, DesignMediaSlot>(

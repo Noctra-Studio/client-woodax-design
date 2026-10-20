@@ -103,10 +103,12 @@ export async function MediaSlot({
           alt={slot.alt[locale]}
           fill
           sizes={sizes}
-          priority={priority || undefined}
           preload={priority || undefined}
           fetchPriority={priority ? "high" : undefined}
+          decoding={priority ? "sync" : "async"}
+          loading={priority ? undefined : "lazy"}
           className="object-cover"
+          style={slot.focal ? { objectPosition: slot.focal } : undefined}
         />
       ) : (
         <>

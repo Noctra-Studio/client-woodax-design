@@ -79,7 +79,7 @@ export default async function DesignPage({
         {hasMedia("home-hero") ? (
           <MediaSlot
             id="home-hero"
-            sizes="(min-width: 768px) 34rem, 100vw"
+            sizes="(min-width: 1280px) 29rem, (min-width: 768px) 36vw, calc(100vw - 2.5rem)"
             priority
           />
         ) : null}
