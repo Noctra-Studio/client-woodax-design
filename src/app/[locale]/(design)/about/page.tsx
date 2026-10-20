@@ -5,8 +5,9 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { MediaSlot } from "@/components/design/media-slot";
 import { designAbout } from "@/content/design-about";
 import {
-  hasMedia,
+  getDesignMedia,
   visibleSlots,
+  type DesignMediaId,
   type DesignMediaSlot,
 } from "@/content/design-media";
 import { designPages } from "@/content/design-pages";
@@ -15,6 +16,16 @@ import { routing, type Locale } from "@/i18n/routing";
 import { absoluteUrl, localizedMetadata } from "@/lib/seo";
 import { designAboutJsonLd } from "@/lib/structured-data";
 import { cn } from "@/lib/utils";
+
+const ABOUT_HISTORY_FALLBACK = "about-workshop-2" satisfies DesignMediaId;
+
+/** Portrait when it has a file. Otherwise the workshop photo, cropped to 4/5. */
+function aboutHistoryPhoto():
+  "about-portrait" | typeof ABOUT_HISTORY_FALLBACK | null {
+  if (getDesignMedia("about-portrait").src) return "about-portrait";
+  if (getDesignMedia(ABOUT_HISTORY_FALLBACK).src) return ABOUT_HISTORY_FALLBACK;
+  return null;
+}
 
 export async function generateMetadata({
   params,
@@ -58,8 +69,11 @@ export default async function AboutPage({
   const nav = await getTranslations("nav.design");
   const story = designAbout.story?.[locale] ?? [];
   const audience = designAbout.audience[locale];
-  const workshop = visibleSlots("about-workshop-");
-  const showPortrait = hasMedia("about-portrait");
+  const historyPhoto = aboutHistoryPhoto();
+  const workshop = visibleSlots("about-workshop-").filter((slot) => {
+    if (historyPhoto !== ABOUT_HISTORY_FALLBACK) return true;
+    return slot.id !== ABOUT_HISTORY_FALLBACK && slot.src !== null;
+  });
   const pageUrl = absoluteUrl(
     "design",
     getPathname({ href: "/about", locale }),
@@ -89,9 +103,10 @@ export default async function AboutPage({
       >
         <div
           className={cn(
-            "mx-auto w-full max-w-[1200px]",
-            showPortrait &&
-              "grid items-start gap-12 lg:grid-cols-[minmax(0,60ch)_minmax(16rem,22rem)] lg:justify-between lg:gap-16",
+            "mx-auto w-full",
+            historyPhoto
+              ? "grid max-w-[1200px] items-start gap-12 lg:grid-cols-[minmax(0,60ch)_minmax(16rem,22rem)] lg:justify-between lg:gap-16"
+              : "max-w-[60ch]",
           )}
         >
           <div className="max-w-[60ch]">
@@ -119,9 +134,15 @@ export default async function AboutPage({
               ),
             )}
           </div>
-          {showPortrait ? (
+          {historyPhoto === "about-portrait" ? (
             <MediaSlot
               id="about-portrait"
+              sizes="(min-width: 1024px) 22rem, 80vw"
+            />
+          ) : historyPhoto === ABOUT_HISTORY_FALLBACK ? (
+            <MediaSlot
+              id={ABOUT_HISTORY_FALLBACK}
+              ratio="4/5"
               sizes="(min-width: 1024px) 22rem, 80vw"
             />
           ) : null}

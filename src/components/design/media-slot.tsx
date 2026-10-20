@@ -7,6 +7,7 @@ import {
   recommendedPixels,
   slotWillRender,
   type DesignMediaId,
+  type DesignMediaRatio,
 } from "@/content/design-media";
 import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
@@ -15,6 +16,8 @@ type MediaSlotProps = {
   id: DesignMediaId;
   sizes: string;
   priority?: boolean;
+  /** Crop a photo into another frame. Placeholders keep the slot ratio. */
+  ratio?: DesignMediaRatio;
   /** Stretch to a positioned parent. The label still shows the file ratio. */
   fill?: boolean;
   /** Full-bleed frames keep the label in the top band, clear of the headline. */
@@ -64,6 +67,7 @@ export async function MediaSlot({
   id,
   sizes,
   priority = false,
+  ratio: frameRatio,
   fill = false,
   labelPosition = "center",
   radius,
@@ -75,7 +79,8 @@ export async function MediaSlot({
 
   const requested = await getLocale();
   const locale = hasLocale(routing.locales, requested) ? requested : "es";
-  const pixels = recommendedPixels(slot.ratio);
+  const ratio = frameRatio ?? slot.ratio;
+  const pixels = recommendedPixels(ratio);
   const t = await getTranslations("design.mediaSlot");
 
   return (
@@ -100,7 +105,7 @@ export async function MediaSlot({
         fill
           ? undefined
           : ({
-              "--slot-ratio": slot.ratio.replace("/", " / "),
+              "--slot-ratio": ratio.replace("/", " / "),
             } as React.CSSProperties)
       }
     >

@@ -360,7 +360,7 @@ Bloqueo de lanzamiento: instagramUrl y facebookUrl no pueden ser "#" en producci
 
 ### Nosotros
 
-Historia aprobada por Adrián. Con las fotos reales del taller (about-workshop-1..3) la ruta se publica cuando `DESIGN_MODE=full` (nav, sitemap, JSON-LD AboutPage). `about-portrait` sigue vacío y no abre hueco.
+Historia aprobada por Adrián. Con las fotos reales del taller (about-workshop-1..3) la ruta se publica cuando `DESIGN_MODE=full` (nav, sitemap, JSON-LD AboutPage). `about-portrait` sigue vacío: la columna usa `about-workshop-2` recortada a 4/5 y esa foto no se repite en la galería.
 
 - meta.title — ES: Nosotros · Woodax Design | EN: About · Woodax Design
 - meta.description ⚠︎ — ES: Carpintería a medida desde 2024: piezas de calidad superior para familias, negocios, constructoras y diseñadores de interiores. | EN: Bespoke carpentry since 2024: higher-quality pieces for families, businesses, construction companies and interior designers.

@@ -223,6 +223,8 @@ export const designMedia: readonly DesignMediaSlot[] = [
   {
     id: "about-workshop-2",
     ratio: "4/3",
+    // History column crops this 4/3 frame to 4/5. 32% keeps the group of people in frame.
+    focal: "32% center",
     src: designMediaFile("about-workshop-2"),
     width: 1600,
     height: 1200,
