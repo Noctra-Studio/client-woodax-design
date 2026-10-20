@@ -8,7 +8,7 @@ El tamaño sale de la proporción × 400 (4/5 → 1600×2000). Un logo 1/1 va a 
 | ---------------------- | -------------------------------------- | ----- | ----------------------- | -------------------------------------------------- | --------- |
 | home-hero              | Inicio / hero                          | 4/5   | 1600×2000               | public/images/design/home-hero-v1.jpg              | ✅        |
 | home-audience-home     | Inicio / Lo que hacemos · hogar        | 4/5   | 1600×2000               | public/images/design/home-audience-home-v1.jpg     | ✅        |
-| home-audience-business | Inicio / Lo que hacemos · negocio      | 4/5   | 1600×2000               | public/images/design/home-audience-business-v1.jpg | ✅        |
+| home-audience-business | Inicio / Lo que hacemos · negocio      | 4/5   | 1600×2000               | public/images/design/home-audience-business-v2.jpg | ✅        |
 | projects-1             | Inicio / proyectos · cocina            | 4/5   | 1600×2000               | public/images/design/projects-1-v1.jpg             | ✅        |
 | projects-2             | Inicio / proyectos · clóset            | 4/5   | 1600×2000               | public/images/design/projects-2-v1.jpg             | ✅        |
 | projects-3             | Inicio / proyectos · pieza a medida    | 4/5   | 1600×2000               | public/images/design/projects-3-v1.jpg             | ✅        |
@@ -18,10 +18,10 @@ El tamaño sale de la proporción × 400 (4/5 → 1600×2000). Un logo 1/1 va a 
 | services-kitchens      | Servicios / cocinas                    | 4/3   | 1600×1200               | public/images/design/services-kitchens-v1.jpg      | ✅        |
 | services-closets       | Servicios / clósets                    | 4/3   | 1600×1200               | public/images/design/services-closets-v1.jpg       | ✅        |
 | services-custom        | Servicios / piezas a medida            | 4/3   | 1600×1200               | public/images/design/services-custom-v1.jpg        | ✅        |
-| services-commercial    | Servicios / espacios comerciales       | 4/3   | 1600×1200               | public/images/design/services-commercial-v1.jpg    | ✅        |
-| about-workshop-1       | Nosotros / taller                      | 4/3   | 1600×1200               | public/images/design/about-workshop-1-v1.jpg       | pendiente |
-| about-workshop-2       | Nosotros / taller                      | 4/3   | 1600×1200               | public/images/design/about-workshop-2-v1.jpg       | pendiente |
-| about-workshop-3       | Nosotros / taller                      | 4/3   | 1600×1200               | public/images/design/about-workshop-3-v1.jpg       | pendiente |
+| services-commercial    | Servicios / espacios comerciales       | 4/3   | 1600×1200               | public/images/design/services-commercial-v2.jpg    | ✅        |
+| about-workshop-1       | Nosotros / taller                      | 4/3   | 1600×1200               | public/images/design/about-workshop-1-v1.jpg       | ✅        |
+| about-workshop-2       | Nosotros / taller                      | 4/3   | 1600×1200               | public/images/design/about-workshop-2-v1.jpg       | ✅        |
+| about-workshop-3       | Nosotros / taller                      | 4/3   | 1600×1200               | public/images/design/about-workshop-3-v1.jpg       | ✅        |
 | about-workshop-4       | Nosotros / taller                      | 4/3   | 1600×1200               | public/images/design/about-workshop-4-v1.jpg       | pendiente |
 | about-portrait         | Nosotros / retrato                     | 4/5   | 1600×2000               | public/images/design/about-portrait-v1.jpg         | pendiente |
 | clients-logo-1         | Clientes / logos                       | 1/1   | 1600×1600               | public/images/design/clients-logo-1-v1.jpg         | pendiente |
@@ -33,6 +33,8 @@ El tamaño sale de la proporción × 400 (4/5 → 1600×2000). Un logo 1/1 va a 
 | contact-side           | Contacto / lateral                     | 3/4   | 1200×1600               | public/images/design/contact-side-v1.jpg           | ✅        |
 
 Los slots con ✅ tienen foto, `width`, `height` y alt en español e inglés. El resto sigue en `TODO(copy)` y se dibuja como placeholder fuera de Production. El alt no se muestra en el marco; solo lo lee la foto real.
+
+`home-audience-business` y `services-commercial` están en `-v2`. La v1 ya se publicó; `/images` se sirve con caché immutable, así que el reemplazo sube el sufijo y no reescribe el archivo anterior. `about-workshop-1` a `about-workshop-3` entran en `-v1`. `about-workshop-4` y `about-portrait` siguen pendientes. Con tres fotos el bloque de taller es editorial (una grande y dos chicas) y el cuarto slot vacío no abre un hueco. Nosotros sigue sin publicarse en Production mientras `designAbout.placeholder` sea `true`.
 
 ## Cómo subir una foto
 

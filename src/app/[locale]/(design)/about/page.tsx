@@ -4,7 +4,11 @@ import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { MediaSlot } from "@/components/design/media-slot";
 import { designAbout } from "@/content/design-about";
-import { hasMedia, visibleSlots } from "@/content/design-media";
+import {
+  hasMedia,
+  visibleSlots,
+  type DesignMediaSlot,
+} from "@/content/design-media";
 import { designPages } from "@/content/design-pages";
 import { routing, type Locale } from "@/i18n/routing";
 import { localizedMetadata } from "@/lib/seo";
@@ -117,20 +121,52 @@ export default async function AboutPage({
           </ul>
         </div>
       </section>
-      {workshop.length > 0 ? (
-        <section className="home-section bg-woodax-bg px-5 md:px-8">
-          <ul className="mx-auto grid w-full max-w-[1200px] gap-5 sm:grid-cols-2">
-            {workshop.map((slot) => (
-              <li key={slot.id}>
-                <MediaSlot
-                  id={slot.id}
-                  sizes="(min-width: 640px) 40vw, 100vw"
-                />
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
+      <WorkshopGallery slots={workshop} />
     </main>
+  );
+}
+
+function WorkshopGallery({ slots }: { slots: readonly DesignMediaSlot[] }) {
+  const photos = slots.filter((slot) => slot.src !== null);
+  const frames = photos.length >= 3 ? photos : slots;
+  if (frames.length === 0) return null;
+
+  const [lead, second, third, ...rest] = frames;
+  const editorial =
+    lead !== undefined &&
+    second !== undefined &&
+    third !== undefined &&
+    rest.length === 0 &&
+    lead.src !== null &&
+    second.src !== null &&
+    third.src !== null;
+
+  if (!editorial) {
+    return (
+      <section className="home-section bg-woodax-bg px-5 md:px-8">
+        <ul className="mx-auto grid w-full max-w-[1200px] gap-5 sm:grid-cols-2">
+          {frames.map((slot) => (
+            <li key={slot.id}>
+              <MediaSlot id={slot.id} sizes="(min-width: 640px) 40vw, 100vw" />
+            </li>
+          ))}
+        </ul>
+      </section>
+    );
+  }
+
+  return (
+    <section className="home-section bg-woodax-bg px-5 md:px-8">
+      <ul className="mx-auto grid w-full max-w-[1200px] grid-cols-2 gap-4 md:gap-5">
+        <li className="col-span-2">
+          <MediaSlot id={lead.id} sizes="(min-width: 1200px) 1200px, 100vw" />
+        </li>
+        {[second, third].map((slot) => (
+          <li key={slot.id}>
+            <MediaSlot id={slot.id} sizes="(min-width: 1200px) 590px, 50vw" />
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
