@@ -105,7 +105,7 @@ const clientSchema = defineClientSchema({
       })
       .default("false"),
   ),
-  // Optional. The GA4 script loads only when this is set and APP_ENV is production.
+  // Optional. GA4 loads only when this is set, APP_ENV is production, and analytics consent was not refused.
   NEXT_PUBLIC_GA_ID: z.preprocess(
     emptyAsUndefined,
     z

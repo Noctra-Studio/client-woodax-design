@@ -40,9 +40,10 @@ export type AnalyticsParams<E extends AnalyticsEvent = AnalyticsEvent> =
 
 declare global {
   interface Window {
+    dataLayer?: unknown[];
     gtag?: (
-      command: "event",
-      eventName: string,
+      command: "event" | "consent" | "js" | "config",
+      eventName: string | Date | Record<string, "granted" | "denied">,
       params?: Record<string, string>,
     ) => void;
   }

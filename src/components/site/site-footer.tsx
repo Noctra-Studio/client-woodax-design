@@ -2,6 +2,7 @@ import { hasLocale } from "next-intl";
 import { getLocale, getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { AnalyticsAnchor } from "@/components/analytics/tracked-link";
+import { FooterCookieLink } from "@/components/consent/footer-cookie-link";
 import { FooterPrivacyLink } from "@/components/site/footer-privacy-link";
 import { CncLogo } from "@/components/brand/cnc-logo";
 import { WoodaxLogo } from "@/components/brand/woodax-logo";
@@ -37,6 +38,7 @@ export async function SiteFooter({ variant }: { variant: "design" | "cnc" }) {
     ? (await getTranslations("design.footer"))("location")
     : siteConfig.cncOffer.location.label[locale];
   const shared = await getTranslations("siteFooter");
+  const cookies = await getTranslations("cookies");
   const nav = await getTranslations("nav");
   const year = new Date().getFullYear();
   const siblingHref = isDesign
@@ -210,6 +212,9 @@ export async function SiteFooter({ variant }: { variant: "design" | "cnc" }) {
             <FooterPrivacyLink className={cn(linkClass, "text-sm")}>
               {t("privacy")}
             </FooterPrivacyLink>
+            <FooterCookieLink className={cn(linkClass, "text-sm")}>
+              {cookies("footer")}
+            </FooterCookieLink>
             <LocaleSlot variant={variant} label={nav("language")} size="bar" />
             <a
               href={NOCTRA_URL}

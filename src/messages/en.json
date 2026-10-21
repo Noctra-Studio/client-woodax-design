@@ -357,12 +357,29 @@
   "contact": {
     "title": "Contact"
   },
+  "cookies": {
+    "bannerLabel": "Cookie notice",
+    "bannerText": "We use cookies to make the site work and to measure, in aggregate, how many people visit it. You can turn them off anytime.",
+    "bannerLink": "Privacy notice",
+    "accept": "Accept",
+    "reject": "Reject",
+    "preferences": "Preferences",
+    "necessaryTitle": "Necessary",
+    "necessaryDescription": "They store your language and this choice. Always on.",
+    "analyticsTitle": "Analytics",
+    "analyticsDescription": "They measure, in aggregate, how many people visit the site.",
+    "marketingTitle": "Marketing",
+    "marketingDescription": "Used for campaigns. No scripts of this kind load today.",
+    "save": "Save preferences",
+    "footer": "Cookie preferences"
+  },
   "privacy": {
     "title": "Privacy notice",
     "intro": "When you send the form, Woodax Design and CNC by Woodax Design receive your name, your WhatsApp or email, and the project details you share.",
     "purpose": "We use that information only to reply to your request and follow up on the project.",
     "sale": "We do not sell this information or share it with third parties for advertising.",
     "analytics": "We use Google Analytics and Vercel Web Analytics to measure, in aggregate, how many people visit the site and which pages they open. We do not send your name, email, phone, or form text to these tools. Vercel Web Analytics does not use cookies. You can turn Google Analytics off with the <optOut>Google Analytics Opt-out Browser Add-on</optOut>.",
+    "cookies": "The site stores these cookies. woodax_consent remembers whether you allow measurement and lasts 400 days. NEXT_LOCALE remembers the language you choose and lasts until you close the browser. If you leave analytics on, Google Analytics stores _ga and _ga_* for up to 2 years to count visits in aggregate. You can change this choice in <preferences>Cookie preferences</preferences>.",
     "contact": "To ask about your information, write to {email}."
   },
   "metadata": {

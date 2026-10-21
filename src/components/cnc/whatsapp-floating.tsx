@@ -60,6 +60,7 @@ export function WhatsappFloating({
         event: "whatsapp_click",
         params: { site: "cnc", location: "floating" },
       }}
+      data-whatsapp-float
       className={cn(
         "border-cnc-muted bg-cnc-bg/80 text-cnc-text fixed right-6 bottom-6 z-20 hidden min-h-11 items-center gap-2 rounded-sm border px-4 text-sm font-medium backdrop-blur md:inline-flex",
         "focus-visible:outline-cnc-white pointer-fine:hover:border-cnc-text pointer-fine:hover:bg-cnc-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",

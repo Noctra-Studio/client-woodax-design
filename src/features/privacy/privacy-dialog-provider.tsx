@@ -24,6 +24,11 @@ type PrivacyDialogApi = {
 const PrivacyDialogContext = createContext<PrivacyDialogApi | null>(null);
 
 const openers = new Set<PrivacyDialogApi["openPrivacy"]>();
+const closers = new Set<() => void>();
+
+export function closePrivacyDialog() {
+  for (const close of closers) close();
+}
 
 const privacyDialogApi: PrivacyDialogApi = {
   openPrivacy: (trigger, options) => {
@@ -75,12 +80,21 @@ function PrivacyDialogHost({ variant }: { variant: "design" | "cnc" }) {
     [],
   );
 
+  const closePrivacy = useCallback(() => {
+    setOpen(false);
+    const onClose = onCloseRef.current;
+    onCloseRef.current = undefined;
+    onClose?.();
+  }, []);
+
   useLayoutEffect(() => {
     openers.add(openPrivacy);
+    closers.add(closePrivacy);
     return () => {
       openers.delete(openPrivacy);
+      closers.delete(closePrivacy);
     };
-  }, [openPrivacy]);
+  }, [closePrivacy, openPrivacy]);
 
   const handleOpenChange = useCallback((next: boolean) => {
     setOpen(next);

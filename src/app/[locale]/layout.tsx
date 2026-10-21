@@ -7,8 +7,13 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { NavLogoPreload } from "@/components/brand/nav-logo-preload";
+import {
+  CookieConsentChrome,
+  CookieConsentProvider,
+} from "@/components/consent/cookie-consent-provider";
 import { PrivacyDialogProvider } from "@/features/privacy/privacy-dialog-provider";
 import { routing } from "@/i18n/routing";
+import { consentBootstrapScript } from "@/lib/consent-bootstrap";
 import { clientEnv } from "@/lib/env";
 import { requestSite } from "@/lib/request-site";
 import { isIndexingAllowed, localizedMetadata } from "@/lib/seo";
@@ -88,26 +93,25 @@ export default async function LocaleLayout({
       >
         <NavLogoPreload variant={site} />
         <NextIntlClientProvider>
-          <PrivacyDialogProvider variant={site}>
-            {children}
-          </PrivacyDialogProvider>
+          <CookieConsentProvider variant={site}>
+            <PrivacyDialogProvider variant={site}>
+              {children}
+              <CookieConsentChrome />
+            </PrivacyDialogProvider>
+          </CookieConsentProvider>
         </NextIntlClientProvider>
-        {clientEnv.NEXT_PUBLIC_APP_ENV === "production" &&
-        clientEnv.NEXT_PUBLIC_GA_ID ? (
-          <>
-            <Script
-              id="ga-init"
-              strategy="lazyOnload"
-              dangerouslySetInnerHTML={{
-                __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config',${JSON.stringify(clientEnv.NEXT_PUBLIC_GA_ID)});`,
-              }}
-            />
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(clientEnv.NEXT_PUBLIC_GA_ID)}`}
-              strategy="lazyOnload"
-            />
-          </>
-        ) : null}
+        <Script
+          id="woodax-consent"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: consentBootstrapScript({
+              gaId: clientEnv.NEXT_PUBLIC_GA_ID,
+              loadGa:
+                clientEnv.NEXT_PUBLIC_APP_ENV === "production" &&
+                Boolean(clientEnv.NEXT_PUBLIC_GA_ID),
+            }),
+          }}
+        />
         <Analytics />
         <SpeedInsights />
       </body>

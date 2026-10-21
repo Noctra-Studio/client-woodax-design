@@ -246,7 +246,7 @@ Sibling site:
 
 Contact: mailto `hello@woodax.design` on Design and `cnc@woodax.design` on CNC, plus «Querétaro, México». Instagram and Facebook are shared 20px inline SVGs (Simple Icons paths, `currentColor`) with a 44px hit area, `aria-label` from messages, `target="_blank"` and `rel="noopener noreferrer"`. They render when the URL is set, including the temporary `"#"`. No WhatsApp.
 
-Bottom bar: `© {year} Woodax Design` on Design and `© {year} CNC by Woodax Design` on CNC. Privacy links to `/privacidad` and `/en/privacy`. The locale switch uses the same client transition as the nav (`router.replace`, `scroll: false`). Noctra credit: the label «Desarrollado por» / «Developed by» and an `<img alt="">` (`noctra-light.svg` on Design, `noctra-dark.svg` on CNC) form one link to `https://noctra.studio` with `rel="noopener"` and `aria-label` «Desarrollado por Noctra Studio» / «Developed by Noctra Studio». The credit stays quieter than the copyright line: the label is 12px and the logo is 20px tall. The link is still at least 44px tall. Opacity is reduced at rest and full on hover and focus.
+Bottom bar: `© {year} Woodax Design` on Design and `© {year} CNC by Woodax Design` on CNC. Privacy links to `/privacidad` and `/en/privacy`. Cookie preferences opens the consent dialog (section 14). The locale switch uses the same client transition as the nav (`router.replace`, `scroll: false`). Noctra credit: the label «Desarrollado por» / «Developed by» and an `<img alt="">` (`noctra-light.svg` on Design, `noctra-dark.svg` on CNC) form one link to `https://noctra.studio` with `rel="noopener"` and `aria-label` «Desarrollado por Noctra Studio» / «Developed by Noctra Studio». The credit stays quieter than the copyright line: the label is 12px and the logo is 20px tall. The link is still at least 44px tall. Opacity is reduced at rest and full on hover and focus.
 
 The MobileCtaBar must not cover the bottom bar. Add bottom padding while that bar is visible (hidden on Design `/contacto`, hidden on CNC while the form is in view, hidden from `md` up).
 
@@ -256,12 +256,17 @@ Launch blocker: `instagramUrl` and `facebookUrl` cannot be `"#"` in production.
 
 ## 14. Cookie consent
 
-- GA4 and Vercel Web Analytics load without a banner. The privacy notice, approved by Adrián on 2026-10-21, explains what they measure. Google Analytics can be turned off with the official opt-out add-on. If the site targets the EU, implement Consent Mode v2 with a banner.
-- Port the existing consent component from the Noctra Studio site repo (same UX and copy structure); adapt styles to these tokens and shadcn components, and texts to messages (es/en). Do not invent a different UX. That banner is for EU Consent Mode and for marketing, not for the current GA4 install.
-- Categories: Necessary (always on: locale, consent, preview-site cookies) · Analytics · Marketing. Marketing scripts load only after explicit opt-in for that category. GA4 is not behind that gate.
-- Storage: first-party cookie `woodax_consent` = JSON {v:1, necessary:true, analytics:boolean, marketing:boolean, ts}, path=/, SameSite=Lax, Secure, max-age 400 days (browser maximum; Chrome caps cookie lifetime at 400 days). Shared across woodax.design and cnc.woodax.design via domain=.woodax.design in production (host-only on previews/localhost). Mirror to localStorage as fallback (try/catch). Banner never shows again while the cookie exists; bump `v` to re-ask when categories change.
-- The banner must not cause layout shift, must not block the page (no modal on load), must be keyboard accessible, and must sit above the MobileCtaBar on mobile without covering the form submit button.
-- Footer "Preferencias de cookies" reopens the preferences dialog.
+Decision (replaces "GA4 loads without a banner"): both sites show a cookie bar. GA4 uses Consent Mode v2 as opt-out.
+
+- Bar, not a modal. It does not block the page, does not trap focus, and does not shift layout (`position: fixed`). `role="region"` with an aria-label. Keyboard accessible, visible focus.
+- UX is the Noctra Studio consent bar (bottom bar + preferences dialog, categories Necessary / Analytics / Marketing), adapted to these tokens, shadcn Switch/Dialog/Button, and messages. No floating cookie button: the footer link reopens the dialog.
+- Woodax: cream surface, charcoal text, rounded radius. CNC: dark surface, square radius.
+- Buttons: Accept · Reject · Preferences. Preferences opens the dialog. Necessary is always on and its switch is disabled. Analytics and Marketing are switches. Accept stores analytics on and marketing off. Marketing tags load only from `loadMarketingScripts` after an explicit opt-in; none are installed today.
+- GA4: before any tag, `analytics_storage` is `granted` and `ad_storage`, `ad_user_data`, `ad_personalization` are `denied` (no ads). Accept changes nothing (GA was already allowed). Reject, or Analytics off, calls `gtag('consent','update',{analytics_storage:'denied'})`, deletes `_ga` and `_ga_*` on the host and on `.woodax.design`, and later visits do not inject gtag.js. Vercel Web Analytics does not use cookies and does not depend on this bar. The GA script still loads only when `NEXT_PUBLIC_GA_ID` is set and `NEXT_PUBLIC_APP_ENV` is `production`.
+- Storage: first-party cookie `woodax_consent` = JSON `{v:1, necessary:true, analytics:boolean, marketing:boolean, ts}`, `Path=/`, `SameSite=Lax`, `Secure` on secure contexts, `Max-Age=34560000` (400 days). `Domain=.woodax.design` only when `NEXT_PUBLIC_APP_ENV` is `production` and the host is `woodax.design` or a subdomain, so woodax.design and cnc.woodax.design share the choice. Host-only on previews, staging and localhost. Staging cannot prove the shared cookie; production does.
+- Mirror the same JSON to `localStorage` key `woodax_consent` (`try/catch`). If either store has `v: 1`, the bar does not show. An inline script in `head` reads both before first paint and hides the bar, so a returning visitor never sees a flash. Bump `v` to ask again.
+- On mobile the bar sits above the MobileCtaBar. If it would cover a form submit button, it moves up. It stays behind the lead sheet.
+- Footer "Preferencias de cookies" / "Cookie preferences" reopens the dialog. The privacy notice names `woodax_consent`, `NEXT_LOCALE` and `_ga` / `_ga_*`, and links to the dialog. Cookie copy is pending Adrián (copy deck).
 
 ## 15. Language switch (no reload, no scroll jump)
 

@@ -357,12 +357,29 @@
   "contact": {
     "title": "Contacto"
   },
+  "cookies": {
+    "bannerLabel": "Aviso de cookies",
+    "bannerText": "Usamos cookies para que el sitio funcione y para medir, de forma agregada, cuántas personas lo visitan. Puedes rechazarlas cuando quieras.",
+    "bannerLink": "Aviso de privacidad",
+    "accept": "Aceptar",
+    "reject": "Rechazar",
+    "preferences": "Preferencias",
+    "necessaryTitle": "Necesarias",
+    "necessaryDescription": "Guardan tu idioma y esta elección. Siempre activas.",
+    "analyticsTitle": "Analítica",
+    "analyticsDescription": "Miden, de forma agregada, cuántas personas visitan el sitio.",
+    "marketingTitle": "Marketing",
+    "marketingDescription": "Sirven para campañas. Hoy no cargamos scripts de este tipo.",
+    "save": "Guardar preferencias",
+    "footer": "Preferencias de cookies"
+  },
   "privacy": {
     "title": "Aviso de privacidad",
     "intro": "Cuando envías el formulario, Woodax Design y CNC by Woodax Design reciben tu nombre, tu WhatsApp o email, y los datos del proyecto que nos compartes.",
     "purpose": "Usamos esa información únicamente para responder tu solicitud y dar seguimiento al proyecto.",
     "sale": "No vendemos estos datos ni los compartimos con terceros para publicidad.",
     "analytics": "Usamos Google Analytics y Vercel Web Analytics para medir, de forma agregada, cuántas personas visitan el sitio y qué páginas abren. No enviamos a estas herramientas el nombre, el email, el teléfono ni el texto del formulario. Vercel Web Analytics no usa cookies. Puedes desactivar Google Analytics con el <optOut>complemento de inhabilitación de Google Analytics</optOut>.",
+    "cookies": "El sitio guarda estas cookies. woodax_consent recuerda si aceptas la medición y dura 400 días. NEXT_LOCALE recuerda el idioma que eliges y dura hasta que cierras el navegador. Si dejas la analítica activa, Google Analytics guarda _ga y _ga_* hasta por 2 años para contar las visitas de forma agregada. Puedes cambiar esta elección en <preferences>Preferencias de cookies</preferences>.",
     "contact": "Si quieres preguntar por tu información, escribe a {email}."
   },
   "metadata": {

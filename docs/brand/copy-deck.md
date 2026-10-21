@@ -255,9 +255,22 @@ Fuente única: `siteConfig.cncOffer`, `cncDelivery.smallProjectFromBusinessDays`
 - footer.credit — ES: Desarrollado por Noctra Studio | EN: Developed by Noctra Studio
 - Rutas: /privacidad · /terminos (es) — /en/privacy · /en/terms (en)
 
-## Cookies
+## Cookies ⚠︎ pendiente de Adrián
 
-- Textos: portar los del banner de noctra.studio y adaptarlos a Woodax (marca y correo). ⚠︎ Revisión de Adrián.
+- cookies.bannerLabel — ES: Aviso de cookies | EN: Cookie notice
+- cookies.bannerText — ES: Usamos cookies para que el sitio funcione y para medir, de forma agregada, cuántas personas lo visitan. Puedes rechazarlas cuando quieras. | EN: We use cookies to make the site work and to measure, in aggregate, how many people visit it. You can turn them off anytime.
+- cookies.bannerLink — ES: Aviso de privacidad | EN: Privacy notice
+- cookies.accept — ES: Aceptar | EN: Accept
+- cookies.reject — ES: Rechazar | EN: Reject
+- cookies.preferences — ES: Preferencias | EN: Preferences
+- cookies.necessaryTitle — ES: Necesarias | EN: Necessary
+- cookies.necessaryDescription ⚠︎ — ES: Guardan tu idioma y esta elección. Siempre activas. | EN: They store your language and this choice. Always on.
+- cookies.analyticsTitle — ES: Analítica | EN: Analytics
+- cookies.analyticsDescription ⚠︎ — ES: Miden, de forma agregada, cuántas personas visitan el sitio. | EN: They measure, in aggregate, how many people visit the site.
+- cookies.marketingTitle — ES: Marketing | EN: Marketing
+- cookies.marketingDescription ⚠︎ — ES: Sirven para campañas. Hoy no cargamos scripts de este tipo. | EN: Used for campaigns. No scripts of this kind load today.
+- cookies.save — ES: Guardar preferencias | EN: Save preferences
+- cookies.footer — ES: Preferencias de cookies | EN: Cookie preferences
 
 ## Aviso de privacidad — Aprobado por Adrián 2026-10-21
 
@@ -268,6 +281,7 @@ Fuente única: `siteConfig.cncOffer`, `cncDelivery.smallProjectFromBusinessDays`
 - privacy.sale — ES: No vendemos estos datos ni los compartimos con terceros para publicidad. | EN: We do not sell this information or share it with third parties for advertising.
 - privacy.analytics — ES: Usamos Google Analytics y Vercel Web Analytics para medir, de forma agregada, cuántas personas visitan el sitio y qué páginas abren. No enviamos a estas herramientas el nombre, el email, el teléfono ni el texto del formulario. Vercel Web Analytics no usa cookies. Puedes desactivar Google Analytics con el complemento de inhabilitación de Google Analytics. | EN: We use Google Analytics and Vercel Web Analytics to measure, in aggregate, how many people visit the site and which pages they open. We do not send your name, email, phone, or form text to these tools. Vercel Web Analytics does not use cookies. You can turn Google Analytics off with the Google Analytics Opt-out Browser Add-on.
 - Link del complemento: https://tools.google.com/dlpage/gaoptout
+- privacy.cookies ⚠︎ — ES: El sitio guarda estas cookies. woodax_consent recuerda si aceptas la medición y dura 400 días. NEXT_LOCALE recuerda el idioma que eliges y dura hasta que cierras el navegador. Si dejas la analítica activa, Google Analytics guarda _ga y _ga_* hasta por 2 años para contar las visitas de forma agregada. Puedes cambiar esta elección en Preferencias de cookies. | EN: The site stores these cookies. woodax_consent remembers whether you allow measurement and lasts 400 days. NEXT_LOCALE remembers the language you choose and lasts until you close the browser. If you leave analytics on, Google Analytics stores _ga and _ga_* for up to 2 years to count visits in aggregate. You can change this choice in Cookie preferences. (en messages el enlace usa `<preferences>…</preferences>`)
 - privacy.contact — ES: Si quieres preguntar por tu información, escribe a privacidad@woodax.design. | EN: To ask about your information, write to privacidad@woodax.design. (en messages usa `{email}` inyectado desde `siteConfig.privacyEmail`)
 
 ## Términos y condiciones ⚠︎

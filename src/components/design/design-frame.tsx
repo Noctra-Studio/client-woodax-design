@@ -31,6 +31,7 @@ export function DesignFrame({
       </div>
       {showBar ? (
         <div
+          data-mobile-cta
           className={cn(
             "border-woodax-line bg-woodax-cream fixed inset-x-0 bottom-0 z-30 border-t px-4 pt-3 md:hidden",
             "pb-[max(0.75rem,env(safe-area-inset-bottom))]",

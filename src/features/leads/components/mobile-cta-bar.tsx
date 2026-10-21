@@ -34,6 +34,7 @@ export function MobileCtaBar({
 
   return (
     <div
+      data-mobile-cta
       data-hidden={hidden ? "true" : undefined}
       aria-hidden={hidden || undefined}
       inert={hidden || undefined}
