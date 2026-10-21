@@ -110,7 +110,8 @@
       "step2": {
         "name": "Your name",
         "contact": "WhatsApp or email",
-        "city": "City (optional)"
+        "city": "City (optional)",
+        "message": "Message (optional)"
       },
       "consentBefore": "I agree that Woodax Design may use this information to reply to my request.",
       "consentLink": "See privacy notice.",
@@ -144,7 +145,9 @@
         "consent": "Accept the notice so we can reply.",
         "projectType": "Choose what you would like to transform.",
         "city": "City must be between 2 and 60 characters.",
-        "details": "Choose at least one detail."
+        "details": "Choose at least one detail.",
+        "message": "The message can be up to 2000 characters.",
+        "rateLimited": "We received several submissions in a row. Try again later or message us on WhatsApp."
       },
       "errorPrefix": "Error:",
       "close": "Close",
@@ -299,7 +302,8 @@
       },
       "step2": {
         "name": "Name or company",
-        "contact": "WhatsApp or email"
+        "contact": "WhatsApp or email",
+        "message": "Message (optional)"
       },
       "consentBefore": "I agree that CNC by Woodax Design may use this information to reply to my request.",
       "consentLink": "See privacy notice.",
@@ -315,7 +319,8 @@
           "100+": "100+"
         },
         "whatsapp": "Continue on WhatsApp",
-        "detailsSubmit": "Send details"
+        "detailsSubmit": "Send details",
+        "fileLink": "Link to your file (Drive, WeTransfer, Dropbox)"
       },
       "error": {
         "generic": "We couldn't send your request. Please try again in a moment."
@@ -326,7 +331,9 @@
         "consent": "Accept the notice so we can reply.",
         "material": "Choose a material.",
         "projectState": "Choose where your project is at.",
-        "details": "Choose a quantity."
+        "details": "Choose a quantity.",
+        "message": "The message can be up to 2000 characters.",
+        "rateLimited": "We received several submissions in a row. Try again later or message us on WhatsApp."
       },
       "errorPrefix": "Error:",
       "close": "Close",

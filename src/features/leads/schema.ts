@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { TEXT_LIMITS, sanitizeText } from "@/features/leads/security/sanitize";
 
 export const MIN_SUBMIT_MS = 3_000;
 
@@ -12,6 +13,8 @@ export const leadError = {
   projectState: "errors.projectState",
   details: "errors.details",
   generic: "errors.generic",
+  message: "errors.message",
+  rateLimited: "errors.rateLimited",
 } as const;
 
 export const projectTypes = [
@@ -51,12 +54,27 @@ export function parseContact(
 
 function emptyToUndefined(value: unknown): unknown {
   if (typeof value !== "string") return undefined;
-  const trimmed = value.trim();
+  const trimmed = sanitizeText(value);
   return trimmed === "" ? undefined : trimmed;
 }
 
-const optionalText = (max: number) =>
-  z.preprocess(emptyToUndefined, z.string().max(max).optional());
+const optionalText = (max: number, error?: string) =>
+  z.preprocess(
+    emptyToUndefined,
+    error
+      ? z.string().max(max, error).optional()
+      : z.string().max(max).optional(),
+  );
+
+/** Keep the lead. A long file URL is clipped and then classified, not rejected. */
+function cappedText(max: number) {
+  return (value: unknown): unknown => {
+    if (typeof value !== "string") return undefined;
+    const trimmed = sanitizeText(value);
+    if (!trimmed) return undefined;
+    return trimmed.slice(0, max);
+  };
+}
 
 /** Origin and pathname only. Query and hash can carry tokens from other sites. */
 export function referrerOriginPath(raw: string): string | undefined {
@@ -77,22 +95,28 @@ function referrerField(value: unknown): unknown {
   return referrerOriginPath(value);
 }
 
-const nameField = z
-  .string()
-  .trim()
-  .min(2, leadError.name)
-  .max(80, leadError.name);
+const nameField = z.preprocess(
+  (value) => (typeof value === "string" ? sanitizeText(value) : value),
+  z.string().min(2, leadError.name).max(TEXT_LIMITS.name, leadError.name),
+);
 
-const contactField = z
-  .string()
-  .trim()
-  .min(1, leadError.contact)
-  .refine((value) => parseContact(value) !== null, leadError.contact);
+const companyField = optionalText(TEXT_LIMITS.company);
+const messageField = optionalText(TEXT_LIMITS.message, leadError.message);
+
+const contactField = z.preprocess(
+  (value) => (typeof value === "string" ? sanitizeText(value) : value),
+  z
+    .string()
+    .min(1, leadError.contact)
+    .refine((value) => parseContact(value) !== null, leadError.contact),
+);
 
 const localeField = z.enum(["es", "en"], { error: leadError.generic });
 
 const sharedFields = {
   name: nameField,
+  company: companyField,
+  message: messageField,
   contact: contactField,
   locale: localeField,
   consent: z.literal(true, { error: leadError.consent }),
@@ -124,6 +148,8 @@ export const leadSchema = z.discriminatedUnion("site", [
 
 const detailsShared = {
   name: nameField,
+  company: companyField,
+  message: messageField,
   contact: contactField,
   locale: localeField,
   startedAt: z.coerce.number({ error: leadError.generic }),
@@ -161,6 +187,7 @@ export const leadDetailsSchema = z.discriminatedUnion("site", [
         emptyToUndefined,
         z.enum(quantities, { error: leadError.details }).optional(),
       ),
+      fileLink: z.preprocess(cappedText(500), z.string().optional()),
     })
     .refine((value) => value.quantity !== undefined, {
       error: leadError.details,
@@ -174,6 +201,8 @@ export type LeadDetails = z.infer<typeof leadDetailsSchema>;
 const VALUE_KEYS = [
   "site",
   "name",
+  "company",
+  "message",
   "contact",
   "locale",
   "projectType",
@@ -183,6 +212,7 @@ const VALUE_KEYS = [
   "stage",
   "timeline",
   "quantity",
+  "fileLink",
   "startedAt",
 ] as const;
 
@@ -201,6 +231,8 @@ export function leadPayload(formData: FormData) {
   return {
     site: formData.get("site"),
     name: formData.get("name"),
+    company: formData.get("company"),
+    message: formData.get("message"),
     contact: formData.get("contact"),
     locale: formData.get("locale"),
     consent: formData.get("consent") === "on",
@@ -221,6 +253,8 @@ export function leadDetailsPayload(formData: FormData) {
   return {
     site: formData.get("site"),
     name: formData.get("name"),
+    company: formData.get("company"),
+    message: formData.get("message"),
     contact: formData.get("contact"),
     locale: formData.get("locale"),
     startedAt: formData.get("startedAt"),
@@ -230,6 +264,7 @@ export function leadDetailsPayload(formData: FormData) {
     stage: formData.get("stage"),
     timeline: formData.get("timeline"),
     quantity: formData.get("quantity"),
+    fileLink: formData.get("fileLink"),
   };
 }
 

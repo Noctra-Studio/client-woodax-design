@@ -32,7 +32,10 @@ import {
   LeadSuccess,
   useFocusOnError,
 } from "@/features/leads/components/lead-success";
-import { TextField } from "@/features/leads/components/text-field";
+import {
+  TextAreaField,
+  TextField,
+} from "@/features/leads/components/text-field";
 import {
   isPlainLinkClick,
   usePrivacyDialog,
@@ -61,6 +64,7 @@ type StoredDraft = {
   name?: string;
   contact?: string;
   city?: string;
+  message?: string;
   consent?: boolean;
   step?: number;
   startedAt?: number;
@@ -155,6 +159,7 @@ type LeadFields = {
   name: string;
   contact: string;
   city: string;
+  message: string;
   consent: boolean;
 };
 
@@ -192,6 +197,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
   const name = fields?.name ?? stored?.name ?? "";
   const contact = fields?.contact ?? stored?.contact ?? "";
   const city = fields?.city ?? stored?.city ?? "";
+  const message = fields?.message ?? stored?.message ?? "";
   const consent = fields?.consent ?? Boolean(stored?.consent);
   const currentStep = step ?? (stored?.step === 1 ? 1 : 0);
   const startedAt = snapshot.startedAt;
@@ -250,6 +256,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
         name,
         contact,
         city,
+        message,
         consent,
         step: currentStep,
         startedAt: Number(startedAt) || Date.now(),
@@ -271,6 +278,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
     name,
     contact,
     city,
+    message,
     consent,
     currentStep,
     startedAt,
@@ -360,6 +368,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
       name: current?.name ?? stored?.name ?? "",
       contact: current?.contact ?? stored?.contact ?? "",
       city: current?.city ?? stored?.city ?? "",
+      message: current?.message ?? stored?.message ?? "",
       consent: current?.consent ?? Boolean(stored?.consent),
       ...partial,
     }));
@@ -421,6 +430,9 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
         nextErrors.city = leadError.city;
       }
     }
+    if (message.trim().length > 2000) {
+      nextErrors.message = leadError.message;
+    }
     if (!consent) {
       nextErrors.consent = leadError.consent;
     }
@@ -464,7 +476,13 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
   );
 
   if (state.status === "success") {
-    return <LeadSuccess copy={copy} values={state.values ?? {}} />;
+    return (
+      <LeadSuccess
+        copy={copy}
+        values={state.values ?? {}}
+        leadToken={state.leadToken ?? ""}
+      />
+    );
   }
 
   return (
@@ -660,6 +678,21 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
                     errorPrefix={copy.errorPrefix}
                   />
                 ) : null}
+                <TextAreaField
+                  id={`${idPrefix}-message`}
+                  name="message"
+                  label={copy.messageLabel}
+                  value={message}
+                  onChange={(value) => {
+                    patch({ message: value });
+                    clearError("message");
+                  }}
+                  variant={copy.variant}
+                  maxLength={2000}
+                  error={messageFor(copy, shownErrors.message)}
+                  errorId={`${idPrefix}-message-error`}
+                  errorPrefix={copy.errorPrefix}
+                />
                 <div>
                   <div className="flex items-start gap-1">
                     <label

@@ -12,6 +12,7 @@ import {
   OptionGroup,
 } from "@/features/leads/components/option-group";
 import { PendingSpinner } from "@/features/leads/components/pending-spinner";
+import { TextField } from "@/features/leads/components/text-field";
 import { fraunces } from "@/lib/font-design";
 import { cn } from "@/lib/utils";
 
@@ -20,9 +21,11 @@ const easeOut = [0.22, 1, 0.36, 1] as const;
 export function LeadSuccess({
   copy,
   values,
+  leadToken,
 }: {
   copy: LeadCopy;
   values: Record<string, string>;
+  leadToken: string;
 }) {
   const [state, formAction, pending] = useActionState(
     submitLeadDetails,
@@ -31,6 +34,7 @@ export function LeadSuccess({
   const [stage, setStage] = useState("");
   const [timeline, setTimeline] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [fileLink, setFileLink] = useState("");
   const reduceMotion = useReducedMotion();
   const sent = state.status === "success";
   useFocusOnError(state.status, state.fieldErrors, copy.variant);
@@ -96,6 +100,7 @@ export function LeadSuccess({
             name="projectState"
             value={values.projectState ?? ""}
           />
+          <input type="hidden" name="leadToken" value={leadToken} />
           <Honeypot idPrefix={`${copy.variant}-details`} />
 
           {copy.stageQuestion && copy.stageOptions ? (
@@ -148,6 +153,27 @@ export function LeadSuccess({
           ) : null}
           {quantity ? (
             <input type="hidden" name="quantity" value={quantity} />
+          ) : null}
+
+          {copy.fileLinkLabel ? (
+            <TextField
+              id={`${copy.variant}-file-link`}
+              name="fileLink"
+              label={copy.fileLinkLabel}
+              value={fileLink}
+              onChange={setFileLink}
+              variant={copy.variant}
+              autoComplete="off"
+              inputMode="url"
+              error={
+                state.fieldErrors?.fileLink
+                  ? (copy.errors[state.fieldErrors.fileLink] ??
+                    copy.errorGeneric)
+                  : undefined
+              }
+              errorId={`${copy.variant}-file-link-error`}
+              errorPrefix={copy.errorPrefix}
+            />
           ) : null}
 
           {copy.variant === "design" && detailsError ? (

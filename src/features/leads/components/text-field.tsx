@@ -121,3 +121,104 @@ export function TextField({
     </div>
   );
 }
+
+export function TextAreaField({
+  id,
+  name,
+  label,
+  value,
+  onChange,
+  variant,
+  error,
+  errorId,
+  errorPrefix,
+  maxLength,
+}: TextFieldProps & { maxLength?: number }) {
+  const invalid = Boolean(error);
+  const isDesign = variant === "design";
+
+  if (!isDesign) {
+    return (
+      <div>
+        <label
+          htmlFor={id}
+          className="text-cnc-muted mb-1.5 block font-mono text-xs tracking-[0.08em] uppercase"
+        >
+          {label}
+        </label>
+        <textarea
+          id={id}
+          name={name}
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          rows={4}
+          maxLength={maxLength}
+          spellCheck
+          aria-invalid={invalid || undefined}
+          aria-describedby={invalid ? errorId : undefined}
+          className={cn(
+            "text-cnc-text w-full rounded-sm border bg-transparent px-3 py-2 text-[16px] font-normal",
+            "outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
+            "transition-[border-color] duration-150 ease-[var(--ease-out)] motion-reduce:transition-none",
+            invalid
+              ? "border-cnc-white focus:border-cnc-white focus-visible:border-cnc-white"
+              : "border-cnc-muted pointer-fine:hover:border-cnc-text focus:border-cnc-text focus-visible:border-cnc-text",
+          )}
+        />
+        {error ? (
+          <FieldErrorMessage
+            id={errorId}
+            message={error}
+            prefix={errorPrefix}
+            variant={variant}
+          />
+        ) : null}
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div className="relative">
+        <textarea
+          id={id}
+          name={name}
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          placeholder=" "
+          rows={4}
+          maxLength={maxLength}
+          spellCheck
+          aria-invalid={invalid || undefined}
+          aria-describedby={invalid ? errorId : undefined}
+          className={cn(
+            "peer min-h-28 w-full rounded-sm border px-4 pt-6 pb-2 text-[17px] font-medium outline-none",
+            "duration-ui transition-[border-color] ease-out",
+            "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+            "border-woodax-line bg-woodax-paper text-woodax-charcoal focus-visible:outline-woodax-charcoal",
+          )}
+        />
+        <label
+          htmlFor={id}
+          className={cn(
+            "pointer-events-none absolute top-4 left-4 origin-left text-[17px] font-medium",
+            "duration-ui transition-all ease-out",
+            "peer-[:not(:placeholder-shown)]:top-2 peer-[:not(:placeholder-shown)]:text-[12px]",
+            "peer-focus:top-2 peer-focus:text-[12px]",
+            "text-woodax-charcoal/70",
+          )}
+        >
+          {label}
+        </label>
+      </div>
+      {error ? (
+        <FieldErrorMessage
+          id={errorId}
+          message={error}
+          prefix={errorPrefix}
+          variant={variant}
+        />
+      ) : null}
+    </div>
+  );
+}

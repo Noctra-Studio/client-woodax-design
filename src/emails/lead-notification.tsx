@@ -6,6 +6,7 @@ import {
   Heading,
   Hr,
   Html,
+  Link,
   Preview,
   Section,
   Text,
@@ -16,6 +17,9 @@ import {
   type LeadDetails,
   parseContact,
 } from "@/features/leads/schema";
+import { classifyFileLink } from "@/features/leads/security/file-link";
+import { singleLineSubject } from "@/features/leads/security/headers";
+import { defangUrls } from "@/features/leads/security/plain-text";
 
 const projectTypeLabel = {
   kitchen: "Cocina",
@@ -71,12 +75,19 @@ const leadEyebrow = {
 
 export type LeadReply = { kind: "email" | "phone"; value: string };
 
+export type LeadEmailRow = {
+  label: string;
+  value: string;
+  /** Set only for an allowlisted file link. Every other value stays plain text. */
+  href?: string;
+};
+
 export type LeadEmailContent = {
   subject: string;
   preview: string;
   eyebrow: string;
   heading: string;
-  rows: { label: string; value: string }[];
+  rows: LeadEmailRow[];
   nextStep?: string;
   reply?: LeadReply;
 };
@@ -121,12 +132,54 @@ function mexicoCityTimestamp(date: Date) {
 }
 
 function pushRow(
-  rows: { label: string; value: string }[],
+  rows: LeadEmailRow[],
   label: string,
   value: string | undefined,
 ) {
   if (!value) return;
   rows.push({ label, value });
+}
+
+const SPAM_NOTES: Record<string, string> = {
+  one_url: "El mensaje incluye un enlace.",
+  spam_word: "El texto incluye palabras típicas de spam.",
+  disposable: "El dominio del correo aparece en listas de correos desechables.",
+  file_link:
+    "El enlace del archivo no está en la lista permitida y se envió como texto.",
+};
+
+/** Marks the studio email. The visitor still gets a normal success response. */
+export function withSpamMarkers(
+  content: LeadEmailContent,
+  reasons: string[],
+  elapsedMs: number | null,
+): LeadEmailContent {
+  const notes: string[] = [];
+  if (reasons.includes("short_submit") && elapsedMs !== null) {
+    notes.push(
+      `Enviado ${formatElapsed(elapsedMs)} después de abrir el formulario.`,
+    );
+  }
+  for (const reason of reasons) {
+    const note = SPAM_NOTES[reason];
+    if (note) notes.push(note);
+  }
+
+  const subject = singleLineSubject(
+    notes.length > 0 && !content.subject.startsWith("[Posible spam]")
+      ? `[Posible spam] ${content.subject}`
+      : content.subject,
+  );
+
+  if (notes.length === 0) return { ...content, subject };
+  return {
+    ...content,
+    subject,
+    rows: [
+      ...notes.map((note) => ({ label: "Posible spam", value: note })),
+      ...content.rows,
+    ],
+  };
 }
 
 type SubjectInput =
@@ -147,30 +200,12 @@ function formatElapsed(elapsedMs: number): string {
   return `${(rounded / 1000).toFixed(1)} s`;
 }
 
-/** Marks a short submit so a person can decide. The message is still sent. */
-export function flagPossibleSpam(
-  content: LeadEmailContent,
-  elapsedMs: number,
-): LeadEmailContent {
-  return {
-    ...content,
-    subject: `[Posible spam] ${content.subject}`,
-    rows: [
-      {
-        label: "Posible spam",
-        value: `Enviado ${formatElapsed(elapsedMs)} después de abrir el formulario.`,
-      },
-      ...content.rows,
-    ],
-  };
-}
-
 export function leadSubject(lead: SubjectInput) {
-  if (lead.site === "design") {
-    return `[Design] Nuevo proyecto: ${projectTypeLabel[lead.projectType]} — ${lead.name}`;
-  }
-
-  return `[CNC] Solicitud de cotización: ${materialLabel[lead.material]} — ${lead.name}`;
+  const raw =
+    lead.site === "design"
+      ? `[Design] Nuevo proyecto: ${projectTypeLabel[lead.projectType]} — ${lead.name}`
+      : `[CNC] Solicitud de cotización: ${materialLabel[lead.material]} — ${lead.name}`;
+  return singleLineSubject(raw);
 }
 
 export function notificationContent(
@@ -178,13 +213,15 @@ export function notificationContent(
   sentAt: Date,
 ): LeadEmailContent {
   const contact = parseContact(lead.contact);
-  const rows: { label: string; value: string }[] = [
+  const rows: LeadEmailRow[] = [
     { label: "Nombre", value: lead.name },
     {
       label: contact?.kind === "phone" ? "WhatsApp" : "Email",
       value: contact?.value ?? lead.contact,
     },
   ];
+  pushRow(rows, "Empresa", lead.company);
+  pushRow(rows, "Mensaje", lead.message);
 
   if (lead.site === "design") {
     rows.push({
@@ -230,13 +267,15 @@ export function detailsContent(
   sentAt: Date,
 ): LeadEmailContent {
   const contact = parseContact(details.contact);
-  const rows: { label: string; value: string }[] = [
+  const rows: LeadEmailRow[] = [
     { label: "Nombre", value: details.name },
     {
       label: contact?.kind === "phone" ? "WhatsApp" : "Email",
       value: contact?.value ?? details.contact,
     },
   ];
+  pushRow(rows, "Empresa", details.company);
+  pushRow(rows, "Mensaje", details.message);
 
   if (details.site === "design") {
     rows.push({
@@ -260,6 +299,14 @@ export function detailsContent(
       "Cantidad",
       details.quantity ? quantityLabel[details.quantity] : undefined,
     );
+    if (details.fileLink) {
+      const file = classifyFileLink(details.fileLink);
+      if (file.kind === "allowlisted") {
+        rows.push({ label: "Archivo", value: file.text, href: file.href });
+      } else if (file.kind === "plain") {
+        rows.push({ label: "Archivo", value: file.text });
+      }
+    }
   }
 
   rows.push(
@@ -301,10 +348,10 @@ export function LeadNotificationEmail({
           <Text style={eyebrowStyle}>{eyebrow}</Text>
           <Heading style={heading}>{headingText}</Heading>
           <Hr style={rule} />
-          {rows.map((row) => (
-            <Section key={row.label} style={rowStyle}>
+          {rows.map((row, index) => (
+            <Section key={`${row.label}-${index}`} style={rowStyle}>
               <Text style={labelStyle}>{row.label}</Text>
-              <Text style={valueStyle}>{row.value}</Text>
+              <RowValue row={row} />
             </Section>
           ))}
           {nextStep ? (
@@ -375,6 +422,32 @@ const valueStyle = {
   lineHeight: "1.45",
   margin: "2px 0 0",
 };
+
+const linkStyle = {
+  ...valueStyle,
+  textDecoration: "underline",
+};
+
+function isHttpUrl(value: string): boolean {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+function RowValue({ row }: { row: LeadEmailRow }) {
+  if (row.href && isHttpUrl(row.href)) {
+    return (
+      <Link href={row.href} style={linkStyle}>
+        {row.value}
+      </Link>
+    );
+  }
+
+  return <Text style={valueStyle}>{defangUrls(row.value)}</Text>;
+}
 
 const nextStepStyle = {
   color: "#9A9FA6",

@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+import { withBotId } from "botid/next/config";
 import { isIndexingAllowed } from "./src/lib/flags";
 
 const immutableAssetHeaders = [
@@ -11,6 +12,12 @@ const immutableAssetHeaders = [
 
 const nextConfig: NextConfig = {
   ...(process.env.QA_DIST_DIR ? { distDir: process.env.QA_DIST_DIR } : {}),
+  experimental: {
+    serverActions: {
+      allowedOrigins: ["woodax.design", "cnc.woodax.design", "*.vercel.app"],
+      bodySizeLimit: "1mb",
+    },
+  },
   headers() {
     const assetRules = [
       {
@@ -48,4 +55,4 @@ const nextConfig: NextConfig = {
 
 const withNextIntl = createNextIntlPlugin();
 
-export default withNextIntl(nextConfig);
+export default withBotId(withNextIntl(nextConfig));

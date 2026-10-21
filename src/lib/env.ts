@@ -142,6 +142,11 @@ const serverSchema = defineServerSchema({
     z.email({ error: required("Must be a valid email address") }),
   ),
   CONTACT_FROM_EMAIL: contactFromEmail,
+  KV_REST_API_URL: z.preprocess(emptyAsUndefined, z.url().optional()),
+  KV_REST_API_TOKEN: z.preprocess(
+    emptyAsUndefined,
+    z.string().min(1).optional(),
+  ),
 });
 
 type ClientEnv = z.infer<typeof clientSchema>;
@@ -165,6 +170,8 @@ function readServerInput(): { [K in keyof ServerEnv]: string | undefined } {
     CONTACT_TO_EMAIL: process.env.CONTACT_TO_EMAIL,
     CONTACT_TO_EMAIL_CNC: process.env.CONTACT_TO_EMAIL_CNC,
     CONTACT_FROM_EMAIL: process.env.CONTACT_FROM_EMAIL,
+    KV_REST_API_URL: process.env.KV_REST_API_URL,
+    KV_REST_API_TOKEN: process.env.KV_REST_API_TOKEN,
   };
 }
 

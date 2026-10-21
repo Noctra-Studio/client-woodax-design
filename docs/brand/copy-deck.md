@@ -63,6 +63,9 @@ Marcado con ⚠︎ = afirmación que Adrián debe confirmar antes de producción
 - success.whatsapp — ES: Continuar por WhatsApp | EN: Continue on WhatsApp
 - whatsappAria — ES: Escribir por WhatsApp | EN: Message us on WhatsApp (nombre accesible de cada enlace de WhatsApp)
 - error.generic — ES: No pudimos enviar tu mensaje. Inténtalo de nuevo en un momento. | EN: We couldn't send your message. Please try again in a moment.
+- error.rateLimited — ES: Recibimos varios envíos seguidos. Intenta de nuevo más tarde o escríbenos por WhatsApp. | EN: We received several submissions in a row. Try again later or message us on WhatsApp.
+- step2.message — ES: Mensaje (opcional) | EN: Message (optional)
+- error.message — ES: El mensaje puede tener hasta 2000 caracteres. | EN: The message can be up to 2000 characters.
 - mobileBar — ES: Cuéntanos tu proyecto | EN: Tell us about your project
 
 ### Footer
@@ -167,6 +170,9 @@ Fuente única: `siteConfig.cncOffer`, `cncDelivery.smallProjectFromBusinessDays`
 - whatsappAria — ES: Escribir por WhatsApp | EN: Message us on WhatsApp
 - whatsappPrefill (cuerpo del enlace wa.me, no se muestra en la página) — ES: Hola, vengo de cnc.woodax.design y quiero cotizar un corte. | EN: Hi, I found you on cnc.woodax.design and I'd like a cutting quote.
 - error.generic — ES: No pudimos enviar tu solicitud. Inténtalo de nuevo en un momento. | EN: We couldn't send your request. Please try again in a moment.
+- error.rateLimited — ES: Recibimos varios envíos seguidos. Intenta de nuevo más tarde o escríbenos por WhatsApp. | EN: We received several submissions in a row. Try again later or message us on WhatsApp.
+- step2.message — ES: Mensaje (opcional) | EN: Message (optional)
+- error.message — ES: El mensaje puede tener hasta 2000 caracteres. | EN: The message can be up to 2000 characters.
 - mobileBar — ES: Cotizar mi proyecto | EN: Get a quote
 
 ### Footer

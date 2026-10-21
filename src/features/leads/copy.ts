@@ -49,6 +49,8 @@ export type LeadCopy = {
   quantityOptions?: LeadOption[];
   whatsapp: string;
   detailsSubmit: string;
+  messageLabel: string;
+  fileLinkLabel?: string;
   errorGeneric: string;
   errorPrefix: string;
   errors: Record<string, string>;
@@ -123,6 +125,7 @@ export async function getLeadCopy(
       ],
       whatsapp: form("success.whatsapp"),
       detailsSubmit: form("success.detailsSubmit"),
+      messageLabel: form("step2.message"),
       errorGeneric: form("error.generic"),
       errorPrefix: form("errorPrefix"),
       errors: withGeneric(
@@ -133,6 +136,8 @@ export async function getLeadCopy(
           projectType: form("errors.projectType"),
           city: form("errors.city"),
           details: form("errors.details"),
+          message: form("errors.message"),
+          rateLimited: form("errors.rateLimited"),
         },
         form("error.generic"),
       ),
@@ -209,6 +214,8 @@ export async function getLeadCopy(
     ],
     whatsapp: form("success.whatsapp"),
     detailsSubmit: form("success.detailsSubmit"),
+    messageLabel: form("step2.message"),
+    fileLinkLabel: form("success.fileLink"),
     errorGeneric: form("error.generic"),
     errorPrefix: form("errorPrefix"),
     errors: withGeneric(
@@ -219,6 +226,8 @@ export async function getLeadCopy(
         material: form("errors.material"),
         projectState: form("errors.projectState"),
         details: form("errors.details"),
+        message: form("errors.message"),
+        rateLimited: form("errors.rateLimited"),
       },
       form("error.generic"),
     ),

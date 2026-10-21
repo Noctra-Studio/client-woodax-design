@@ -110,7 +110,8 @@
       "step2": {
         "name": "Tu nombre",
         "contact": "WhatsApp o email",
-        "city": "Ciudad (opcional)"
+        "city": "Ciudad (opcional)",
+        "message": "Mensaje (opcional)"
       },
       "consentBefore": "Acepto que Woodax Design use estos datos para responder mi solicitud.",
       "consentLink": "Ver aviso de privacidad.",
@@ -144,7 +145,9 @@
         "consent": "Acepta el aviso para que podamos responderte.",
         "projectType": "Elige qué te gustaría transformar.",
         "city": "La ciudad debe tener entre 2 y 60 caracteres.",
-        "details": "Elige al menos un detalle."
+        "details": "Elige al menos un detalle.",
+        "message": "El mensaje puede tener hasta 2000 caracteres.",
+        "rateLimited": "Recibimos varios envíos seguidos. Intenta de nuevo más tarde o escríbenos por WhatsApp."
       },
       "errorPrefix": "Error:",
       "close": "Cerrar",
@@ -299,7 +302,8 @@
       },
       "step2": {
         "name": "Nombre o empresa",
-        "contact": "WhatsApp o email"
+        "contact": "WhatsApp o email",
+        "message": "Mensaje (opcional)"
       },
       "consentBefore": "Acepto que CNC by Woodax Design use estos datos para responder mi solicitud.",
       "consentLink": "Ver aviso de privacidad.",
@@ -315,7 +319,8 @@
           "100+": "Más de 100"
         },
         "whatsapp": "Continuar por WhatsApp",
-        "detailsSubmit": "Enviar detalles"
+        "detailsSubmit": "Enviar detalles",
+        "fileLink": "Link a tu archivo (Drive, WeTransfer, Dropbox)"
       },
       "error": {
         "generic": "No pudimos enviar tu solicitud. Inténtalo de nuevo en un momento."
@@ -326,7 +331,9 @@
         "consent": "Acepta el aviso para que podamos responderte.",
         "material": "Elige un material.",
         "projectState": "Elige en qué punto está tu proyecto.",
-        "details": "Elige una cantidad."
+        "details": "Elige una cantidad.",
+        "message": "El mensaje puede tener hasta 2000 caracteres.",
+        "rateLimited": "Recibimos varios envíos seguidos. Intenta de nuevo más tarde o escríbenos por WhatsApp."
       },
       "errorPrefix": "Error:",
       "close": "Cerrar",
