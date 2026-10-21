@@ -43,11 +43,11 @@ export function FaqSection({
               value={item.id}
               className="border-cnc-line border-b last:border-b-0"
             >
-              <AccordionTrigger className="focus-visible:outline-cnc-white [&_svg]:text-cnc-muted text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.45] font-medium">
-                {item.question}
+              <AccordionTrigger className="focus-visible:outline-cnc-white [&_svg]:text-cnc-muted items-start px-5 py-5 text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.45] font-medium md:px-6 [&_svg]:mt-[calc((1.45em-1rem)/2)]">
+                <span className="min-w-0 flex-1">{item.question}</span>
               </AccordionTrigger>
-              <AccordionContent>
-                <p className="text-cnc-muted max-w-[62ch] pb-5 text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-medium text-pretty">
+              <AccordionContent className="px-5 md:px-6">
+                <p className="text-cnc-muted max-w-[60ch] pb-6 text-[clamp(1.0625rem,1.1vw,1.125rem)] leading-[1.6] font-medium text-pretty">
                   {item.answer}
                 </p>
               </AccordionContent>

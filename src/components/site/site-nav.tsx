@@ -55,8 +55,6 @@ const HOME_GROW_MS = 320;
 const HOME_FADE_OUT_MS = 120;
 const SHEET_CLOSE_MS = 200;
 const SHEET_CLOSE_REDUCED_MS = 120;
-const ACTIVE_LINE_RATIO = 0.35;
-const BOTTOM_TOLERANCE_PX = 24;
 
 const MANUAL_SCROLL_KEYS = new Set([
   "ArrowUp",
@@ -87,35 +85,35 @@ function readHashId(): string {
   return decodeHash(window.location.hash.replace(/^#/, ""));
 }
 
+function readNavOffsetPx(probe: HTMLElement): number {
+  const fromVariable = probe.getBoundingClientRect().height;
+  if (fromVariable > 0) return fromVariable;
+
+  const padding = Number.parseFloat(
+    getComputedStyle(document.documentElement).scrollPaddingTop,
+  );
+  return Number.isFinite(padding) ? padding : 0;
+}
+
+/** Section whose box contains the line just under the nav. Nav ids only. */
 function computeActiveAnchorId(
-  elements: readonly HTMLElement[],
+  navIds: ReadonlySet<string>,
+  probeY: number,
 ): string | null {
-  if (elements.length === 0) return null;
+  if (navIds.size === 0) return null;
 
-  const scrollY = window.scrollY;
-  const viewportHeight = window.innerHeight;
-  const docHeight = document.documentElement.scrollHeight;
+  const sections = document.querySelectorAll<HTMLElement>("main section[id]");
+  let visibleId: string | null = null;
 
-  if (
-    scrollY > 0 &&
-    viewportHeight + Math.ceil(scrollY) >= docHeight - BOTTOM_TOLERANCE_PX
-  ) {
-    return elements[elements.length - 1]!.id;
-  }
-
-  const thresholdY = viewportHeight * ACTIVE_LINE_RATIO;
-  let current: string | null = null;
-
-  for (let i = 0; i < elements.length; i++) {
-    const rect = elements[i]!.getBoundingClientRect();
-    if (rect.top <= thresholdY) {
-      current = elements[i]!.id;
-    } else {
-      break;
+  for (const section of sections) {
+    const rect = section.getBoundingClientRect();
+    if (rect.top <= probeY + 0.5 && rect.bottom > probeY + 0.5) {
+      visibleId = section.id;
     }
   }
 
-  return current;
+  if (visibleId !== null && navIds.has(visibleId)) return visibleId;
+  return null;
 }
 
 const openPad = {
@@ -290,6 +288,12 @@ export function SiteNav({
     fromNull: true,
     instant: false,
   });
+  const pillRef = useRef<PillState>({
+    activeId: null,
+    fadingId: null,
+    fromNull: true,
+    instant: false,
+  });
   const pathname = usePathname();
   const homeReveal = useGridReveal(
     Boolean(routeHomeLabel) && pathname !== "/",
@@ -319,6 +323,17 @@ export function SiteNav({
     ) => {
       const instant = options?.instant ?? false;
       const fadeInFromNull = options?.fadeInFromNull ?? true;
+      const current = pillRef.current;
+
+      if (nextId === null && current.activeId === null) return;
+      if (
+        nextId !== null &&
+        current.activeId === nextId &&
+        current.fadingId === null &&
+        current.instant === instant
+      ) {
+        return;
+      }
 
       if (fadeTimerRef.current !== null) {
         window.clearTimeout(fadeTimerRef.current);
@@ -329,62 +344,60 @@ export function SiteNav({
         instantRafRef.current = null;
       }
 
-      setPill((curr) => {
-        if (
-          curr.activeId === nextId &&
-          curr.fadingId === null &&
-          curr.instant === instant
-        ) {
-          return curr;
-        }
-
-        const prevPillId = curr.activeId ?? curr.fadingId;
-
-        if (nextId === null) {
-          if (reduceRef.current || prevPillId === null) {
-            return {
-              activeId: null,
+      const prevPillId = current.activeId ?? current.fadingId;
+      const next: PillState =
+        nextId === null
+          ? reduceRef.current || prevPillId === null
+            ? {
+                activeId: null,
+                fadingId: null,
+                fromNull: true,
+                instant: false,
+              }
+            : {
+                activeId: null,
+                fadingId: prevPillId,
+                fromNull: false,
+                instant: false,
+              }
+          : {
+              activeId: nextId,
               fadingId: null,
-              fromNull: true,
-              instant: false,
+              fromNull: prevPillId === null && fadeInFromNull && !instant,
+              instant,
             };
-          }
-          return {
-            activeId: null,
-            fadingId: prevPillId,
-            fromNull: false,
-            instant: false,
-          };
-        }
+      pillRef.current = next;
+      setPill(next);
 
-        return {
-          activeId: nextId,
-          fadingId: null,
-          fromNull: prevPillId === null && fadeInFromNull && !instant,
-          instant,
-        };
-      });
-
-      if (nextId === null && !reduceRef.current) {
+      if (nextId === null && !reduceRef.current && next.fadingId !== null) {
         fadeTimerRef.current = window.setTimeout(() => {
           fadeTimerRef.current = null;
-          setPill((curr) =>
-            curr.activeId === null && curr.fadingId !== null
-              ? {
-                  activeId: null,
-                  fadingId: null,
-                  fromNull: true,
-                  instant: false,
-                }
-              : curr,
-          );
+          if (
+            pillRef.current.activeId !== null ||
+            pillRef.current.fadingId === null
+          ) {
+            return;
+          }
+          const cleared: PillState = {
+            activeId: null,
+            fadingId: null,
+            fromNull: true,
+            instant: false,
+          };
+          pillRef.current = cleared;
+          setPill(cleared);
         }, NAV_FADE_OUT_MS);
       } else if (instant && nextId !== null) {
         instantRafRef.current = window.requestAnimationFrame(() => {
           instantRafRef.current = null;
-          setPill((curr) =>
-            curr.instant ? { ...curr, instant: false, fromNull: false } : curr,
-          );
+          if (!pillRef.current.instant) return;
+          const settled: PillState = {
+            ...pillRef.current,
+            instant: false,
+            fromNull: false,
+          };
+          pillRef.current = settled;
+          setPill(settled);
         });
       }
     },
@@ -396,10 +409,11 @@ export function SiteNav({
     if (ids.length === 0) return;
 
     const idSet = new Set(ids);
-    const getElements = () =>
-      ids
-        .map((id) => document.getElementById(id))
-        .filter((element): element is HTMLElement => element !== null);
+    const offsetProbe = document.createElement("div");
+    offsetProbe.setAttribute("aria-hidden", "true");
+    offsetProbe.style.cssText =
+      "position:absolute;top:0;left:0;width:0;height:var(--nav-offset,0px);visibility:hidden;pointer-events:none";
+    document.body.appendChild(offsetProbe);
 
     let rafId = 0;
 
@@ -426,9 +440,7 @@ export function SiteNav({
     const checkScroll = () => {
       rafId = 0;
       if (lockRef.current) return;
-      const elements = getElements();
-      if (elements.length === 0) return;
-      const nextId = computeActiveAnchorId(elements);
+      const nextId = computeActiveAnchorId(idSet, readNavOffsetPx(offsetProbe));
       applyActiveId(nextId, { instant: false, fadeInFromNull: true });
     };
 
@@ -500,8 +512,10 @@ export function SiteNav({
     if (initialHash && idSet.has(initialHash)) {
       startLock(initialHash, true);
     } else {
-      const elements = getElements();
-      const initialActive = computeActiveAnchorId(elements);
+      const initialActive = computeActiveAnchorId(
+        idSet,
+        readNavOffsetPx(offsetProbe),
+      );
       if (initialActive !== null) {
         applyActiveId(initialActive, { instant: true, fadeInFromNull: false });
       }
@@ -509,7 +523,9 @@ export function SiteNav({
 
     window.addEventListener("scroll", scheduleCheck, { passive: true });
     window.addEventListener("resize", scheduleCheck, { passive: true });
-    window.addEventListener("wheel", cancelLockOnManualInput, { passive: true });
+    window.addEventListener("wheel", cancelLockOnManualInput, {
+      passive: true,
+    });
     window.addEventListener("touchstart", cancelLockOnManualInput, {
       passive: true,
     });
@@ -520,6 +536,7 @@ export function SiteNav({
     document.addEventListener("click", onDocumentClick);
 
     return () => {
+      offsetProbe.remove();
       if (rafId !== 0) window.cancelAnimationFrame(rafId);
       clearLock();
       if (fadeTimerRef.current !== null) {
@@ -791,9 +808,7 @@ function DesktopNav({
             height: morph ? 56 : 80,
             ...(morph ? shutPad : openPad),
           }}
-          transition={
-            tween || contentTween ? morphTransition : { duration: 0 }
-          }
+          transition={tween || contentTween ? morphTransition : { duration: 0 }}
           data-variant={rest.variant}
           data-scrolled={morph ? "true" : "false"}
           className={cn(
@@ -1053,6 +1068,9 @@ function MobileNav({
   setMenuOpen,
   links,
   activeId,
+  pillId,
+  pillVisible,
+  pillInstant,
   pathname,
   routeHomeLabel,
   sheetContactLabel,
@@ -1079,9 +1097,16 @@ function MobileNav({
 }) {
   const router = useRouter();
   const pendingNav = useRef<number | null>(null);
-  const activeLabel = links.find((link) =>
-    isLinkActive(link, activeId, pathname),
+  const routeLabel = links.find((link) =>
+    link.type === "route" ? isLinkActive(link, activeId, pathname) : false,
   )?.label;
+  const anchorLabel =
+    links.find((link) => link.type === "anchor" && link.id === pillId)?.label ??
+    "";
+  const sectionLabel = routeLabel ?? anchorLabel;
+  const hasAnchors = links.some((link) => link.type === "anchor");
+  const labelVisible =
+    routeLabel != null || (pillVisible && anchorLabel !== "");
   const showSheetHome = Boolean(routeHomeLabel) && pathname !== "/";
   const sheetLinkClass = cn(
     "-mx-3 inline-flex min-h-11 w-[calc(100%+1.5rem)] items-center gap-2 rounded-sm px-3 text-[17px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
@@ -1098,10 +1123,13 @@ function MobileNav({
   function closeThen(run: () => void) {
     setMenuOpen(false);
     if (pendingNav.current !== null) window.clearTimeout(pendingNav.current);
-    pendingNav.current = window.setTimeout(() => {
-      pendingNav.current = null;
-      run();
-    }, reduce ? SHEET_CLOSE_REDUCED_MS : SHEET_CLOSE_MS);
+    pendingNav.current = window.setTimeout(
+      () => {
+        pendingNav.current = null;
+        run();
+      },
+      reduce ? SHEET_CLOSE_REDUCED_MS : SHEET_CLOSE_MS,
+    );
   }
 
   function activateLink(link: SiteNavLink) {
@@ -1146,14 +1174,17 @@ function MobileNav({
           logoCompact={logoCompact}
           logoTraceSrc={logoTraceSrc}
         />
-        {activeLabel ? (
+        {routeLabel || hasAnchors ? (
           <p
+            aria-hidden={labelVisible ? undefined : true}
             className={cn(
-              "pointer-events-none absolute inset-x-14 truncate text-center text-[13px] leading-none",
+              "pointer-events-none absolute inset-x-14 truncate text-center text-[13px] leading-none transition-opacity duration-[180ms] ease-[var(--ease-out)] motion-reduce:transition-none",
+              (pillInstant || reduce) && "duration-0",
               variant === "design" ? "font-medium" : "font-normal",
+              labelVisible ? "opacity-100" : "opacity-0",
             )}
           >
-            {activeLabel}
+            {sectionLabel}
           </p>
         ) : null}
         <SheetTrigger asChild>
@@ -1592,10 +1623,8 @@ function NavLinks({
       ) : null}
       {links.map((link) => {
         const active = isLinkActive(link, activeId, pathname);
-        const hasPill =
-          link.type === "anchor" ? pillId === link.id : active;
-        const isPillVisible =
-          link.type === "anchor" ? pillVisible : active;
+        const hasPill = link.type === "anchor" ? pillId === link.id : active;
+        const isPillVisible = link.type === "anchor" ? pillVisible : active;
         const appearFade = link.type === "anchor" ? pillAppearFade : false;
         const instant = link.type === "anchor" ? pillInstant : false;
 
@@ -1651,7 +1680,11 @@ function HomeNavItem({
             shown ? "opacity-100" : "opacity-0",
           )}
         >
-          <ArrowLeft aria-hidden strokeWidth={1.5} className="size-4 shrink-0" />
+          <ArrowLeft
+            aria-hidden
+            strokeWidth={1.5}
+            className="size-4 shrink-0"
+          />
           {label}
         </Link>
       </div>
