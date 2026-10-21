@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { markLocaleSwitch } from "@/lib/route-transition";
+import { readScrollY } from "@/lib/use-scroll-lock";
 import { cn } from "@/lib/utils";
 
 const locales = ["es", "en"] as const;
@@ -94,7 +95,7 @@ function LocaleSwitch({
       sessionStorage.setItem(
         LOCALE_SCROLL_KEY,
         JSON.stringify({
-          y: window.scrollY,
+          y: readScrollY(),
           hash: window.location.hash,
         }),
       );

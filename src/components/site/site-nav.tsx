@@ -40,6 +40,7 @@ import {
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import type { Pathname } from "@/i18n/routing";
 import { isDesignFull } from "@/lib/seo";
+import { isScrollLocked, useScrollLock } from "@/lib/use-scroll-lock";
 import { cn } from "@/lib/utils";
 
 const easeOut = [0.22, 1, 0.36, 1] as const;
@@ -53,8 +54,9 @@ const NAV_LOCK_TIMEOUT_MS = 900;
 const NAV_FADE_OUT_MS = 180;
 const HOME_GROW_MS = 320;
 const HOME_FADE_OUT_MS = 120;
-const SHEET_CLOSE_MS = 200;
+const SHEET_CLOSE_MS = 220;
 const SHEET_CLOSE_REDUCED_MS = 120;
+const SHEET_EXIT_BUFFER_MS = 48;
 
 const MANUAL_SCROLL_KEYS = new Set([
   "ArrowUp",
@@ -282,18 +284,23 @@ export function SiteNav({
       ? designIntro.status === "play"
       : cncIntro.status === "play";
   const [menuOpen, setMenuOpen] = useState(false);
+  const pendingNav = useRef<(() => void) | null>(null);
+  const sheet = useSheetPresence(menuOpen, reduce, () => {
+    const run = pendingNav.current;
+    pendingNav.current = null;
+    run?.();
+  });
+
+  useLayoutEffect(() => {
+    if (menuOpen) pendingNav.current = null;
+  }, [menuOpen]);
   const [pill, setPill] = useState<PillState>({
     activeId: null,
     fadingId: null,
     fromNull: true,
     instant: false,
   });
-  const pillRef = useRef<PillState>({
-    activeId: null,
-    fadingId: null,
-    fromNull: true,
-    instant: false,
-  });
+  const pillRef = useRef(pill);
   const pathname = usePathname();
   const homeReveal = useGridReveal(
     Boolean(routeHomeLabel) && pathname !== "/",
@@ -306,7 +313,8 @@ export function SiteNav({
   const reduceRef = useRef(reduce);
   useLayoutEffect(() => {
     reduceRef.current = reduce;
-  }, [reduce]);
+    pillRef.current = pill;
+  }, [reduce, pill]);
 
   const fadeTimerRef = useRef<number | null>(null);
   const instantRafRef = useRef<number | null>(null);
@@ -344,60 +352,62 @@ export function SiteNav({
         instantRafRef.current = null;
       }
 
-      const prevPillId = current.activeId ?? current.fadingId;
-      const next: PillState =
-        nextId === null
-          ? reduceRef.current || prevPillId === null
-            ? {
-                activeId: null,
-                fadingId: null,
-                fromNull: true,
-                instant: false,
-              }
-            : {
-                activeId: null,
-                fadingId: prevPillId,
-                fromNull: false,
-                instant: false,
-              }
-          : {
-              activeId: nextId,
-              fadingId: null,
-              fromNull: prevPillId === null && fadeInFromNull && !instant,
-              instant,
-            };
-      pillRef.current = next;
-      setPill(next);
+      setPill((curr) => {
+        if (
+          curr.activeId === nextId &&
+          curr.fadingId === null &&
+          curr.instant === instant
+        ) {
+          return curr;
+        }
 
-      if (nextId === null && !reduceRef.current && next.fadingId !== null) {
-        fadeTimerRef.current = window.setTimeout(() => {
-          fadeTimerRef.current = null;
-          if (
-            pillRef.current.activeId !== null ||
-            pillRef.current.fadingId === null
-          ) {
-            return;
+        const prevPillId = curr.activeId ?? curr.fadingId;
+
+        if (nextId === null) {
+          if (reduceRef.current || prevPillId === null) {
+            return {
+              activeId: null,
+              fadingId: null,
+              fromNull: true,
+              instant: false,
+            };
           }
-          const cleared: PillState = {
+          return {
             activeId: null,
-            fadingId: null,
-            fromNull: true,
+            fadingId: prevPillId,
+            fromNull: false,
             instant: false,
           };
-          pillRef.current = cleared;
-          setPill(cleared);
+        }
+
+        return {
+          activeId: nextId,
+          fadingId: null,
+          fromNull: prevPillId === null && fadeInFromNull && !instant,
+          instant,
+        };
+      });
+
+      if (nextId === null && !reduceRef.current) {
+        fadeTimerRef.current = window.setTimeout(() => {
+          fadeTimerRef.current = null;
+          setPill((curr) =>
+            curr.activeId === null && curr.fadingId !== null
+              ? {
+                  activeId: null,
+                  fadingId: null,
+                  fromNull: true,
+                  instant: false,
+                }
+              : curr,
+          );
         }, NAV_FADE_OUT_MS);
       } else if (instant && nextId !== null) {
         instantRafRef.current = window.requestAnimationFrame(() => {
           instantRafRef.current = null;
-          if (!pillRef.current.instant) return;
-          const settled: PillState = {
-            ...pillRef.current,
-            instant: false,
-            fromNull: false,
-          };
-          pillRef.current = settled;
-          setPill(settled);
+          setPill((curr) =>
+            curr.instant ? { ...curr, instant: false, fromNull: false } : curr,
+          );
         });
       }
     },
@@ -439,13 +449,13 @@ export function SiteNav({
 
     const checkScroll = () => {
       rafId = 0;
-      if (lockRef.current) return;
+      if (lockRef.current || isScrollLocked()) return;
       const nextId = computeActiveAnchorId(idSet, readNavOffsetPx(offsetProbe));
       applyActiveId(nextId, { instant: false, fadeInFromNull: true });
     };
 
     const scheduleCheck = () => {
-      if (lockRef.current || rafId !== 0) return;
+      if (lockRef.current || isScrollLocked() || rafId !== 0) return;
       rafId = window.requestAnimationFrame(checkScroll);
     };
 
@@ -600,7 +610,7 @@ export function SiteNav({
       aria-label={homeLabel}
       className={cn(
         "pointer-events-none fixed inset-x-0 top-0 z-40 flex justify-center px-3 pt-[max(0.75rem,calc(env(safe-area-inset-top)+0.5rem))] md:px-6",
-        menuOpen && "z-[60]",
+        sheet.present && "z-[60]",
       )}
     >
       <DesktopNav scrolled={scrolled} {...barProps} />
@@ -617,10 +627,91 @@ export function SiteNav({
         facebookAria={facebookAria}
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
+        sheetPresent={sheet.present}
+        sheetPhase={sheet.phase}
+        sheetIntent={sheet.intent}
+        sheetMotion={sheet.armed}
+        queueAfterClose={(run) => {
+          pendingNav.current = run;
+        }}
         {...barProps}
       />
     </nav>
   );
+}
+
+function useSheetPresence(
+  open: boolean,
+  reduce: boolean,
+  onExited: () => void,
+) {
+  const [present, setPresent] = useState(false);
+  const [phase, setPhase] = useState<"open" | "closed">("closed");
+  const [armed, setArmed] = useState(false);
+  const armedRef = useRef(false);
+  const exitedRef = useRef(false);
+  const onExitedRef = useRef(onExited);
+  if (open && !present) {
+    setPresent(true);
+  }
+
+  useEffect(() => {
+    onExitedRef.current = onExited;
+  }, [onExited]);
+
+  useScrollLock(present);
+
+  useLayoutEffect(() => {
+    if (!open) {
+      // Intent (duration and easing) flips in this commit. Phase waits a
+      // frame so the exit transition is not created in the same style change.
+      // setTimeout, not rAF: a delayed frame must not leave the sheet open.
+      const id = window.setTimeout(() => setPhase("closed"), 32);
+      return () => window.clearTimeout(id);
+    }
+
+    if (armedRef.current) {
+      const id = window.requestAnimationFrame(() => setPhase("open"));
+      return () => window.cancelAnimationFrame(id);
+    }
+
+    let second = 0;
+    const first = window.requestAnimationFrame(() => {
+      setArmed(true);
+      armedRef.current = true;
+      second = window.requestAnimationFrame(() => setPhase("open"));
+    });
+    return () => {
+      window.cancelAnimationFrame(first);
+      window.cancelAnimationFrame(second);
+    };
+  }, [open]);
+
+  useEffect(() => {
+    if (open || !present || phase !== "closed") return;
+    const ms =
+      (reduce ? SHEET_CLOSE_REDUCED_MS : SHEET_CLOSE_MS) + SHEET_EXIT_BUFFER_MS;
+    const id = window.setTimeout(() => {
+      exitedRef.current = true;
+      setPresent(false);
+      setArmed(false);
+      armedRef.current = false;
+    }, ms);
+    return () => window.clearTimeout(id);
+  }, [open, present, phase, reduce]);
+
+  useLayoutEffect(() => {
+    if (!exitedRef.current) return;
+    exitedRef.current = false;
+    onExitedRef.current();
+  }, [present]);
+
+  return {
+    present,
+    phase,
+    armed,
+    intent: open ? ("open" as const) : ("closed" as const),
+  };
 }
 
 function useScrolled() {
@@ -629,6 +720,7 @@ function useScrolled() {
   const [scrolled, setScrolled] = useState(false);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
+    if (isScrollLocked()) return;
     const next = scrolledRef.current
       ? latest >= SCROLL_UP
       : latest > SCROLL_DOWN;
@@ -1066,6 +1158,11 @@ function MobileNav({
   facebookAria,
   menuOpen,
   setMenuOpen,
+  sheetPresent,
+  sheetPhase,
+  sheetIntent,
+  sheetMotion,
+  queueAfterClose,
   links,
   activeId,
   pillId,
@@ -1094,9 +1191,13 @@ function MobileNav({
   facebookAria: string;
   menuOpen: boolean;
   setMenuOpen: (open: boolean) => void;
+  sheetPresent: boolean;
+  sheetPhase: "open" | "closed";
+  sheetIntent: "open" | "closed";
+  sheetMotion: boolean;
+  queueAfterClose: (run: () => void) => void;
 }) {
   const router = useRouter();
-  const pendingNav = useRef<number | null>(null);
   const routeLabel = links.find((link) =>
     link.type === "route" ? isLinkActive(link, activeId, pathname) : false,
   )?.label;
@@ -1114,22 +1215,9 @@ function MobileNav({
     focusRing,
   );
 
-  useEffect(() => {
-    return () => {
-      if (pendingNav.current !== null) window.clearTimeout(pendingNav.current);
-    };
-  }, []);
-
   function closeThen(run: () => void) {
+    queueAfterClose(run);
     setMenuOpen(false);
-    if (pendingNav.current !== null) window.clearTimeout(pendingNav.current);
-    pendingNav.current = window.setTimeout(
-      () => {
-        pendingNav.current = null;
-        run();
-      },
-      reduce ? SHEET_CLOSE_REDUCED_MS : SHEET_CLOSE_MS,
-    );
   }
 
   function activateLink(link: SiteNavLink) {
@@ -1156,6 +1244,7 @@ function MobileNav({
       <div
         data-variant={variant}
         data-scrolled={scrolled ? "true" : "false"}
+        data-sheet={sheetPresent ? "open" : "closed"}
         className={cn(
           "site-nav-bar pointer-events-auto relative flex h-14 w-full items-center justify-between px-2 md:hidden",
           variant === "design" ? "text-woodax-charcoal" : "text-cnc-text",
@@ -1200,158 +1289,163 @@ function MobileNav({
           </Button>
         </SheetTrigger>
       </div>
-      <SheetContent
-        side="right"
-        aria-describedby={undefined}
-        className="gap-8 px-5 pt-[max(1.25rem,env(safe-area-inset-top))] pr-[max(1.25rem,env(safe-area-inset-right))] pb-[max(1.5rem,env(safe-area-inset-bottom))]"
-        style={{
-          top: "calc(3.5rem + max(0.75rem, env(safe-area-inset-top) + 0.5rem))",
-          height: "auto",
-          bottom: 0,
-        }}
-      >
-        <SheetHeader>
-          <SheetTitle>{menuLabel}</SheetTitle>
-        </SheetHeader>
-        <ul className="flex flex-col">
-          {showSheetHome && routeHomeLabel ? (
-            <li>
-              <Link
-                href="/"
-                onClick={(event) => {
-                  if (!isPlainClick(event)) return;
-                  event.preventDefault();
-                  closeThen(() => router.push("/"));
-                }}
-                className={sheetLinkClass}
-              >
-                <ArrowLeft
-                  aria-hidden
-                  strokeWidth={1.5}
-                  className="size-4 shrink-0"
+      {sheetPresent ? (
+        <SheetContent
+          side="right"
+          forceMount
+          phase={sheetPhase}
+          intent={sheetIntent}
+          motionReady={sheetMotion}
+          onOverlayDismiss={() => setMenuOpen(false)}
+          onCloseAutoFocus={(event) => {
+            event.preventDefault();
+            document
+              .querySelector<HTMLElement>("[data-slot='sheet-trigger']")
+              ?.focus({ preventScroll: true });
+          }}
+          aria-describedby={undefined}
+          className="gap-8 px-5 pt-[max(1.25rem,env(safe-area-inset-top))] pr-[max(1.25rem,env(safe-area-inset-right))] pb-[max(1.5rem,env(safe-area-inset-bottom))]"
+        >
+          <SheetHeader>
+            <SheetTitle>{menuLabel}</SheetTitle>
+          </SheetHeader>
+          <ul className="flex flex-col">
+            {showSheetHome && routeHomeLabel ? (
+              <li>
+                <Link
+                  href="/"
+                  onClick={(event) => {
+                    if (!isPlainClick(event)) return;
+                    event.preventDefault();
+                    closeThen(() => router.push("/"));
+                  }}
+                  className={sheetLinkClass}
+                >
+                  <ArrowLeft
+                    aria-hidden
+                    strokeWidth={1.5}
+                    className="size-4 shrink-0"
+                  />
+                  {routeHomeLabel}
+                </Link>
+              </li>
+            ) : null}
+            {links.map((link) => (
+              <li key={itemKey(link)}>
+                <SiteNavItem
+                  link={link}
+                  active={isLinkActive(link, activeId, pathname)}
+                  variant={variant}
+                  focusRing={focusRing}
+                  menu
+                  onNavigate={() => activateLink(link)}
                 />
-                {routeHomeLabel}
-              </Link>
-            </li>
-          ) : null}
-          {links.map((link) => (
-            <li key={itemKey(link)}>
-              <SiteNavItem
-                link={link}
-                active={isLinkActive(link, activeId, pathname)}
-                variant={variant}
-                focusRing={focusRing}
-                menu
-                onNavigate={() => activateLink(link)}
-              />
-            </li>
-          ))}
-          {sheetContactLabel ? (
-            <li>
-              <Link
-                href="/contact"
-                aria-current={pathname === "/contact" ? "page" : undefined}
+              </li>
+            ))}
+            {sheetContactLabel ? (
+              <li>
+                <Link
+                  href="/contact"
+                  aria-current={pathname === "/contact" ? "page" : undefined}
+                  onClick={(event) => {
+                    if (!isPlainClick(event)) return;
+                    event.preventDefault();
+                    closeThen(() => router.push("/contact"));
+                  }}
+                  className={cn(
+                    sheetLinkClass,
+                    pathname === "/contact" &&
+                      (variant === "design"
+                        ? "bg-woodax-cream"
+                        : "bg-cnc-line"),
+                  )}
+                >
+                  {sheetContactLabel}
+                </Link>
+              </li>
+            ) : null}
+          </ul>
+          <div className="mt-auto flex flex-col gap-1">
+            {routeHomeLabel ? (
+              <hr className="border-woodax-line my-2 border-0 border-t" />
+            ) : null}
+            <a
+              href={siblingHref}
+              onClick={(event) => {
+                if (!isPlainClick(event)) return;
+                event.preventDefault();
+                activateHref(siblingHref);
+              }}
+              className={cn(
+                "inline-flex min-h-11 items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+                focusRing,
+              )}
+            >
+              {siblingLabel}
+            </a>
+            {instagramUrl ? (
+              <a
+                href={instagramUrl}
                 onClick={(event) => {
                   if (!isPlainClick(event)) return;
                   event.preventDefault();
-                  closeThen(() => router.push("/contact"));
+                  activateHref(instagramUrl);
                 }}
                 className={cn(
-                  sheetLinkClass,
-                  pathname === "/contact" &&
-                    (variant === "design" ? "bg-woodax-cream" : "bg-cnc-line"),
+                  "inline-flex min-h-11 items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+                  focusRing,
                 )}
               >
-                {sheetContactLabel}
-              </Link>
-            </li>
-          ) : null}
-        </ul>
-        <div className="mt-auto flex flex-col gap-1">
-          {routeHomeLabel ? (
-            <hr className="border-woodax-line my-2 border-0 border-t" />
-          ) : null}
-          <a
-            href={siblingHref}
-            onClick={(event) => {
-              if (!isPlainClick(event)) return;
-              event.preventDefault();
-              activateHref(siblingHref);
-            }}
-            className={cn(
-              "inline-flex min-h-11 items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
-              focusRing,
-            )}
-          >
-            {siblingLabel}
-          </a>
-          {instagramUrl ? (
-            <a
-              href={instagramUrl}
-              onClick={(event) => {
-                if (!isPlainClick(event)) return;
-                event.preventDefault();
-                activateHref(instagramUrl);
-              }}
-              className={cn(
-                "inline-flex min-h-11 items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
-                focusRing,
-              )}
-            >
-              {instagramLabel}
-            </a>
-          ) : null}
-          {facebookUrl ? (
-            <a
-              href={facebookUrl}
-              aria-label={facebookAria}
-              onClick={(event) => {
-                if (!isPlainClick(event)) return;
-                event.preventDefault();
-                activateHref(facebookUrl);
-              }}
-              className={cn(
-                "inline-flex min-h-11 items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
-                focusRing,
-              )}
-            >
-              {facebookLabel}
-            </a>
-          ) : null}
-          <LocaleSlot
-            variant={variant}
-            label={languageLabel}
-            size="menu"
-            onChange={() => setMenuOpen(false)}
-          />
-        </div>
-        <SheetClose className="sr-only">{closeLabel}</SheetClose>
-      </SheetContent>
+                {instagramLabel}
+              </a>
+            ) : null}
+            {facebookUrl ? (
+              <a
+                href={facebookUrl}
+                aria-label={facebookAria}
+                onClick={(event) => {
+                  if (!isPlainClick(event)) return;
+                  event.preventDefault();
+                  activateHref(facebookUrl);
+                }}
+                className={cn(
+                  "inline-flex min-h-11 items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+                  focusRing,
+                )}
+              >
+                {facebookLabel}
+              </a>
+            ) : null}
+            <LocaleSlot
+              variant={variant}
+              label={languageLabel}
+              size="menu"
+              onChange={() => setMenuOpen(false)}
+            />
+          </div>
+          <SheetClose className="sr-only">{closeLabel}</SheetClose>
+        </SheetContent>
+      ) : null}
     </Sheet>
   );
 }
 
 function MenuGlyph({ open }: { open: boolean }) {
-  const icon =
-    "absolute inset-0 size-5 transition-[opacity,rotate] duration-150 ease-[var(--ease-out)] motion-reduce:transition-none";
   return (
-    <span className="relative size-5">
-      <Menu
-        aria-hidden
-        strokeWidth={1.5}
-        className={cn(
-          icon,
-          open ? "rotate-90 opacity-0" : "rotate-0 opacity-100",
-        )}
-      />
-      <X
-        aria-hidden
-        strokeWidth={1.5}
-        className={cn(
-          icon,
-          open ? "rotate-0 opacity-100" : "-rotate-90 opacity-0",
-        )}
-      />
+    <span
+      className="menu-glyph"
+      data-open={open ? "true" : "false"}
+      aria-hidden
+    >
+      <span className="menu-glyph-bars">
+        <span />
+        <span />
+        <span />
+      </span>
+      <span className="menu-glyph-static">
+        <Menu strokeWidth={1.5} data-show={open ? "false" : "true"} />
+        <X strokeWidth={1.5} data-show={open ? "true" : "false"} />
+      </span>
     </span>
   );
 }
