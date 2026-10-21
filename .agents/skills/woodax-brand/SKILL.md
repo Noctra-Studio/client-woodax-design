@@ -256,7 +256,7 @@ Launch blocker: `instagramUrl` and `facebookUrl` cannot be `"#"` in production.
 
 ## 14. Cookie consent
 
-- GA4 loads without a banner; the privacy notice explains what it measures and how to turn it off. If the site targets the EU, implement Consent Mode v2 with a banner.
+- GA4 and Vercel Web Analytics load without a banner. The privacy notice, approved by Adrián on 2026-10-21, explains what they measure. Google Analytics can be turned off with the official opt-out add-on. If the site targets the EU, implement Consent Mode v2 with a banner.
 - Port the existing consent component from the Noctra Studio site repo (same UX and copy structure); adapt styles to these tokens and shadcn components, and texts to messages (es/en). Do not invent a different UX. That banner is for EU Consent Mode and for marketing, not for the current GA4 install.
 - Categories: Necessary (always on: locale, consent, preview-site cookies) · Analytics · Marketing. Marketing scripts load only after explicit opt-in for that category. GA4 is not behind that gate.
 - Storage: first-party cookie `woodax_consent` = JSON {v:1, necessary:true, analytics:boolean, marketing:boolean, ts}, path=/, SameSite=Lax, Secure, max-age 400 days (browser maximum; Chrome caps cookie lifetime at 400 days). Shared across woodax.design and cnc.woodax.design via domain=.woodax.design in production (host-only on previews/localhost). Mirror to localStorage as fallback (try/catch). Banner never shows again while the cookie exists; bump `v` to re-ask when categories change.

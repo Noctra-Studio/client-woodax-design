@@ -362,7 +362,7 @@
     "intro": "When you send the form, Woodax Design and CNC by Woodax Design receive your name, your WhatsApp or email, and the project details you share.",
     "purpose": "We use that information only to reply to your request and follow up on the project.",
     "sale": "We do not sell this information or share it with third parties for advertising.",
-    "analytics": "We use Google Analytics to measure, in aggregate, how many people visit the site and which pages they open. We do not send your name, email, phone, or form text to Google Analytics. You can turn this measurement off with the <optOut>Google Analytics Opt-out Browser Add-on</optOut>.",
+    "analytics": "We use Google Analytics and Vercel Web Analytics to measure, in aggregate, how many people visit the site and which pages they open. We do not send your name, email, phone, or form text to these tools. Vercel Web Analytics does not use cookies. You can turn Google Analytics off with the <optOut>Google Analytics Opt-out Browser Add-on</optOut>.",
     "contact": "To ask about your information, write to {email}."
   },
   "metadata": {

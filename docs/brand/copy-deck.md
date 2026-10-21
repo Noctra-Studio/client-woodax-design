@@ -259,17 +259,16 @@ Fuente única: `siteConfig.cncOffer`, `cncDelivery.smallProjectFromBusinessDays`
 
 - Textos: portar los del banner de noctra.studio y adaptarlos a Woodax (marca y correo). ⚠︎ Revisión de Adrián.
 
-## Aviso de privacidad ⚠︎ Pendiente de aprobación de Adrián
+## Aviso de privacidad — Aprobado por Adrián 2026-10-21
 
-- El aviso de privacidad lo valida Adrián como responsable.
-- Correo de contacto para privacidad, solicitudes ARCO, revocación del consentimiento u opt-out ⚠︎ (pendiente de aprobación de Adrián): `privacidad@woodax.design` (`siteConfig.privacyEmail`, enlace `mailto:`).
+- Correo de contacto para privacidad, solicitudes ARCO, revocación del consentimiento u opt-out: `privacidad@woodax.design` (`siteConfig.privacyEmail`, enlace `mailto:`).
 - privacy.title — ES: Aviso de privacidad | EN: Privacy notice
-- privacy.intro ⚠︎ — ES: Cuando envías el formulario, Woodax Design y CNC by Woodax Design reciben tu nombre, tu WhatsApp o email, y los datos del proyecto que nos compartes. | EN: When you send the form, Woodax Design and CNC by Woodax Design receive your name, your WhatsApp or email, and the project details you share.
-- privacy.purpose ⚠︎ — ES: Usamos esa información únicamente para responder tu solicitud y dar seguimiento al proyecto. | EN: We use that information only to reply to your request and follow up on the project.
-- privacy.sale ⚠︎ — ES: No vendemos estos datos ni los compartimos con terceros para publicidad. | EN: We do not sell this information or share it with third parties for advertising.
-- privacy.analytics ⚠︎ — ES: Usamos Google Analytics para medir, de forma agregada, cuántas personas visitan el sitio y qué páginas abren. No enviamos a Google Analytics el nombre, el email, el teléfono ni el texto del formulario. Puedes desactivar esta medición con el complemento de inhabilitación de Google Analytics. | EN: We use Google Analytics to measure, in aggregate, how many people visit the site and which pages they open. We do not send your name, email, phone, or form text to Google Analytics. You can turn this measurement off with the Google Analytics Opt-out Browser Add-on.
+- privacy.intro — ES: Cuando envías el formulario, Woodax Design y CNC by Woodax Design reciben tu nombre, tu WhatsApp o email, y los datos del proyecto que nos compartes. | EN: When you send the form, Woodax Design and CNC by Woodax Design receive your name, your WhatsApp or email, and the project details you share.
+- privacy.purpose — ES: Usamos esa información únicamente para responder tu solicitud y dar seguimiento al proyecto. | EN: We use that information only to reply to your request and follow up on the project.
+- privacy.sale — ES: No vendemos estos datos ni los compartimos con terceros para publicidad. | EN: We do not sell this information or share it with third parties for advertising.
+- privacy.analytics — ES: Usamos Google Analytics y Vercel Web Analytics para medir, de forma agregada, cuántas personas visitan el sitio y qué páginas abren. No enviamos a estas herramientas el nombre, el email, el teléfono ni el texto del formulario. Vercel Web Analytics no usa cookies. Puedes desactivar Google Analytics con el complemento de inhabilitación de Google Analytics. | EN: We use Google Analytics and Vercel Web Analytics to measure, in aggregate, how many people visit the site and which pages they open. We do not send your name, email, phone, or form text to these tools. Vercel Web Analytics does not use cookies. You can turn Google Analytics off with the Google Analytics Opt-out Browser Add-on.
 - Link del complemento: https://tools.google.com/dlpage/gaoptout
-- privacy.contact ⚠︎ — ES: Si quieres preguntar por tu información, escribe a privacidad@woodax.design. | EN: To ask about your information, write to privacidad@woodax.design. (en messages usa `{email}` inyectado desde `siteConfig.privacyEmail`)
+- privacy.contact — ES: Si quieres preguntar por tu información, escribe a privacidad@woodax.design. | EN: To ask about your information, write to privacidad@woodax.design. (en messages usa `{email}` inyectado desde `siteConfig.privacyEmail`)
 
 ## Términos y condiciones ⚠︎
 

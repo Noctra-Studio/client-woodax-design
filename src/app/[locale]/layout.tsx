@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Quicksand } from "next/font/google";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -106,6 +107,7 @@ export default async function LocaleLayout({
             />
           </>
         ) : null}
+        <Analytics />
       </body>
     </html>
   );

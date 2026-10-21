@@ -21,7 +21,6 @@ export function PrivacyNoticeBody({ className }: { className?: string }) {
       <p>{t("intro")}</p>
       <p>{t("purpose")}</p>
       <p>{t("sale")}</p>
-      {/* Copy pending Adrián's approval. */}
       <p>
         {t.rich("analytics", {
           optOut: (chunks) => (
