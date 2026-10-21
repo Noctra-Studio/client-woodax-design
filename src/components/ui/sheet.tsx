@@ -26,37 +26,49 @@ function SheetPortal({
   return <SheetPrimitive.Portal data-slot="sheet-portal" {...props} />;
 }
 
-function SheetOverlay({
-  className,
-  ...props
-}: React.ComponentProps<typeof SheetPrimitive.Overlay>) {
-  return (
-    <SheetPrimitive.Overlay
-      data-slot="sheet-overlay"
-      className={cn("nav-sheet-overlay fixed inset-0 z-50", className)}
-      {...props}
-    />
-  );
-}
-
 function SheetContent({
   className,
   children,
   side = "right",
+  forceMount,
+  phase = "closed",
+  intent = phase,
+  motionReady = false,
+  onOverlayDismiss,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
   side?: "top" | "right" | "bottom" | "left";
+  forceMount?: true;
+  phase?: "open" | "closed";
+  intent?: "open" | "closed";
+  motionReady?: boolean;
+  onOverlayDismiss?: () => void;
 }) {
+  const motionState = motionReady ? "on" : "off";
   return (
-    <SheetPortal>
-      <SheetOverlay />
+    <SheetPortal forceMount={forceMount}>
+      {/* Plain overlay: Dialog.Overlay mounts RemoveScroll, whose
+          overflow:hidden clips the exit transform on iOS. */}
+      <div
+        data-slot="sheet-overlay"
+        data-phase={phase}
+        data-intent={intent}
+        data-motion={motionState}
+        aria-hidden
+        className="nav-sheet-overlay fixed inset-0 z-50"
+        onClick={onOverlayDismiss}
+      />
       <SheetPrimitive.Content
+        forceMount={forceMount}
         data-slot="sheet-content"
         data-side={side}
+        data-phase={phase}
+        data-intent={intent}
+        data-motion={motionState}
         className={cn(
-          "nav-sheet-panel fixed z-50 flex h-dvh w-[min(22rem,100%)] flex-col overscroll-none outline-none",
-          side === "right" && "inset-y-0 right-0 border-l",
-          side === "left" && "inset-y-0 left-0 border-r",
+          "nav-sheet-panel fixed z-50 flex w-[min(22rem,100%)] flex-col overscroll-none outline-none",
+          side === "right" && "right-0 border-l",
+          side === "left" && "left-0 border-r",
           className,
         )}
         {...props}

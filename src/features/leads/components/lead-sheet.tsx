@@ -12,6 +12,7 @@ import {
 import { createPortal } from "react-dom";
 import { motion, useDragControls, type PanInfo } from "motion/react";
 import { fraunces } from "@/lib/font-design";
+import { useScrollLock } from "@/lib/use-scroll-lock";
 import { cn } from "@/lib/utils";
 
 type LeadSheetNestedContextValue = {
@@ -166,38 +167,6 @@ export function LeadSheet({
 
 function shouldDismiss(info: PanInfo) {
   return info.offset.y > 96 || info.velocity.y > 700;
-}
-
-function useScrollLock(active: boolean) {
-  useEffect(() => {
-    if (!active) return;
-    const scrollY = window.scrollY;
-    const { style } = document.body;
-    const previous = {
-      position: style.position,
-      top: style.top,
-      left: style.left,
-      right: style.right,
-      width: style.width,
-      overflow: style.overflow,
-    };
-    style.position = "fixed";
-    style.top = `-${scrollY}px`;
-    style.left = "0";
-    style.right = "0";
-    style.width = "100%";
-    style.overflow = "hidden";
-
-    return () => {
-      style.position = previous.position;
-      style.top = previous.top;
-      style.left = previous.left;
-      style.right = previous.right;
-      style.width = previous.width;
-      style.overflow = previous.overflow;
-      window.scrollTo(0, scrollY);
-    };
-  }, [active]);
 }
 
 function useFocusTrap(
