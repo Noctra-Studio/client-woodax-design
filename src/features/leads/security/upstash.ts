@@ -3,6 +3,7 @@ import { Redis } from "@upstash/redis";
 import { serverEnv } from "@/lib/env";
 import type { DuplicateRedis } from "@/features/leads/security/duplicate";
 import type { LeadLimiters } from "@/features/leads/security/rate-limit";
+import { RATE_LIMIT_PREFIX } from "@/features/leads/security/redis-keys";
 
 let redis: Redis | null | undefined;
 let limiters: LeadLimiters | null | undefined;
@@ -57,11 +58,11 @@ export function stepOneLimiters(): LeadLimiters | null {
   }
 
   limiters = {
-    ip10m: windowLimiter(client, 5, "10 m", "woodax:lead:ip10m"),
-    ipDay: windowLimiter(client, 20, "1 d", "woodax:lead:ip1d"),
-    emailHour: windowLimiter(client, 3, "1 h", "woodax:lead:email1h"),
-    emailDay: windowLimiter(client, 5, "1 d", "woodax:lead:email1d"),
-    globalHour: windowLimiter(client, 100, "1 h", "woodax:lead:global1h"),
+    ip10m: windowLimiter(client, 5, "10 m", RATE_LIMIT_PREFIX.ip10m),
+    ipDay: windowLimiter(client, 20, "1 d", RATE_LIMIT_PREFIX.ipDay),
+    emailHour: windowLimiter(client, 3, "1 h", RATE_LIMIT_PREFIX.emailHour),
+    emailDay: windowLimiter(client, 5, "1 d", RATE_LIMIT_PREFIX.emailDay),
+    globalHour: windowLimiter(client, 100, "1 h", RATE_LIMIT_PREFIX.globalHour),
   };
   return limiters;
 }

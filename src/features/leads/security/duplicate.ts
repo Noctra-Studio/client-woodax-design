@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { duplicateKey } from "@/features/leads/security/redis-keys";
 import { sanitizeText } from "@/features/leads/security/sanitize";
 
 const DAY_SECONDS = 24 * 60 * 60;
@@ -22,8 +23,6 @@ export function submissionFingerprint(
 }
 
 let loggedUnavailable = false;
-
-const duplicateKey = (hash: string) => `woodax:lead:dup:${hash}`;
 
 /**
  * First writer in 24h wins. Redis down or missing fails open so a real lead is still sent.
