@@ -23,7 +23,6 @@ import { isDesignFull, localizedMetadata } from "@/lib/seo";
 import { designJsonLd } from "@/lib/structured-data";
 
 export const maxDuration = 15;
-export const preferredRegion = "iad1";
 
 export async function generateMetadata({
   params,

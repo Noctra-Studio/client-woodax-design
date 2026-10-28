@@ -37,7 +37,6 @@ import { cn } from "@/lib/utils";
 const introBoot = `(function(){try{if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;if(sessionStorage.getItem("woodax-cnc-intro")==="1")return;document.documentElement.setAttribute("data-cnc-intro","play");}catch(e){}})();`;
 
 export const maxDuration = 15;
-export const preferredRegion = "iad1";
 
 export const viewport: Viewport = {
   viewportFit: "cover",

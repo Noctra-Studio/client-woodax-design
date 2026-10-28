@@ -18,7 +18,6 @@ import { whatsappHref } from "@/lib/whatsapp";
 const contactEmail = siteConfig.designEmail;
 
 export const maxDuration = 15;
-export const preferredRegion = "iad1";
 
 export async function generateMetadata({
   params,
