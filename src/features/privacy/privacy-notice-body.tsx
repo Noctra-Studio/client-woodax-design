@@ -1,14 +1,12 @@
 import { useTranslations } from "next-intl";
-import { useCookieConsent } from "@/components/consent/cookie-consent-provider";
-import { closePrivacyDialog } from "@/features/privacy/privacy-dialog-provider";
 import { siteConfig } from "@/content/site-config";
+import { PrivacyCookieButton } from "@/features/privacy/privacy-cookie-button";
 import { cn } from "@/lib/utils";
 
 const gaOptOutUrl = "https://tools.google.com/dlpage/gaoptout";
 
 export function PrivacyNoticeBody({ className }: { className?: string }) {
   const t = useTranslations("privacy");
-  const { openPreferences } = useCookieConsent();
   const { privacyEmail } = siteConfig;
   const [beforeEmail, afterEmail] = t("contact", { email: privacyEmail }).split(
     privacyEmail,
@@ -27,16 +25,7 @@ export function PrivacyNoticeBody({ className }: { className?: string }) {
       <p>
         {t.rich("cookies", {
           preferences: (chunks) => (
-            <button
-              type="button"
-              onClick={(event) => {
-                openPreferences(event.currentTarget);
-                closePrivacyDialog();
-              }}
-              className="cursor-pointer underline decoration-current/40 underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
-            >
-              {chunks}
-            </button>
+            <PrivacyCookieButton>{chunks}</PrivacyCookieButton>
           ),
         })}
       </p>

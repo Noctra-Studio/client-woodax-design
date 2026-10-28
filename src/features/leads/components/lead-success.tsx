@@ -1,12 +1,19 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import {
+  useActionState,
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { AnalyticsButton } from "@/components/analytics/tracked-link";
 import { Button } from "@/components/ui/button";
 import { submitLeadDetails } from "@/features/leads/actions";
 import type { LeadCopy } from "@/features/leads/copy";
 import { initialLeadState } from "@/features/leads/state";
+import { LeadErrorBoundary } from "@/features/leads/components/lead-error-boundary";
 import {
   DrawnCheck,
   OptionGroup,
@@ -27,6 +34,22 @@ export function LeadSuccess({
   values: Record<string, string>;
   leadToken: string;
 }) {
+  return (
+    <LeadErrorBoundary copy={copy}>
+      <LeadSuccessContent copy={copy} values={values} leadToken={leadToken} />
+    </LeadErrorBoundary>
+  );
+}
+
+function LeadSuccessContent({
+  copy,
+  values,
+  leadToken,
+}: {
+  copy: LeadCopy;
+  values: Record<string, string>;
+  leadToken: string;
+}) {
   const [state, formAction, pending] = useActionState(
     submitLeadDetails,
     initialLeadState,
@@ -35,9 +58,29 @@ export function LeadSuccess({
   const [timeline, setTimeline] = useState("");
   const [quantity, setQuantity] = useState("");
   const [fileLink, setFileLink] = useState("");
+  const submitLockRef = useRef(false);
   const reduceMotion = useReducedMotion();
   const sent = state.status === "success";
   useFocusOnError(state.status, state.fieldErrors, copy.variant);
+
+  useEffect(() => {
+    if (!pending) {
+      submitLockRef.current = false;
+    }
+  }, [pending, state]);
+
+  function handleDetailsSubmit(event: FormEvent<HTMLFormElement>) {
+    if (pending || submitLockRef.current) {
+      event.preventDefault();
+      return;
+    }
+    submitLockRef.current = true;
+  }
+
+  function beginDetailsSubmit(formData: FormData) {
+    if (pending) return;
+    formAction(formData);
+  }
   const detailsError =
     state.fieldErrors?.details ?? state.fieldErrors?.quantity;
   const formError = state.fieldErrors?.form ?? state.fieldErrors?.projectState;
@@ -79,7 +122,13 @@ export function LeadSuccess({
       </div>
 
       {sent ? null : (
-        <form action={formAction} className="flex flex-col gap-6" noValidate>
+        <form
+          action={beginDetailsSubmit}
+          onSubmit={handleDetailsSubmit}
+          aria-busy={pending}
+          className="flex flex-col gap-6"
+          noValidate
+        >
           <input type="hidden" name="site" value={copy.variant} />
           <input type="hidden" name="locale" value={copy.locale} />
           <input type="hidden" name="name" value={values.name ?? ""} />
@@ -204,10 +253,10 @@ export function LeadSuccess({
             className="min-w-40"
           >
             {pending ? (
-              <>
-                <span className="sr-only">{copy.detailsSubmit}</span>
+              <span className="inline-flex items-center gap-2">
                 <PendingSpinner />
-              </>
+                <span>{copy.submitting ?? copy.detailsSubmit}</span>
+              </span>
             ) : (
               copy.detailsSubmit
             )}
@@ -268,6 +317,10 @@ export function useFocusOnError(
     if (!first) return;
     const id =
       first === "form" ? `${idPrefix}-form-error` : `${idPrefix}-${first}`;
-    document.getElementById(id)?.focus();
+    try {
+      document.getElementById(id)?.focus();
+    } catch {
+      // Focus may fail in restricted WebViews.
+    }
   }, [status, signature, idPrefix]);
 }

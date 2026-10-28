@@ -92,17 +92,22 @@ export function useFormSectionInView(sectionId: string) {
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") return;
     const section = document.getElementById(sectionId);
     if (!section) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setInView(Boolean(entry?.isIntersecting));
-      },
-      { threshold: 0.25 },
-    );
-    observer.observe(section);
-    return () => observer.disconnect();
+    try {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          setInView(Boolean(entry?.isIntersecting));
+        },
+        { threshold: 0.25 },
+      );
+      observer.observe(section);
+      return () => observer.disconnect();
+    } catch {
+      return;
+    }
   }, [sectionId]);
 
   return inView;
@@ -113,16 +118,20 @@ export function useHeroCtaInView(elementId: string | null) {
   const [inView, setInView] = useState(elementId !== null);
 
   useLayoutEffect(() => {
-    if (!elementId) return;
+    if (!elementId || typeof IntersectionObserver === "undefined") return;
 
     const element = document.getElementById(elementId);
     if (!element) return;
 
-    const observer = new IntersectionObserver(([entry]) => {
-      setInView(Boolean(entry?.isIntersecting));
-    });
-    observer.observe(element);
-    return () => observer.disconnect();
+    try {
+      const observer = new IntersectionObserver(([entry]) => {
+        setInView(Boolean(entry?.isIntersecting));
+      });
+      observer.observe(element);
+      return () => observer.disconnect();
+    } catch {
+      return;
+    }
   }, [elementId]);
 
   return elementId ? inView : false;

@@ -17,21 +17,20 @@ import {
 } from "@/features/leads/components/mobile-cta-bar";
 import { CNC_HERO_CTA_ID } from "@/features/leads/mobile-cta";
 import { fraunces } from "@/lib/font-design";
+import { safeMatchMedia } from "@/lib/safe-storage";
 import { isDesignFull } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 const MOBILE_QUERY = "(max-width: 767px)";
 
 function subscribe(onStoreChange: () => void) {
-  const query = window.matchMedia(MOBILE_QUERY);
-  query.addEventListener("change", onStoreChange);
-  return () => query.removeEventListener("change", onStoreChange);
+  return safeMatchMedia(MOBILE_QUERY).subscribe(onStoreChange);
 }
 
 function useIsMobile() {
   return useSyncExternalStore(
     subscribe,
-    () => window.matchMedia(MOBILE_QUERY).matches,
+    () => safeMatchMedia(MOBILE_QUERY).matches,
     () => false,
   );
 }

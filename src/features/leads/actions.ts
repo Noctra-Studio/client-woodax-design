@@ -39,6 +39,13 @@ import {
   stepOneLimiters,
 } from "@/features/leads/security/upstash";
 import {
+  BOTID_TIMEOUT_MS,
+  RESEND_MAX_RETRIES,
+  RESEND_TIMEOUT_MS,
+  TimeoutError,
+  withTimeout,
+} from "@/features/leads/security/timeout";
+import {
   fieldErrorsFrom,
   honeypotFilled,
   leadDetailsPayload,
@@ -61,260 +68,295 @@ export async function submitLead(
   _previous: LeadActionState,
   formData: FormData,
 ): Promise<LeadActionState> {
-  const values = readLeadValues(formData);
+  let values: Record<string, string> = {};
 
-  if (await isBot()) {
-    logLeadDecision("bot", "bot");
-    return silentSuccess(values);
-  }
+  try {
+    values = readLeadValues(formData);
 
-  if (honeypotFilled(formData)) {
-    logLeadDecision("discarded", "honeypot");
-    return silentSuccess(values);
-  }
+    if (await isBot()) {
+      logLeadDecision("bot", "bot");
+      return silentSuccess(values);
+    }
 
-  const elapsed = submitElapsedMs(formData);
-  const shortSubmit = elapsed !== null && elapsed < MIN_SUBMIT_MS;
+    if (honeypotFilled(formData)) {
+      logLeadDecision("discarded", "honeypot");
+      return silentSuccess(values);
+    }
 
-  const parsed = leadSchema.safeParse(leadPayload(formData));
-  if (!parsed.success) {
-    return {
-      status: "error",
-      delivered: false,
-      fieldErrors: fieldErrorsFrom(parsed.error),
-      values,
-    };
-  }
+    const elapsed = submitElapsedMs(formData);
+    const shortSubmit = elapsed !== null && elapsed < MIN_SUBMIT_MS;
 
-  const lead = parsed.data;
-  const contact = parseContact(lead.contact);
-  const contactKey = contactIdentity(contact, lead.contact);
-  const email =
-    contact?.kind === "email" ? normalizeEmail(contact.value) : null;
-  const rejected = rejectContent(lead, email, undefined, values);
-  if (rejected) return rejected;
-
-  const limit = await stepOneLimit(await requestIp(), email);
-  if (limit === "limited") {
-    logLeadDecision("rate_limited", "rate_limit");
-    return {
-      status: "error",
-      delivered: false,
-      fieldErrors: { form: leadError.rateLimited },
-      values,
-    };
-  }
-
-  const decision = decideLeadContent({
-    name: lead.name,
-    company: lead.company,
-    message: lead.message,
-    email,
-  });
-  if (decision.outcome !== "send") {
-    logLeadDecision("discarded", decision.reason);
-    if (decision.outcome === "reject") {
+    const parsed = leadSchema.safeParse(leadPayload(formData));
+    if (!parsed.success) {
       return {
         status: "error",
         delivered: false,
-        fieldErrors: {
-          [decision.field]:
-            decision.field === "name" ? leadError.name : leadError.generic,
-        },
+        fieldErrors: fieldErrorsFrom(parsed.error),
         values,
       };
     }
-    return silentSuccess(values);
-  }
 
-  const token = signLeadToken(
-    { site: lead.site, contact: contactKey, name: lead.name },
-    serverEnv.RESEND_API_KEY,
-  );
-  const fingerprint = submissionFingerprint(
-    contactKey,
-    [
-      lead.message ?? "",
-      lead.name,
-      lead.company ?? "",
-      lead.site,
-      leadOptions(lead),
-    ].join("\n"),
-  );
-  const claim = await claimSubmission(duplicateRedis(), fingerprint);
-  if (claim === "duplicate") {
-    logLeadDecision("discarded", "duplicate");
-    return silentSuccess(values, token);
-  }
+    const lead = parsed.data;
+    const contact = parseContact(lead.contact);
+    const contactKey = contactIdentity(contact, lead.contact);
+    const email =
+      contact?.kind === "email" ? normalizeEmail(contact.value) : null;
+    const rejected = rejectContent(lead, email, undefined, values);
+    if (rejected) return rejected;
 
-  const reasons = [
-    ...(shortSubmit ? ["short_submit"] : []),
-    ...decision.reasons,
-  ];
-  const content = withSpamMarkers(
-    notificationContent(lead, new Date()),
-    reasons,
-    elapsed,
-  );
-  const sent = await sendEmail({
-    to:
-      lead.site === "design"
-        ? serverEnv.CONTACT_TO_EMAIL
-        : serverEnv.CONTACT_TO_EMAIL_CNC,
-    subject: content.subject,
-    replyTo: contact?.kind === "email" ? contact.value : undefined,
-    content,
-  });
+    const limit = await stepOneLimit(await requestIp(), email);
+    if (limit === "limited") {
+      logLeadDecision("rate_limited", "rate_limit");
+      return {
+        status: "error",
+        delivered: false,
+        fieldErrors: { form: leadError.rateLimited },
+        values,
+      };
+    }
 
-  if (!sent) {
-    await releaseSubmission(duplicateRedis(), fingerprint);
+    const decision = decideLeadContent({
+      name: lead.name,
+      company: lead.company,
+      message: lead.message,
+      email,
+    });
+    if (decision.outcome !== "send") {
+      logLeadDecision("discarded", decision.reason);
+      if (decision.outcome === "reject") {
+        return {
+          status: "error",
+          delivered: false,
+          fieldErrors: {
+            [decision.field]:
+              decision.field === "name" ? leadError.name : leadError.generic,
+          },
+          values,
+        };
+      }
+      return silentSuccess(values);
+    }
+
+    const token = signLeadToken(
+      { site: lead.site, contact: contactKey, name: lead.name },
+      serverEnv.RESEND_API_KEY,
+    );
+    const fingerprint = submissionFingerprint(
+      contactKey,
+      [
+        lead.message ?? "",
+        lead.name,
+        lead.company ?? "",
+        lead.site,
+        leadOptions(lead),
+      ].join("\n"),
+    );
+    const claim = await claimSubmission(duplicateRedis(), fingerprint);
+    if (claim === "duplicate") {
+      logLeadDecision("discarded", "duplicate");
+      return silentSuccess(values, token);
+    }
+
+    const reasons = [
+      ...(shortSubmit ? ["short_submit"] : []),
+      ...decision.reasons,
+    ];
+    const content = withSpamMarkers(
+      notificationContent(lead, new Date()),
+      reasons,
+      elapsed,
+    );
+    const sent = await sendEmail({
+      to:
+        lead.site === "design"
+          ? serverEnv.CONTACT_TO_EMAIL
+          : serverEnv.CONTACT_TO_EMAIL_CNC,
+      subject: content.subject,
+      replyTo: contact?.kind === "email" ? contact.value : undefined,
+      content,
+    });
+
+    if (!sent.ok) {
+      logLeadDecision("send_failed", sent.reason);
+      await releaseSubmission(duplicateRedis(), fingerprint);
+      return {
+        status: "error",
+        delivered: false,
+        fieldErrors: { form: leadError.sendFailed },
+        values,
+      };
+    }
+
+    logLeadDecision(
+      reasons.length > 0 ? "flagged" : "accepted",
+      reasons.length > 0 ? reasons.join(",") : "ok",
+    );
+
+    return {
+      status: "success",
+      delivered: true,
+      leadToken: token,
+      ...(reasons.length > 0 ? { flagged: true } : {}),
+      values,
+    };
+  } catch (error) {
+    const reason = normalizeFailureReason(error);
+    logLeadDecision("send_failed", reason);
+    console.error(
+      "lead submit failed",
+      error instanceof Error ? error.name : "Error",
+    );
     return {
       status: "error",
       delivered: false,
-      fieldErrors: { form: leadError.generic },
+      fieldErrors: { form: leadError.sendFailed },
       values,
     };
   }
-
-  logLeadDecision(
-    reasons.length > 0 ? "flagged" : "accepted",
-    reasons.length > 0 ? reasons.join(",") : "ok",
-  );
-
-  return {
-    status: "success",
-    delivered: true,
-    leadToken: token,
-    ...(reasons.length > 0 ? { flagged: true } : {}),
-    values,
-  };
 }
 
 export async function submitLeadDetails(
   _previous: LeadActionState,
   formData: FormData,
 ): Promise<LeadActionState> {
-  const values = readLeadValues(formData);
+  let values: Record<string, string> = {};
 
-  if (await isBot()) {
-    logLeadDecision("bot", "bot");
-    return silentSuccess(values);
-  }
+  try {
+    values = readLeadValues(formData);
 
-  if (honeypotFilled(formData)) {
-    logLeadDecision("discarded", "honeypot");
-    return silentSuccess(values);
-  }
+    if (await isBot()) {
+      logLeadDecision("bot", "bot");
+      return silentSuccess(values);
+    }
 
-  const detailsElapsed = submitElapsedMs(formData);
-  if (detailsElapsed !== null && detailsElapsed < MIN_SUBMIT_MS) {
-    logLeadDecision("discarded", "short_submit");
-    return silentSuccess(values);
-  }
+    if (honeypotFilled(formData)) {
+      logLeadDecision("discarded", "honeypot");
+      return silentSuccess(values);
+    }
 
-  const parsed = leadDetailsSchema.safeParse(leadDetailsPayload(formData));
-  if (!parsed.success) {
-    return {
-      status: "error",
-      fieldErrors: fieldErrorsFrom(parsed.error),
-      values,
-    };
-  }
+    const detailsElapsed = submitElapsedMs(formData);
+    if (detailsElapsed !== null && detailsElapsed < MIN_SUBMIT_MS) {
+      logLeadDecision("discarded", "short_submit");
+      return silentSuccess(values);
+    }
 
-  const details = parsed.data;
-  const contact = parseContact(details.contact);
-  const contactKey = contactIdentity(contact, details.contact);
-  const token = formData.get("leadToken");
-  const tokenOk =
-    typeof token === "string" &&
-    verifyLeadToken(token, serverEnv.RESEND_API_KEY, {
-      site: details.site,
-      contact: contactKey,
-      name: details.name,
-    });
-  if (!tokenOk) {
-    logLeadDecision("discarded", "invalid_lead_token");
-    return {
-      status: "error",
-      fieldErrors: { form: leadError.generic },
-      values,
-    };
-  }
-
-  const email =
-    contact?.kind === "email" ? normalizeEmail(contact.value) : null;
-  const fileLink = details.site === "cnc" ? details.fileLink : undefined;
-  const rejected = rejectContent(details, email, fileLink, values);
-  if (rejected) return rejected;
-
-  const decision = decideLeadContent({
-    name: details.name,
-    company: details.company,
-    message: details.message,
-    email,
-    fileLink,
-  });
-  if (decision.outcome !== "send") {
-    logLeadDecision("discarded", decision.reason);
-    if (decision.outcome === "reject") {
+    const parsed = leadDetailsSchema.safeParse(leadDetailsPayload(formData));
+    if (!parsed.success) {
       return {
         status: "error",
-        fieldErrors: {
-          [decision.field]:
-            decision.field === "name" ? leadError.name : leadError.generic,
-        },
+        fieldErrors: fieldErrorsFrom(parsed.error),
         values,
       };
     }
-    return silentSuccess(values);
-  }
 
-  const fingerprint = submissionFingerprint(
-    contactKey,
-    [
-      details.message ?? "",
-      details.name,
-      details.site,
-      fileLink ?? "",
-      detailOptions(details),
-    ].join("\n"),
-  );
-  const claim = await claimSubmission(duplicateRedis(), fingerprint);
-  if (claim === "duplicate") {
-    logLeadDecision("discarded", "duplicate");
+    const details = parsed.data;
+    const contact = parseContact(details.contact);
+    const contactKey = contactIdentity(contact, details.contact);
+    const token = formData.get("leadToken");
+    const tokenOk =
+      typeof token === "string" &&
+      verifyLeadToken(token, serverEnv.RESEND_API_KEY, {
+        site: details.site,
+        contact: contactKey,
+        name: details.name,
+      });
+    if (!tokenOk) {
+      logLeadDecision("discarded", "invalid_lead_token");
+      return {
+        status: "error",
+        fieldErrors: { form: leadError.generic },
+        values,
+      };
+    }
+
+    const email =
+      contact?.kind === "email" ? normalizeEmail(contact.value) : null;
+    const fileLink = details.site === "cnc" ? details.fileLink : undefined;
+    const rejected = rejectContent(details, email, fileLink, values);
+    if (rejected) return rejected;
+
+    const decision = decideLeadContent({
+      name: details.name,
+      company: details.company,
+      message: details.message,
+      email,
+      fileLink,
+    });
+    if (decision.outcome !== "send") {
+      logLeadDecision("discarded", decision.reason);
+      if (decision.outcome === "reject") {
+        return {
+          status: "error",
+          fieldErrors: {
+            [decision.field]:
+              decision.field === "name" ? leadError.name : leadError.generic,
+          },
+          values,
+        };
+      }
+      return silentSuccess(values);
+    }
+
+    const fingerprint = submissionFingerprint(
+      contactKey,
+      [
+        details.message ?? "",
+        details.name,
+        details.site,
+        fileLink ?? "",
+        detailOptions(details),
+      ].join("\n"),
+    );
+    const claim = await claimSubmission(duplicateRedis(), fingerprint);
+    if (claim === "duplicate") {
+      logLeadDecision("discarded", "duplicate");
+      return { status: "success", values };
+    }
+
+    const content = withSpamMarkers(
+      detailsContent(details, new Date()),
+      decision.reasons,
+      null,
+    );
+    const sent = await sendEmail({
+      to:
+        details.site === "design"
+          ? serverEnv.CONTACT_TO_EMAIL
+          : serverEnv.CONTACT_TO_EMAIL_CNC,
+      subject: content.subject,
+      replyTo: contact?.kind === "email" ? contact.value : undefined,
+      content,
+    });
+
+    if (!sent.ok) {
+      logLeadDecision("send_failed", sent.reason);
+      await releaseSubmission(duplicateRedis(), fingerprint);
+      return {
+        status: "error",
+        fieldErrors: { form: leadError.sendFailed },
+        values,
+      };
+    }
+
+    logLeadDecision(
+      decision.reasons.length > 0 ? "flagged" : "accepted",
+      decision.reasons.length > 0 ? decision.reasons.join(",") : "details",
+    );
+
     return { status: "success", values };
-  }
-
-  const content = withSpamMarkers(
-    detailsContent(details, new Date()),
-    decision.reasons,
-    null,
-  );
-  const sent = await sendEmail({
-    to:
-      details.site === "design"
-        ? serverEnv.CONTACT_TO_EMAIL
-        : serverEnv.CONTACT_TO_EMAIL_CNC,
-    subject: content.subject,
-    replyTo: contact?.kind === "email" ? contact.value : undefined,
-    content,
-  });
-
-  if (!sent) {
-    await releaseSubmission(duplicateRedis(), fingerprint);
+  } catch (error) {
+    const reason = normalizeFailureReason(error);
+    logLeadDecision("send_failed", reason);
+    console.error(
+      "lead details submit failed",
+      error instanceof Error ? error.name : "Error",
+    );
     return {
       status: "error",
-      fieldErrors: { form: leadError.generic },
+      fieldErrors: { form: leadError.sendFailed },
       values,
     };
   }
-
-  logLeadDecision(
-    decision.reasons.length > 0 ? "flagged" : "accepted",
-    decision.reasons.length > 0 ? decision.reasons.join(",") : "details",
-  );
-
-  return { status: "success", values };
 }
 
 function rejectContent(
@@ -375,15 +417,22 @@ async function stepOneLimit(
 }
 
 async function requestIp(): Promise<string | null> {
-  const headerStore = await headers();
-  return clientIp(headerStore.get("x-forwarded-for"));
+  try {
+    const headerStore = await headers();
+    return clientIp(headerStore.get("x-forwarded-for"));
+  } catch {
+    return null;
+  }
 }
 
 async function isBot(): Promise<boolean> {
   try {
-    const verification = await checkBotId({
-      advancedOptions: { checkLevel: "basic" },
-    });
+    const verification = await withTimeout(
+      checkBotId({
+        advancedOptions: { checkLevel: "basic" },
+      }),
+      BOTID_TIMEOUT_MS,
+    );
     return verification.isBot;
   } catch (error) {
     console.error(
@@ -411,6 +460,32 @@ function mailbox(value: string): string | null {
   return value;
 }
 
+function normalizeFailureReason(raw: unknown): string {
+  if (raw instanceof TimeoutError) return "timeout";
+  if (raw instanceof Error) {
+    if (raw.name === "TimeoutError" || raw.name === "AbortError") {
+      return "timeout";
+    }
+    const cleaned = raw.name
+      .replace(/([a-z0-9])([A-Z])/g, "$1_$2")
+      .toLowerCase()
+      .replace(/[^a-z0-9_]+/g, "_")
+      .replace(/^_+|_+$/g, "");
+    return cleaned || "resend_error";
+  }
+  if (typeof raw === "string") {
+    const cleaned = raw
+      .replace(/([a-z0-9])([A-Z])/g, "$1_$2")
+      .toLowerCase()
+      .replace(/[^a-z0-9_]+/g, "_")
+      .replace(/^_+|_+$/g, "");
+    return cleaned || "resend_error";
+  }
+  return "resend_error";
+}
+
+type SendEmailResult = { ok: true } | { ok: false; reason: string };
+
 async function sendEmail({
   to,
   subject,
@@ -421,37 +496,47 @@ async function sendEmail({
   subject: string;
   replyTo?: string;
   content: LeadEmailContent;
-}) {
+}): Promise<SendEmailResult> {
   const from = mailbox(serverEnv.CONTACT_FROM_EMAIL);
   const recipient = mailbox(to);
   if (!from || !recipient) {
     console.error("lead mailbox rejected");
-    return false;
+    return { ok: false, reason: "invalid_mailbox" };
   }
 
   const safeReply = safeReplyTo(replyTo);
+  const cleanSubject = singleLineSubject(subject);
+  let lastReason = "resend_error";
 
-  try {
-    const result = await resend.emails.send({
-      from,
-      to: recipient,
-      subject: singleLineSubject(subject),
-      ...(safeReply ? { replyTo: safeReply } : {}),
-      react: LeadNotificationEmail(content),
-    });
-
-    if (result.error) {
-      console.error(
-        result.error.message
-          ? `${result.error.name}: ${result.error.message}`
-          : result.error,
+  for (let attempt = 0; attempt <= RESEND_MAX_RETRIES; attempt += 1) {
+    try {
+      const result = await withTimeout(
+        resend.emails.send({
+          from,
+          to: recipient,
+          subject: cleanSubject,
+          ...(safeReply ? { replyTo: safeReply } : {}),
+          react: LeadNotificationEmail(content),
+        }),
+        RESEND_TIMEOUT_MS,
       );
-      return false;
-    }
 
-    return true;
-  } catch (error) {
-    console.error(error instanceof Error ? error.name : "Error");
-    return false;
+      if (result.error) {
+        lastReason = normalizeFailureReason(result.error.name || "resend_error");
+        console.error(
+          result.error.message
+            ? `${result.error.name}: ${result.error.message}`
+            : result.error,
+        );
+        continue;
+      }
+
+      return { ok: true };
+    } catch (error) {
+      lastReason = normalizeFailureReason(error);
+      console.error(error instanceof Error ? error.name : "Error");
+    }
   }
+
+  return { ok: false, reason: lastReason };
 }

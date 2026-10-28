@@ -118,7 +118,11 @@ export function LeadSheet({
           const target = event.target;
           if (!(target instanceof HTMLInputElement)) return;
           requestAnimationFrame(() => {
-            target.scrollIntoView({ block: "center" });
+            try {
+              target.scrollIntoView({ block: "center" });
+            } catch {
+              // Older WebViews may throw on scrollIntoView options.
+            }
           });
         }}
       >
@@ -232,23 +236,34 @@ function useKeyboardInset(active: boolean) {
 
   useEffect(() => {
     if (!active) return;
-    const viewport = window.visualViewport;
-    if (!viewport) return;
-
-    function update() {
+    try {
+      const viewport = window.visualViewport;
       if (!viewport) return;
-      const next = window.innerHeight - viewport.height - viewport.offsetTop;
-      setInset(Math.max(0, Math.round(next)));
-    }
 
-    update();
-    viewport.addEventListener("resize", update);
-    viewport.addEventListener("scroll", update);
-    return () => {
-      viewport.removeEventListener("resize", update);
-      viewport.removeEventListener("scroll", update);
-      setInset(0);
-    };
+      const update = () => {
+        try {
+          const next = window.innerHeight - viewport.height - viewport.offsetTop;
+          setInset(Math.max(0, Math.round(next)));
+        } catch {
+          setInset(0);
+        }
+      };
+
+      update();
+      viewport.addEventListener("resize", update);
+      viewport.addEventListener("scroll", update);
+      return () => {
+        try {
+          viewport.removeEventListener("resize", update);
+          viewport.removeEventListener("scroll", update);
+        } catch {
+          // Ignore cleanup failure in WebView.
+        }
+        setInset(0);
+      };
+    } catch {
+      return;
+    }
   }, [active]);
 
   return inset;

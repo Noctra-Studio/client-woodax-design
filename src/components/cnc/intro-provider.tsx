@@ -10,6 +10,11 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react";
+import {
+  safeMatchMedia,
+  safeSessionGet,
+  safeSessionSet,
+} from "@/lib/safe-storage";
 
 const INTRO_KEY = "woodax-cnc-intro";
 let introPlaying = false;
@@ -28,25 +33,30 @@ const IntroContext = createContext<IntroContextValue>({
 });
 
 function subscribe(onStoreChange: () => void) {
-  const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-  query.addEventListener("change", onStoreChange);
-  window.addEventListener("storage", onStoreChange);
+  const unsubscribeMedia = safeMatchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).subscribe(onStoreChange);
+  try {
+    window.addEventListener("storage", onStoreChange);
+  } catch {
+    // Ignore storage event error in restricted WebViews.
+  }
   return () => {
-    query.removeEventListener("change", onStoreChange);
-    window.removeEventListener("storage", onStoreChange);
+    unsubscribeMedia();
+    try {
+      window.removeEventListener("storage", onStoreChange);
+    } catch {
+      // Ignore cleanup error in restricted WebViews.
+    }
   };
 }
 
 function introAlreadySeen() {
   if (introPlaying) return false;
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (safeMatchMedia("(prefers-reduced-motion: reduce)").matches) {
     return true;
   }
-  try {
-    return sessionStorage.getItem(INTRO_KEY) === "1";
-  } catch {
-    return true;
-  }
+  return safeSessionGet(INTRO_KEY) === "1";
 }
 
 function useIntroSeen() {
@@ -63,11 +73,7 @@ export function IntroProvider({ children }: { children: ReactNode }) {
   const status: IntroStatus = seen || dismissed ? "done" : "play";
 
   const skip = useCallback(() => {
-    try {
-      sessionStorage.setItem(INTRO_KEY, "1");
-    } catch {
-      // Ignore storage failures; the intro still stops.
-    }
+    safeSessionSet(INTRO_KEY, "1");
     clearIntroAttribute();
     setDismissed(true);
   }, []);
@@ -79,11 +85,7 @@ export function IntroProvider({ children }: { children: ReactNode }) {
     }
 
     introPlaying = true;
-    try {
-      sessionStorage.setItem(INTRO_KEY, "1");
-    } catch {
-      // Private browsing can reject storage.
-    }
+    safeSessionSet(INTRO_KEY, "1");
 
     const id = window.setTimeout(() => {
       clearIntroAttribute();

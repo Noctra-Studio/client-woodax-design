@@ -1,4 +1,9 @@
 import { createHash } from "node:crypto";
+import {
+  TimeoutError,
+  UPSTASH_TIMEOUT_MS,
+  withTimeout,
+} from "@/features/leads/security/timeout";
 
 export type LimitResult = {
   success: boolean;
@@ -35,6 +40,7 @@ function logFailOpen(detail: string) {
 export async function consumeStepOneRateLimit(
   limiters: LeadLimiters,
   input: { ip: string | null; email: string | null },
+  timeoutMs = UPSTASH_TIMEOUT_MS,
 ): Promise<RateLimitDecision> {
   try {
     const checks: Promise<LimitResult>[] = [
@@ -52,13 +58,19 @@ export async function consumeStepOneRateLimit(
       );
     }
 
-    const results = await Promise.all(checks);
+    const results = await withTimeout(Promise.all(checks), timeoutMs);
     if (results.some((result) => result.reason === "timeout")) {
       logFailOpen("timeout");
     }
     return results.every((result) => result.success) ? "ok" : "limited";
   } catch (error) {
-    logFailOpen(error instanceof Error ? error.name : "Error");
+    logFailOpen(
+      error instanceof TimeoutError
+        ? "timeout"
+        : error instanceof Error
+          ? error.name
+          : "Error",
+    );
     return "open";
   }
 }

@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { FooterPrivacyLink } from "@/components/site/footer-privacy-link";
 import { Button } from "@/components/ui/button";
+import { safeMatchMedia } from "@/lib/safe-storage";
 import { cn } from "@/lib/utils";
 
 const SUBMIT_GAP = 12;
@@ -42,23 +43,38 @@ export function CookieBanner({
     update();
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
-    window.visualViewport?.addEventListener("resize", schedule);
-    window.visualViewport?.addEventListener("scroll", schedule);
-    const observer = new MutationObserver(schedule);
-    observer.observe(document.body, {
-      subtree: true,
-      childList: true,
-      attributes: true,
-      attributeFilter: ["data-hidden", "data-open", "data-state"],
-    });
+    try {
+      window.visualViewport?.addEventListener("resize", schedule);
+      window.visualViewport?.addEventListener("scroll", schedule);
+    } catch {
+      // Ignore visualViewport listener errors in WebViews.
+    }
+    let observer: MutationObserver | null = null;
+    try {
+      if (typeof MutationObserver !== "undefined") {
+        observer = new MutationObserver(schedule);
+        observer.observe(document.body, {
+          subtree: true,
+          childList: true,
+          attributes: true,
+          attributeFilter: ["data-hidden", "data-open", "data-state"],
+        });
+      }
+    } catch {
+      observer = null;
+    }
 
     return () => {
       if (frame) cancelAnimationFrame(frame);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
-      window.visualViewport?.removeEventListener("resize", schedule);
-      window.visualViewport?.removeEventListener("scroll", schedule);
-      observer.disconnect();
+      try {
+        window.visualViewport?.removeEventListener("resize", schedule);
+        window.visualViewport?.removeEventListener("scroll", schedule);
+      } catch {
+        // Ignore cleanup errors.
+      }
+      observer?.disconnect();
       document.documentElement.style.removeProperty("--cookie-banner-height");
     };
   }, []);
@@ -171,7 +187,7 @@ function coveredBySheet(button: HTMLElement) {
   if (button.closest("[data-slot='dialog-content'], [data-slot='sheet-content']")) {
     return true;
   }
-  if (!window.matchMedia("(max-width: 767px)").matches) return false;
+  if (!safeMatchMedia("(max-width: 767px)").matches) return false;
   const sheet = button.closest<HTMLElement>(".lead-sheet");
   return sheet?.dataset.open === "true";
 }

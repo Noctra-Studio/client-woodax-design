@@ -5,6 +5,11 @@ import { useSearchParams } from "next/navigation";
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { markLocaleSwitch } from "@/lib/route-transition";
+import {
+  safeSessionGet,
+  safeSessionRemove,
+  safeSessionSet,
+} from "@/lib/safe-storage";
 import { readScrollY } from "@/lib/use-scroll-lock";
 import { cn } from "@/lib/utils";
 
@@ -64,13 +69,8 @@ function LocaleSwitch({
   const hit = "min-h-11 w-11 min-w-11 px-2";
 
   useLayoutEffect(() => {
-    let raw: string | null = null;
-    try {
-      raw = sessionStorage.getItem(LOCALE_SCROLL_KEY);
-      sessionStorage.removeItem(LOCALE_SCROLL_KEY);
-    } catch {
-      return;
-    }
+    const raw = safeSessionGet(LOCALE_SCROLL_KEY);
+    safeSessionRemove(LOCALE_SCROLL_KEY);
     if (!raw) return;
 
     let saved: { y?: number; hash?: string };
@@ -80,19 +80,23 @@ function LocaleSwitch({
       return;
     }
 
-    const hash = saved.hash ?? "";
-    if (hash && window.location.hash !== hash) {
-      const next = `${window.location.pathname}${window.location.search}${hash}`;
-      window.history.replaceState(null, "", next);
+    try {
+      const hash = saved.hash ?? "";
+      if (hash && window.location.hash !== hash) {
+        const next = `${window.location.pathname}${window.location.search}${hash}`;
+        window.history.replaceState(null, "", next);
+      }
+      if (typeof saved.y === "number") window.scrollTo(0, saved.y);
+    } catch {
+      // Ignore history/scroll errors in restricted WebViews.
     }
-    if (typeof saved.y === "number") window.scrollTo(0, saved.y);
   }, [locale]);
 
   function selectLocale(code: (typeof locales)[number]) {
     if (code === locale) return;
     markLocaleSwitch();
     try {
-      sessionStorage.setItem(
+      safeSessionSet(
         LOCALE_SCROLL_KEY,
         JSON.stringify({
           y: readScrollY(),

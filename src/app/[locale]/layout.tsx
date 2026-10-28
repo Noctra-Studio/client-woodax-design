@@ -26,6 +26,9 @@ const quicksand = Quicksand({
   display: "swap",
 });
 
+export const maxDuration = 15;
+export const preferredRegion = "iad1";
+
 export async function generateViewport(): Promise<Viewport> {
   const site = await requestSite();
   const color = site === "cnc" ? "#16171A" : "#F3F1EA";

@@ -1,5 +1,10 @@
 export type LeadDecision =
-  "accepted" | "flagged" | "discarded" | "rate_limited" | "bot";
+  | "accepted"
+  | "flagged"
+  | "discarded"
+  | "rate_limited"
+  | "bot"
+  | "send_failed";
 
 const REASON = /^[a-z0-9_,]+$/;
 

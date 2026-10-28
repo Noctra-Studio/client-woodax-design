@@ -4,6 +4,10 @@ import { serverEnv } from "@/lib/env";
 import type { DuplicateRedis } from "@/features/leads/security/duplicate";
 import type { LeadLimiters } from "@/features/leads/security/rate-limit";
 import { RATE_LIMIT_PREFIX } from "@/features/leads/security/redis-keys";
+import {
+  UPSTASH_TIMEOUT_MS,
+  withTimeout,
+} from "@/features/leads/security/timeout";
 
 let redis: Redis | null | undefined;
 let limiters: LeadLimiters | null | undefined;
@@ -25,7 +29,12 @@ function getRedis(): Redis | null {
     return null;
   }
 
-  redis = new Redis({ url, token });
+  redis = new Redis({
+    url,
+    token,
+    retry: false,
+    signal: () => AbortSignal.timeout(UPSTASH_TIMEOUT_MS),
+  });
   return redis;
 }
 
@@ -40,11 +49,12 @@ function windowLimiter(
     limiter: Ratelimit.slidingWindow(tokens, window),
     prefix,
     analytics: false,
-    timeout: 2_000,
+    timeout: UPSTASH_TIMEOUT_MS,
   });
 
   return {
-    limit: (key: string) => ratelimit.limit(key),
+    limit: (key: string) =>
+      withTimeout(ratelimit.limit(key), UPSTASH_TIMEOUT_MS),
   };
 }
 
@@ -72,9 +82,12 @@ export function duplicateRedis(): DuplicateRedis | null {
   if (!client) return null;
   return {
     set: async (key, value, options) => {
-      const result = await client.set(key, value, options);
+      const result = await withTimeout(
+        client.set(key, value, options),
+        UPSTASH_TIMEOUT_MS,
+      );
       return typeof result === "string" ? result : null;
     },
-    del: (key) => client.del(key),
+    del: (key) => withTimeout(client.del(key), UPSTASH_TIMEOUT_MS),
   };
 }

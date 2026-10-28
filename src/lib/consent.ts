@@ -10,8 +10,16 @@ import {
   type ConsentChoice,
   type StoredConsent,
 } from "@/lib/consent-config";
+import {
+  safeLocalGet,
+  safeLocalSet,
+  safeReadCookieString,
+  safeWriteCookieString,
+} from "@/lib/safe-storage";
 
 const GA_COOKIE = /^_ga(?:_|$)/;
+
+let inMemoryConsent: StoredConsent | null = null;
 
 declare global {
   interface Window {
@@ -20,37 +28,52 @@ declare global {
 }
 
 function cookieDomains(): string[] {
-  const host = window.location.hostname;
-  const domains = [""];
-  if (host) domains.push(host);
-  if (host === "woodax.design" || host.endsWith(".woodax.design")) {
-    domains.push(".woodax.design");
+  try {
+    const host = window.location.hostname;
+    const domains = [""];
+    if (host) domains.push(host);
+    if (host === "woodax.design" || host.endsWith(".woodax.design")) {
+      domains.push(".woodax.design");
+    }
+    return domains;
+  } catch {
+    return [""];
   }
-  return domains;
 }
 
 function expireCookie(name: string, domain: string) {
   const domainAttr = domain ? `; Domain=${domain}` : "";
-  const secure = window.isSecureContext ? "; Secure" : "";
-  document.cookie = `${name}=; Path=/; Max-Age=0; SameSite=Lax${secure}${domainAttr}`;
+  const secure =
+    typeof window !== "undefined" && window.isSecureContext ? "; Secure" : "";
+  safeWriteCookieString(
+    `${name}=; Path=/; Max-Age=0; SameSite=Lax${secure}${domainAttr}`,
+  );
 }
 
 function writeConsentCookie(value: string) {
   for (const domain of cookieDomains()) expireCookie(CONSENT_COOKIE, domain);
 
-  const domain = consentCookieDomain(
-    clientEnv.NEXT_PUBLIC_APP_ENV,
-    window.location.hostname,
-  );
+  let host = "";
+  try {
+    host = window.location.hostname;
+  } catch {
+    host = "";
+  }
+  const domain = consentCookieDomain(clientEnv.NEXT_PUBLIC_APP_ENV, host);
   const domainAttr = domain ? `; Domain=${domain}` : "";
-  const secure = window.isSecureContext ? "; Secure" : "";
-  document.cookie = `${CONSENT_COOKIE}=${encodeURIComponent(value)}; Path=/; Max-Age=${CONSENT_MAX_AGE}; SameSite=Lax${secure}${domainAttr}`;
+  const secure =
+    typeof window !== "undefined" && window.isSecureContext ? "; Secure" : "";
+  safeWriteCookieString(
+    `${CONSENT_COOKIE}=${encodeURIComponent(value)}; Path=/; Max-Age=${CONSENT_MAX_AGE}; SameSite=Lax${secure}${domainAttr}`,
+  );
 }
 
 function readCookieValues(): StoredConsent[] {
   const prefix = `${CONSENT_COOKIE}=`;
   const found: StoredConsent[] = [];
-  for (const part of document.cookie.split("; ")) {
+  const rawCookies = safeReadCookieString();
+  if (!rawCookies) return found;
+  for (const part of rawCookies.split("; ")) {
     if (!part.startsWith(prefix)) continue;
     let decoded: string;
     try {
@@ -86,29 +109,34 @@ function sameConsent(a: StoredConsent | null, b: StoredConsent | null): boolean 
 }
 
 export function readConsent(): StoredConsent | null {
-  if (typeof document === "undefined") return null;
+  if (typeof document === "undefined") return inMemoryConsent;
 
   const fromCookie = latest(readCookieValues());
-  let fromStorage: StoredConsent | null = null;
+  const fromStorage = parseConsent(safeLocalGet(CONSENT_COOKIE));
+  let fromWindow: StoredConsent | null = null;
   try {
-    fromStorage = parseConsent(localStorage.getItem(CONSENT_COOKIE));
+    fromWindow =
+      typeof window !== "undefined" ? (window.__woodaxConsent ?? null) : null;
   } catch {
-    fromStorage = null;
+    fromWindow = null;
   }
 
-  const consent = latest([fromCookie, fromStorage]);
+  const consent = latest([
+    fromCookie,
+    fromStorage,
+    fromWindow,
+    inMemoryConsent,
+  ]);
   if (!consent) return null;
+
+  inMemoryConsent = consent;
 
   if (!sameConsent(fromCookie, consent)) {
     writeConsentCookie(JSON.stringify(consent));
   }
 
-  try {
-    if (!sameConsent(fromStorage, consent)) {
-      localStorage.setItem(CONSENT_COOKIE, JSON.stringify(consent));
-    }
-  } catch {
-    // Private mode and disabled storage throw.
+  if (!sameConsent(fromStorage, consent)) {
+    safeLocalSet(CONSENT_COOKIE, JSON.stringify(consent));
   }
 
   return consent;
@@ -136,7 +164,9 @@ function updateAnalyticsConsent(granted: boolean) {
 
 export function deleteGaCookies() {
   if (typeof document === "undefined") return;
-  const names = document.cookie.split("; ").flatMap((part) => {
+  const rawCookies = safeReadCookieString();
+  if (!rawCookies) return;
+  const names = rawCookies.split("; ").flatMap((part) => {
     const name = part.split("=")[0] ?? "";
     return GA_COOKIE.test(name) ? [name] : [];
   });
@@ -198,14 +228,15 @@ export function saveConsent(choice: ConsentChoice): StoredConsent {
     throw new Error("Consent could not be stored.");
   }
 
+  inMemoryConsent = consent;
   writeConsentCookie(serialized);
-  try {
-    localStorage.setItem(CONSENT_COOKIE, serialized);
-  } catch {
-    // The cookie is the source of truth. Storage is only a backup.
-  }
+  safeLocalSet(CONSENT_COOKIE, serialized);
 
-  applyConsent(consent);
-  window.__woodaxConsent = consent;
+  try {
+    applyConsent(consent);
+    window.__woodaxConsent = consent;
+  } catch {
+    // Analytics script injection is non-critical in restricted WebViews.
+  }
   return consent;
 }

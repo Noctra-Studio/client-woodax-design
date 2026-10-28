@@ -34,6 +34,7 @@ export type LeadCopy = {
   next: string;
   back: string;
   submit: string;
+  submitting: string;
   successTitle: string;
   successBody: string;
   successBodies?: {
@@ -54,6 +55,9 @@ export type LeadCopy = {
   errorGeneric: string;
   errorPrefix: string;
   errors: Record<string, string>;
+  errorBoundaryBody: string;
+  errorBoundaryRetry: string;
+  errorBoundaryWhatsapp: string;
   closeLabel: string;
   mobileBar: string;
   /** Short channel label for the CNC pill and mobile bar. Null on Design. */
@@ -86,7 +90,10 @@ export async function getLeadCopy(
   const href = whatsappHref(variant, locale);
 
   if (variant === "design") {
-    const form = await getTranslations("design.form");
+    const [form, common] = await Promise.all([
+      getTranslations("design.form"),
+      getTranslations("common.error"),
+    ]);
     return {
       variant,
       locale,
@@ -106,6 +113,7 @@ export async function getLeadCopy(
       next: form("next"),
       back: form("back"),
       submit: form("submit"),
+      submitting: form("submitting"),
       successTitle: form("success.title"),
       successBody: form("success.body"),
       stageQuestion: form("success.stageQuestion"),
@@ -138,9 +146,13 @@ export async function getLeadCopy(
           details: form("errors.details"),
           message: form("errors.message"),
           rateLimited: form("errors.rateLimited"),
+          sendFailed: form("errors.sendFailed"),
         },
         form("error.generic"),
       ),
+      errorBoundaryBody: common("body"),
+      errorBoundaryRetry: common("retry"),
+      errorBoundaryWhatsapp: common("whatsapp"),
       closeLabel: form("close"),
       mobileBar: form("mobileBar"),
       whatsappChannel: null,
@@ -150,9 +162,10 @@ export async function getLeadCopy(
     };
   }
 
-  const [form, materials] = await Promise.all([
+  const [form, materials, common] = await Promise.all([
     getTranslations("cnc.form"),
     getTranslations("cnc.materials"),
+    getTranslations("common.error"),
   ]);
   const specs = siteConfig.cncSpecs;
 
@@ -199,6 +212,7 @@ export async function getLeadCopy(
     next: form("next"),
     back: form("back"),
     submit: form("submit"),
+    submitting: form("submitting"),
     successTitle: form("success.title"),
     successBody: cncSuccessBody("idea", locale),
     successBodies: {
@@ -228,9 +242,13 @@ export async function getLeadCopy(
         details: form("errors.details"),
         message: form("errors.message"),
         rateLimited: form("errors.rateLimited"),
+        sendFailed: form("errors.sendFailed"),
       },
       form("error.generic"),
     ),
+    errorBoundaryBody: common("body"),
+    errorBoundaryRetry: common("retry"),
+    errorBoundaryWhatsapp: common("whatsapp"),
     closeLabel: form("close"),
     mobileBar: form("mobileBar"),
     whatsappChannel: form("whatsapp"),

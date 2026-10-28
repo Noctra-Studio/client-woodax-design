@@ -1,6 +1,10 @@
 import { createHash } from "node:crypto";
 import { duplicateKey } from "@/features/leads/security/redis-keys";
 import { sanitizeText } from "@/features/leads/security/sanitize";
+import {
+  UPSTASH_TIMEOUT_MS,
+  withTimeout,
+} from "@/features/leads/security/timeout";
 
 const DAY_SECONDS = 24 * 60 * 60;
 
@@ -30,6 +34,7 @@ let loggedUnavailable = false;
 export async function claimSubmission(
   redis: DuplicateRedis | null,
   hash: string,
+  timeoutMs = UPSTASH_TIMEOUT_MS,
 ): Promise<"new" | "duplicate" | "open"> {
   if (!redis) {
     if (!loggedUnavailable) {
@@ -40,10 +45,13 @@ export async function claimSubmission(
   }
 
   try {
-    const result = await redis.set(duplicateKey(hash), "1", {
-      nx: true,
-      ex: DAY_SECONDS,
-    });
+    const result = await withTimeout(
+      redis.set(duplicateKey(hash), "1", {
+        nx: true,
+        ex: DAY_SECONDS,
+      }),
+      timeoutMs,
+    );
     return result === null ? "duplicate" : "new";
   } catch (error) {
     console.error(
@@ -57,10 +65,11 @@ export async function claimSubmission(
 export async function releaseSubmission(
   redis: DuplicateRedis | null,
   hash: string,
+  timeoutMs = UPSTASH_TIMEOUT_MS,
 ) {
   if (!redis) return;
   try {
-    await redis.del(duplicateKey(hash));
+    await withTimeout(redis.del(duplicateKey(hash)), timeoutMs);
   } catch (error) {
     console.error(
       "lead duplicate release failed",

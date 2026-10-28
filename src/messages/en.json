@@ -3,7 +3,13 @@
     "language": "English",
     "notFoundTitle": "Page not found",
     "notFoundDescription": "The page you are looking for does not exist.",
-    "backHome": "Back to home"
+    "backHome": "Back to home",
+    "error": {
+      "title": "Something went wrong",
+      "body": "Something went wrong. If you sent a request, we likely received it. Message us on WhatsApp to confirm.",
+      "retry": "Try again",
+      "whatsapp": "Message us on WhatsApp"
+    }
   },
   "nav": {
     "menu": "Menu",
@@ -118,6 +124,7 @@
       "next": "Continue",
       "back": "Back",
       "submit": "Send my project",
+      "submitting": "Sending…",
       "success": {
         "title": "We've got your project",
         "body": "We'll be in touch soon to talk through the details. Want to get a head start? Tell us a bit more:",
@@ -137,7 +144,7 @@
         "detailsSubmit": "Send details"
       },
       "error": {
-        "generic": "We couldn't send your message. Please try again in a moment."
+        "generic": "We couldn't send your request. Try again or message us on WhatsApp."
       },
       "errors": {
         "name": "Enter your name, at least 2 characters.",
@@ -147,7 +154,8 @@
         "city": "City must be between 2 and 60 characters.",
         "details": "Choose at least one detail.",
         "message": "The message can be up to 2000 characters.",
-        "rateLimited": "We received several submissions in a row. Try again later or message us on WhatsApp."
+        "rateLimited": "We received several submissions in a row. Try again later or message us on WhatsApp.",
+        "sendFailed": "We couldn't send your request. Try again or message us on WhatsApp."
       },
       "errorPrefix": "Error:",
       "close": "Close",
@@ -310,6 +318,7 @@
       "next": "Continue",
       "back": "Back",
       "submit": "Request a quote",
+      "submitting": "Sending…",
       "success": {
         "title": "Request received",
         "quantityLegend": "How many parts do you need?",
@@ -323,7 +332,7 @@
         "fileLink": "Link to your file (Drive, WeTransfer, Dropbox)"
       },
       "error": {
-        "generic": "We couldn't send your request. Please try again in a moment."
+        "generic": "We couldn't send your request. Try again or message us on WhatsApp."
       },
       "errors": {
         "name": "Enter your name or company, at least 2 characters.",
@@ -333,7 +342,8 @@
         "projectState": "Choose where your project is at.",
         "details": "Choose a quantity.",
         "message": "The message can be up to 2000 characters.",
-        "rateLimited": "We received several submissions in a row. Try again later or message us on WhatsApp."
+        "rateLimited": "We received several submissions in a row. Try again later or message us on WhatsApp.",
+        "sendFailed": "We couldn't send your request. Try again or message us on WhatsApp."
       },
       "errorPrefix": "Error:",
       "close": "Close",

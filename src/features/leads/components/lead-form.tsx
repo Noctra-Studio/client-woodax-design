@@ -12,6 +12,7 @@ import {
 } from "react";
 import { ArrowLeft, Check } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnalyticsButton } from "@/components/analytics/tracked-link";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { submitLead } from "@/features/leads/actions";
@@ -22,6 +23,7 @@ import {
   referrerOriginPath,
 } from "@/features/leads/schema";
 import { initialLeadState } from "@/features/leads/state";
+import { LeadErrorBoundary } from "@/features/leads/components/lead-error-boundary";
 import {
   FieldErrorMessage,
   OptionGroup,
@@ -41,6 +43,11 @@ import {
   usePrivacyDialog,
 } from "@/features/privacy/privacy-dialog-provider";
 import { isLeadMaterial, track } from "@/lib/analytics";
+import {
+  safeSessionGet,
+  safeSessionRemove,
+  safeSessionSet,
+} from "@/lib/safe-storage";
 import { cn } from "@/lib/utils";
 
 const easeOut = [0.22, 1, 0.36, 1] as const;
@@ -111,13 +118,13 @@ function subscribeLeadSnapshot() {
 }
 
 function readLeadSnapshot(variant: string): ClientLeadSnapshot {
-  const search = window.location.search;
-  let raw: string | null = null;
+  let search = "";
   try {
-    raw = sessionStorage.getItem(storageKey(variant));
+    search = typeof window !== "undefined" ? window.location.search : "";
   } catch {
-    raw = null;
+    search = "";
   }
+  const raw = safeSessionGet(storageKey(variant));
 
   const cached = leadSnapshotCache.get(variant);
   if (cached && cached.raw === raw && cached.search === search) {
@@ -133,6 +140,19 @@ function readLeadSnapshot(variant: string): ClientLeadSnapshot {
   const value = { ready: true, draft, search, startedAt };
   leadSnapshotCache.set(variant, { raw, search, value });
   return value;
+}
+
+export function clearLeadSnapshotCacheForTests() {
+  leadSnapshotCache.clear();
+  trackedLeadKeys.clear();
+}
+
+function safeFocusById(id: string) {
+  try {
+    document.getElementById(id)?.focus();
+  } catch {
+    // Focus may fail in restricted WebViews.
+  }
 }
 
 function readDraftFromRaw(raw: string): StoredDraft | null {
@@ -172,6 +192,14 @@ function messageFor(
 }
 
 export function LeadForm({ copy }: { copy: LeadCopy }) {
+  return (
+    <LeadErrorBoundary copy={copy}>
+      <LeadFormContent copy={copy} />
+    </LeadErrorBoundary>
+  );
+}
+
+function LeadFormContent({ copy }: { copy: LeadCopy }) {
   const [state, formAction, pending] = useActionState(
     submitLead,
     initialLeadState,
@@ -184,6 +212,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
   const { openPrivacy } = usePrivacyDialog();
   const leadSheetNested = useLeadSheetNested();
   const shouldFocusStepRef = useRef<0 | 1 | null>(null);
+  const submitLockRef = useRef(false);
   const snapshot = useLeadSnapshot(copy.variant);
   const reduceMotion = useReducedMotion();
   const idPrefix = copy.variant;
@@ -222,6 +251,12 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
   const shownErrors = { ...clientErrors, ...serverErrors };
 
   useFocusOnError(state.status, state.fieldErrors, idPrefix);
+
+  useEffect(() => {
+    if (!pending) {
+      submitLockRef.current = false;
+    }
+  }, [pending, state]);
 
   useEffect(() => {
     return () => {
@@ -264,7 +299,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
         utmMedium,
         utmCampaign,
       };
-      sessionStorage.setItem(storageKey(copy.variant), JSON.stringify(draft));
+      safeSessionSet(storageKey(copy.variant), JSON.stringify(draft));
     } catch {
       // Private browsing and full storage both throw.
     }
@@ -289,12 +324,8 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
 
   useEffect(() => {
     if (state.status !== "success") return;
-    try {
-      sessionStorage.removeItem(storageKey(copy.variant));
-      leadSnapshotCache.delete(copy.variant);
-    } catch {
-      // Ignore storage failures.
-    }
+    safeSessionRemove(storageKey(copy.variant));
+    leadSnapshotCache.delete(copy.variant);
   }, [state.status, copy.variant]);
 
   const successStartedAt =
@@ -347,14 +378,24 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
   ]);
 
   function beginLeadSubmit(formData: FormData) {
+    if (pending) return;
     const key = leadTrackKey(
       copy.variant,
       String(formData.get("startedAt") ?? ""),
     );
     trackedLeadKeys.delete(key);
     trackedLeadRef.current = null;
-    formData.set("page", window.location.pathname.slice(0, 200));
-    const referrer = referrerOriginPath(document.referrer);
+    try {
+      formData.set("page", window.location.pathname.slice(0, 200));
+    } catch {
+      // Ignore pathname access failure in restricted environments.
+    }
+    let referrer: string | undefined;
+    try {
+      referrer = referrerOriginPath(document.referrer);
+    } catch {
+      referrer = undefined;
+    }
     if (referrer) formData.set("referrer", referrer);
     else formData.delete("referrer");
     formAction(formData);
@@ -394,7 +435,7 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
     setClientErrors(nextErrors);
     const first = Object.keys(nextErrors)[0];
     if (first) {
-      document.getElementById(`${idPrefix}-${first}`)?.focus();
+      safeFocusById(`${idPrefix}-${first}`);
       return;
     }
     setDismissedOptionError(optionErrorStamp);
@@ -413,6 +454,11 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
     if (visibleStep === 0) {
       event.preventDefault();
       continueStep();
+      return;
+    }
+
+    if (pending || submitLockRef.current) {
+      event.preventDefault();
       return;
     }
 
@@ -442,9 +488,12 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
       setClientErrors(nextErrors);
       const first = Object.keys(nextErrors)[0];
       if (first) {
-        document.getElementById(`${idPrefix}-${first}`)?.focus();
+        safeFocusById(`${idPrefix}-${first}`);
       }
+      return;
     }
+
+    submitLockRef.current = true;
   }
 
   const handleStepMount = useCallback(
@@ -454,22 +503,24 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
       shouldFocusStepRef.current = null;
 
       requestAnimationFrame(() => {
-        if (targetStep === 1) {
-          document.getElementById(`${idPrefix}-name`)?.focus();
-          return;
-        }
-        const checkedRadio = node.querySelector<HTMLInputElement>(
-          'input[type="radio"]:checked',
-        );
-        if (checkedRadio) {
-          checkedRadio.focus();
-          return;
-        }
-        document
-          .getElementById(
+        try {
+          if (targetStep === 1) {
+            safeFocusById(`${idPrefix}-name`);
+            return;
+          }
+          const checkedRadio = node.querySelector<HTMLInputElement>(
+            'input[type="radio"]:checked',
+          );
+          if (checkedRadio) {
+            checkedRadio.focus();
+            return;
+          }
+          safeFocusById(
             `${idPrefix}-${isDesign ? "projectType" : "material"}`,
-          )
-          ?.focus();
+          );
+        } catch {
+          // Focus may fail in restricted WebViews.
+        }
       });
     },
     [idPrefix, isDesign],
@@ -541,14 +592,32 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
       ) : null}
 
       {shownErrors.form ? (
-        <FieldErrorMessage
-          id={`${idPrefix}-form-error`}
-          tabIndex={-1}
-          message={messageFor(copy, shownErrors.form) ?? copy.errorGeneric}
-          prefix={copy.errorPrefix}
-          variant={copy.variant}
-          className="mt-0"
-        />
+        <div className="flex flex-col items-start gap-3">
+          <FieldErrorMessage
+            id={`${idPrefix}-form-error`}
+            tabIndex={-1}
+            message={messageFor(copy, shownErrors.form) ?? copy.errorGeneric}
+            prefix={copy.errorPrefix}
+            variant={copy.variant}
+            className="mt-0"
+          />
+          {copy.whatsappHref ? (
+            <AnalyticsButton
+              href={copy.whatsappHref}
+              variant={secondaryVariant}
+              arrow
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={copy.whatsappAria}
+              tracking={{
+                event: "whatsapp_click",
+                params: { site: copy.variant, location: "contact" },
+              }}
+            >
+              {copy.whatsapp}
+            </AnalyticsButton>
+          ) : null}
+        </div>
       ) : null}
 
       <motion.div
@@ -784,10 +853,10 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
                       className="min-w-40"
                     >
                       {pending ? (
-                        <>
-                          <span className="sr-only">{copy.submit}</span>
+                        <span className="inline-flex items-center gap-2">
                           <PendingSpinner />
-                        </>
+                          <span>{copy.submitting ?? copy.submit}</span>
+                        </span>
                       ) : (
                         copy.submit
                       )}
@@ -815,10 +884,10 @@ export function LeadForm({ copy }: { copy: LeadCopy }) {
                       className="min-w-40"
                     >
                       {pending ? (
-                        <>
-                          <span className="sr-only">{copy.submit}</span>
+                        <span className="inline-flex items-center gap-2">
                           <PendingSpinner />
-                        </>
+                          <span>{copy.submitting ?? copy.submit}</span>
+                        </span>
                       ) : (
                         copy.submit
                       )}

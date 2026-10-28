@@ -9,7 +9,7 @@ export function consentBootstrapScript(options: {
   loadGa: boolean;
 }): string {
   const gaId = options.gaId ?? "";
-  return `(function(){
+  return `(function(){try{
 var KEY=${JSON.stringify(CONSENT_COOKIE)};
 var VERSION=${CONSENT_VERSION};
 function parse(raw){
@@ -22,8 +22,10 @@ return value;
 }catch(e){return null;}
 }
 function readCookie(){
+try{
 var prefix=KEY+"=";
-var parts=document.cookie?document.cookie.split("; "):[];
+var rawCookie=typeof document!=="undefined"&&document.cookie?document.cookie:"";
+var parts=rawCookie?rawCookie.split("; "):[];
 var best=null;
 for(var i=0;i<parts.length;i++){
 if(parts[i].indexOf(prefix)!==0)continue;
@@ -33,10 +35,11 @@ if(!parsed)continue;
 if(!best||(parsed.ts||0)>=(best.ts||0))best=parsed;
 }
 return best;
+}catch(e){return null;}
 }
 var fromCookie=readCookie();
 var fromStorage=null;
-try{fromStorage=parse(localStorage.getItem(KEY));}catch(e){}
+try{fromStorage=parse(window.localStorage&&window.localStorage.getItem(KEY));}catch(e){}
 var consent=fromCookie||fromStorage;
 if(fromCookie&&fromStorage&&fromStorage.ts>fromCookie.ts)consent=fromStorage;
 window.__woodaxConsent=consent;
@@ -66,5 +69,5 @@ script.src="https://www.googletagmanager.com/gtag/js?id="+encodeURIComponent(gaI
 script.setAttribute("data-woodax-ga","");
 document.head.appendChild(script);
 }
-})();`;
+}catch(e){}})();`;
 }

@@ -44,3 +44,4 @@ next-env.d.ts
 
 # originales de fotos/video (no se publican)
 assets-src/
+.vercel

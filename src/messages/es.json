@@ -3,7 +3,13 @@
     "language": "Español",
     "notFoundTitle": "Página no encontrada",
     "notFoundDescription": "La página que buscas no existe.",
-    "backHome": "Volver al inicio"
+    "backHome": "Volver al inicio",
+    "error": {
+      "title": "Algo salió mal",
+      "body": "Algo salió mal. Si enviaste una solicitud, probablemente sí la recibimos. Escríbenos por WhatsApp para confirmar.",
+      "retry": "Reintentar",
+      "whatsapp": "Escribir por WhatsApp"
+    }
   },
   "nav": {
     "menu": "Menú",
@@ -118,6 +124,7 @@
       "next": "Continuar",
       "back": "Atrás",
       "submit": "Enviar mi proyecto",
+      "submitting": "Enviando…",
       "success": {
         "title": "Recibimos tu proyecto",
         "body": "Te contactaremos pronto para platicar los detalles. Si quieres adelantar, cuéntanos un poco más:",
@@ -137,7 +144,7 @@
         "detailsSubmit": "Enviar detalles"
       },
       "error": {
-        "generic": "No pudimos enviar tu mensaje. Inténtalo de nuevo en un momento."
+        "generic": "No pudimos enviar tu solicitud. Intenta de nuevo o escríbenos por WhatsApp."
       },
       "errors": {
         "name": "Escribe tu nombre, con al menos 2 caracteres.",
@@ -147,7 +154,8 @@
         "city": "La ciudad debe tener entre 2 y 60 caracteres.",
         "details": "Elige al menos un detalle.",
         "message": "El mensaje puede tener hasta 2000 caracteres.",
-        "rateLimited": "Recibimos varios envíos seguidos. Intenta de nuevo más tarde o escríbenos por WhatsApp."
+        "rateLimited": "Recibimos varios envíos seguidos. Intenta de nuevo más tarde o escríbenos por WhatsApp.",
+        "sendFailed": "No pudimos enviar tu solicitud. Intenta de nuevo o escríbenos por WhatsApp."
       },
       "errorPrefix": "Error:",
       "close": "Cerrar",
@@ -310,6 +318,7 @@
       "next": "Continuar",
       "back": "Atrás",
       "submit": "Solicitar cotización",
+      "submitting": "Enviando…",
       "success": {
         "title": "Solicitud recibida",
         "quantityLegend": "¿Cuántas piezas necesitas?",
@@ -323,7 +332,7 @@
         "fileLink": "Link a tu archivo (Drive, WeTransfer, Dropbox)"
       },
       "error": {
-        "generic": "No pudimos enviar tu solicitud. Inténtalo de nuevo en un momento."
+        "generic": "No pudimos enviar tu solicitud. Intenta de nuevo o escríbenos por WhatsApp."
       },
       "errors": {
         "name": "Escribe tu nombre o el de tu empresa, con al menos 2 caracteres.",
@@ -333,7 +342,8 @@
         "projectState": "Elige en qué punto está tu proyecto.",
         "details": "Elige una cantidad.",
         "message": "El mensaje puede tener hasta 2000 caracteres.",
-        "rateLimited": "Recibimos varios envíos seguidos. Intenta de nuevo más tarde o escríbenos por WhatsApp."
+        "rateLimited": "Recibimos varios envíos seguidos. Intenta de nuevo más tarde o escríbenos por WhatsApp.",
+        "sendFailed": "No pudimos enviar tu solicitud. Intenta de nuevo o escríbenos por WhatsApp."
       },
       "errorPrefix": "Error:",
       "close": "Cerrar",

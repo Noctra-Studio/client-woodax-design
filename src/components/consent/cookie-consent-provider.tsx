@@ -70,8 +70,18 @@ export function CookieConsentProvider({
       setDraft({ analytics: stored.analytics, marketing: stored.marketing });
       applyConsent(stored);
     };
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
+    try {
+      window.addEventListener("storage", onStorage);
+    } catch {
+      return;
+    }
+    return () => {
+      try {
+        window.removeEventListener("storage", onStorage);
+      } catch {
+        // Ignore cleanup failure in restricted WebViews.
+      }
+    };
   }, []);
 
   const openPreferences = useCallback((trigger?: HTMLElement | null) => {

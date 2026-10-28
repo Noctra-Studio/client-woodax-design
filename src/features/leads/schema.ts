@@ -15,6 +15,7 @@ export const leadError = {
   generic: "errors.generic",
   message: "errors.message",
   rateLimited: "errors.rateLimited",
+  sendFailed: "errors.sendFailed",
 } as const;
 
 export const projectTypes = [
